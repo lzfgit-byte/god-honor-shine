@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 import { cached, hasCache } from '@/utils/cache';
 import { getSetting } from '@/utils/setting';
+
 const proxy = getSetting('proxy');
 axios.defaults.timeout = 20000;
 axios.interceptors.request.use((con) => {

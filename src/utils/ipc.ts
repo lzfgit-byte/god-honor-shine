@@ -23,10 +23,10 @@ export const allFunc = {
   ...net,
   ...setting,
 };
-export const exportFunc: Pick<fileMethods, any> | Pick<cacheMethods, any> = (() => {
+export const exportFunc: any = (() => {
   let exportFunc = {};
   Object.keys(allFunc).forEach((funcName) => {
-    exportFunc[funcName] = (sender, ...args) => {
+    exportFunc[funcName] = async (...args) => {
       if (args.length > 0 && isBlank(args[0])) return;
       return allFunc[funcName](...args);
     };

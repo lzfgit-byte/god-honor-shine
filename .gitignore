@@ -107,4 +107,5 @@ dist
 
 release
 .idea
+.ghs-cache
 package-lock.json

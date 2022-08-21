@@ -1,8 +1,19 @@
 // @ts-ignore
 import path from 'path';
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, globalShortcut, Menu } from 'electron';
+import fs from 'fs-extra';
 
 let win: BrowserWindow;
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+app.commandLine.appendSwitch('disable-web-security');
+
+const setFile = process.cwd() + '/config.json';
+
+export const getSetting = (key) => {
+  const res = String(fs.readFileSync(setFile));
+  const set = JSON.parse(res);
+  return set[key];
+};
 
 function createWindow() {
   Menu.setApplicationMenu(null);
@@ -15,7 +26,10 @@ function createWindow() {
       preload: path.join(__dirname, '../electron-preload/index.js'),
     },
   });
-
+  const proxy = getSetting('proxy');
+  if (getSetting('needProxy') && proxy) {
+    win.webContents.session.setProxy({ proxyRules: proxy });
+  }
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
     win?.webContents.send('main-process-message', '主进程发送消息了');
@@ -29,6 +43,12 @@ function createWindow() {
     win.loadURL(url);
     win.webContents.openDevTools();
   }
+  globalShortcut.register('ctrl+shift+alt+e', function () {
+    let win = BrowserWindow.getFocusedWindow();
+    if (win) {
+      win.webContents.openDevTools();
+    }
+  });
 }
 
 app.on('window-all-closed', () => {
