@@ -1,17 +1,13 @@
 <template>
-  <lolskin-home></lolskin-home>
+  <h1>{{ title }}</h1>
 </template>
 <script setup lang="ts">
-  import LolskinHome from './components/lolskin-home.vue';
+  import {ref} from "vue";
+
+  const title = ref<string>('hello word')
 </script>
 <style>
-  body {
-    background-color: #1b2128 !important;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-  }
-  body::-webkit-scrollbar {
-    display: none;
+  #app{
+    box-sizing: border-box;
   }
 </style>
