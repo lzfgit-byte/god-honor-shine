@@ -1,5 +1,4 @@
-// @ts-ignore
-import path from 'path';
+import path, { join } from 'path';
 import { defineConfig } from 'vite-plugin-electron';
 
 export default defineConfig({
@@ -7,7 +6,10 @@ export default defineConfig({
     entry: 'electron/index.ts',
   },
   preload: {
-    // Must be use absolute path, this is the limit of rollup
-    input: path.join(__dirname, 'electron/preload.ts'),
+    input: {
+      // Must be use absolute path, this is the restrict of Rollup
+      preload: join(__dirname, 'electron/preload.ts'),
+    },
   },
+  renderer: {},
 });

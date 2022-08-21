@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 // 任何你期望执行的cmd命令，ls都可以
-let cmdPath = 'C:/';
+const cmdPath = 'C:/';
 // 子进程名称
 let workerProcess;
 

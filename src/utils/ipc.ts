@@ -7,8 +7,6 @@ import * as cache from '@/utils/cache';
 import * as urls from '@/utils/urls';
 import * as net from '@/utils/net';
 import * as setting from '@/utils/setting';
-import type { fileMethods } from '@/utils/file';
-import type { cacheMethods } from '@/utils/cache';
 
 const isBlank = (str) => {
   return str === undefined || (str.trim && str.trim() === '');
@@ -24,7 +22,7 @@ export const allFunc = {
   ...setting,
 };
 export const exportFunc: any = (() => {
-  let exportFunc = {};
+  const exportFunc = {};
   Object.keys(allFunc).forEach((funcName) => {
     exportFunc[funcName] = async (...args) => {
       if (args.length > 0 && isBlank(args[0])) return;
