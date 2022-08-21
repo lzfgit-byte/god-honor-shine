@@ -62,7 +62,6 @@
   import PaginationHentaiWord from '@/hentai-word/components/pagination-hentai-word.vue';
   import { exportFunc } from '@/utils/ipc';
   const { getHtmlAxios, getHtmlInfo, removeCache, removeCacheAll, getCacheDir } = exportFunc;
-
   const TEXT_URL = 'https://thehentaiworld.com/?new';
   let currentUrl = '';
   const infos = ref<[x: mainHtml]>();

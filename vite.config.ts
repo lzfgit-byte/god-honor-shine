@@ -1,19 +1,24 @@
-import * as fs from 'fs';
-import { resolve } from 'path';
-import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 import electron from 'vite-plugin-electron';
-import renderer from 'vite-plugin-electron-renderer';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import electronRenderer from 'vite-plugin-electron/renderer';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import polyfillExports from 'vite-plugin-electron/polyfill-exports';
 import electronConfig from './vite-electron.config';
-
-fs.rmSync('dist', { recursive: true, force: true }); // v14.14.0
+import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [vue(), electron(electronConfig), renderer()],
+  plugins: [vue(), electron(electronConfig), electronRenderer()],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
       '~@': resolve(__dirname, './src'),
     },
+  },
+  build: {
+    emptyOutDir: false,
   },
 });

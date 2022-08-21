@@ -24,7 +24,10 @@ export const getHtmlByNet = async (url) => {
     request.end();
   });
 };
-
+/**
+ * 解决为Buffer
+ * @param url
+ */
 export const getBlob = (url) => {
   if (hasCacheSync(url)) {
     return readFileSync(url);

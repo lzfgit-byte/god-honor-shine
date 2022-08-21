@@ -1,8 +1,8 @@
 import path from 'path';
-import { app, BrowserWindow, globalShortcut, Menu } from 'electron';
+const { app, BrowserWindow, globalShortcut, Menu } = require('electron');
 import fs from 'fs-extra';
 
-let win: BrowserWindow;
+let win: any;
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 app.commandLine.appendSwitch('disable-web-security');
 
@@ -42,7 +42,7 @@ function createWindow() {
     win.webContents.openDevTools();
   }
   globalShortcut.register('ctrl+shift+alt+e', function () {
-    let win = BrowserWindow.getFocusedWindow();
+    const win = BrowserWindow.getFocusedWindow();
     if (win) {
       win.webContents.openDevTools();
     }

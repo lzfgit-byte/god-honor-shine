@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 import { cached, hasCache } from '@/utils/cache';
 import { getSetting } from '@/utils/setting';
+import { getHtmlByNet, getBlob } from '@/utils/net';
 
 const proxy = getSetting('proxy');
 axios.defaults.timeout = 20000;
@@ -9,6 +10,9 @@ axios.interceptors.request.use((con) => {
   return con;
 });
 axios.interceptors.response.use((res) => {
+  if (res.data instanceof ArrayBuffer) {
+    res.data = Buffer.from(res.data);
+  }
   if (res.data instanceof String || res.data instanceof Buffer) cached(res.config.url, res.data);
   return res.data;
 });
@@ -24,32 +28,15 @@ const header: any = {
 };
 axios.defaults.headers = header;
 export const getHtmlAxios = async (url) => {
-  return await hasCache(url)
-    .then((res) => {
-      return Promise.resolve(res);
-    })
-    .catch(() => {
-      return axios.get(url);
-    });
+  return getHtmlByNet(url);
 };
 
 export const getImg = async (url) => {
-  return await hasCache(url)
-    .then((res) => {
-      return Promise.resolve(url);
-    })
-    .catch(() => {
-      return axios.get(url, { responseType: 'arraybuffer' });
-    });
+  return getBlob(url);
 };
 export const loadImg = (url) => {
+  debugger;
   hasCache(url).catch(() => {
     return axios.get(url, { responseType: 'arraybuffer' });
   });
-};
-export const axiosGet = (url, options) => {
-  return axios.get(url, { params: options });
-};
-export const axiosPost = (url, options) => {
-  return axios.post(url, { params: options });
 };
