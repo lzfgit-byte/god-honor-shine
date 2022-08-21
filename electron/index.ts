@@ -1,4 +1,3 @@
-// @ts-ignore
 import path from 'path';
 import { app, BrowserWindow, globalShortcut, Menu } from 'electron';
 import fs from 'fs-extra';
@@ -8,8 +7,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 app.commandLine.appendSwitch('disable-web-security');
 
 const setFile = process.cwd() + '/config.json';
-
-export const getSetting = (key) => {
+const getSetting = (key) => {
   const res = String(fs.readFileSync(setFile));
   const set = JSON.parse(res);
   return set[key];
@@ -23,7 +21,7 @@ function createWindow() {
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
-      preload: path.join(__dirname, '../electron-preload/index.js'),
+      preload: path.join(__dirname, '../electron/preload.js'),
     },
   });
   const proxy = getSetting('proxy');

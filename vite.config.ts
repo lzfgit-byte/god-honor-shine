@@ -1,21 +1,31 @@
-import { defineConfig } from 'vite';
+import * as fs from 'fs';
+import { join, resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
 import electron from 'vite-plugin-electron';
-import electronRenderer from 'vite-plugin-electron/renderer';
-import polyfillExports from 'vite-plugin-electron/polyfill-exports';
-import electronConfig from './vite-electron.config';
-import { resolve } from 'path';
+
+fs.rmSync('dist', { recursive: true, force: true }); // v14.14.0
 
 export default defineConfig({
-  base: './',
-  plugins: [vue(), electron(electronConfig), electronRenderer(), polyfillExports()],
+  plugins: [
+    vue(),
+    electron({
+      main: {
+        entry: 'electron/index.ts',
+      },
+      preload: {
+        input: {
+          // Must be use absolute path, this is the restrict of Rollup
+          preload: join(__dirname, 'electron/preload.ts'),
+        },
+      },
+      renderer: {},
+    }),
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
       '~@': resolve(__dirname, './src'),
     },
-  },
-  build: {
-    emptyOutDir: false,
   },
 });
