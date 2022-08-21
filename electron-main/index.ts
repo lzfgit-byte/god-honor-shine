@@ -7,8 +7,8 @@ let win: BrowserWindow;
 function createWindow() {
   Menu.setApplicationMenu(null);
   win = new BrowserWindow({
-    width: 1150,
-    height: 740,
+    width: 1470,
+    height: 788,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,

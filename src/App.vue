@@ -1,10 +1,10 @@
 <template>
-  <h1>{{ title }}</h1>
+  <hentai-word-index></hentai-word-index>
 </template>
 <script setup lang="ts">
   import {ref} from "vue";
+  import HentaiWordIndex from "@/hentai-word/view/hentai-word-index.vue";
 
-  const title = ref<string>('hello word')
 </script>
 <style>
   #app{
