@@ -1,4 +1,4 @@
-import { net } from 'electron';
+const { net } = require('electron');
 import { readFileSync } from '@/utils/file';
 import { cached, hasCacheSync } from '@/utils/cache';
 

@@ -32,7 +32,7 @@ npm uninstall -g <package-name>
 |revert|回滚到上一个版本;|
 |style|代码格式修改;|
 |test|测试用例修改|
-
+npm install eslint-plugin-prettier --registry=https://registry.npm.taobao.org/
 
 
 
