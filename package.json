@@ -1,0 +1,38 @@
+{
+  "name": "lolskin",
+  "version": "1.0.0",
+  "description": "lolskin-support",
+  "main": "dist/electron/index.js",
+  "author": "lzf",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "rimraf dist && rimraf release && vite build && electron-builder"
+  },
+  "dependencies": {
+    "ant-design-vue": "^3.2.5",
+    "axios": "^0.27.2",
+    "fs-extra": "^10.1.0",
+    "ini": "^3.0.0",
+    "less": "^4.1.2",
+    "prettier": "^2.6.2",
+    "vue": "^3.2.35"
+  },
+  "devDependencies": {
+    "@types/ini": "^1.3.31",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "electron": "^18.2.4",
+    "electron-builder": "^23.0.3",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.4",
+    "vite": "^2.9.9",
+    "vite-plugin-electron": "^0.4.5"
+  },
+  "keywords": [
+    "vite",
+    "plugin",
+    "electron",
+    "quick-start"
+  ]
+}
