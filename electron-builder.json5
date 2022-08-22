@@ -10,10 +10,6 @@
   "files": [
     "dist"
   ],
-  "extraResources": {
-    "from": "./config.json",
-    "to": "../"
-  },
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
@@ -21,7 +17,6 @@
     ]
   },
   "win": {
-    "icon": "dist/favicon.ico",
     "target": [
       {
         "target": "nsis",
@@ -36,8 +31,6 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false,
-    "installerIcon": "dist/favicon.ico",
-    "uninstallerIcon": "dist/favicon.ico"
+    "deleteAppDataOnUninstall": false
   }
 }

@@ -28,14 +28,25 @@ const header: any = {
 };
 axios.defaults.headers = header;
 export const getHtmlAxios = async (url) => {
-  return getHtmlByNet(url);
+  return await hasCache(url)
+    .then((res) => {
+      return Promise.resolve(res);
+    })
+    .catch(() => {
+      return axios.get(url);
+    });
 };
 
 export const getImg = async (url) => {
-  return getBlob(url);
+  return await hasCache(url)
+    .then((res) => {
+      return Promise.resolve(url);
+    })
+    .catch(() => {
+      return axios.get(url, { responseType: 'arraybuffer' });
+    });
 };
 export const loadImg = (url) => {
-  debugger;
   hasCache(url).catch(() => {
     return axios.get(url, { responseType: 'arraybuffer' });
   });

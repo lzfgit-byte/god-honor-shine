@@ -1,14 +1,17 @@
 {
-  "name": "lolskin",
+  "name": "ghs",
   "version": "1.0.0",
-  "description": "lolskin-support",
-  "main": "dist/electron/index.js",
+  "description": "ghs",
+  "main": "dist/electron/main/index.js",
   "author": "lzf",
   "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && rimraf release && vite build && electron-builder"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
@@ -30,14 +33,14 @@
     "@babel/eslint-parser": "^7.18.2",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
-    "@vitejs/plugin-vue": "^2.2.4",
+    "@vitejs/plugin-vue": "^3.0.3",
     "@vue/compiler-sfc": "^3.2.36",
     "@vuedx/typecheck": "^0.7.4",
     "@vuedx/typescript-plugin-vue": "^0.7.4",
     "babel-plugin-import": "^1.13.3",
     "cross-env": "^7.0.3",
-    "electron": "^18.3.9",
-    "electron-builder": "^23.1.0",
+    "electron": "^20.0.2",
+    "electron-builder": "^23.3.3",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -47,9 +50,15 @@
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.4",
-    "vite": "^2.9.9",
-    "vite-plugin-electron": "^0.4.5",
-    "vue-eslint-parser": "^8.3.0",
-    "vue-template-compiler": "^2.6.14"
+    "vite": "^3.0.8",
+    "vite-plugin-electron": "^0.9.0",
+    "vite-plugin-electron-renderer": "^0.9.0",
+    "vue-eslint-parser": "^9.0.3",
+    "vue-template-compiler": "^2.6.14",
+    "vue-tsc": "^0.40.1"
+  },
+  "env": {
+    "VITE_DEV_SERVER_HOST": "127.0.0.1",
+    "VITE_DEV_SERVER_PORT": 3344
   }
 }
