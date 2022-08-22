@@ -1,5 +1,4 @@
 <template>
-  <a-spin :spinning="spinging"></a-spin>
   <div class="container">
     <div class="typeContain">
       <span v-for="item in coverInfo?.type" :key="item">{{ item.title }}</span>
@@ -28,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
   import { comicCover } from '@/18-comic/type/18comicType';
   import { comicFunc } from '@/18-comic/utils/get18ComicFunc';
   import { defineProps, inject, PropType, defineEmits } from 'vue';
@@ -39,20 +37,17 @@
   const props = defineProps({
     coverInfo: Object as PropType<comicCover>,
   });
-  const spinging = ref(false);
   const emits = defineEmits(['toContent', 'searchComic']);
   const handlerTagClick = (url: string) => {
     bus.emit('searchComic', url);
   };
   const handlerImgClick = () => {
-    spinging.value = true;
     const jumpUrl = props?.coverInfo?.jumpUrl || '';
     getHtmlByNet(jumpUrl)
       .then((res) => {
         return getComicDetailInfo(res);
       })
       .then((res) => {
-        spinging.value = false;
         emits('toContent', res);
       });
   };
