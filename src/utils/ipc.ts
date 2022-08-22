@@ -8,10 +8,10 @@ import * as urls from '@/utils/urls';
 import * as net from '@/utils/net';
 import * as setting from '@/utils/setting';
 
-const isBlank = (str) => {
+const isBlank = (str: string) => {
   return str === undefined || (str.trim && str.trim() === '');
 };
-export const allFunc = {
+export const allFunc: any = {
   ...http,
   ...hwParse,
   ...solveImg,
@@ -22,9 +22,9 @@ export const allFunc = {
   ...setting,
 };
 export const exportFunc: any = (() => {
-  const exportFunc = {};
+  const exportFunc: any = {};
   Object.keys(allFunc).forEach((funcName) => {
-    exportFunc[funcName] = async (...args) => {
+    exportFunc[funcName] = async (...args: any) => {
       if (args.length > 0 && isBlank(args[0])) return;
       return allFunc[funcName](...args);
     };

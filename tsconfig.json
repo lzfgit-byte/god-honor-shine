@@ -10,9 +10,11 @@
     "sourceMap": true,
     "baseUrl": "./",
     "strict": true,
-    "paths": {},
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "references": [
     { "path": "./tsconfig.node.json" }

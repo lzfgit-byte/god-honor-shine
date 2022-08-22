@@ -1,5 +1,5 @@
 import { rmSync } from 'fs';
-import path from 'path';
+import path, { resolve } from 'path';
 import { type Plugin, type UserConfig, defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import electron from 'vite-plugin-electron';
@@ -35,12 +35,18 @@ export default defineConfig({
       },
       // Enables use of Node.js API in the Renderer-process
       // https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#electron-renderervite-serve
-      renderer: {},
+      renderer: { resolve: () => ['net'] },
     }),
   ],
   server: {
     host: pkg.env.VITE_DEV_SERVER_HOST,
     port: pkg.env.VITE_DEV_SERVER_PORT,
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      '~@': resolve(__dirname, './src'),
+    },
   },
 });
 

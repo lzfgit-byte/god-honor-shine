@@ -2,7 +2,6 @@ import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 import { cached, hasCache } from '@/utils/cache';
 import { getSetting } from '@/utils/setting';
-import { getHtmlByNet, getBlob } from '@/utils/net';
 
 const proxy = getSetting('proxy');
 axios.defaults.timeout = 20000;
@@ -27,7 +26,7 @@ const header: any = {
   'Access-Control-Allow-Origin': '*',
 };
 axios.defaults.headers = header;
-export const getHtmlAxios = async (url) => {
+export const getHtmlAxios = async (url: string) => {
   return await hasCache(url)
     .then((res) => {
       return Promise.resolve(res);
@@ -37,7 +36,7 @@ export const getHtmlAxios = async (url) => {
     });
 };
 
-export const getImg = async (url) => {
+export const getImg = async (url: string) => {
   return await hasCache(url)
     .then((res) => {
       return Promise.resolve(url);
@@ -46,7 +45,7 @@ export const getImg = async (url) => {
       return axios.get(url, { responseType: 'arraybuffer' });
     });
 };
-export const loadImg = (url) => {
+export const loadImg = (url: string) => {
   hasCache(url).catch(() => {
     return axios.get(url, { responseType: 'arraybuffer' });
   });
