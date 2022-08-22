@@ -120,14 +120,13 @@
 
 <style scoped lang="less">
   .container {
-    overflow: hidden;
     text-align: center;
     margin-top: 2px;
     width: 98vw;
     height: 98vh;
   }
   .floatBall {
-    position: absolute;
+    position: fixed;
     border: 16px solid #16d05f;
     right: 10px;
     border-radius: 50%;

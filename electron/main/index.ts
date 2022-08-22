@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 import { exportFunc } from '../utils/ipc';
@@ -37,6 +37,7 @@ const url = `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_D
 const indexHtml = join(ROOT_PATH.dist, 'index.html');
 
 async function createWindow() {
+  Menu.setApplicationMenu(null);
   win = new BrowserWindow({
     width: 1470,
     height: 788,
