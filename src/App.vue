@@ -1,5 +1,9 @@
-<template> </template>
-<script setup lang="ts"></script>
+<template>
+  <hentai-word-index></hentai-word-index>
+</template>
+<script setup lang="ts">
+  import HentaiWordIndex from '@/hentai-word/view/hentai-word-index.vue';
+</script>
 <style>
   #app {
     box-sizing: border-box;

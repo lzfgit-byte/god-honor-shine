@@ -70,6 +70,7 @@
   const handlerChangePage = (url: string) => {
     loadPage(url);
   };
+
   const isSpinning = ref(true);
   const loadPage = (url: string) => {
     isSpinning.value = true;

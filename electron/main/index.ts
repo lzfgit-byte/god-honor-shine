@@ -2,7 +2,10 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 import { exportFunc } from '../utils/ipc';
+import { getSetting } from '../utils/setting';
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+app.commandLine.appendSwitch('disable-web-security');
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration();
 
@@ -35,6 +38,8 @@ const indexHtml = join(ROOT_PATH.dist, 'index.html');
 
 async function createWindow() {
   win = new BrowserWindow({
+    width: 1470,
+    height: 788,
     title: 'Main window',
     icon: join(ROOT_PATH.public, 'favicon.ico'),
     webPreferences: {
@@ -46,7 +51,10 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
-
+  const proxy = getSetting('proxy');
+  if (getSetting('needProxy') && proxy) {
+    win.webContents.session.setProxy({ proxyRules: proxy });
+  }
   if (app.isPackaged) {
     win.loadFile(indexHtml);
   } else {

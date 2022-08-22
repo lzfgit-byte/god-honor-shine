@@ -2,7 +2,7 @@ const { net } = require('electron');
 import { readFileSync } from './file';
 import { cached, hasCacheSync } from './cache';
 
-export const getHtmlByNet = async (url) => {
+export const getHtmlByNet = async (url: any) => {
   if (hasCacheSync(url)) {
     return readFileSync(url);
   }
@@ -28,7 +28,7 @@ export const getHtmlByNet = async (url) => {
  * 解决为Buffer
  * @param url
  */
-export const getBlob = (url) => {
+export const getBlob = (url: any) => {
   if (hasCacheSync(url)) {
     return readFileSync(url);
   }
