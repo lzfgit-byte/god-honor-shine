@@ -50,3 +50,9 @@ export const loadImg = (url: string) => {
     return axios.get(url, { responseType: 'arraybuffer' });
   });
 };
+export const axiosGet = (url: string, options: any) => {
+  return axios.get(url, { params: options });
+};
+export const axiosPost = (url: string, options: any) => {
+  return axios.post(url, { params: options });
+};

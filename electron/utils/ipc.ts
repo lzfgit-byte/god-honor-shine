@@ -1,6 +1,6 @@
 import * as http from './http';
 import * as hwParse from '../hentai-word/hentai-word-parse';
-
+import * as comicParse from '../18-comic/18-comic-parse';
 import * as solveImg from './solveImg';
 import * as file from './file';
 import * as cache from './cache';
@@ -20,6 +20,7 @@ export const allFunc: any = {
   ...urls,
   ...net,
   ...setting,
+  ...comicParse,
 };
 export const exportFunc: any = (() => {
   const exportFunc: any = {};
@@ -32,13 +33,4 @@ export const exportFunc: any = (() => {
   return exportFunc;
 })();
 
-export default {
-  ...http,
-  ...hwParse,
-  ...solveImg,
-  ...file,
-  ...cache,
-  ...urls,
-  ...net,
-  ...setting,
-};
+export default allFunc;

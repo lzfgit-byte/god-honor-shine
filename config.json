@@ -5,6 +5,8 @@
     "getHtmlAxios",
     "getImg",
     "loadImg",
+    "axiosGet",
+    "axiosPost",
     "getMainHtml",
     "getPageInfo",
     "getPageTags",
@@ -31,6 +33,18 @@
     "getHtmlByNet",
     "getBlob",
     "getSetting",
-    "setSetting"
+    "setSetting",
+    "loadSingle",
+    "getHomeInfo",
+    "loadRes",
+    "getSerialLatest",
+    "getKoreanComic",
+    "getRecommend",
+    "getLatest",
+    "getComicDetailInfo",
+    "getContents",
+    "getReaderInfos",
+    "getSearchInfo",
+    "default"
   ]
 }
