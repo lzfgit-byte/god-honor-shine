@@ -2,7 +2,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 import { exportFunc } from '../utils/ipc';
-import { getSetting } from '../utils/setting';
+import { getSetting, setSetting } from '../utils/setting';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 app.commandLine.appendSwitch('disable-web-security');
@@ -114,7 +114,8 @@ ipcMain.handle('open-win', (event, arg) => {
     // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
   }
 });
-ipcMain.handle('showInfo', () => (console.log('22222'), 'pong'));
+//修正方法
+setSetting('methods', Object.keys(exportFunc));
 Object.keys(exportFunc).forEach((item) => {
   ipcMain.handle(item, exportFunc[item]);
 });

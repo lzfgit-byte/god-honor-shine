@@ -1,4 +1,36 @@
 {
   "proxy": "socks5://127.0.0.1:10808",
-  "needProxy": true
+  "needProxy": true,
+  "methods": [
+    "getHtmlAxios",
+    "getImg",
+    "loadImg",
+    "getMainHtml",
+    "getPageInfo",
+    "getPageTags",
+    "getHtmlInfo",
+    "getVideoInfo",
+    "getImgInfo",
+    "getImgInfoOnly",
+    "getImgBase64",
+    "getImgBase64FromDisk",
+    "loadImgFile",
+    "writeFile",
+    "readFile",
+    "readFileSync",
+    "emptyDir",
+    "deleteFile",
+    "hasFile",
+    "hasCache",
+    "cached",
+    "clearCache",
+    "hasCacheSync",
+    "solveName",
+    "solvePath",
+    "getCacheDir",
+    "getHtmlByNet",
+    "getBlob",
+    "getSetting",
+    "setSetting"
+  ]
 }
