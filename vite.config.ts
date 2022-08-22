@@ -4,12 +4,14 @@ import { type Plugin, type UserConfig, defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import electron from 'vite-plugin-electron';
 import pkg from './package.json';
+import alias from '@rollup/plugin-alias';
 
 rmSync('dist', { recursive: true, force: true }); // v14.14.0
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    alias(),
     vue(),
     electron({
       main: {
@@ -35,7 +37,7 @@ export default defineConfig({
       },
       // Enables use of Node.js API in the Renderer-process
       // https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#electron-renderervite-serve
-      renderer: { resolve: () => ['net'] },
+      renderer: { resolve: () => ['ipc'] },
     }),
   ],
   server: {

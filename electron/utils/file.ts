@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import { solvePath, solveName } from '@/utils/urls';
+import { solvePath, solveName } from './urls';
 export interface fileMethods {
   writeFile: (name: string, data: any) => void;
   readFile: (name: any) => any;

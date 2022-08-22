@@ -1,4 +1,4 @@
-import { solveName, solvePath } from '@/utils/urls';
+import { solveName, solvePath } from './urls';
 import { getImg, loadImg } from './http';
 import base64 from 'base64-img';
 

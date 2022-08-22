@@ -4,16 +4,16 @@ const cmdPath = 'C:/';
 // 子进程名称
 let workerProcess;
 
-const runExec = async (cmdStr) => {
+const runExec = async (cmdStr: any) => {
   return new Promise((resolve, reject) => {
     workerProcess = exec(cmdStr, { cwd: cmdPath });
     // 打印正常的后台可执行程序输出
-    workerProcess.stdout.on('data', function (data) {
+    workerProcess?.stdout?.on('data', function (data) {
       // console.log('stdout: ' + data);
       // resolve(data);
     });
     // 打印错误的后台可执行程序输出
-    workerProcess.stderr.on('data', function (data) {
+    workerProcess?.stderr?.on('data', function (data) {
       console.log('stderr: ' + data);
     });
     // 退出之后的输出 0 有输出 1 是无输出
@@ -25,7 +25,7 @@ const runExec = async (cmdStr) => {
 };
 
 export default {
-  execuFuc: (cmdUrl) => {
+  execuFuc: (cmdUrl: string) => {
     return runExec(cmdUrl);
   },
 };

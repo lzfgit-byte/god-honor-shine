@@ -1,6 +1,6 @@
 const { net } = require('electron');
-import { readFileSync } from '@/utils/file';
-import { cached, hasCacheSync } from '@/utils/cache';
+import { readFileSync } from './file';
+import { cached, hasCacheSync } from './cache';
 
 export const getHtmlByNet = async (url) => {
   if (hasCacheSync(url)) {

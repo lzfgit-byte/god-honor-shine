@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
-import { cached, hasCache } from '@/utils/cache';
-import { getSetting } from '@/utils/setting';
+import { cached, hasCache } from './cache';
+import { getSetting } from './setting';
 
 const proxy = getSetting('proxy');
 axios.defaults.timeout = 20000;

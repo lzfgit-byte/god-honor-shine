@@ -1,5 +1,5 @@
-import { writeFile, readFile, emptyDir, hasFile } from '@/utils/file';
-import { solveName, getCacheDir } from '@/utils/urls';
+import { writeFile, readFile, emptyDir, hasFile } from './file';
+import { solveName, getCacheDir } from './urls';
 export interface cacheMethods {
   hasCache: (name: string) => any;
   cached: (name: any, data: any) => any;
