@@ -5,7 +5,7 @@
       <template #overlay>
         <a-menu @click="handlerBallClick">
           <a-menu-item key="1"> hentaiword</a-menu-item>
-          <!--          <a-menu-item key="2"> sexyPhoto</a-menu-item>-->
+          <a-menu-item key="2"> sexy-photo</a-menu-item>
           <a-menu-item key="3">18comic </a-menu-item>
         </a-menu>
       </template>
@@ -17,7 +17,7 @@
 <script setup lang="ts">
   import HentaiWord from '@/hentai-word/view/hentai-word-index.vue';
   import ComicHome from '@/18-comic/view/comic-index.vue';
-  // import SexPhoto from '@/sexyPhoto/view/sex-photo.vue';
+  import SexPhoto from '@/sexy-photo/view/sex-photo.vue';
   import { Dropdown as ADropdown, Menu as AMenu, MenuItem as AMenuItem } from 'ant-design-vue';
   import { Button as AButton } from 'ant-design-vue';
   import { shallowRef } from 'vue';
@@ -27,7 +27,7 @@
     if (e.key === '1') {
       currentCompent.value = HentaiWord;
     } else if (e.key === '2') {
-      // currentCompent.value = SexPhoto;
+      currentCompent.value = SexPhoto;
     } else if (e.key === '3') {
       currentCompent.value = ComicHome;
     }
