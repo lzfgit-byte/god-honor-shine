@@ -48,7 +48,10 @@
       const img = new Image();
       img.src = await getImgBase64FromDisk(props.src);
       setTimeout(() => {
-        const ctx = canvas.value.getContext('2d');
+        const ctx = canvas?.value?.getContext('2d');
+        if (!ctx) {
+          return;
+        }
         const w = (canvas.value.width = img.naturalWidth);
         const h = (canvas.value.height = img.naturalHeight);
         const rem = h % num;

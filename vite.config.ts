@@ -53,17 +53,17 @@ export default defineConfig({
 });
 
 function withDebug(config: UserConfig): UserConfig {
-  if (process.env.VSCODE_DEBUG) {
-    if (!config.build) config.build = {};
-    config.build.sourcemap = true;
-    config.plugins = (config.plugins || []).concat({
-      name: 'electron-vite-debug',
-      configResolved(config) {
-        const index = config.plugins.findIndex((p) => p.name === 'electron-main-watcher');
-        // At present, Vite can only modify plugins in configResolved hook.
-        (config.plugins as Plugin[]).splice(index, 1);
-      },
-    });
-  }
+  // if (process.env.VSCODE_DEBUG) {
+  //   if (!config.build) config.build = {};
+  //   config.build.sourcemap = true;
+  //   config.plugins = (config.plugins || []).concat({
+  //     name: 'electron-vite-debug',
+  //     configResolved(config) {
+  //       const index = config.plugins.findIndex((p) => p.name === 'electron-main-watcher');
+  //       // At present, Vite can only modify plugins in configResolved hook.
+  //       (config.plugins as Plugin[]).splice(index, 1);
+  //     },
+  //   });
+  // }
   return config;
 }

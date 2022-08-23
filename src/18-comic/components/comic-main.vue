@@ -104,8 +104,8 @@
   import { ComicTagsInfo } from '@/18-comic/type/18comicType';
 
   const { getHtmlByNet } = httpFunc(inject);
-  const { getHomeInfo, removeCacheAll, removeCache } = comicFunc(inject);
-  const { getSetting, setSetting } = getSettingFunc(inject);
+  const { getHomeInfo, removeCacheAll, removeCache } = comicFunc();
+  const { getSetting, setSetting } = getSettingFunc();
   const emits = defineEmits(['toContent', 'searchComic']);
   //连载更新
   const serialLatest = ref();

@@ -15,12 +15,12 @@
     <spin :spinning="spinning">
       <div class="container">
         <comic-img
-          v-for="item in imgs"
+          v-for="item_ in imgs"
           :ref="setImgRefs"
-          :key="item"
+          :key="item_"
           :aid="info_?.aid"
           :scramble-id="info_?.scramble_id"
-          :src="item.src"
+          :src="item_.src"
         />
       </div>
     </spin>

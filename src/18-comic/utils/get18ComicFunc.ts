@@ -34,7 +34,7 @@ export const httpFunc = (inject?: any) => {
 };
 export const getSettingFunc = (inject?: any) => {
   const getSetting: (key: string) => any = exportFunc['getSetting'];
-  const setSetting: (key: string, value: any) => void = exportFunc['setSetting'];
+  const setSetting: (key: string, value: any) => any = exportFunc['setSetting'];
   return {
     getSetting,
     setSetting,
