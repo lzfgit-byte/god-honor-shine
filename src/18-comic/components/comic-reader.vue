@@ -110,8 +110,9 @@
       return item.detail?.title !== value.detail?.title;
     });
     setings.push(value);
-    setSetting(COMIC_HISTORY_KEY, JSON.stringify({ array: setings }));
+    // setSetting(COMIC_HISTORY_KEY, JSON.stringify({ array: setings }));
   };
+
   if (props.item && props.item.jumpUrl) {
     contentVisable.value = false;
     doRead(props.item);

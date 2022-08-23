@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import config from '../../config.json';
+import config from '../../methods.json';
 const isBlank = (str: string) => {
   return str === undefined || (str.trim && str.trim() === '');
 };

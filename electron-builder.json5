@@ -34,7 +34,7 @@
     "deleteAppDataOnUninstall": false
   },
   "extraResources": {
-    "from": "./config.json",
+    "from": ["./config.json","./methods.json"],
     "to": "../"
   }
 }

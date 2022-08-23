@@ -2,7 +2,7 @@ import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 import { exportFunc } from '../utils/ipc';
-import { getSetting, setSetting } from '../utils/setting';
+import { getSetting, setStaticSetting } from '../utils/setting';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 app.commandLine.appendSwitch('disable-web-security');
@@ -116,7 +116,7 @@ ipcMain.handle('open-win', (event, arg) => {
   }
 });
 //修正方法
-setSetting('methods', Object.keys(exportFunc));
+setStaticSetting('methods', Object.keys(exportFunc));
 Object.keys(exportFunc).forEach((item) => {
   ipcMain.handle(item, exportFunc[item]);
 });
