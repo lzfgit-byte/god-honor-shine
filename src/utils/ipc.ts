@@ -1,6 +1,5 @@
 import { ipcRenderer } from 'electron';
 import config from '../../config.json';
-
 const isBlank = (str: string) => {
   return str === undefined || (str.trim && str.trim() === '');
 };

@@ -2,7 +2,7 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  "appId": "YourAppID",
+  "appId": "com.ghs.ilzf",
   "asar": true,
   "directories": {
     "output": "release/${version}"
@@ -32,5 +32,9 @@
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
     "deleteAppDataOnUninstall": false
+  },
+  "extraResources": {
+    "from": "./config.json",
+    "to": "../"
   }
 }
