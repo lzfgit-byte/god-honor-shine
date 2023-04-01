@@ -8,19 +8,19 @@ export interface fileMethods {
   deleteFile: (name: string) => any;
   hasFile: (name: string) => any;
 }
-export const writeFile = (name, data) => {
+export const writeFile = (name: string, data: any) => {
   fs.writeFileSync(solvePath(name), data, { encoding: 'utf-8' });
 };
-export const readFile = async (name) => {
+export const readFile = async (name: string) => {
   return fs.readFileSync(solvePath(name), { encoding: 'utf-8' });
 };
-export const readFileSync = (name) => {
+export const readFileSync = (name: string) => {
   return fs.readFileSync(solvePath(solveName(name)), { encoding: 'utf-8' });
 };
-export const emptyDir = (dir) => {
+export const emptyDir = (dir: string) => {
   return fs.emptyDirSync(dir);
 };
-export const deleteFile = async (name) => {
+export const deleteFile = async (name: string) => {
   return fs.unlinkSync(solvePath(solveName(name)));
 };
 
@@ -28,6 +28,6 @@ export const deleteFile = async (name) => {
  *是否存在文件
  * @param name
  */
-export const hasFile = (name) => {
+export const hasFile = (name: string) => {
   return fs.pathExistsSync(solvePath(solveName(name)));
 };

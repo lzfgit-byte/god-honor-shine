@@ -21,16 +21,15 @@
     placement="right"
   >
     <div>
-      <a-row>
-        <a-tag color="pink">{{ cacheDir }}</a-tag></a-row
+      <val-row>
+        <a-tag color="pink">{{ cacheDir }}</a-tag></val-row
       >
       <a-row>
         <a-col :span="24">
           <a-space>
             <a-input-search
               v-model:value="drawer.searchValue"
-              placeholder="input search text"
-              style="width: 200px"
+              placeholder="输入关键字"
               @search="drawer.search"
             />
             <a-button @click="reload">刷新</a-button>
@@ -61,7 +60,7 @@
   import HentaiWordCard from '@/hentai-word/components/hentai-word-card.vue';
   import PaginationHentaiWord from '@/hentai-word/components/pagination-hentai-word.vue';
   import { exportFunc } from '@/utils/ipc';
-  const { getHtmlAxios, getHtmlInfo, removeCache, removeCacheAll, getCacheDir } = exportFunc;
+  const { getHtmlAxios, getHtmlInfo, clearCache, getCacheDir, removeCache } = exportFunc;
   const TEXT_URL = 'https://thehentaiworld.com/?new';
   let currentUrl = '';
   const infos = ref<[x: mainHtml]>();
@@ -108,7 +107,7 @@
     });
   };
   const reset = () => {
-    removeCacheAll().then(() => {
+    clearCache().then(() => {
       loadPage(currentUrl);
     });
   };

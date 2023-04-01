@@ -1,10 +1,10 @@
 import replaceAll from 'string.prototype.replaceall';
-import path from "path";
+import path from 'path';
 import fs from 'fs-extra';
-export const solveName = (name) => {
+export const solveName = (name: string) => {
   return replaceAll(name, /:+\/+|\/|\.+|\?+/g, '');
 };
-export const solvePath = (path_) => {
+export const solvePath = (path_: string) => {
   return path.join(getCacheDir(), path_);
 };
 export const getCacheDir = () => {
@@ -12,4 +12,3 @@ export const getCacheDir = () => {
   fs.ensureDirSync(ghsPath);
   return ghsPath;
 };
-

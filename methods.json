@@ -25,6 +25,7 @@
     "cached",
     "clearCache",
     "hasCacheSync",
+    "removeCache",
     "solveName",
     "solvePath",
     "getCacheDir",
