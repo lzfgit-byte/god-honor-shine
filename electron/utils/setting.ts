@@ -9,6 +9,12 @@ export const getSetting = (key: string) => {
   const set = JSON.parse(res);
   return set[key];
 };
+export const getAllSetting = () => {
+  ensureSetFile();
+  const res = String(fs.readFileSync(setFile));
+  const set = JSON.parse(res);
+  return set;
+};
 export const setSetting = (key: string, value: string[]) => {
   ensureSetFile();
   const res = String(fs.readFileSync(setFile));

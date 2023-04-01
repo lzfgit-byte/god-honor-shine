@@ -7,6 +7,7 @@
           <a-menu-item key="1"> hentaiword</a-menu-item>
           <a-menu-item key="2"> sexy-photo</a-menu-item>
           <a-menu-item key="3">18comic </a-menu-item>
+          <a-menu-item key="4">setting </a-menu-item>
         </a-menu>
       </template>
       <a-button type="primary"> 切换 </a-button>
@@ -18,6 +19,7 @@
   import HentaiWord from '@/hentai-word/view/hentai-word-index.vue';
   import ComicHome from '@/18-comic/view/comic-index.vue';
   import SexPhoto from '@/sexy-photo/view/sex-photo.vue';
+  import SettingTemplate from '@/setting/setting-template.vue';
   import { Dropdown as ADropdown, Menu as AMenu, MenuItem as AMenuItem } from 'ant-design-vue';
   import { Button as AButton } from 'ant-design-vue';
   import { shallowRef } from 'vue';
@@ -30,8 +32,11 @@
       currentCompent.value = SexPhoto;
     } else if (e.key === '3') {
       currentCompent.value = ComicHome;
+    } else if (e.key === '4') {
+      currentCompent.value = SettingTemplate;
     }
   };
+
   const getPopupContainer = () => document.body;
 </script>
 <style lang="less" scoped>

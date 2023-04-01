@@ -32,6 +32,7 @@
     "getHtmlByNet",
     "getBlob",
     "getSetting",
+    "getAllSetting",
     "setSetting",
     "ensureSetFile",
     "getStaticSetting",
