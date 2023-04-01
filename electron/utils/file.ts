@@ -21,6 +21,7 @@ export const emptyDir = (dir: string) => {
   return fs.emptyDirSync(dir);
 };
 export const deleteFile = async (name: string) => {
+  fs.ensureFileSync(solvePath(solveName(name)));
   return fs.unlinkSync(solvePath(solveName(name)));
 };
 
