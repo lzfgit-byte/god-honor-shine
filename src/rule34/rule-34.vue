@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="pagination">
-      <rule34-pagination :page-infos="pages"></rule34-pagination>
+      <rule34-pagination :page-infos="pages" @page-change="handlerPageChange"></rule34-pagination>
     </div>
     <div class="pageInfos">
       <rule34-card v-for="item in videos" :key="item" :video-d="item"></rule34-card>
@@ -15,17 +15,26 @@
   import { mainPage, pageInfo, videoInfo } from '@/rule34/type/rule34Type';
   import Rule34Card from '@/rule34/component/rule-34-card.vue';
   import Rule34Pagination from '@/rule34/component/rule-34-pagination.vue';
-  const url = 'https://rule34video.com/';
+  const url = 'https://rule34video.com/latest-updates/1/';
   const videos = ref<videoInfo[]>([]);
   const pages = ref<pageInfo[]>([]);
-  getHtmlByNet(url)
-    .then((res) => {
-      return getRule34MainPage(res);
-    })
-    .then((res: mainPage) => {
-      videos.value = res.videos as any;
-      pages.value = res.pages as any;
-    });
+
+  const load = (url: string) => {
+    getHtmlByNet(url)
+      .then((res) => {
+        return getRule34MainPage(res);
+      })
+      .then((res: mainPage) => {
+        console.log(res);
+        videos.value = res.videos as any;
+        pages.value = res.pages as any;
+      });
+  };
+  load(url);
+  const handlerPageChange = (url: string) => {
+    console.log(url);
+    load(url);
+  };
 </script>
 
 <style scoped lang="less">

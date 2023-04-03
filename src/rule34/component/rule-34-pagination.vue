@@ -18,8 +18,9 @@
   const props = defineProps({
     pageInfos: { type: Array as PropType<pageInfo[]>, default: () => [] },
   });
+  const emits = defineEmits(['pageChange']);
   const handlerClick = (item: pageInfo) => {
-    console.log(item);
+    emits('pageChange', item.jumpUrl);
   };
 </script>
 
@@ -49,6 +50,12 @@
       transition: background 0.3s;
       padding: 0 5px;
       cursor: pointer;
+    }
+    .active {
+      background-color: #75899a;
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
     }
   }
 </style>

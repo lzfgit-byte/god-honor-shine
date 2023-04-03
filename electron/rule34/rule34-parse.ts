@@ -21,7 +21,7 @@ interface mainPage {
 }
 const getVideos = ($: any): videoInfo[] => {
   const res: videoInfo[] = [];
-  $('#custom_list_videos_most_recent_videos_items .item').each((i: any, el: any) => {
+  $('#custom_list_videos_latest_videos_list .thumbs .item').each((i: any, el: any) => {
     const cEl = $(el);
     const title = cEl.find('.thumb_title').text();
     const jumpUrl = cEl.find('.js-open-popup').attr('href');
@@ -40,9 +40,12 @@ const getPages = ($: any): pageInfo[] => {
       return;
     }
     const current = cEl.hasClass('active');
-    const text = cEl.find('a').text().trim() || (cEl.hasClass('next') && 'next');
-    const jumpUrl = cEl.find('a').attr('href');
-    res.push({ current, text, jumpUrl: BASE_URL + jumpUrl });
+    const text = cEl.find('a').text().trim() || (cEl.hasClass('next') ? 'next' : 'prev');
+    let jumpUrl = cEl.find('a').attr('href');
+    if (!jumpUrl.startsWith('http')) {
+      jumpUrl = BASE_URL + jumpUrl;
+    }
+    res.push({ current, text, jumpUrl: jumpUrl });
   });
   return res;
 };
