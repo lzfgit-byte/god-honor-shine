@@ -49,6 +49,7 @@
     "getContents",
     "getReaderInfos",
     "getSearchInfo",
-    "default"
+    "default",
+    "getRule34MainPage"
   ]
 }
