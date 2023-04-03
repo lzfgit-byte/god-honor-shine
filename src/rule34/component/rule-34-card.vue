@@ -20,7 +20,7 @@
   .container {
     display: inline-block;
     position: relative;
-    background: #212b31;
+
     width: 25%;
     padding: 0 17px 15px;
     box-sizing: border-box;
