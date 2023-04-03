@@ -1,13 +1,13 @@
-interface coverImgInfo {
+export interface coverImgInfo {
   src?: string;
 }
-interface videoInfo extends coverImgInfo {
+export interface videoInfo extends coverImgInfo {
   title?: string;
   jumpUrl?: string;
   time?: string;
   quality?: string;
 }
-interface pageInfo {
+export interface pageInfo {
   current?: boolean;
   text?: string;
   jumpUrl?: string;
