@@ -40,7 +40,7 @@
         background-color: rgba(41, 47, 52, 0.8);
         padding: 4px;
         right: 10%;
-        top: 10%;
+        top: 3%;
       }
       .time {
         position: absolute;
