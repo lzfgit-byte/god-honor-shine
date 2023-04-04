@@ -54,3 +54,14 @@ export const getRule34MainPage = (html: string): mainPage => {
 
   return { videos: getVideos($), pages: getPages($) };
 };
+export const getRule34Video = (html: string) => {
+  const $: CheerioAPI = cheerio.load(html);
+  const row = $('.video_tools > .row')[0];
+  const tags = $(row).find('.tag_item');
+  if (tags.length > 0) {
+    const href = $(tags[0]).attr('href') || '';
+    // href = href.substring(0, href.indexOf('download') - 1);
+    return href;
+  }
+  return '';
+};

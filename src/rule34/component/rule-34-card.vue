@@ -1,19 +1,59 @@
 <template>
   <div class="container">
-    <div class="imgContainer">
+    <div class="imgContainer" @click="handlerClick">
       <div class="quality">{{ videoD.quality }}</div>
       <div class="time">{{ videoD.time }}</div>
       <img width="320" height="180" :src="videoD?.src" alt="" />
     </div>
-    <div class="titleContainer">{{ videoD.title }}</div>
+    <div class="titleContainer" :title="videoD?.title">{{ videoD.title }}</div>
   </div>
+  <a-modal
+    :visible="videoSet.visible"
+    width="1050px"
+    style="top: 5px"
+    :title="videoSet.videoTitle"
+    @cancel="videoSet.visible = false"
+    @ok="videoSet.visible = false"
+  >
+    <video-html5
+      v-if="videoSet.visible"
+      :title="videoSet.videoTitle"
+      :src="videoSet.videoSrc"
+    ></video-html5>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
-  import { PropType, ref } from 'vue';
+  import { PropType, reactive, ref } from 'vue';
+  import { Modal as AModal } from 'ant-design-vue';
   import { videoInfo } from '@/rule34/type/rule34Type';
+  import { getHtmlByNet, getRule34Video } from '@/rule34/http/http';
+  import VideoHtml5 from '@/components/video-html5.vue';
 
   const props = defineProps({ videoD: Object as PropType<videoInfo> });
+  const videoSet = reactive({
+    visible: false,
+    videoTitle: '',
+    videoSrc: '',
+    playVideo: (src: string, title = '') => {
+      videoSet.videoSrc = src;
+      videoSet.videoTitle = title;
+      videoSet.visible = true;
+    },
+  });
+  const handlerClick = () => {
+    console.log(props?.videoD?.jumpUrl);
+    if (props?.videoD?.jumpUrl) {
+      getHtmlByNet(props?.videoD?.jumpUrl).then((res) => {
+        getRule34Video(res).then((src) => {
+          // videoSet.playVideo(
+          //   'https://r34nl04-420.rule34video.com/remote_control.php?time=1680610176&cv=cb1afd33c8b0b6d810320cf9d3b815a3&lr=0&cv2=06a65e21dd6fe9e19d52fa2072880255&file=%2Fvideos%2F3108000%2F3108898%2F3108898_1080p.mp4&cv3=7b148ffed7e5ddccd7d2456825ccfe56&cv4=18de9232c5eecec6c69bf04d116be7ef',
+          //   props?.videoD?.title
+          // );
+        });
+      });
+    }
+  };
 </script>
 
 <style scoped lang="less">

@@ -50,6 +50,7 @@
     "getReaderInfos",
     "getSearchInfo",
     "default",
-    "getRule34MainPage"
+    "getRule34MainPage",
+    "getRule34Video"
   ]
 }
