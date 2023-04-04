@@ -3,6 +3,7 @@ import { release } from 'os';
 import { join } from 'path';
 import { exportFunc } from '../utils/ipc';
 import { getSetting, setStaticSetting } from '../utils/setting';
+import servers from '../utils/servers';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 app.commandLine.appendSwitch('disable-web-security');
@@ -80,6 +81,7 @@ app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   win = null;
+  servers.close();
   if (process.platform !== 'darwin') app.quit();
 });
 

@@ -27,7 +27,7 @@
   import { PropType, reactive, ref } from 'vue';
   import { Modal as AModal } from 'ant-design-vue';
   import { videoInfo } from '@/rule34/type/rule34Type';
-  import { getHtmlByNet, getRule34Video } from '@/rule34/http/http';
+  import { getHtmlByNet, getRule34Video, getVideo } from '@/rule34/http/http';
   import VideoHtml5 from '@/components/video-html5.vue';
 
   const props = defineProps({ videoD: Object as PropType<videoInfo> });
@@ -46,10 +46,9 @@
     if (props?.videoD?.jumpUrl) {
       getHtmlByNet(props?.videoD?.jumpUrl).then((res) => {
         getRule34Video(res).then((src) => {
-          // videoSet.playVideo(
-          //   'https://r34nl04-420.rule34video.com/remote_control.php?time=1680610176&cv=cb1afd33c8b0b6d810320cf9d3b815a3&lr=0&cv2=06a65e21dd6fe9e19d52fa2072880255&file=%2Fvideos%2F3108000%2F3108898%2F3108898_1080p.mp4&cv3=7b148ffed7e5ddccd7d2456825ccfe56&cv4=18de9232c5eecec6c69bf04d116be7ef',
-          //   props?.videoD?.title
-          // );
+          src =
+            'https://r34nl04-420.rule34video.com/remote_control.php?time=1680613429&cv=556828a1ba94e4a4ef58bf12e8f3fd02&lr=301875&cv2=a92d53d118d5be9b74cdd01261d64d61&file=%2Fvideos%2F3108000%2F3108898%2F3108898_360.mp4&cv3=7b148ffed7e5ddccd7d2456825ccfe56&cv4=c7287f0fb39eea5d1e2f880c37b6afca';
+          videoSet.playVideo('http://127.0.0.1:3333/getByte?url=' + src, props?.videoD?.title);
         });
       });
     }
