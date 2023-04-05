@@ -18,7 +18,6 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
   if (reqUrl) {
     if (reqUrl.startsWith('/getByte')) {
       const url = reqUrl.replace('/getByte?url=', '');
-      console.log('rein');
       if (hasCacheSync(url)) {
         const path = getCachePath(url);
         const stat = fs.statSync(path);
@@ -69,7 +68,7 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
       request.end();
       res.on('close', () => {
         request.abort();
-        console.log('close');
+        sendMessage('close');
       });
     }
   } else {

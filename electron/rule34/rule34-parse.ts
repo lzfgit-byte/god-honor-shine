@@ -30,6 +30,15 @@ const getVideos = ($: any): videoInfo[] => {
     const quality = cEl.find('.js-open-popup .quality').text();
     res.push({ title, jumpUrl, src, time, quality });
   });
+  $('#custom_list_videos_videos_list_search .thumbs .item').each((i: any, el: any) => {
+    const cEl = $(el);
+    const title = cEl.find('.thumb_title').text();
+    const jumpUrl = cEl.find('.js-open-popup').attr('href');
+    const src = cEl.find('.img .thumb').attr('data-original');
+    const time = cEl.find('.js-open-popup .time').text();
+    const quality = cEl.find('.js-open-popup .quality').text();
+    res.push({ title, jumpUrl, src, time, quality });
+  });
   return res;
 };
 const getPages = ($: any): pageInfo[] => {

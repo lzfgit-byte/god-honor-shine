@@ -42,7 +42,6 @@
     },
   });
   const handlerClick = () => {
-    console.log(props?.videoD?.jumpUrl);
     if (props?.videoD?.jumpUrl) {
       getHtmlByNet(props?.videoD?.jumpUrl).then((res) => {
         getRule34Video(res).then((src) => {
@@ -90,8 +89,8 @@
         border-radius: 5px;
         background-color: rgba(41, 47, 52, 0.8);
         padding: 4px;
-        bottom: 38%;
-        left: 10%;
+        right: 23%;
+        top: 3%;
       }
       img {
         display: block;
