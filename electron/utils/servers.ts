@@ -1,6 +1,9 @@
 import * as http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
-import { cached } from './cache';
+import { cached, getCachePath } from './cache';
+import fs from 'fs-extra';
+import { Readable } from 'stream';
+
 const { net } = require('electron');
 
 // req 路由监听空 res 上下文函数
@@ -14,24 +17,27 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
   if (reqUrl) {
     if (reqUrl.startsWith('/getByte')) {
       const url = reqUrl.replace('/getByte?url=', '');
+      const reqHeader = req.headers;
       const request = net.request(url);
       request.on('response', (response) => {
         const header = response.headers;
-        res.writeHead(200, header);
+        const length = +header['content-length'];
         let blob = Buffer.alloc(0);
         response.on('data', (chunk) => {
           blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-          res.write(chunk);
-          console.log('recive....');
+          console.log('recive.... ' + +(blob.length / +length).toFixed(4) * 100 + '%');
+          res.write(chunk, (e) => {
+            console.error('a' + e);
+          });
         });
         response.on('end', () => {
           cached(url, blob);
-          console.log('jieshu');
           res.end();
+          console.log('end....');
         });
         response.on('error', () => {
-          res.end();
           console.log('出错');
+          res.end();
         });
       });
       request.end();

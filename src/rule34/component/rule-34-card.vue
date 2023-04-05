@@ -46,8 +46,6 @@
     if (props?.videoD?.jumpUrl) {
       getHtmlByNet(props?.videoD?.jumpUrl).then((res) => {
         getRule34Video(res).then((src) => {
-          src =
-            'https://r34nl04-420.rule34video.com/remote_control.php?time=1680613429&cv=556828a1ba94e4a4ef58bf12e8f3fd02&lr=301875&cv2=a92d53d118d5be9b74cdd01261d64d61&file=%2Fvideos%2F3108000%2F3108898%2F3108898_360.mp4&cv3=7b148ffed7e5ddccd7d2456825ccfe56&cv4=c7287f0fb39eea5d1e2f880c37b6afca';
           videoSet.playVideo('http://127.0.0.1:3333/getByte?url=' + src, props?.videoD?.title);
         });
       });

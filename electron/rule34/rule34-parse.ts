@@ -59,8 +59,8 @@ export const getRule34Video = (html: string) => {
   const row = $('.video_tools > .row')[0];
   const tags = $(row).find('.tag_item');
   if (tags.length > 0) {
-    const href = $(tags[0]).attr('href') || '';
-    // href = href.substring(0, href.indexOf('download') - 1);
+    let href = $(tags[0]).attr('href') || '';
+    href = href.substring(0, href.indexOf('download') - 1);
     return href;
   }
   return '';

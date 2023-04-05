@@ -23,6 +23,7 @@
     "hasFile",
     "hasCache",
     "cached",
+    "getCachePath",
     "clearCache",
     "hasCacheSync",
     "removeCache",

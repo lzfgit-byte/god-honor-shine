@@ -1,5 +1,5 @@
 import { writeFile, readFile, emptyDir, hasFile, deleteFile } from './file';
-import { solveName, getCacheDir } from './urls';
+import { solveName, getCacheDir, solvePath } from './urls';
 export interface cacheMethods {
   hasCache: (name: string) => any;
   cached: (name: any, data: any) => any;
@@ -12,6 +12,7 @@ export const hasCache = async (name: any) => {
 export const cached = (name: any, data: any) => {
   writeFile(solveName(decodeURI(name)), data);
 };
+export const getCachePath = (name: any) => solvePath(solveName(decodeURI(name)));
 export const clearCache = () => {
   emptyDir(getCacheDir());
 };
