@@ -7,7 +7,8 @@
           <a-menu-item key="1"> hentaiword</a-menu-item>
           <a-menu-item key="2"> sexy-photo</a-menu-item>
           <a-menu-item key="3">18comic </a-menu-item>
-          <a-menu-item key="4">setting </a-menu-item>
+          <a-menu-item key="4">rule34 </a-menu-item>
+          <a-menu-item key="5">setting </a-menu-item>
         </a-menu>
       </template>
       <a-button type="primary"> 切换 </a-button>
@@ -23,6 +24,7 @@
   import { Dropdown as ADropdown, Menu as AMenu, MenuItem as AMenuItem } from 'ant-design-vue';
   import { Button as AButton } from 'ant-design-vue';
   import { shallowRef } from 'vue';
+  import Rule34 from '@/rule34/rule-34.vue';
 
   const currentCompent = shallowRef(HentaiWord);
   const handlerBallClick = (e: any) => {
@@ -33,6 +35,8 @@
     } else if (e.key === '3') {
       currentCompent.value = ComicHome;
     } else if (e.key === '4') {
+      currentCompent.value = Rule34;
+    } else if (e.key === '5') {
       currentCompent.value = SettingTemplate;
     }
   };
