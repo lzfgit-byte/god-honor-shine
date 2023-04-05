@@ -23,8 +23,10 @@
   import SettingTemplate from '@/setting/setting-template.vue';
   import { Dropdown as ADropdown, Menu as AMenu, MenuItem as AMenuItem } from 'ant-design-vue';
   import { Button as AButton } from 'ant-design-vue';
-  import { shallowRef } from 'vue';
+  import { computed, ref, shallowRef } from 'vue';
   import Rule34 from '@/rule34/rule-34.vue';
+  import bus from '@/utils/bus';
+  import { useTitle } from '@vueuse/core';
 
   const currentCompent = shallowRef(HentaiWord);
   const handlerBallClick = (e: any) => {
@@ -42,6 +44,16 @@
   };
 
   const getPopupContainer = () => document.body;
+  //标题信息处理
+  const messages = ref<any>('');
+  const title = computed(() => {
+    return !messages.value ? 'ghs' : `ghs [${messages.value}] `;
+  });
+
+  useTitle(title);
+  bus.on('msg-main', (msg) => {
+    messages.value = msg;
+  });
 </script>
 <style lang="less" scoped>
   .floatBall {

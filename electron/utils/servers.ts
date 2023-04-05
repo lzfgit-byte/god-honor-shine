@@ -56,15 +56,13 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         let blob = Buffer.alloc(0);
         response.on('data', (chunk) => {
           blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-          console.log('recive.... ' + +(blob.length / +length).toFixed(4) * 100 + '%');
           sendMessage('recive.... ' + +(blob.length / +length).toFixed(4) * 100 + '%');
           res.write(chunk, (e) => {
-            console.error('a' + e);
+            // res.end();
           });
         });
         response.on('end', () => {
           cached(url, blob);
-          cached(url + '-head', JSON.stringify(header));
           res.end();
           console.log('end....');
         });

@@ -1,15 +1,5 @@
 import { ipcRenderer } from 'electron';
-
+import bus from '@/utils/bus';
 ipcRenderer.on('main-process-message', (_event, ...args) => {
-  console.log('[Receive Main-process message]:', ...args);
+  bus.emit('msg-main', args);
 });
-// ipcRenderer
-//   .invoke('getHtmlAxios', 'https://thehentaiworld.com/?new')
-//   .then((res) => {
-//     debugger;
-//     console.log(res);
-//   })
-//   .catch((res) => {
-//     debugger;
-//     console.log(res);
-//   });
