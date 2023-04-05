@@ -1,6 +1,6 @@
 import * as http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
-import { cached, getCachePath } from './cache';
+import { cached, getCachePath, hasCache, hasCacheSync } from './cache';
 import fs from 'fs-extra';
 import { Readable } from 'stream';
 
@@ -17,7 +17,33 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
   if (reqUrl) {
     if (reqUrl.startsWith('/getByte')) {
       const url = reqUrl.replace('/getByte?url=', '');
-      const reqHeader = req.headers;
+      if (true) {
+        const path = 'D:\\project\\rebuildGhs\\ghs-cache\\9.mp4';
+        const stat = fs.statSync(path);
+        const fileSize = stat.size;
+        const range = req.headers.range;
+        if (range) {
+          //有range头才使用206状态码
+          const parts = range.replace(/bytes=/, '').split('-');
+          const start = parseInt(parts[0], 10);
+          let end = parts[1] ? parseInt(parts[1], 10) : start + 999999;
+          // end 在最后取值为 fileSize - 1
+          end = end > fileSize - 1 ? fileSize - 1 : end;
+
+          const chunksize = end - start + 1;
+          const file = fs.createReadStream(path, { start, end });
+          const head = {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Accept-Ranges': 'bytes',
+            // 'Content-Length': chunksize,
+            'Content-Type': 'video/*',
+          };
+          res.writeHead(206, head);
+          file.pipe(res);
+          return;
+        }
+      }
+
       const request = net.request(url);
       request.on('response', (response) => {
         const header = response.headers;
@@ -32,6 +58,7 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         });
         response.on('end', () => {
           cached(url, blob);
+          cached(url + '-head', JSON.stringify(header));
           res.end();
           console.log('end....');
         });
