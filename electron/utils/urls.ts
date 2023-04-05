@@ -1,8 +1,9 @@
-import replaceAll from 'string.prototype.replaceall';
 import path from 'path';
 import fs from 'fs-extra';
+import { Md5 } from 'ts-md5';
+
 export const solveName = (name: string) => {
-  return replaceAll(name, /:+\/+|\/|\.+|\?+/g, '');
+  return Md5.hashStr(name);
 };
 export const solvePath = (path_: string) => {
   return path.join(getCacheDir(), path_);
