@@ -2,7 +2,12 @@ import * as http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
 import { cached, getCachePath, hasCache, hasCacheSync } from './cache';
 import fs from 'fs-extra';
-import { Readable } from 'stream';
+import { webContents } from 'electron';
+
+const sendMessage = (msg: string) => {
+  // ipcMain
+  webContents.getFocusedWebContents().send('main-process-message', msg);
+};
 
 const { net } = require('electron');
 
@@ -17,8 +22,8 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
   if (reqUrl) {
     if (reqUrl.startsWith('/getByte')) {
       const url = reqUrl.replace('/getByte?url=', '');
-      if (true) {
-        const path = 'D:\\project\\rebuildGhs\\ghs-cache\\9.mp4';
+      if (hasCacheSync(url)) {
+        const path = getCachePath(url);
         const stat = fs.statSync(path);
         const fileSize = stat.size;
         const range = req.headers.range;
@@ -52,6 +57,7 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         response.on('data', (chunk) => {
           blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
           console.log('recive.... ' + +(blob.length / +length).toFixed(4) * 100 + '%');
+          sendMessage('recive.... ' + +(blob.length / +length).toFixed(4) * 100 + '%');
           res.write(chunk, (e) => {
             console.error('a' + e);
           });
