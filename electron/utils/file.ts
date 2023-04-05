@@ -32,3 +32,13 @@ export const deleteFile = async (name: string) => {
 export const hasFile = (name: string) => {
   return fs.pathExistsSync(solvePath(solveName(name)));
 };
+export const formatSize = (size: any, pointLength = 2, units: any = null) => {
+  let unit;
+  units = units || ['B', 'K', 'M', 'G'];
+  unit = units.shift();
+  while (unit && size > 1024) {
+    size = size / 1024;
+    unit = units.shift();
+  }
+  return (unit === 'B' ? size : size.toFixed(pointLength === undefined ? 2 : pointLength)) + unit;
+};

@@ -2,12 +2,8 @@ import * as http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
 import { cached, getCachePath, hasCache, hasCacheSync } from './cache';
 import fs from 'fs-extra';
-import { webContents } from 'electron';
-
-const sendMessage = (msg: string) => {
-  // ipcMain
-  webContents.getFocusedWebContents().send('main-process-message', msg);
-};
+import { sendMessage } from './message';
+import { formatSize } from './file';
 
 const { net } = require('electron');
 
@@ -22,6 +18,7 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
   if (reqUrl) {
     if (reqUrl.startsWith('/getByte')) {
       const url = reqUrl.replace('/getByte?url=', '');
+      console.log('rein');
       if (hasCacheSync(url)) {
         const path = getCachePath(url);
         const stat = fs.statSync(path);
@@ -56,15 +53,13 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         let blob = Buffer.alloc(0);
         response.on('data', (chunk) => {
           blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-          sendMessage('recive.... ' + +(blob.length / +length).toFixed(4) * 100 + '%');
-          res.write(chunk, (e) => {
-            // res.end();
-          });
+          sendMessage(`received[${formatSize(blob.length)}/${formatSize(length)}]`);
+          res.write(chunk);
         });
         response.on('end', () => {
           cached(url, blob);
           res.end();
-          console.log('end....');
+          sendMessage('end');
         });
         response.on('error', () => {
           console.log('出错');
@@ -72,6 +67,10 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         });
       });
       request.end();
+      res.on('close', () => {
+        request.abort();
+        console.log('close');
+      });
     }
   } else {
     res.end();

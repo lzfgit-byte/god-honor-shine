@@ -6,3 +6,5 @@ export const getRule34MainPage = (html: string): Promise<any> =>
   exportFunc['getRule34MainPage'](html);
 export const getRule34Video = (html: string): Promise<any> => exportFunc['getRule34Video'](html);
 export const getVideo = (url: string): Promise<any> => exportFunc['getVideo'](url);
+
+export const clearCache = (): Promise<any> => exportFunc['clearCache']();

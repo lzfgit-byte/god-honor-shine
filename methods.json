@@ -21,6 +21,7 @@
     "emptyDir",
     "deleteFile",
     "hasFile",
+    "formatSize",
     "hasCache",
     "cached",
     "getCachePath",
