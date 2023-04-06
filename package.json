@@ -1,6 +1,6 @@
 {
   "name": "ghs",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "description": "ghs",
   "main": "dist/electron/main/index.js",
   "author": "lzf",
