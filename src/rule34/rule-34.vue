@@ -61,7 +61,12 @@
       });
   };
   load(url);
-  const handlerPageChange = (url: string) => {
+  const handlerPageChange = (url: string, page: string) => {
+    if (url === 'https://rule34video.com#search') {
+      const url = `https://rule34video.com/search/${drawer.searchValue}/?mode=async&function=get_block&block_id=custom_list_videos_videos_list_search&q=${drawer.searchValue}&from_videos=${page}&from_albums=${page}`;
+      load(url);
+      return;
+    }
     load(url);
   };
   //

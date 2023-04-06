@@ -82,7 +82,6 @@
   };
   const handlerClickChose = (item: videoData) => {
     videoChose.visible = false;
-    debugger;
     videoSet.playVideo(
       'http://127.0.0.1:3333/getByte?url=' + item.videoUrl,
       props?.videoD?.title + `[${item.postFix}]`

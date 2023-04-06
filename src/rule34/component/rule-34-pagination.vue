@@ -12,15 +12,29 @@
 </template>
 
 <script setup lang="ts">
-  import { PropType } from 'vue';
+  import { PropType, ref } from 'vue';
   import { pageInfo } from '@/rule34/type/rule34Type';
 
   const props = defineProps({
     pageInfos: { type: Array as PropType<pageInfo[]>, default: () => [] },
   });
   const emits = defineEmits(['pageChange']);
+  const currentPage = ref(1);
   const handlerClick = (item: pageInfo) => {
-    emits('pageChange', item.jumpUrl);
+    if (item.text) {
+      if (item.text.toUpperCase() === 'PREV') {
+        currentPage.value--;
+      } else if (item.text.toUpperCase() === 'NEXT') {
+        currentPage.value++;
+      } else if (item.text.toUpperCase() === 'LAST') {
+        if (item.jumpUrl === 'https://rule34video.com#search') {
+          currentPage.value++;
+        }
+      } else {
+        currentPage.value = +item.text;
+      }
+    }
+    emits('pageChange', item.jumpUrl, currentPage.value);
   };
 </script>
 
