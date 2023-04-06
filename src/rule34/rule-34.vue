@@ -1,13 +1,16 @@
 <template>
-  <div class="container">
-    <div class="floatBall" @click="handlerBallClick"></div>
-    <div class="pagination">
-      <rule34-pagination :page-infos="pages" @page-change="handlerPageChange"></rule34-pagination>
-    </div>
-    <div class="pageInfos">
-      <rule34-card v-for="item in videos" :key="item" :video-d="item"></rule34-card>
+  <div ref="rule34CRef" class="rule34Container">
+    <div ref="containerRef" class="container">
+      <div class="floatBall" @click="handlerBallClick"></div>
+      <div class="pagination">
+        <rule34-pagination :page-infos="pages" @page-change="handlerPageChange"></rule34-pagination>
+      </div>
+      <div class="pageInfos">
+        <rule34-card v-for="item in videos" :key="item" :video-d="item"></rule34-card>
+      </div>
     </div>
   </div>
+
   <a-drawer
     v-model:visible="drawer.visible"
     class="custom-class"
@@ -43,6 +46,8 @@
   import Rule34Card from '@/rule34/component/rule-34-card.vue';
   import Rule34Pagination from '@/rule34/component/rule-34-pagination.vue';
   import { progress } from '@/utils/npprogress';
+
+  const rule34CRef = ref();
   const url = 'https://rule34video.com/latest-updates/1/';
   const videos = ref<videoInfo[]>([]);
   const pages = ref<pageInfo[]>([]);
@@ -58,6 +63,8 @@
         videos.value = res.videos as any;
         pages.value = res.pages as any;
         progress.done();
+        // document.getElementsByClassName('rule34Container')[0].scrollTop = 0;
+        rule34CRef.value.scrollTop = 0;
       });
   };
   load(url);
@@ -92,18 +99,23 @@
 </script>
 
 <style scoped lang="less">
-  .container {
-    background: #212b31;
-    .pagination {
-      position: fixed;
-      z-index: 10;
-      width: 100%;
-    }
-    .pageInfos {
-      padding-top: 50px;
-      min-height: 50vh;
+  .rule34Container {
+    height: 100vh;
+    overflow: auto;
+    .container {
+      background: #212b31;
+      .pagination {
+        position: fixed;
+        z-index: 10;
+        width: 100%;
+      }
+      .pageInfos {
+        padding-top: 50px;
+        min-height: 50vh;
+      }
     }
   }
+
   .floatBall {
     position: fixed;
     border: 16px solid #16d05f;
