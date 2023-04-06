@@ -14,22 +14,22 @@
 <script setup lang="ts">
   import { PropType, ref } from 'vue';
   import { pageInfo } from '@/rule34/type/rule34Type';
-
   const props = defineProps({
     pageInfos: { type: Array as PropType<pageInfo[]>, default: () => [] },
   });
+
   const emits = defineEmits(['pageChange']);
   const currentPage = ref(1);
   const handlerClick = (item: pageInfo) => {
     if (item.text) {
-      if (item.text.toUpperCase() === 'PREV') {
-        currentPage.value--;
-      } else if (item.text.toUpperCase() === 'NEXT') {
-        currentPage.value++;
-      } else if (item.text.toUpperCase() === 'LAST') {
-        if (item.jumpUrl === 'https://rule34video.com#search') {
-          currentPage.value++;
-        }
+      if (item.jumpUrl === 'https://rule34video.com#search') {
+        const fa = item.fromAlbums;
+        fa?.split(';').forEach((iStr) => {
+          let split = iStr.split(':');
+          if (split.length === 2 && split[0] === 'from_videos+from_albums') {
+            currentPage.value = +split[1];
+          }
+        });
       } else {
         currentPage.value = +item.text;
       }

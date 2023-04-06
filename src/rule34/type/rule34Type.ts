@@ -6,11 +6,14 @@ export interface videoInfo extends coverImgInfo {
   jumpUrl?: string;
   time?: string;
   quality?: string;
+  views?: string;
+  added?: string;
 }
 export interface pageInfo {
   current?: boolean;
   text?: string;
   jumpUrl?: string;
+  fromAlbums?: string;
 }
 export interface mainPage {
   videos?: videoInfo[];

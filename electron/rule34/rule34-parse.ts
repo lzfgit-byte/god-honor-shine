@@ -9,35 +9,37 @@ interface videoInfo extends coverImgInfo {
   jumpUrl?: string;
   time?: string;
   quality?: string;
+  views?: string;
+  added?: string;
 }
 interface pageInfo {
   current?: boolean;
   text?: string;
   jumpUrl?: string;
+  fromAlbums?: string;
 }
 interface mainPage {
   videos?: videoInfo[];
   pages?: pageInfo[];
 }
+const addVideoRes = ($: any, el: any, res: videoInfo[]) => {
+  const cEl = $(el);
+  const title = cEl.find('.thumb_title').text();
+  const jumpUrl = cEl.find('.js-open-popup').attr('href');
+  const src = cEl.find('.img .thumb').attr('data-original');
+  const time = cEl.find('.js-open-popup .time').text();
+  const quality = cEl.find('.js-open-popup .quality').text();
+  const views = cEl.find('.thumb_info .views').text();
+  const added = cEl.find('.thumb_info .added').text();
+  res.push({ title, jumpUrl, src, time, quality, views, added });
+};
 const getVideos = ($: any): videoInfo[] => {
   const res: videoInfo[] = [];
   $('#custom_list_videos_latest_videos_list .thumbs .item').each((i: any, el: any) => {
-    const cEl = $(el);
-    const title = cEl.find('.thumb_title').text();
-    const jumpUrl = cEl.find('.js-open-popup').attr('href');
-    const src = cEl.find('.img .thumb').attr('data-original');
-    const time = cEl.find('.js-open-popup .time').text();
-    const quality = cEl.find('.js-open-popup .quality').text();
-    res.push({ title, jumpUrl, src, time, quality });
+    addVideoRes($, el, res);
   });
   $('#custom_list_videos_videos_list_search .thumbs .item').each((i: any, el: any) => {
-    const cEl = $(el);
-    const title = cEl.find('.thumb_title').text();
-    const jumpUrl = cEl.find('.js-open-popup').attr('href');
-    const src = cEl.find('.img .thumb').attr('data-original');
-    const time = cEl.find('.js-open-popup .time').text();
-    const quality = cEl.find('.js-open-popup .quality').text();
-    res.push({ title, jumpUrl, src, time, quality });
+    addVideoRes($, el, res);
   });
   return res;
 };
@@ -51,10 +53,11 @@ const getPages = ($: any): pageInfo[] => {
     const current = cEl.hasClass('active');
     const text = cEl.find('a').text().trim() || (cEl.hasClass('next') ? 'next' : 'prev');
     let jumpUrl = cEl.find('a').attr('href');
+    const fromAlbums = cEl.find('a').attr('data-parameters');
     if (!jumpUrl.startsWith('http')) {
       jumpUrl = BASE_URL + jumpUrl;
     }
-    res.push({ current, text, jumpUrl: jumpUrl });
+    res.push({ current, text, jumpUrl: jumpUrl, fromAlbums: fromAlbums });
   });
   return res;
 };

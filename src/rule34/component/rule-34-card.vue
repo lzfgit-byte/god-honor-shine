@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <div class="imgContainer" @click="handlerClick">
+    <div class="imgContainer" :title="videoD?.added" @click="handlerClick">
       <div class="quality">{{ videoD.quality }}</div>
       <div class="time">{{ videoD.time }}</div>
       <img width="320" height="180" :src="videoD?.src" alt="" />
     </div>
-    <div class="titleContainer" :title="videoD?.title">{{ videoD.title }}</div>
+    <div class="titleContainer" :title="videoD?.title">
+      {{ '[' + videoD.views + ']' + videoD.title }}
+    </div>
   </div>
   <a-modal
     :visible="videoSet.visible"
@@ -26,6 +28,7 @@
     width="500px"
     style="top: 5px"
     title="选择清晰度"
+    centered
     @cancel="videoChose.visible = false"
     @ok="videoChose.visible = false"
   >
