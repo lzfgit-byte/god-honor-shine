@@ -16,3 +16,7 @@ export interface mainPage {
   videos?: videoInfo[];
   pages?: pageInfo[];
 }
+export interface videoData {
+  postFix?: string;
+  videoUrl?: string;
+}

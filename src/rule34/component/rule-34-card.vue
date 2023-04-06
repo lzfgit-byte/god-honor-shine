@@ -21,13 +21,32 @@
       :src="videoSet.videoSrc"
     ></video-html5>
   </a-modal>
+  <a-modal
+    :visible="videoChose.visible"
+    width="500px"
+    style="top: 5px"
+    title="选择清晰度"
+    @cancel="videoChose.visible = false"
+    @ok="videoChose.visible = false"
+  >
+    <a-space>
+      <a-button
+        v-for="item in videos"
+        :key="item"
+        :title="item.videoUrl"
+        @click="handlerClickChose(item)"
+      >
+        {{ item.postFix }}
+      </a-button>
+    </a-space>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
   import { PropType, reactive, ref } from 'vue';
-  import { Modal as AModal } from 'ant-design-vue';
-  import { videoInfo } from '@/rule34/type/rule34Type';
-  import { getHtmlByNet, getRule34Video, getVideo } from '@/rule34/http/http';
+  import { Modal as AModal, Button as AButton, Space as ASpace } from 'ant-design-vue';
+  import { videoData, videoInfo } from '@/rule34/type/rule34Type';
+  import { getHtmlByNet, getRule34Video } from '@/rule34/http/http';
   import VideoHtml5 from '@/components/video-html5.vue';
 
   const props = defineProps({ videoD: Object as PropType<videoInfo> });
@@ -41,14 +60,33 @@
       videoSet.visible = true;
     },
   });
+  const videoChose = reactive({
+    visible: false,
+    videoTitle: '',
+    videoSrc: '',
+    show: () => {
+      videoChose.visible = true;
+    },
+  });
+  const videos = ref<videoData[]>([]);
   const handlerClick = () => {
     if (props?.videoD?.jumpUrl) {
       getHtmlByNet(props?.videoD?.jumpUrl).then((res) => {
-        getRule34Video(res).then((src) => {
-          videoSet.playVideo('http://127.0.0.1:3333/getByte?url=' + src, props?.videoD?.title);
+        getRule34Video(res).then((src: videoData[]) => {
+          videos.value = src;
+          videoChose.show();
+          // videoSet.playVideo('http://127.0.0.1:3333/getByte?url=' + src, props?.videoD?.title);
         });
       });
     }
+  };
+  const handlerClickChose = (item: videoData) => {
+    videoChose.visible = false;
+    debugger;
+    videoSet.playVideo(
+      'http://127.0.0.1:3333/getByte?url=' + item.videoUrl,
+      props?.videoD?.title + `[${item.postFix}]`
+    );
   };
 </script>
 

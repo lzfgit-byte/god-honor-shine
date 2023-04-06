@@ -63,14 +63,77 @@ export const getRule34MainPage = (html: string): mainPage => {
 
   return { videos: getVideos($), pages: getPages($) };
 };
+export interface videoData {
+  postFix?: string;
+  videoUrl?: string;
+}
+const metchVideoUrl = ($: any): videoData[] => {
+  const res: videoData[] = [];
+  const scriptStr = $('.video_container .player')?.text()?.trim()?.split('\n');
+  scriptStr.shift();
+  scriptStr.pop();
+  let json = '';
+  let flag = false;
+  scriptStr.forEach((item: string) => {
+    if (item.indexOf('kt_player') > -1) {
+      flag = false;
+    }
+    if (flag) {
+      json += item;
+    }
+    if (item.indexOf('var flashvars') > -1) {
+      flag = true;
+      json += item;
+    }
+  });
+  const data: any = {};
+  const jSplit = json.split(',');
+  jSplit.forEach((key) => {
+    const keys = key.split(': ');
+    if (keys.length === 2) {
+      const daKey = keys[0].trim();
+      const value = keys[1].replace('function/0/', '').replace("'", '').replace("'", '').trim();
+      data[daKey] = value;
+    }
+  });
+  res.push({ videoUrl: data['video_url'], postFix: data['video_url_text'] });
+  res.push({ videoUrl: data['video_alt_url'], postFix: data['video_alt_url_text'] });
+  res.push({ videoUrl: data['video_alt_url2'], postFix: data['video_alt_url2_text'] });
+  res.push({ videoUrl: data['video_alt_url3'], postFix: data['video_alt_url3_text'] });
+  return res.filter((item) => item.videoUrl);
+};
+const getHDInfo = (str: string) => {
+  if (str.indexOf('360p') > -1 || str.indexOf('360.') > -1) {
+    return '360p';
+  } else if (str.indexOf('480p') > -1 || str.indexOf('480.') > -1) {
+    return '480p';
+  } else if (str.indexOf('720p') > -1 || str.indexOf('720.') > -1) {
+    return '720p';
+  } else if (str.indexOf('1080p') > -1 || str.indexOf('1080.') > -1) {
+    return '1080p';
+  } else {
+    return '';
+  }
+};
 export const getRule34Video = (html: string) => {
   const $: CheerioAPI = cheerio.load(html);
+  // const res = metchVideoUrl($);
+  // if (res?.length > 0) {
+  //   return res;
+  // }
   const row = $('.video_tools > .row')[0];
   const tags = $(row).find('.tag_item');
-  if (tags.length > 0) {
-    let href = $(tags[0]).attr('href') || '';
+  debugger;
+  const ress: videoData[] = [];
+  tags.each((i) => {
+    let href = $(tags[i]).attr('href') || '';
     href = href.substring(0, href.indexOf('download') - 1);
-    return href;
-  }
-  return '';
+    ress.push({ videoUrl: href, postFix: getHDInfo(href) });
+  });
+  // if (tags.length > 0) {
+  //   let href = $(tags[0]).attr('href') || '';
+  //   href = href.substring(0, href.indexOf('download') - 1);
+  //   return href;
+  // }
+  return ress;
 };
