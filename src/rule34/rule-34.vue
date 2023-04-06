@@ -32,15 +32,23 @@
           </a-space>
         </a-col>
       </a-row>
-      <a-row> </a-row>
+      <a-row>
+        <a-tag>排序规则</a-tag>
+        <a-radio-group v-model:value="drawer.defaultSort">
+          <a-radio v-for="item in drawer.sortBy" :key="item" :value="item.value">{{
+            item.name
+          }}</a-radio>
+        </a-radio-group>
+      </a-row>
     </div>
   </a-drawer>
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, watch } from 'vue';
   import { Row as ARow, InputSearch as AInputSearch, Button as AButton } from 'ant-design-vue';
   import { Col as ACol, Tag as ATag, Space as ASpace, Drawer as ADrawer } from 'ant-design-vue';
+  import { RadioGroup as ARadioGroup, Radio as ARadio } from 'ant-design-vue';
   import { clearCache, getHtmlByNet, getRule34MainPage } from '@/rule34/http/http';
   import { mainPage, pageInfo, videoInfo } from '@/rule34/type/rule34Type';
   import Rule34Card from '@/rule34/component/rule-34-card.vue';
@@ -68,23 +76,45 @@
       });
   };
   load(url);
+  const currentPage = ref();
   const handlerPageChange = (url: string, page: string) => {
     if (url === 'https://rule34video.com#search') {
-      const url = `https://rule34video.com/search/${drawer.searchValue}/?mode=async&function=get_block&block_id=custom_list_videos_videos_list_search&q=${drawer.searchValue}&from_videos=${page}&from_albums=${page}`;
+      currentPage.value = page;
+      const url = `https://rule34video.com/search/${drawer.searchValue}/?mode=async&function=get_block&block_id=custom_list_videos_videos_list_search&q=${drawer.searchValue}&sort_by=${drawer.defaultSort}&from_videos=${page}&from_albums=${page}`;
       load(url);
       return;
     }
     load(url);
   };
   //
-  const drawer = reactive({
+  const drawer = reactive<Record<string, any>>({
     visible: false,
     searchValue: '',
+    sortBy: [
+      { name: 'Latest', value: 'post_date' },
+      { name: 'Most Viewed', value: 'video_viewed' },
+      { name: 'Top Rated', value: 'rating' },
+    ],
+    defaultSort: 'post_date',
     search: () => {
-      const searchUrl = `https://rule34video.com/search/${drawer.searchValue}/`;
+      const searchUrl = `https://rule34video.com/search/${drawer.searchValue}/?sort_by=${drawer.defaultSort}`;
       load(searchUrl);
     },
   });
+  watch(
+    () => drawer.defaultSort,
+    () => {
+      const searchUrl = `https://rule34video.com/search/${drawer.searchValue}/?sort_by=${drawer.defaultSort}`;
+      const url = `https://rule34video.com/search/${drawer.searchValue}/?mode=async&function=get_block&block_id=custom_list_videos_videos_list_search&q=${drawer.searchValue}&sort_by=${drawer.defaultSort}&from_videos=${currentPage.value}&from_albums=${currentPage.value}`;
+      if (currentUrl.value.indexOf('block_id') > -1) {
+        load(url);
+      } else if (searchUrl.indexOf('sort_by') > -1) {
+        load(searchUrl);
+      } else {
+        load(currentUrl.value);
+      }
+    }
+  );
   const reload = () => {
     clearCache().then(() => {
       load(currentUrl.value);
@@ -111,7 +141,7 @@
       }
       .pageInfos {
         padding-top: 50px;
-        min-height: 50vh;
+        min-height: 100vh;
       }
     }
   }
