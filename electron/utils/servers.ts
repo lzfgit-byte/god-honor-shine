@@ -87,8 +87,10 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
       const request = requestMap[url];
       request && request?.abort();
       delete requestMap[url];
-      res.end();
-      sendMessage('abord');
+      if (request) {
+        res.end();
+        sendMessage('abord');
+      }
     }
   } else {
     res.end();
