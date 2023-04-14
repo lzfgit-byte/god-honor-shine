@@ -14,7 +14,7 @@
     width="1050px"
     style="top: 5px"
     :title="videoSet.videoTitle"
-    @cancel="videoSet.visible = false"
+    @cancel="videoSet.handlerCancel"
     @ok="videoSet.visible = false"
   >
     <video-html5
@@ -43,6 +43,7 @@
       </a-button>
     </a-space>
   </a-modal>
+  <img :src="'http://127.0.0.1:3333/closed?url=' + videoSet.videoUrl2" style="display: none" />
 </template>
 
 <script setup lang="ts">
@@ -57,6 +58,12 @@
     visible: false,
     videoTitle: '',
     videoSrc: '',
+    videoUrl: '',
+    videoUrl2: '',
+    handlerCancel: () => {
+      videoSet.videoUrl2 = videoSet.videoUrl;
+      videoSet.visible = false;
+    },
     playVideo: (src: string, title = '') => {
       videoSet.videoSrc = src;
       videoSet.videoTitle = title;
@@ -78,13 +85,13 @@
         getRule34Video(res).then((src: videoData[]) => {
           videos.value = src;
           videoChose.show();
-          // videoSet.playVideo('http://127.0.0.1:3333/getByte?url=' + src, props?.videoD?.title);
         });
       });
     }
   };
   const handlerClickChose = (item: videoData) => {
     videoChose.visible = false;
+    videoSet.videoUrl = item.videoUrl as any;
     videoSet.playVideo(
       'http://127.0.0.1:3333/getByte?url=' + item.videoUrl,
       props?.videoD?.title + `[${item.postFix}]`
