@@ -11,6 +11,13 @@ export interface fileMethods {
 export const writeFile = (name: string, data: any) => {
   fs.writeFileSync(solvePath(name), data, { encoding: 'utf-8' });
 };
+export const appendFile = (name: string, data: any) => {
+  fs.appendFileSync(solvePath(name), data, { encoding: 'utf-8' });
+};
+export const deleteFileEtc = (name: any) => {
+  fs.ensureFileSync(solvePath(name));
+  fs.unlinkSync(solvePath(name));
+};
 export const readFile = async (name: string) => {
   return fs.readFileSync(solvePath(name), { encoding: 'utf-8' });
 };
