@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { CheerioAPI } from 'cheerio';
+import { sendMessage } from '../utils/message';
 const BASE_URL = 'https://rule34video.com';
 interface coverImgInfo {
   src?: string;
@@ -35,12 +36,14 @@ const addVideoRes = ($: any, el: any, res: videoInfo[]) => {
 };
 const getVideos = ($: any): videoInfo[] => {
   const res: videoInfo[] = [];
+  sendMessage('video 数据解析开始');
   $('#custom_list_videos_latest_videos_list .thumbs .item').each((i: any, el: any) => {
     addVideoRes($, el, res);
   });
   $('#custom_list_videos_videos_list_search .thumbs .item').each((i: any, el: any) => {
     addVideoRes($, el, res);
   });
+  sendMessage('video 数据解析结束,数量:' + res.length);
   return res;
 };
 const getPages = ($: any): pageInfo[] => {
@@ -126,7 +129,6 @@ export const getRule34Video = (html: string) => {
   // }
   const row = $('.video_tools > .row')[0];
   const tags = $(row).find('.tag_item');
-  debugger;
   const ress: videoData[] = [];
   tags.each((i) => {
     let href = $(tags[i]).attr('href') || '';
