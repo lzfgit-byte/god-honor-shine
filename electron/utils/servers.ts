@@ -33,37 +33,37 @@ const hasFileExist = (url: string, req: any, res: any) => {
     file.pipe(res);
   }
 };
-const requestFormUrl = async (url: string, res: any) => {
-  return new Promise((resolve) => {
-    let blob: any = Buffer.alloc(0),
-      fileSize: any = 0;
-    const request = net.request(url);
-    request.on('response', (response) => {
-      const header = response.headers;
-      fileSize = +header['content-length'];
-      response.on('data', (chunk) => {
-        blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        sendMessage(`received[${formatSize(blob.length)}/${formatSize(fileSize)}]`);
-        res.write(chunk);
-      });
-      response.on('end', () => {
-        cached(url, blob);
-        sendMessage('end');
-        resolve('');
-      });
-      response.on('error', () => {
-        sendMessage('net 请求 error');
-      });
+const requestFormUrl = (url: string, res: any) => {
+  let blob: any = Buffer.alloc(0),
+    fileSize: any = 0;
+  const request = net.request(url);
+  request.on('response', (response) => {
+    const header = response.headers;
+    fileSize = +header['content-length'];
+    response.on('data', (chunk) => {
+      blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
+      sendMessage(`received[${formatSize(blob.length)}/${formatSize(fileSize)}]`);
+      res.write(chunk);
     });
-    request.end();
-    res.on('close', () => {
-      request.abort();
-      sendMessage('close');
+    response.on('end', () => {
+      cached(url, blob);
+      sendMessage('end');
     });
+    response.on('error', () => {
+      sendMessage('net 请求 error');
+    });
+  });
+  request.on('error', () => {
+    sendMessage('request error');
+  });
+  request.end();
+  res.on('close', () => {
+    request.abort();
+    sendMessage('close');
   });
 };
 // req 路由监听空 res 上下文函数
-const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
+const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
   res.writeHead(200, {
     //设置允许跨域的域名，*代表允许任意域名跨域
     'Access-Control-Allow-Origin': '*',
@@ -78,7 +78,7 @@ const server = http.createServer(async (req: IncomingMessage, res: ServerRespons
         return;
       }
       const range = req.headers.range;
-      await requestFormUrl(url, res);
+      requestFormUrl(url, res);
 
       // if (range) {
       //   //有range头才使用206状态码
