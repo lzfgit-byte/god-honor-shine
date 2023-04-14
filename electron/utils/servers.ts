@@ -6,20 +6,7 @@ import { sendMessage } from './message';
 import { formatSize } from './file';
 
 const { net } = require('electron');
-const waitTime = async (delay: number) => {
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('');
-    }, delay);
-  });
-  return '';
-};
-const doSetTimeOut = (fuc: any, delay: number) => {
-  setTimeout(() => fuc && fuc(''), delay);
-};
-const cacheBlob: any = {};
-const cachelength: any = {};
-let blob: any, fileSize: any;
+
 const hasFileExist = (url: string, req: any, res: any) => {
   const path = getCachePath(url);
   sendMessage('视频缓存:' + path);
@@ -48,17 +35,16 @@ const hasFileExist = (url: string, req: any, res: any) => {
 };
 const requestFormUrl = async (url: string, res: any) => {
   return new Promise((resolve) => {
+    let blob: any = Buffer.alloc(0),
+      fileSize: any = 0;
     const request = net.request(url);
     request.on('response', (response) => {
       const header = response.headers;
       fileSize = +header['content-length'];
-      cachelength[url] = fileSize;
-
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
         sendMessage(`received[${formatSize(blob.length)}/${formatSize(fileSize)}]`);
-        cacheBlob[url] = blob;
-        // res.write(chunk);
+        res.write(chunk);
       });
       response.on('end', () => {
         cached(url, blob);
@@ -91,32 +77,27 @@ const server = http.createServer(async (req: IncomingMessage, res: ServerRespons
         hasFileExist(url, req, res);
         return;
       }
-
-      blob = cacheBlob[url] || Buffer.alloc(0);
-      fileSize = cachelength[url] || '';
       const range = req.headers.range;
-      if (blob.length === 0) {
-        await requestFormUrl(url, res);
-      }
+      await requestFormUrl(url, res);
 
-      if (range) {
-        //有range头才使用206状态码
-        const parts = range.replace(/bytes=/, '').split('-');
-        const start = parseInt(parts[0], 10);
-        let end = parts[1] ? parseInt(parts[1], 10) : start + 999999;
-        // end 在最后取值为 fileSize - 1
-        end = end > blob.length - 1 ? blob.length - 1 : end;
-
-        const head = {
-          'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-          'Accept-Ranges': 'bytes',
-          // 'Content-Length': chunksize,
-          'Content-Type': 'video/*',
-        };
-        res.writeHead(206, head);
-        console.log(blob.length, '-', start, '-', end);
-        res.write(blob.slice(start, end));
-      }
+      // if (range) {
+      //   //有range头才使用206状态码
+      //   const parts = range.replace(/bytes=/, '').split('-');
+      //   const start = parseInt(parts[0], 10);
+      //   let end = parts[1] ? parseInt(parts[1], 10) : start + 999999;
+      //   // end 在最后取值为 fileSize - 1
+      //   end = end > blob.length - 1 ? blob.length - 1 : end;
+      //
+      //   const head = {
+      //     'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+      //     'Accept-Ranges': 'bytes',
+      //     // 'Content-Length': chunksize,
+      //     'Content-Type': 'video/*',
+      //   };
+      //   res.writeHead(206, head);
+      //   console.log('[write]', blob.length, '-', start, '-', end);
+      //   res.write(blob.slice(start, end));
+      // }
     }
   } else {
     res.end();
