@@ -17,6 +17,13 @@ export const routes = [
     showInMenu: true,
     component: () => import('@/feature/hentai-word/view/main-view.vue'),
   },
+  {
+    path: '/18Comic',
+    name: '18Comic',
+    aliasZH: '18Comic',
+    showInMenu: true,
+    component: () => import('@/feature/18-comic/view/18-comic-main.vue'),
+  },
 ];
 
 const router = createRouter({
