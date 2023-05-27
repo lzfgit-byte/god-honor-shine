@@ -12,7 +12,7 @@ export const getHtml = (url: string) => {
       return;
     }
     const request = net.request(url);
-    sendMessage('请求中');
+    sendMessage(`请求中 ${url}`);
     request.on('response', (response) => {
       let html = '';
       response.on('data', (chunk) => {

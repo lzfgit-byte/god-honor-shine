@@ -2,11 +2,10 @@ import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
 import type { settingType } from '../type/types';
 
 const configFile = `${process.cwd()}/config.json`;
-const defaultConfig = { proxy: 'socks5://127.0.0.1:10801', needProxy: true };
+const defaultConfig = { proxy: 'socks5://127.0.0.1:10808', needProxy: true };
 
 const ensure = () => {
   ensureFileSync(configFile);
-  writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2));
 };
 let setJson: settingType = defaultConfig;
 const load = () => {
@@ -14,6 +13,9 @@ const load = () => {
   const cStr = readFileSync(configFile, { encoding: 'utf-8' });
   if (cStr) {
     setJson = JSON.parse(cStr);
+  } else {
+    writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2));
+    setJson = defaultConfig;
   }
 };
 
