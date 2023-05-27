@@ -147,7 +147,7 @@
       for (let i = 0; i < imgs.length; i++) {
         if (isFull) {
           allImgs.push({
-            src: getImgUrl(imgs[i].original),
+            src: `${getImgUrl(imgs[i].original)}&p=true`,
             'data-source': imgs[i].original,
             alt: imgs[i].name,
           });

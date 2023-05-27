@@ -39,5 +39,7 @@ export const clearCache = (fileName, suffix = '') => {
     emptyDir(CACHE_PATH);
     return;
   }
-  unlinkSync(buildFilePathName(fileName, suffix));
+  if (existsCache(fileName, suffix)) {
+    unlinkSync(buildFilePathName(fileName, suffix));
+  }
 };

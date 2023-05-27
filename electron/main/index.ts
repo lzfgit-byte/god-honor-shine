@@ -41,7 +41,7 @@ async function createWindow() {
   Menu.setApplicationMenu(null);
   win = new BrowserWindow({
     title: 'ghs',
-    width: 1470,
+    width: 1450,
     height: 788,
     icon: join(process.env.PUBLIC, 'favicon.ico'),
     webPreferences: {
