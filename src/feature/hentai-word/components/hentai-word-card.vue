@@ -12,7 +12,7 @@
         <el-button type="primary" shape="round" size="large"> fullSize </el-button>
       </div>
     </div>
-    <a v-loading="isSpinning" style="position: relative">
+    <a style="position: relative; display: inline-block">
       <div v-show="hasShowProgress" class="progress">
         <el-progress type="circle" :percent="progressValue"
       /></div>
@@ -27,7 +27,6 @@
       /><span
         style="
           position: absolute;
-          bottom: -61px;
           right: 5px;
           background: #fff;
           color: black;
