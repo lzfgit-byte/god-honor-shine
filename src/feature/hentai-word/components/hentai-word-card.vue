@@ -62,13 +62,15 @@
   import type { imgInfo, mainHtml, videoInfo } from '@/feature/hentai-word/type/hw-types';
   import 'viewerjs/dist/viewer.css';
   import VideoHtml5 from '@/components/video-html5.vue';
+  import { getImgUrl } from '@/utils/kit-utils';
   const prop = defineProps({
     info: Object as PropType<mainHtml>,
   });
   const isSpinning = ref(true);
   const progressValue = ref(0);
   const hasShowProgress = ref(false);
-  const imgBase64 = ref(prop?.info?.coverUrl);
+  console.log('--->', getImgUrl(prop?.info?.coverUrl as any));
+  const imgBase64 = ref(getImgUrl(prop?.info?.coverUrl as any));
   const videoSet = reactive({
     visible: false,
     videoTitle: '',

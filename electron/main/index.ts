@@ -4,6 +4,7 @@ import { BrowserWindow, Menu, app, ipcMain, shell } from 'electron';
 import { sendMessage } from '../utils/message';
 import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
+import useService from '../common/use-service';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -28,7 +29,8 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   process.exit(0);
 }
-
+// 启动服务
+const closeServer = useService();
 let win: BrowserWindow | null = null;
 
 const preload = join(__dirname, '../preload/index.js');
@@ -75,6 +77,7 @@ app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   win = null;
+  closeServer();
   if (process.platform !== 'darwin') {
     app.quit();
   }

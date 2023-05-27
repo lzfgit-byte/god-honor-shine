@@ -14,7 +14,7 @@ const load = () => {
   if (cStr) {
     setJson = JSON.parse(cStr);
   } else {
-    writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2));
+    writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2), { encoding: 'utf-8' });
     setJson = defaultConfig;
   }
 };
