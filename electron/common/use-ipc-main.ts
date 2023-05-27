@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
+import * as utils from '../utils';
 
-const funcs = {};
+const funcs = { ...utils };
 
 export default () => {
   Object.keys(funcs).forEach((key) => {
