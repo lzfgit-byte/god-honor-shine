@@ -1,6 +1,6 @@
 import { release } from 'node:os';
 import { join } from 'node:path';
-import { BrowserWindow, Menu, app, ipcMain, shell } from 'electron';
+import { BrowserWindow, Menu, app, globalShortcut, ipcMain, shell } from 'electron';
 import { sendMessage } from '../utils/message';
 import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
@@ -64,7 +64,13 @@ async function createWindow() {
   win.webContents.on('did-finish-load', () => {
     sendMessage('start done');
   });
-
+  // 注册快捷键
+  globalShortcut.register('ctrl+shift+alt+e', function () {
+    let win = BrowserWindow.getFocusedWindow();
+    if (win) {
+      win.webContents.openDevTools();
+    }
+  });
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) {
       shell.openExternal(url);

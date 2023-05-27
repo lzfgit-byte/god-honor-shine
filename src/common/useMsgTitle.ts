@@ -9,6 +9,7 @@ const title = computed(() => {
 bus.on('msg-main', (msg) => {
   messages.value = msg;
 });
+export const updateMessage = (msg: string) => (messages.value = msg);
 export default () => {
   useTitle(title);
 };

@@ -24,6 +24,7 @@
         :width="info?.width"
         :height="info?.height"
         :title="info?.title"
+        @click="getDetail"
       /><span
         style="
           position: absolute;
@@ -39,9 +40,8 @@
     >
   </div>
   <el-dialog
-    :visible="videoSet.visible"
+    v-model="videoSet.visible"
     width="1050px"
-    style="top: 5px"
     :title="videoSet.videoTitle"
     @cancel="videoSet.visible = false"
     @ok="videoSet.visible = false"
@@ -62,10 +62,13 @@
   import 'viewerjs/dist/viewer.css';
   import VideoHtml5 from '@/components/video-html5.vue';
   import { getImgUrl } from '@/utils/kit-utils';
+  import { nprogress } from '@/utils/nprogress';
+  import { getHtml } from '@/utils/functions';
+  import { hw_getVideoInfo } from '@/feature/hentai-word/utils/hw-functions';
+  import { updateMessage } from '@/common/useMsgTitle';
   const prop = defineProps({
     info: Object as PropType<mainHtml>,
   });
-  const isSpinning = ref(true);
   const progressValue = ref(0);
   const hasShowProgress = ref(false);
   const imgBase64 = ref(getImgUrl(prop?.info?.coverUrl as any));
@@ -85,6 +88,44 @@
   };
   const mouseleave = () => {
     hasShow.value = false;
+  };
+  let allImgs: any[] = [];
+  let viewerInstance: any = null;
+  const getDetail = async (isFull = false) => {
+    if (prop?.info?.type !== 'Video') {
+      // const imgs = await getAllImg(isFull);
+      // allImgs = [];
+      // hasShowProgress.value = true;
+      // progressValue.value = 0;
+      // for (let i = 0; i < imgs.length; i++) {
+      //   if (isFull) {
+      //     allImgs.push({
+      //       src: await getImgBase64(imgs[i].original),
+      //       'data-source': imgs[i].original,
+      //       alt: imgs[i].name,
+      //     });
+      //   } else {
+      //     loadImgFile(imgs[i].zipUrl);
+      //     allImgs.push({
+      //       src: await getImgBase64(imgs[i].zipUrl),
+      //       'data-source': imgs[i].zipUrl,
+      //       alt: imgs[i].name,
+      //     });
+      //   }
+      //   progressValue.value = +((i + 1) / imgs.length).toFixed(1) * 100;
+      // }
+      // hasShowProgress.value = false;
+      // showImgs(allImgs);
+    } else {
+      // 视频
+      nprogress.start();
+      const html = await getHtml(prop?.info?.jumpUrl as string);
+
+      const videoInfo: videoInfo = await hw_getVideoInfo(html);
+      updateMessage(`视频地址：${videoInfo.videoSrc}`);
+      videoSet.playVideo(videoInfo.videoSrc, videoInfo.tite);
+      nprogress.done();
+    }
   };
 </script>
 <style scoped lang="less">
