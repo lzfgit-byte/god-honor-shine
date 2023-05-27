@@ -13,7 +13,7 @@ export const routes = [
   {
     path: '/',
     name: 'HWord',
-    aliasZH: 'HW',
+    aliasZH: 'HentaiWord',
     showInMenu: true,
     component: () => import('@/feature/hentai-word/view/main-view.vue'),
   },
