@@ -14,7 +14,8 @@
         <el-button type="primary" plain @click="byTagsVisable = true">分类查询</el-button>
       </el-space>
     </div>
-    <el-card title="连载更新">
+    <el-card>
+      <template #header> 连载更新 </template>
       <div class="coverContainer">
         <ComicCover
           v-for="item in serialLatest"
@@ -24,7 +25,8 @@
         ></ComicCover>
       </div>
     </el-card>
-    <el-card title="最新韩漫">
+    <el-card>
+      <template #header> 最新韩漫 </template>
       <div class="coverContainer">
         <ComicCover
           v-for="item in latestKoreanComic"
@@ -34,7 +36,8 @@
         ></ComicCover>
       </div>
     </el-card>
-    <el-card title="推荐">
+    <el-card>
+      <template #header> 推荐 </template>
       <div class="coverContainer">
         <ComicCover
           v-for="item in recommend"
@@ -44,7 +47,8 @@
         ></ComicCover>
       </div>
     </el-card>
-    <el-card title="最新本子">
+    <el-card>
+      <template #header> 最新本子 </template>
       <div class="coverContainer">
         <ComicCover
           v-for="item in latest"
@@ -195,6 +199,12 @@
     position: fixed;
     right: 10px;
     z-index: 2;
+    top: 0;
+    background-color: white;
+    width: 100%;
+    height: 38px;
+    display: flex;
+    justify-content: right;
   }
   .recoderContainer {
     max-height: 500px;
