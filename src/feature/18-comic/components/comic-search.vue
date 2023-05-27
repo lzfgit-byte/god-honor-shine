@@ -17,8 +17,8 @@
     <el-tag
       v-for="item in pageInfos"
       :key="item"
-      style="width: 30px; height: 30px; cursor: pointer"
-      :color="item.isCurrent ? 'pink' : 'green'"
+      style="width: 30px; height: 30px; cursor: pointer; padding: 5px; margin: 5px"
+      :type="item.isCurrent ? 'warning' : 'info'"
       @click="load(item?.jumpUrl as string)"
       >{{ item.title }}</el-tag
     >
@@ -87,5 +87,11 @@
     position: fixed;
     right: 10px;
     z-index: 2;
+    top: 0;
+    background-color: white;
+    width: 100%;
+    height: 43px;
+    display: flex;
+    justify-content: right;
   }
 </style>

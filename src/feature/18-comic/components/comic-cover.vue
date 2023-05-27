@@ -4,7 +4,7 @@
       <span v-for="item in coverInfo?.type" :key="item">{{ item.title }}</span>
     </div>
     <div class="imgContainer" @click="handlerImgClick">
-      <img width="213" :src="coverInfo?.coverUrl" />
+      <img width="213" :src="getImgUrl(coverInfo?.coverUrl as string)" />
     </div>
     <div class="heart">{{ coverInfo?.heart }}</div>
     <div class="title">{{ coverInfo?.title }}</div>
@@ -33,6 +33,7 @@
   import bus from '@/utils/bus';
   import { getHtml } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
+  import { getImgUrl } from '@/utils/kit-utils';
   const props = defineProps({
     coverInfo: Object as PropType<comicCover>,
   });
