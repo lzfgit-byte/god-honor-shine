@@ -4,8 +4,8 @@
 </template>
 <script setup lang="ts">
   import HelloWorld from '@/components/HelloWorld.vue';
-
-  console.log('[App.vue]', `Hello world from Electron ${process.versions.electron}!`);
+  import useMsgTitle from '@/common/useMsgTitle';
+  useMsgTitle();
 </script>
 
 <style lang="less"></style>

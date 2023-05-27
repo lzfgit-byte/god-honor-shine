@@ -1,6 +1,7 @@
 import { release } from 'node:os';
 import { join } from 'node:path';
 import { BrowserWindow, app, ipcMain, shell } from 'electron';
+import { sendMessage } from '../utils/message';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -48,7 +49,9 @@ async function createWindow() {
   }
 
   win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString());
+    setTimeout(() => {
+      sendMessage('564564656');
+    }, 2000);
   });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
