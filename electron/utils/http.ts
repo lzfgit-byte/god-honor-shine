@@ -8,6 +8,7 @@ export const getHtml = (url: string) => {
   return new Promise((resolve, reject) => {
     const h = getCache(url, suffix);
     if (isTruth(h)) {
+      sendMessage('缓存命中');
       resolve(h);
       return;
     }
