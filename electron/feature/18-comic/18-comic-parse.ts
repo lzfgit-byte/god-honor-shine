@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 const BASE_URL = 'https://18comic.vip';
-export const loadSingle = (res: any, $: any, el: any) => {
+export const comic_loadSingle = (res: any, $: any, el: any) => {
   const cheerio$ = $(el);
   const img = cheerio$.find('img');
   const a = cheerio$.find('a');
@@ -34,25 +34,12 @@ export const loadSingle = (res: any, $: any, el: any) => {
     heart,
   });
 };
-/**
- * serialLatest 连载更新
- * @param html
- * @returns {{serialLatest: *[]}}
- */
-export const getHomeInfo = (html: any) => {
-  const $ = cheerio.load(html);
-  return {
-    serialLatest: getSerialLatest($),
-    latestKoreanComic: getKoreanComic($),
-    recommend: getRecommend($),
-    latest: getLatest($),
-  };
-};
-export const loadRes = (res: any, $: any, latest: any) => {
+
+export const comic_loadRes = (res: any, $: any, latest: any) => {
   $(latest)
     .children()
     .each((i: any, el: any) => {
-      loadSingle(res, $, el);
+      comic_loadSingle(res, $, el);
     });
 };
 /**
@@ -60,10 +47,10 @@ export const loadRes = (res: any, $: any, latest: any) => {
  * @param $
  * @returns {*[]}
  */
-export const getSerialLatest = ($: any) => {
+export const comic_getSerialLatest = ($: any) => {
   const latest = $('.owl-carousel.owl-comic-block')[0];
   const res: any = [];
-  loadRes(res, $, latest);
+  comic_loadRes(res, $, latest);
   return res;
 };
 /**
@@ -71,10 +58,10 @@ export const getSerialLatest = ($: any) => {
  * @param $
  * @returns {*[]}
  */
-export const getKoreanComic = ($: any) => {
+export const comic_getKoreanComic = ($: any) => {
   const latest = $('.owl-carousel.owl-comic-block')[1];
   const res: any = [];
-  loadRes(res, $, latest);
+  comic_loadRes(res, $, latest);
   return res;
 };
 /**
@@ -82,10 +69,10 @@ export const getKoreanComic = ($: any) => {
  * @param $
  * @returns {*[]}
  */
-export const getRecommend = ($: any) => {
+export const comic_getRecommend = ($: any) => {
   const latest = $('.owl-carousel.owl-comic-block')[2];
   const res: any = [];
-  loadRes(res, $, latest);
+  comic_loadRes(res, $, latest);
   return res;
 };
 /**
@@ -93,25 +80,15 @@ export const getRecommend = ($: any) => {
  * @param $
  * @returns {*[]}
  */
-export const getLatest = ($: any) => {
+export const comic_getLatest = ($: any) => {
   const latest = $($('.col-sm-12')[1]).find(
     '.col-xs-6.col-sm-4.col-md-3.col-lg-3.list-col.col-xl-2'
   );
   const res: any = [];
-  loadRes(res, $, latest);
+  comic_loadRes(res, $, latest);
   return res;
 };
-
-export const getComicDetailInfo = (html: any) => {
-  const $ = cheerio.load(html);
-  return {
-    des: $('#intro-block > div:first-child').text(),
-    reading: BASE_URL + $($('a.reading')[0]).attr('href'),
-    title: $('title').text(),
-    contents: getContents($),
-  };
-};
-export const getContents = ($: any) => {
+export const comic_getContents = ($: any) => {
   const contentConter = $('.btn-toolbar')[0];
   const res: any = [];
   $(contentConter)
@@ -124,8 +101,31 @@ export const getContents = ($: any) => {
     });
   return res;
 };
+export const comic_getPageInfo = ($: any) => {
+  const res: any = [];
+  $('.hidden-xs .pagination > li').each((i: any, el: any) => {
+    const $el = $(el);
+    const isCurrent = $el.hasClass('active');
+    const jumpUrl = $el.find('a').attr('href') || '';
+    const title = $el.find('a').text() || $el.find('span').text();
+    if (title === '') {
+      return;
+    }
+    res.push({ isCurrent, jumpUrl, title });
+  });
+  return res;
+};
+export const comic_getComicDetailInfo = (html: any) => {
+  const $ = cheerio.load(html);
+  return {
+    des: $('#intro-block > div:first-child').text(),
+    reading: BASE_URL + $($('a.reading')[0]).attr('href'),
+    title: $('title').text(),
+    contents: comic_getContents($),
+  };
+};
 
-export const getReaderInfos = (html: any) => {
+export const comic_getReaderInfos = (html: any) => {
   const $ = cheerio.load(html);
   const imgs: any = [];
   $('.scramble-page').each((i: any, el: any) => {
@@ -140,36 +140,38 @@ export const getReaderInfos = (html: any) => {
   const aid$ = infos[3].split('=')[1].trim();
   return { aid: aid$, imgs, scramble_id: scramble_id$ };
 };
+
 /**
  * 获取搜索也详情
  * @param html
  */
-export const getSearchInfo = (html: any) => {
+export const comic_getSearchInfo = (html: any) => {
   const $ = cheerio.load(html);
   const res: any = [];
   let rows = $('.row.m-0 > div.col-xs-6.col-sm-6.col-md-4.col-lg-3.list-col');
   rows.each((i: any, el: any) => {
-    loadSingle(res, $, el);
+    comic_loadSingle(res, $, el);
   });
   rows = $('.row > div.col-xs-6.col-sm-4.col-md-3.col-lg-3.list-col.col-xl-2');
   rows.each((i: any, el: any) => {
-    loadSingle(res, $, el);
+    comic_loadSingle(res, $, el);
   });
 
-  return { covers: res, pageInfos: getPageInfo($) };
+  return { covers: res, pageInfos: comic_getPageInfo($) };
 };
-export const getPageInfo = ($: any) => {
-  const res: any = [];
-  $('.hidden-xs .pagination > li').each((i: any, el: any) => {
-    const $el = $(el);
-    const isCurrent = $el.hasClass('active');
-    const jumpUrl = $el.find('a').attr('href') || '';
-    const title = $el.find('a').text() || $el.find('span').text();
-    if (title === '') {
-      return;
-    }
-    res.push({ isCurrent, jumpUrl, title });
-  });
-  return res;
+
+/**
+ * serialLatest 连载更新
+ * @param html
+ * @returns {{serialLatest: *[]}}
+ */
+export const comic_getHomeInfo = (html: any) => {
+  const $ = cheerio.load(html);
+  return {
+    serialLatest: comic_getSerialLatest($),
+    latestKoreanComic: comic_getKoreanComic($),
+    recommend: comic_getRecommend($),
+    latest: comic_getLatest($),
+  };
 };
 export default {};
