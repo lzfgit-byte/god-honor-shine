@@ -6,10 +6,14 @@
       :class="{ hideShadow: !hasShow, showShadow: hasShow }"
     >
       <div class="topBtn">
-        <el-button type="primary" shape="round" size="large"> default </el-button>
+        <el-button type="primary" shape="round" size="large" @click="getDetail(false)">
+          default
+        </el-button>
       </div>
       <div class="botBtn">
-        <el-button type="primary" shape="round" size="large"> fullSize </el-button>
+        <el-button type="primary" shape="round" size="large" @click="getDetail(true)">
+          fullSize
+        </el-button>
       </div>
     </div>
     <a style="position: relative; display: inline-block">
@@ -64,8 +68,12 @@
   import { getImgUrl } from '@/utils/kit-utils';
   import { nprogress } from '@/utils/nprogress';
   import { getHtml } from '@/utils/functions';
-  import { hw_getVideoInfo } from '@/feature/hentai-word/utils/hw-functions';
-  import { updateMessage } from '@/common/useMsgTitle';
+  import {
+    hw_getImgInfo,
+    hw_getImgInfoOnly,
+    hw_getVideoInfo,
+  } from '@/feature/hentai-word/utils/hw-functions';
+  import { emitMessage } from '@/common/useMsgTitle';
   const prop = defineProps({
     info: Object as PropType<mainHtml>,
   });
@@ -91,38 +99,76 @@
   };
   let allImgs: any[] = [];
   let viewerInstance: any = null;
+  const getImgInfoByThumb = async (url: string) => {
+    const html = await getHtml(url);
+    const imgInfo: imgInfo = await hw_getImgInfoOnly(html);
+    return imgInfo;
+  };
+  const getAllImg = async (isFull = false) => {
+    const res = [];
+    const html = await getHtml((prop as any).info.jumpUrl);
+    const imgInfo: imgInfo = await hw_getImgInfo(html);
+    res.push(imgInfo);
+    const allCount = imgInfo.others?.length || 0;
+    for (let i = 0; i < allCount; i++) {
+      if (imgInfo.others === undefined) {
+        continue;
+      }
+      const imgOne = imgInfo?.others[i];
+      if (imgOne?.isCurrent) {
+        continue;
+      }
+      const other = await getImgInfoByThumb(imgOne?.jumpUrl as any);
+      res.push(other);
+    }
+    return res;
+  };
+  const showImgs = (allImgs: any) => {
+    if (viewerInstance === null) {
+      viewerInstance = viewerApi({
+        options: {
+          url: (image: any) => {
+            return image.src;
+          },
+          hidden: () => {
+            viewerInstance = null;
+          },
+        },
+        images: allImgs,
+      });
+    }
+  };
   const getDetail = async (isFull = false) => {
     if (prop?.info?.type !== 'Video') {
-      // const imgs = await getAllImg(isFull);
-      // allImgs = [];
-      // hasShowProgress.value = true;
-      // progressValue.value = 0;
-      // for (let i = 0; i < imgs.length; i++) {
-      //   if (isFull) {
-      //     allImgs.push({
-      //       src: await getImgBase64(imgs[i].original),
-      //       'data-source': imgs[i].original,
-      //       alt: imgs[i].name,
-      //     });
-      //   } else {
-      //     loadImgFile(imgs[i].zipUrl);
-      //     allImgs.push({
-      //       src: await getImgBase64(imgs[i].zipUrl),
-      //       'data-source': imgs[i].zipUrl,
-      //       alt: imgs[i].name,
-      //     });
-      //   }
-      //   progressValue.value = +((i + 1) / imgs.length).toFixed(1) * 100;
-      // }
-      // hasShowProgress.value = false;
-      // showImgs(allImgs);
+      const imgs = await getAllImg(isFull);
+      allImgs = [];
+      hasShowProgress.value = true;
+      progressValue.value = 0;
+      for (let i = 0; i < imgs.length; i++) {
+        if (isFull) {
+          allImgs.push({
+            src: getImgUrl(imgs[i].original),
+            'data-source': imgs[i].original,
+            alt: imgs[i].name,
+          });
+        } else {
+          allImgs.push({
+            src: getImgUrl(imgs[i].zipUrl),
+            'data-source': imgs[i].zipUrl,
+            alt: imgs[i].name,
+          });
+        }
+        progressValue.value = +((i + 1) / imgs.length).toFixed(1) * 100;
+      }
+      hasShowProgress.value = false;
+      showImgs(allImgs);
     } else {
       // 视频
       nprogress.start();
       const html = await getHtml(prop?.info?.jumpUrl as string);
 
       const videoInfo: videoInfo = await hw_getVideoInfo(html);
-      updateMessage(`视频地址：${videoInfo.videoSrc}`);
+      emitMessage(`视频地址：${videoInfo.videoSrc}`);
       videoSet.playVideo(videoInfo.videoSrc, videoInfo.tite);
       nprogress.done();
     }
