@@ -34,6 +34,7 @@
   import { getHtml } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   import { getImgUrl } from '@/utils/kit-utils';
+  import { emitMessage } from '@/common/useMsgTitle';
   const props = defineProps({
     coverInfo: Object as PropType<comicCover>,
   });
@@ -48,6 +49,10 @@
         return comic_getComicDetailInfo(res);
       })
       .then((res) => {
+        if (res.title === 'Just a moment...') {
+          emitMessage('cloud flare  Just a moment...');
+          return;
+        }
         emits('toContent', res);
       });
   };

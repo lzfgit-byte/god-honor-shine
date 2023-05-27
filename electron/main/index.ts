@@ -5,6 +5,7 @@ import { sendMessage } from '../utils/message';
 import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
 import useService from '../common/use-service';
+import useCookie from '../common/use-cookie';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -124,3 +125,4 @@ ipcMain.handle('open-win', (_, arg) => {
 });
 // 注册远程方法
 useIpcMain();
+useCookie();
