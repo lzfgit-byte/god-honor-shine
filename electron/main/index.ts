@@ -1,13 +1,17 @@
 import { release } from 'node:os';
 import { join } from 'node:path';
-import { BrowserWindow, app, ipcMain, shell } from 'electron';
+import { BrowserWindow, Menu, app, ipcMain, shell } from 'electron';
 import { sendMessage } from '../utils/message';
+import useSetting from '../common/useSetting';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
 process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
   ? join(process.env.DIST_ELECTRON, '../public')
   : process.env.DIST;
+// 安全设置
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+app.commandLine.appendSwitch('disable-web-security');
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) {
@@ -31,8 +35,11 @@ const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
+  Menu.setApplicationMenu(null);
   win = new BrowserWindow({
-    title: 'Main window',
+    title: 'ghs',
+    width: 1470,
+    height: 788,
     icon: join(process.env.PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -40,7 +47,10 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
-
+  const { proxy, needProxy } = useSetting();
+  if (needProxy && proxy) {
+    win.webContents.session.setProxy({ proxyRules: proxy });
+  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(url);
     win.webContents.openDevTools();
@@ -49,9 +59,7 @@ async function createWindow() {
   }
 
   win.webContents.on('did-finish-load', () => {
-    setTimeout(() => {
-      sendMessage('564564656');
-    }, 2000);
+    sendMessage('start done');
   });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
