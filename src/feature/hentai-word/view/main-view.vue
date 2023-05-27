@@ -25,13 +25,13 @@
   const pageInfos = ref<pageInfo[]>();
   const tags_ = ref<tags[]>();
   const loadPage = (url: string) => {
-    progress.start?.();
+    progress.start();
     getHtml(url).then((res) => {
       hw_getHtmlInfo(res).then((res) => {
         infos.value = res.mainHtml;
         pageInfos.value = res.pageInfo;
         tags_.value = res.tags;
-        progress.done?.();
+        progress.done();
       });
     });
   };
