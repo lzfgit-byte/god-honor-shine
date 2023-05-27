@@ -23,7 +23,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: routes.map(({ path, name, component }) => ({ path, name, component })),
 });
-export default {};
+export default router;
 export const registerRouter = (app: App) => {
   app.use(router);
 };
