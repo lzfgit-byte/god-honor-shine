@@ -28,15 +28,15 @@
 
 <script setup lang="ts">
   import type { PropType } from 'vue';
-  import { defineEmits, defineProps, inject } from 'vue';
+  import { defineEmits, defineProps } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
   import { getHtml } from '@/utils/functions';
+  import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   const props = defineProps({
     coverInfo: Object as PropType<comicCover>,
   });
   const emits = defineEmits(['toContent', 'searchComic']);
-  const { getComicDetailInfo } = comicFunc(inject);
   const handlerTagClick = (url: string) => {
     bus.emit('searchComic', url);
   };
@@ -44,7 +44,7 @@
     const jumpUrl = props?.coverInfo?.jumpUrl || '';
     getHtml(jumpUrl)
       .then((res) => {
-        return getComicDetailInfo(res);
+        return comic_getComicDetailInfo(res);
       })
       .then((res) => {
         emits('toContent', res);
