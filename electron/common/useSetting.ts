@@ -1,4 +1,4 @@
-import { ensureFileSync, readFileSync } from 'fs-extra';
+import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
 import type { settingType } from '../type/types';
 
 const configFile = `${process.cwd()}/config.json`;
@@ -6,6 +6,7 @@ const defaultConfig = { proxy: 'socks5://127.0.0.1:10801', needProxy: true };
 
 const ensure = () => {
   ensureFileSync(configFile);
+  writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2));
 };
 let setJson: settingType = defaultConfig;
 const load = () => {
