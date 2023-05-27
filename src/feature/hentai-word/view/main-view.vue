@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <div class="head">
-      <HentaiWordCard v-for="item in infos" :key="item" :info="item"></HentaiWordCard>
-    </div>
     <div class="pagination">
       <PaginationHentaiWord
         :page-infos="pageInfos"
         @change-page="handlerChangePage"
       ></PaginationHentaiWord>
+    </div>
+    <div class="body">
+      <HentaiWordCard v-for="item in infos" :key="item" :info="item"></HentaiWordCard>
     </div>
   </div>
 </template>
@@ -42,4 +42,23 @@
   };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+  .container {
+    .pagination {
+      display: flex;
+      justify-content: right;
+      position: fixed;
+      top: 0;
+      z-index: 2;
+      background: white;
+      width: 100vw;
+      height: 57px;
+      box-sizing: border-box;
+      padding-right: 33px;
+    }
+    .body {
+      display: inline-block;
+      padding-top: 55px;
+    }
+  }
+</style>
