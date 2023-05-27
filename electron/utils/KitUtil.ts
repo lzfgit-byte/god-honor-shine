@@ -1,5 +1,10 @@
 export const isFalsity = (data) =>
-  data === null || data === '' || data === undefined || data === 'undefined';
+  data === null ||
+  data === '' ||
+  data === undefined ||
+  data === 'undefined' ||
+  data === false ||
+  data === 'null';
 
 export const isTruth = (data) => !isFalsity(data);
 

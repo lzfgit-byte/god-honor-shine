@@ -69,7 +69,6 @@
   const isSpinning = ref(true);
   const progressValue = ref(0);
   const hasShowProgress = ref(false);
-  console.log('--->', getImgUrl(prop?.info?.coverUrl as any));
   const imgBase64 = ref(getImgUrl(prop?.info?.coverUrl as any));
   const videoSet = reactive({
     visible: false,

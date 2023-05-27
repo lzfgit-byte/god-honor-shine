@@ -13,6 +13,11 @@ export const getHtml = (url: string) => {
       return;
     }
     const request = net.request(url);
+    if (!net.online) {
+      sendMessage('离线');
+      reject('离线');
+      return;
+    }
     sendMessage(`请求中 ${url}`);
     request.on('response', (response) => {
       let html = '';
