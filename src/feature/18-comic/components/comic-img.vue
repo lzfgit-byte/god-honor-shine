@@ -20,7 +20,46 @@
     scrambleId: String,
     src: String,
   });
-
+  const get_num = (e, t) => {
+    let a = 10;
+    let n: any = `${e}${t}`;
+    switch (
+      ((n = (n = (n = Md5.hashStr(n)).substr(-1)).charCodeAt(0)),
+      e >= 268850 && e <= 421925 ? (n %= 10) : e >= 421926 && (n %= 8),
+      n)
+    ) {
+      case 0:
+        a = 2;
+        break;
+      case 1:
+        a = 4;
+        break;
+      case 2:
+        a = 6;
+        break;
+      case 3:
+        a = 8;
+        break;
+      case 4:
+        a = 10;
+        break;
+      case 5:
+        a = 12;
+        break;
+      case 6:
+        a = 14;
+        break;
+      case 7:
+        a = 16;
+        break;
+      case 8:
+        a = 18;
+        break;
+      case 9:
+        a = 20;
+    }
+    return a;
+  };
   const images = ref();
   const containerHeight = ref('500');
   const canvas = ref();
@@ -32,15 +71,8 @@
   } else {
     let url = props.src || '';
     const aid = props?.aid || '0';
-    const num =
-      parseInt(aid) < 268850
-        ? 10
-        : ((Md5.hashStr(`${props?.aid}${url.slice(url.lastIndexOf('/') + 1).split('.')[0]}`)
-            .slice(-1)
-            .charCodeAt(0) %
-            10) +
-            1) *
-          2;
+    const cur = url.substring(url.indexOf(aid) + aid.length + 1, url.indexOf('.webp'));
+    const num = get_num(aid, cur);
     const img = new Image();
     img.src = getImgUrl(props.src as string);
     img.onload = () => {

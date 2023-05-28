@@ -8,10 +8,10 @@
           style="height: 32px; padding-right: 10px"
           @keydown.enter="handlerSarch"
         />
-        <el-button type="primary" plain @click="reset">刷新</el-button>
-        <el-button type="primary" plain @click="removeCacheAll_">清除缓存</el-button>
-        <el-button type="primary" plain @click="showStore">阅读记录</el-button>
-        <el-button type="primary" plain @click="byTagsVisable = true">分类查询</el-button>
+        <el-button type="primary" @click="reset">刷新</el-button>
+        <el-button type="primary" @click="removeCacheAll_">清除缓存</el-button>
+        <el-button type="primary" @click="showStore">阅读记录</el-button>
+        <el-button type="primary" @click="byTagsVisable = true">分类查询</el-button>
       </el-space>
     </div>
     <el-card>
@@ -73,15 +73,12 @@
         }}
         / {{ item.item.title }}
 
-        <el-button
-          type="primary"
-          plain
-          @click.stop="removeOne(item?.item?.jumpUrl as string, index)"
-          >删除</el-button
+        <el-text type="primary" @click.stop="removeOne(item?.item?.jumpUrl as string, index)"
+          >删除</el-text
         >
-        <el-button type="primary" plain @click.stop="handlerSarch(item.detail?.title as setting)">
+        <el-text type="primary" plain @click.stop="handlerSarch(item.detail?.title as setting)">
           搜索该书
-        </el-button>
+        </el-text>
       </span>
     </div>
   </el-dialog>

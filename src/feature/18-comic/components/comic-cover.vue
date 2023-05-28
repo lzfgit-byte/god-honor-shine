@@ -31,11 +31,10 @@
   import { defineEmits, defineProps } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
-  import { getHtml, getHtmlByWin } from '@/utils/functions';
+  import { getHtmlByWin } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   import { getImgUrl } from '@/utils/kit-utils';
   import { emitMessage } from '@/common/useMsgTitle';
-  import useEvent2Render from '@/common/useEvent2Render';
   const props = defineProps({
     coverInfo: Object as PropType<comicCover>,
   });
