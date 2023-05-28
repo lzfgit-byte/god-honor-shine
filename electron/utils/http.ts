@@ -1,4 +1,5 @@
-import { net } from 'electron';
+import { ipcMain, net } from 'electron';
+import { childWin } from '../common/use-child-win';
 import { sendMessage } from './message';
 import { getCache, saveCache } from './cache';
 import { isTruth } from './KitUtil';
@@ -36,5 +37,23 @@ export const getHtml = (url: string) => {
       });
     });
     request.end();
+  });
+};
+
+export const getHtmlByWin = (url: string) => {
+  const suffix = 'html';
+  return new Promise((resolve, reject) => {
+    const h = getCache(url, suffix);
+    if (isTruth(h)) {
+      sendMessage('缓存命中');
+      resolve(h);
+      return;
+    }
+    ipcMain.removeHandler('sync-done');
+    childWin.loadURL(url);
+    ipcMain.handle('sync-done', (se, ...args) => {
+      console.log(args);
+      resolve(args);
+    });
   });
 };

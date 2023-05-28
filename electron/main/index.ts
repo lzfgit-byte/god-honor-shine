@@ -6,7 +6,7 @@ import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
 import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
-import useChildWin from '../common/useChildWin';
+import useChildWin from '../common/use-child-win';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');

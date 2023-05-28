@@ -1,6 +1,9 @@
 import { executeFunction } from '@/utils/ipc';
 
 export const getHtml = async (url: string): Promise<string> => executeFunction('getHtml', url);
+export const getHtmlByWin = async (url: string): Promise<string> =>
+  executeFunction('getHtmlByWin', url);
+
 // 刷新
 export const clearCache = async (url = null, suffix = ''): Promise<any> =>
   executeFunction('clearCache', url, suffix);
@@ -11,4 +14,3 @@ export const setSetting = async (key: string, value: any): Promise<any> =>
   executeFunction('setSetting', key, value);
 export const openWindows = (url = '') => executeFunction('open-win', url);
 openWindows();
-export const loadWinUrl = (url: string): Promise<any> => executeFunction('set-win', url);

@@ -31,7 +31,7 @@
   import { defineEmits, defineProps } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
-  import { getHtml, loadWinUrl, openWindows } from '@/utils/functions';
+  import { getHtml, getHtmlByWin } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   import { getImgUrl } from '@/utils/kit-utils';
   import { emitMessage } from '@/common/useMsgTitle';
@@ -45,20 +45,17 @@
   };
   const handlerImgClick = () => {
     const jumpUrl = props?.coverInfo?.jumpUrl || '';
-    loadWinUrl(jumpUrl);
-    useEvent2Render('sync-done', () => {
-      getHtml(jumpUrl)
-        .then((res) => {
-          return comic_getComicDetailInfo(res);
-        })
-        .then((res) => {
-          if (res.title === 'Just a moment...') {
-            emitMessage('cloud flare  Just a moment...');
-            return;
-          }
-          emits('toContent', res);
-        });
-    });
+    getHtmlByWin(jumpUrl)
+      .then((res) => {
+        return comic_getComicDetailInfo(res);
+      })
+      .then((res) => {
+        if (res.title === 'Just a moment...') {
+          emitMessage('cloud flare  Just a moment...');
+          return;
+        }
+        emits('toContent', res);
+      });
   };
 </script>
 
