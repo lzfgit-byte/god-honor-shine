@@ -39,7 +39,9 @@ export const showChildWin = () => {
   childWindow.show();
 };
 export const hideChildWin = () => {
-  childWindow.hide();
+  if (childWindow.isVisible()) {
+    childWindow.hide();
+  }
 };
 
 export const loadAndRes = async (url: string) => {
@@ -47,6 +49,7 @@ export const loadAndRes = async (url: string) => {
     childWindow.loadURL(url);
     ipcMain.removeHandler('sync-done');
     ipcMain.handle('sync-done', (se, html) => {
+      hideChildWin();
       resolve(html);
     });
   });
