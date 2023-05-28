@@ -1,1 +1,3 @@
-import { ipcRenderer } from 'electron';
+window.onmessage = (ev) => {
+  console.log(ev.data.payload);
+};

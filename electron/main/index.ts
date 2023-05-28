@@ -1,79 +1,82 @@
-import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron';
-import { release } from 'os';
-import { join } from 'path';
-import { exportFunc } from '../utils/ipc';
-import { getSetting, setStaticSetting } from '../utils/setting';
-import servers from '../utils/servers';
+import { release } from 'node:os';
+import { join } from 'node:path';
+import { BrowserWindow, Menu, app, globalShortcut, ipcMain, shell } from 'electron';
+import { sendMessage } from '../utils/message';
+import useSetting from '../common/use-setting';
+import useIpcMain from '../common/use-ipc-main';
+import useService from '../common/use-service';
+import useCookie from '../common/use-cookie';
+import useChildWin from '../common/use-child-win';
+import useGlobalShortcut from '../common/use-global-shortcut';
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+process.env.DIST_ELECTRON = join(__dirname, '..');
+process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
+process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
+  ? join(process.env.DIST_ELECTRON, '../public')
+  : process.env.DIST;
+// 安全设置
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 app.commandLine.appendSwitch('disable-web-security');
+
 // Disable GPU Acceleration for Windows 7
-if (release().startsWith('6.1')) app.disableHardwareAcceleration();
+if (release().startsWith('6.1')) {
+  app.disableHardwareAcceleration();
+}
 
 // Set application name for Windows 10+ notifications
-if (process.platform === 'win32') app.setAppUserModelId(app.getName());
+if (process.platform === 'win32') {
+  app.setAppUserModelId(app.getName());
+}
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
   process.exit(0);
 }
-
-// Remove electron security warnings
-// This warning only shows in development mode
-// Read more on https://www.electronjs.org/docs/latest/tutorial/security
-// process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
-
-export const ROOT_PATH = {
-  // /dist
-  dist: join(__dirname, '../..'),
-  // /dist or /public
-  public: join(__dirname, app.isPackaged ? '../..' : '../../../public'),
-};
-
+// 启动服务
+const closeServer = useService();
 let win: BrowserWindow | null = null;
-// Here, you can also use other preload
+
 const preload = join(__dirname, '../preload/index.js');
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin
-// const url = `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`;
-const url = `${process.env['VITE_DEV_SERVER_URL']}`;
-const indexHtml = join(ROOT_PATH.dist, 'index.html');
+
+const url = process.env.VITE_DEV_SERVER_URL;
+const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
   Menu.setApplicationMenu(null);
   win = new BrowserWindow({
-    width: 1470,
+    title: 'ghs',
+    width: 1450,
     height: 788,
-    title: 'Main window',
-    icon: join(ROOT_PATH.public, 'favicon.ico'),
+    icon: join(process.env.PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
-      // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // Consider using contextBridge.exposeInMainWorld
-      // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-  const proxy = getSetting('proxy');
-  if (getSetting('needProxy') && proxy) {
+  const { proxy, needProxy } = useSetting();
+  if (needProxy && proxy) {
     win.webContents.session.setProxy({ proxyRules: proxy });
   }
-  if (app.isPackaged) {
-    win.loadFile(indexHtml);
-  } else {
+  if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(url);
-    // Open devTool if the app is not packaged
     win.webContents.openDevTools();
+  } else {
+    win.loadFile(indexHtml);
   }
 
-  // Test actively push message to the Electron-Renderer
   win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString());
+    sendMessage('start done');
   });
-
-  // Make all links open with the browser, not with the application
+  useGlobalShortcut();
+  const closeChildWin = useChildWin(null);
+  win.webContents.on('destroyed', () => {
+    closeChildWin();
+  });
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) shell.openExternal(url);
+    if (url.startsWith('https:')) {
+      shell.openExternal(url);
+    }
     return { action: 'deny' };
   });
 }
@@ -82,14 +85,17 @@ app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   win = null;
-  servers.close();
-  if (process.platform !== 'darwin') app.quit();
+  closeServer();
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('second-instance', () => {
   if (win) {
-    // Focus on the main window if the user tried to open another
-    if (win.isMinimized()) win.restore();
+    if (win.isMinimized()) {
+      win.restore();
+    }
     win.focus();
   }
 });
@@ -103,23 +109,6 @@ app.on('activate', () => {
   }
 });
 
-// new window example arg: new windows url
-ipcMain.handle('open-win', (event, arg) => {
-  const childWindow = new BrowserWindow({
-    webPreferences: {
-      preload,
-    },
-  });
-
-  if (app.isPackaged) {
-    childWindow.loadFile(indexHtml, { hash: arg });
-  } else {
-    childWindow.loadURL(`${url}/#${arg}`);
-    // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
-  }
-});
-//修正方法
-setStaticSetting('methods', Object.keys(exportFunc));
-Object.keys(exportFunc).forEach((item) => {
-  ipcMain.handle(item, exportFunc[item]);
-});
+// 注册远程方法
+useIpcMain();
+useCookie();

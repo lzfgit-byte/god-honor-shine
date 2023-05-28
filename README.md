@@ -1,44 +1,73 @@
+# electron-vite-vue
 
-ghs
+🥳 Really simple `Electron` + `Vue` + `Vite` boilerplate.
 
-## npm常用命令
-npm install --save-dev <PACKAGENAME>
-npm install --save <PACKAGENAME>
-npm install --production
-pnpm install @vuedx/typescript-plugin-vue@latest --save-dev
+<!-- [![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite) -->
+<!-- [![Netlify Status](https://api.netlify.com/api/v1/badges/ae3863e3-1aec-4eb1-8f9f-1890af56929d/deploy-status)](https://app.netlify.com/sites/electron-vite/deploys) -->
+<!-- [![GitHub license](https://img.shields.io/github/license/caoxiemeihao/electron-vite-vue)](https://github.com/electron-vite/electron-vite-vue/blob/main/LICENSE) -->
+<!-- [![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/electron-vite-vue?color=fa6470)](https://github.com/electron-vite/electron-vite-vue) -->
+<!-- [![GitHub forks](https://img.shields.io/github/forks/caoxiemeihao/electron-vite-vue)](https://github.com/electron-vite/electron-vite-vue) -->
+[![GitHub Build](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml/badge.svg)](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml)
+[![GitHub Discord](https://img.shields.io/badge/chat-discord-blue?logo=discord)](https://discord.gg/sRqjYpEAUK)
 
-npm install <package>@<version>
-npm install -g webpack@4.16.4
+## Features
 
-npm view cowsay versions
+📦 Out of the box  
+🎯 Based on the official [template-vue-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-vue-ts), less invasive  
+🌱 Extensible, really simple directory structure  
+💪 Support using Node.js API in Electron-Renderer  
+🔩 Support C/C++ native addons  
+🖥 It's easy to implement multiple windows  
 
-npm uninstall -S <package-name>
+## Quick Start
 
-npm uninstall -D <package-name>
+```sh
+npm create electron-vite
+```
 
-npm uninstall -g <package-name>
-##git-prefix
+<!-- [![quick-start](https://asciinema.org/a/483731.svg)](https://asciinema.org/a/483731) -->
 
-| 命令  | 说明 |
-|-----|-----|
-|build|发布版本;|
-|chore|改变构建流程,或者增加依赖;|
-|ci|持续集成构建;|
-|docs|文档修改;|
-|feat|新特性;|
-|fix|修改问题;|
-|pref|新特性;|
-|refactor|代码重构;|
-|revert|回滚到上一个版本;|
-|style|代码格式修改;|
-|test|测试用例修改|
-npm install eslint-plugin-prettier --registry=https://registry.npm.taobao.org/
+![electron-vite-vue.gif](/electron-vite-vue.gif)
 
+## Debug
 
+![electron-vite-react-debug.gif](https://github.com/electron-vite/electron-vite-react/blob/main/electron-vite-react-debug.gif?raw=true)
 
-## git 从github克隆失败解决
-git config --global http.sslVerify "false"
-git config --global http.proxy 127.0.0.1:10808
-git config --global https.proxy 127.0.0.1:10808
-git config --global --unset http.proxy
-git config --global --unset https.proxy
+## Directory
+
+```diff
++ ├─┬ electron
++ │ ├─┬ main
++ │ │ └── index.ts    entry of Electron-Main
++ │ └─┬ preload
++ │   └── index.ts    entry of Preload-Scripts
+  ├─┬ src
+  │ └── main.ts       entry of Electron-Renderer
+  ├── index.html
+  ├── package.json
+  └── vite.config.ts
+```
+
+<!--
+## Be aware
+
+🚨 By default, this template integrates Node.js in the Renderer process. If you don't need it, you just remove the option below. [Because it will modify the default config of Vite](https://github.com/electron-vite/vite-plugin-electron-renderer#config-presets-opinionated).
+
+```diff
+# vite.config.ts
+
+export default {
+  plugins: [
+-   // Use Node.js API in the Renderer-process
+-   renderer({
+-     nodeIntegration: true,
+-   }),
+  ],
+}
+```
+-->
+
+## FAQ
+
+- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
+- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)

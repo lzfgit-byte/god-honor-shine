@@ -1,9 +1,8 @@
-import { webContents } from 'electron';
-const content = null;
-const getContent = () => {
-  webContents?.getFocusedWebContents();
-};
+import { ipcMain, webContents } from 'electron';
+
 export const sendMessage = (msg: string) => {
-  // ipcMain
   webContents?.getFocusedWebContents()?.send('main-process-message', msg);
 };
+ipcMain.handle('sen-msg', (s, a) => {
+  sendMessage(a);
+});

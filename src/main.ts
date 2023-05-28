@@ -1,10 +1,14 @@
 import { createApp } from 'vue';
-import App from './App.vue';
-import './samples/node-api';
-import 'ant-design-vue/dist/antd.css';
-import 'nprogress/nprogress.css';
-createApp(App)
-  .mount('#app')
-  .$nextTick(() => {
-    postMessage({ payload: 'removeLoading' }, '*');
-  });
+import locale from 'element-plus/lib/locale/lang/zh-cn'; // element中文
+import ElementPlus from 'element-plus';
+import App from '@/App.vue';
+import '@/samples/node-api';
+import 'element-plus/dist/index.css';
+
+import { registerRouter } from '@/router/router';
+
+const app = createApp(App);
+registerRouter(app);
+app.use(ElementPlus, { locale }).mount('#app');
+// 可以给 preload 进程发消息
+// postMessage({ payload: 'removeLoading' }, '*')

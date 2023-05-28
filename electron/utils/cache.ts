@@ -1,38 +1,46 @@
-import {
-  writeFile,
-  readFile,
-  emptyDir,
-  hasFile,
-  deleteFile,
-  appendFile,
-  deleteFileEtc,
-} from './file';
-import { solveName, getCacheDir, solvePath } from './urls';
-export interface cacheMethods {
-  hasCache: (name: string) => any;
-  cached: (name: any, data: any) => any;
-  clearCache: () => any;
-  hasCacheSync: (name: string) => any;
-}
-export const hasCache = async (name: any) => {
-  return readFile(solveName(decodeURI(name)));
+import path from 'node:path';
+import { unlinkSync } from 'node:fs';
+import { Md5 } from 'ts-md5';
+import { emptyDir, ensureFileSync, existsSync, readFileSync, writeFileSync } from 'fs-extra';
+import { isFalsity } from './KitUtil';
+
+const CACHE_PATH = path.join(process.cwd(), '/ghs-cache/');
+
+export const buildFilePathName = (fileName, suffix = '') =>
+  CACHE_PATH + Md5.hashStr(fileName) + suffix;
+
+export const getCachePath = () => CACHE_PATH;
+
+export const saveCache = (fileName, data, suffix = '') => {
+  ensureFileSync(buildFilePathName(fileName, suffix));
+  writeFileSync(buildFilePathName(fileName, suffix), data, { encoding: 'utf-8' });
 };
-export const cached = (name: any, data: any) => {
-  writeFile(solveName(decodeURI(name)), data);
+export const existsCache = (fileName, suffix = '') => {
+  return existsSync(buildFilePathName(fileName, suffix));
 };
-export const cachedFileAppend = (name: any, data: any) => {
-  appendFile(solveName(decodeURI(name)), data);
+export const getCache = (fileName, suffix = '') => {
+  if (existsCache(fileName, suffix)) {
+    return readFileSync(buildFilePathName(fileName, suffix), { encoding: 'utf-8' });
+  }
+  return false;
 };
-export const removeCachedExt = (name: any) => {
-  deleteFileEtc(solveName(decodeURI(name)));
+
+export const saveByteCache = (fileName, data, suffix = '') => {
+  writeFileSync(buildFilePathName(fileName, suffix), data);
 };
-export const getCachePath = (name: any) => solvePath(solveName(decodeURI(name)));
-export const clearCache = () => {
-  emptyDir(getCacheDir());
+export const getByteCache = (fileName, suffix = '') => {
+  if (existsCache(fileName, suffix)) {
+    return readFileSync(buildFilePathName(fileName, suffix));
+  }
+  return false;
 };
-export const hasCacheSync = (name: any) => {
-  return hasFile(name);
-};
-export const removeCache = (url: string) => {
-  return deleteFile(solveName(url));
+
+export const clearCache = (fileName, suffix = '') => {
+  if (isFalsity(fileName)) {
+    emptyDir(CACHE_PATH);
+    return;
+  }
+  if (existsCache(fileName, suffix)) {
+    unlinkSync(buildFilePathName(fileName, suffix));
+  }
 };
