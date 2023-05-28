@@ -24,6 +24,13 @@ export const routes = [
     showInMenu: true,
     component: () => import('@/feature/18-comic/view/18-comic-main.vue'),
   },
+  {
+    path: '/rule34',
+    name: 'rule34',
+    aliasZH: 'rule34',
+    showInMenu: true,
+    component: () => import('@/feature/rule34/view/rule34-main.vue'),
+  },
 ];
 
 const router = createRouter({
