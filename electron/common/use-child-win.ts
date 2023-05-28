@@ -9,7 +9,6 @@ ipcMain.handle('open-win', (_, arg) => {
     width: 1450,
     height: 788,
     parent,
-    minimizable: true,
     webPreferences: {
       preload: download,
       nodeIntegration: true,
@@ -22,6 +21,7 @@ ipcMain.handle('open-win', (_, arg) => {
   if (needProxy && proxy) {
     session.setProxy({ proxyRules: proxy });
   }
+  childWindow.minimize();
 });
 
 export const loadAndRes = async (url: string) => {

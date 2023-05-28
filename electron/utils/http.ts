@@ -49,7 +49,9 @@ export const getHtmlByWin = (url: string) => {
       resolve(h);
       return;
     }
+    sendMessage('获取中 ....');
     loadAndRes(url).then((html) => {
+      sendMessage(`当前链接 ....${url}`);
       resolve(html);
     });
   });
