@@ -74,6 +74,10 @@ async function createWindow() {
       win.webContents.openDevTools();
     }
   });
+  const closeChildWin = useChildWin(null);
+  win.webContents.on('destroyed', () => {
+    closeChildWin();
+  });
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) {
       shell.openExternal(url);
@@ -113,4 +117,3 @@ app.on('activate', () => {
 // 注册远程方法
 useIpcMain();
 useCookie();
-useChildWin();
