@@ -11,6 +11,9 @@ app.use(bodyParser.json());
 app.get('/getImg', (req, res) => {
   handlerGetImg(req, res);
 });
+app.get('/getByte', (req, res) => {
+  handlerGetImg(req, res);
+});
 
 const server = app.listen(port, () => {
   console.log(`Example app listening on port http://${hostname}:${port}/`);

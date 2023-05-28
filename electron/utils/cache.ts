@@ -6,7 +6,8 @@ import { isFalsity } from './KitUtil';
 
 const CACHE_PATH = path.join(process.cwd(), '/ghs-cache/');
 
-const buildFilePathName = (fileName, suffix = '') => CACHE_PATH + Md5.hashStr(fileName) + suffix;
+export const buildFilePathName = (fileName, suffix = '') =>
+  CACHE_PATH + Md5.hashStr(fileName) + suffix;
 
 export const getCachePath = () => CACHE_PATH;
 

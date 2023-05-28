@@ -53,6 +53,7 @@
   import VideoHtml5 from '@/components/video-html5.vue';
   import { getHtml } from '@/utils/functions';
   import { rule34_getRule34Video } from '@/feature/rule34/utils/functions';
+  import { getVideoUrl } from '@/utils/kit-utils';
 
   const props = defineProps({ videoD: Object as PropType<videoInfo> });
   const videoSet = reactive({
@@ -94,7 +95,7 @@
     videoChose.visible = false;
     videoSet.videoUrl = item.videoUrl as any;
     videoSet.playVideo(
-      `http://127.0.0.1:3333/getByte?url=${item.videoUrl}`,
+      getVideoUrl(item.videoUrl as string),
       `${props?.videoD?.title}[${item.postFix}]`
     );
   };
