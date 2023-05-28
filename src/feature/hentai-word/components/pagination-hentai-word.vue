@@ -2,11 +2,11 @@
   <div id="more-hentai">
     <div class="navigation">
       <ol class="wp-paginate font-inherit">
-        <li v-for="item in pageInfos" :key="item.jumpUrl">
-          <span v-if="item.isCurrent" class="page current">{{ item.pageNumber }}</span>
-          <span v-else-if="item.pageNumber === '...'">{{ item.pageNumber }}</span>
-          <span v-else class="page" @click="handleClick(item.jumpUrl)">
-            {{ item.pageNumber }}
+        <li v-for="(item, index) in pageInfos" :key="item?.jumpUrl + index + item?.pageNumber">
+          <span v-if="item?.isCurrent" class="page current">{{ item?.pageNumber }}</span>
+          <span v-else-if="item?.pageNumber === '...'">{{ item?.pageNumber }}</span>
+          <span v-else class="page" @click="handleClick(item.jumpUrl as string)">
+            {{ item?.pageNumber }}
           </span>
         </li>
       </ol>
