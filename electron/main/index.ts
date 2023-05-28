@@ -7,6 +7,7 @@ import useIpcMain from '../common/use-ipc-main';
 import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
 import useChildWin from '../common/use-child-win';
+import useGlobalShortcut from '../common/use-global-shortcut';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -67,13 +68,7 @@ async function createWindow() {
   win.webContents.on('did-finish-load', () => {
     sendMessage('start done');
   });
-  // 注册快捷键
-  globalShortcut.register('ctrl+shift+alt+e', function () {
-    let win = BrowserWindow.getFocusedWindow();
-    if (win) {
-      win.webContents.openDevTools();
-    }
-  });
+  useGlobalShortcut();
   const closeChildWin = useChildWin(null);
   win.webContents.on('destroyed', () => {
     closeChildWin();

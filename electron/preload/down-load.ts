@@ -29,7 +29,9 @@ function blobToString(blob) {
     reader.readAsText(blob);
   });
 }
-
+const senMsg = (msg) => {
+  ipcRenderer.invoke('sen-msg', msg);
+};
 function downloadURL(url = null) {
   if (!url) {
     url = window.location.href;
@@ -38,12 +40,14 @@ function downloadURL(url = null) {
 
   xhr.open('GET', url, true);
   xhr.responseType = 'blob';
-
+  senMsg('异步执行中');
   xhr.onload = function () {
     if (xhr.status === 200) {
       const blob = xhr.response;
       blobToString(blob).then((html) => {
+        senMsg('获取成功');
         ipcRenderer.invoke('saveCache', window.location.href, html, 'html').then(() => {
+          senMsg('发送中');
           ipcRenderer.invoke('sync-done', html);
         });
       });

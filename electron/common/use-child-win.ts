@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { BrowserWindow, ipcMain } from 'electron';
+import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import useSetting from './use-setting';
 const download = join(__dirname, '../preload/down-load.js');
 let childWindow: BrowserWindow = null;
@@ -21,16 +21,28 @@ ipcMain.handle('open-win', (_, arg) => {
   if (needProxy && proxy) {
     session.setProxy({ proxyRules: proxy });
   }
-  childWindow.minimize();
+  globalShortcut.register('ctrl+shift+s', function () {
+    childWindow.show();
+  });
+  globalShortcut.register('ctrl+shift+h', function () {
+    childWindow.hide();
+  });
+  childWindow.hide();
 });
+export const showChildWin = () => {
+  childWindow.show();
+};
+export const hideChildWin = () => {
+  childWindow.hide();
+};
 
 export const loadAndRes = async (url: string) => {
   return new Promise((resolve) => {
-    ipcMain.removeHandler('sync-done');
     childWindow.loadURL(url);
     ipcMain.handle('sync-done', (se, html) => {
       resolve(html);
     });
+    ipcMain.removeHandler('sync-done');
   });
 };
 export default (win: BrowserWindow) => {
