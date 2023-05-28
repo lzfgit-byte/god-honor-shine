@@ -1,5 +1,5 @@
-import { ipcMain, net } from 'electron';
-import { childWin } from '../common/use-child-win';
+import { net } from 'electron';
+import { loadAndRes } from '../common/use-child-win';
 import { sendMessage } from './message';
 import { getCache, saveCache } from './cache';
 import { isTruth } from './KitUtil';
@@ -49,11 +49,8 @@ export const getHtmlByWin = (url: string) => {
       resolve(h);
       return;
     }
-    ipcMain.removeHandler('sync-done');
-    childWin.loadURL(url);
-    ipcMain.handle('sync-done', (se, ...args) => {
-      console.log(args);
-      resolve(args);
+    loadAndRes(url).then((html) => {
+      resolve(html);
     });
   });
 };

@@ -21,5 +21,13 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 });
 
-export const childWin = childWindow;
+export const loadAndRes = async (url: string) => {
+  return new Promise((resolve) => {
+    ipcMain.removeHandler('sync-done');
+    childWindow.loadURL(url);
+    ipcMain.handle('sync-done', (se, html) => {
+      resolve(html);
+    });
+  });
+};
 export default () => {};
