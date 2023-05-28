@@ -2,22 +2,23 @@
   <div ref="rule34CRef" class="rule34Container">
     <div ref="containerRef" class="container">
       <div class="pagination">
-        <div class="topBtn">
-          <el-input
-            v-model="drawer.searchValue"
-            placeholder="Please input"
-            style="height: 32px; padding-right: 10px"
-            @keydown.enter="drawer.search"
-          >
-            <template #append>
-              <el-button :icon="Search as any" @click="drawer.search" />
-            </template>
-          </el-input>
-          <el-button type="primary" @click="reload">刷新</el-button>
-          <el-button type="primary" @click="reset">重置</el-button>
-          <el-button type="primary" @click="drawer.visible = true">标签</el-button>
-        </div>
-        <Rule34Pagination :page-infos="pages" @page-change="handlerPageChange"></Rule34Pagination>
+        <Rule34Pagination :page-infos="pages" @page-change="handlerPageChange">
+          <div class="topBtn">
+            <el-input
+              v-model="drawer.searchValue"
+              placeholder="Please input"
+              style="height: 32px; padding-right: 10px"
+              @keydown.enter="drawer.search"
+            >
+              <template #append>
+                <el-button :icon="Search as any" @click="drawer.search" />
+              </template>
+            </el-input>
+            <el-button type="primary" @click="reload">刷新</el-button>
+            <el-button type="primary" @click="reset">重置</el-button>
+            <el-button type="primary" @click="drawer.visible = true">标签</el-button>
+          </div>
+        </Rule34Pagination>
       </div>
       <div class="pageInfos">
         <Rule34Card v-for="item in videos" :key="item" :video-d="item"></Rule34Card>
@@ -123,7 +124,7 @@
 
 <style scoped lang="less">
   .rule34Container {
-    height: 100vh;
+    height: 97vh;
     overflow: auto;
     .container {
       background: #212b31;
@@ -131,6 +132,11 @@
         position: fixed;
         z-index: 10;
         width: 100%;
+      }
+      .topBtn {
+        display: flex;
+        transform: translateY(10px);
+        padding-right: 10px;
       }
       .pageInfos {
         padding-top: 50px;

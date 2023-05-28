@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <slot></slot>
     <div
       v-for="item in pageInfos"
       :key="item"
