@@ -30,10 +30,15 @@
     <div>
       <el-row>
         <el-tag>排序规则</el-tag>
-        <el-radio-group v-model="drawer.defaultSort">
-          <el-radio v-for="item in drawer.sortBy" :key="item" :value="item.value">{{
-            item.name
-          }}</el-radio>
+        <el-radio-group v-model="drawer.defaultSort" class="ml-4">
+          <el-radio
+            v-for="item in drawer.sortBy"
+            :key="item"
+            :label="item.value"
+            :value="item.value"
+          >
+            {{ item.name }}
+          </el-radio>
         </el-radio-group>
       </el-row>
     </div>

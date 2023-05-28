@@ -9,7 +9,12 @@
       {{ `[${videoD.views}]${videoD.title}` }}
     </div>
   </div>
-  <el-dialog v-model="videoSet.visible" width="1050px" :title="videoSet.videoTitle">
+  <el-dialog
+    v-model="videoSet.visible"
+    width="1050px"
+    :title="videoSet.videoTitle"
+    @close="videoSet.handlerCancel"
+  >
     <VideoHtml5
       v-if="videoSet.visible"
       :title="videoSet.videoTitle"
@@ -30,7 +35,7 @@
       </el-space>
     </div>
   </el-dialog>
-  <!--  <img :src="`http://127.0.0.1:3356/closed?url=${videoSet.videoUrl2}`" style="display: none" /> -->
+  <img :src="`http://127.0.0.1:3356/closed?url=${videoSet.videoUrl2}`" style="display: none" />
 </template>
 
 <script setup lang="ts">

@@ -1,8 +1,13 @@
 import * as fs from 'node:fs';
+import type { ClientRequest } from 'electron';
 import { net } from 'electron';
-import { formatSize, isFalsity, isTruth } from '../../utils/KitUtil';
-import { buildFilePathName, existsCache, getByteCache, saveByteCache } from '../../utils';
+import { formatSize, isFalsity } from '../../utils/KitUtil';
+import { buildFilePathName, existsCache, saveByteCache } from '../../utils';
 import { sendMessage } from '../../utils/message';
+let request: ClientRequest = null;
+export const abortDownload = () => {
+  request && request.abort();
+};
 const hasFileExist = (path: string, req: any, res: any) => {
   sendMessage(`视频缓存:${path}`);
   const stat = fs.statSync(path);
@@ -30,7 +35,7 @@ const hasFileExist = (path: string, req: any, res: any) => {
 const requestFormUrl = (url: string, suffix: string, res: any) => {
   let blob: any = Buffer.alloc(0);
   let fileSize: any = 0;
-  const request = net.request(url);
+  request = net.request(url);
   request.on('response', (response) => {
     const header = response.headers;
     fileSize = +header['content-length'];
@@ -70,4 +75,5 @@ export default (req, res) => {
   }
   // 无缓存
   requestFormUrl(url, suffix, res);
+  return abortDownload;
 };
