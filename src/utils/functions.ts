@@ -9,3 +9,10 @@ export const getSetting = async (key: string): Promise<any> => executeFunction('
 // 设置设置
 export const setSetting = async (key: string, value: any): Promise<any> =>
   executeFunction('setSetting', key, value);
+//
+export const openWindows = (url: string) => {
+  executeFunction('open-win', url);
+};
+export const loadWinUrl = (url: string) => {
+  executeFunction('set-win', url);
+};

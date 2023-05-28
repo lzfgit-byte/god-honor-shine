@@ -31,7 +31,7 @@
   import { defineEmits, defineProps } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
-  import { getHtml } from '@/utils/functions';
+  import { getHtml, openWindows } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   import { getImgUrl } from '@/utils/kit-utils';
   import { emitMessage } from '@/common/useMsgTitle';

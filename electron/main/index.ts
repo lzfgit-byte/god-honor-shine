@@ -6,6 +6,7 @@ import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
 import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
+import useChildWin from '../common/useChildWin';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -35,6 +36,7 @@ const closeServer = useService();
 let win: BrowserWindow | null = null;
 
 const preload = join(__dirname, '../preload/index.js');
+
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
@@ -108,21 +110,7 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.handle('open-win', (_, arg) => {
-  const childWindow = new BrowserWindow({
-    webPreferences: {
-      preload,
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
-
-  if (process.env.VITE_DEV_SERVER_URL) {
-    childWindow.loadURL(`${url}#${arg}`);
-  } else {
-    childWindow.loadFile(indexHtml, { hash: arg });
-  }
-});
 // 注册远程方法
 useIpcMain();
 useCookie();
+useChildWin();
