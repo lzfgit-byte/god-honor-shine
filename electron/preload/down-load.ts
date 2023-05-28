@@ -43,8 +43,9 @@ function downloadURL(url = null) {
     if (xhr.status === 200) {
       const blob = xhr.response;
       blobToString(blob).then((html) => {
-        console.log(html);
-        ipcRenderer.invoke('saveCache', window.location.href, html, 'html');
+        ipcRenderer.invoke('saveCache', window.location.href, html, 'html').then(() => {
+          ipcRenderer.invoke('sync-done', window.location.href, html, 'html');
+        });
       });
     }
   };
@@ -53,7 +54,7 @@ function downloadURL(url = null) {
 }
 
 domReady().then(() => {
-  (window as any).downloadURL = downloadURL;
+  downloadURL();
 });
 window.onmessage = (ev) => {
   console.log(ev.data.payload);

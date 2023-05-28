@@ -31,10 +31,11 @@
   import { defineEmits, defineProps } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
-  import { getHtml, openWindows } from '@/utils/functions';
+  import { getHtml, loadWinUrl, openWindows } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   import { getImgUrl } from '@/utils/kit-utils';
   import { emitMessage } from '@/common/useMsgTitle';
+  import useEvent2Render from '@/common/useEvent2Render';
   const props = defineProps({
     coverInfo: Object as PropType<comicCover>,
   });
@@ -44,17 +45,20 @@
   };
   const handlerImgClick = () => {
     const jumpUrl = props?.coverInfo?.jumpUrl || '';
-    getHtml(jumpUrl)
-      .then((res) => {
-        return comic_getComicDetailInfo(res);
-      })
-      .then((res) => {
-        if (res.title === 'Just a moment...') {
-          emitMessage('cloud flare  Just a moment...');
-          return;
-        }
-        emits('toContent', res);
-      });
+    loadWinUrl(jumpUrl);
+    useEvent2Render('sync-done', () => {
+      getHtml(jumpUrl)
+        .then((res) => {
+          return comic_getComicDetailInfo(res);
+        })
+        .then((res) => {
+          if (res.title === 'Just a moment...') {
+            emitMessage('cloud flare  Just a moment...');
+            return;
+          }
+          emits('toContent', res);
+        });
+    });
   };
 </script>
 

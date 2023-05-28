@@ -115,9 +115,10 @@
     setWrapper,
     setting,
   } from '@/feature/18-comic/type/18-comic-type';
-  import { clearCache, getHtml, getSetting, setSetting } from '@/utils/functions';
+  import { clearCache, getHtml, getSetting, loadWinUrl, setSetting } from '@/utils/functions';
   import { comic_getHomeInfo } from '@/feature/18-comic/utils/functions';
   import { nprogress } from '@/utils/nprogress';
+  import useEvent2Render from '@/common/useEvent2Render';
 
   const emits = defineEmits(['toContent', 'searchComic']);
   // 连载更新
@@ -131,17 +132,20 @@
 
   const load = () => {
     nprogress.start();
-    getHtml(HOME_URL)
-      .then((res) => {
-        return comic_getHomeInfo(res);
-      })
-      .then((res: homeInfo) => {
-        serialLatest.value = res.serialLatest;
-        latestKoreanComic.value = res.latestKoreanComic;
-        recommend.value = res.recommend;
-        latest.value = res.latest;
-        nprogress.done();
-      });
+    loadWinUrl(HOME_URL);
+    useEvent2Render('sync-done', () => {
+      getHtml(HOME_URL)
+        .then((res) => {
+          return comic_getHomeInfo(res);
+        })
+        .then((res: homeInfo) => {
+          serialLatest.value = res.serialLatest;
+          latestKoreanComic.value = res.latestKoreanComic;
+          recommend.value = res.recommend;
+          latest.value = res.latest;
+          nprogress.done();
+        });
+    });
   };
   load();
   const removeCacheAll_ = () => {

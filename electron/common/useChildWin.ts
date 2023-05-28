@@ -1,5 +1,6 @@
 import { join } from 'node:path';
 import { BrowserWindow, ipcMain } from 'electron';
+import { emit2render } from '../utils/event';
 import useSetting from './use-setting';
 const download = join(__dirname, '../preload/down-load.js');
 let childWindow: BrowserWindow = null;
@@ -19,9 +20,11 @@ ipcMain.handle('open-win', (_, arg) => {
   if (needProxy && proxy) {
     session.setProxy({ proxyRules: proxy });
   }
-  childWindow.loadURL(`${arg}`);
 });
-ipcMain.handle('set-win', (_, arg) => {
+ipcMain.handle('sync-done', (se, ...args) => {
+  emit2render('sync-done');
+});
+ipcMain.handle('set-win', async (_, arg) => {
   childWindow.loadURL(arg);
 });
 export default () => {};
