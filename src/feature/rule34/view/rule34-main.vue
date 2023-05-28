@@ -14,8 +14,8 @@
                 <el-button :icon="Search as any" @click="drawer.search" />
               </template>
             </el-input>
-            <el-button type="primary" @click="reload">刷新</el-button>
-            <el-button type="primary" @click="reset">重置</el-button>
+            <el-button type="primary" title="清空当前页面缓存" @click="reload">刷新</el-button>
+            <el-button type="primary" title="清空所有缓存" @click="reset">重置</el-button>
             <el-button type="primary" @click="drawer.visible = true">标签</el-button>
           </div>
         </Rule34Pagination>

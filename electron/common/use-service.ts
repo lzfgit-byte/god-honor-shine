@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import handlerGetImg from './service/handler-getImg';
+import handlerGetByte from './service/handler-getByte';
 const app = express();
 const hostname = '127.0.0.1';
 const port = 3356;
@@ -12,7 +13,7 @@ app.get('/getImg', (req, res) => {
   handlerGetImg(req, res);
 });
 app.get('/getByte', (req, res) => {
-  handlerGetImg(req, res);
+  handlerGetByte(req, res);
 });
 
 const server = app.listen(port, () => {

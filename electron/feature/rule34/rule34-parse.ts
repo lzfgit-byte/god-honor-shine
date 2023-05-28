@@ -117,8 +117,10 @@ const rule34_getHDInfo = (str: string) => {
     return '720p';
   } else if (str.includes('1080p') || str.includes('1080.')) {
     return '1080p';
+  } else if (str.includes('2160p') || str.includes('2160.')) {
+    return '2160p';
   } else {
-    return '';
+    return '无';
   }
 };
 export const rule34_getRule34Video = (html: string) => {

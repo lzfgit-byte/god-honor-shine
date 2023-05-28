@@ -9,41 +9,28 @@
       {{ `[${videoD.views}]${videoD.title}` }}
     </div>
   </div>
-  <el-dialog
-    v-model="videoSet.visible"
-    width="1050px"
-    style="top: 5px"
-    :title="videoSet.videoTitle"
-    @cancel="videoSet.handlerCancel"
-    @ok="videoSet.visible = false"
-  >
+  <el-dialog v-model="videoSet.visible" width="1050px" :title="videoSet.videoTitle">
     <VideoHtml5
       v-if="videoSet.visible"
       :title="videoSet.videoTitle"
       :src="videoSet.videoSrc"
     ></VideoHtml5>
   </el-dialog>
-  <el-dialog
-    v-model="videoChose.visible"
-    width="500px"
-    style="top: 5px"
-    title="选择清晰度"
-    centered
-    @cancel="videoChose.visible = false"
-    @ok="videoChose.visible = false"
-  >
-    <el-space>
-      <el-button
-        v-for="item in videos"
-        :key="item"
-        :title="item.videoUrl"
-        @click="handlerClickChose(item)"
-      >
-        {{ item.postFix }}
-      </el-button>
-    </el-space>
+  <el-dialog v-model="videoChose.visible" width="500px" title="选择清晰度">
+    <div>
+      <el-space>
+        <el-button
+          v-for="item in videos"
+          :key="item"
+          :title="item.videoUrl"
+          @click="handlerClickChose(item)"
+        >
+          {{ item.postFix }}
+        </el-button>
+      </el-space>
+    </div>
   </el-dialog>
-  <img :src="`http://127.0.0.1:3356/closed?url=${videoSet.videoUrl2}`" style="display: none" />
+  <!--  <img :src="`http://127.0.0.1:3356/closed?url=${videoSet.videoUrl2}`" style="display: none" /> -->
 </template>
 
 <script setup lang="ts">
