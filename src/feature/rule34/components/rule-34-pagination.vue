@@ -3,7 +3,7 @@
     <slot></slot>
     <div
       v-for="item in pageInfos"
-      :key="item"
+      :key="item?.jumpUrl"
       class="item"
       :class="{ active: (item as any).current }"
       @click="handlerClick(item)"

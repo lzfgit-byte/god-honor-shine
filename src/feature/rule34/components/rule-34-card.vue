@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="imgContainer" :title="videoD?.added" @click="handlerClick">
-      <div class="quality">{{ videoD.quality }}</div>
-      <div class="time">{{ videoD.time }}</div>
+      <div class="quality">{{ videoD?.quality }}</div>
+      <div class="time">{{ videoD?.time }}</div>
       <img width="320" height="180" :src="videoD?.src" alt="" />
     </div>
     <div class="titleContainer" :title="videoD?.title">
-      {{ `[${videoD.views}]${videoD.title}` }}
+      {{ `[${videoD?.views}]${videoD?.title}` }}
     </div>
   </div>
   <el-dialog

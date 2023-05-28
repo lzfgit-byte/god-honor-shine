@@ -21,7 +21,7 @@
         </Rule34Pagination>
       </div>
       <div class="pageInfos">
-        <Rule34Card v-for="item in videos" :key="item" :video-d="item"></Rule34Card>
+        <Rule34Card v-for="item in videos" :key="item.jumpUrl" :video-d="item"></Rule34Card>
       </div>
     </div>
   </div>
@@ -116,7 +116,7 @@
     }
   );
   const reload = () => {
-    clearCache(currentUrl.value).then(() => {
+    clearCache(currentUrl.value as any).then(() => {
       load(currentUrl.value);
     });
   };
