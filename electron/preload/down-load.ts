@@ -47,7 +47,11 @@ function downloadURL(url = null) {
       blobToString(blob).then((html) => {
         senMsg('获取成功');
         ipcRenderer.invoke('saveCache', window.location.href, html, 'html').then(() => {
-          senMsg('发送中');
+          senMsg(`发送中--->${document.title}`);
+          if (document.title.trim() === 'Just a moment...') {
+            ipcRenderer.invoke('show-child-win');
+            return;
+          }
           ipcRenderer.invoke('sync-done', html);
         });
       });
@@ -56,6 +60,9 @@ function downloadURL(url = null) {
 
   xhr.send();
 }
+ipcRenderer.on('re-download', (_event, args) => {
+  downloadURL();
+});
 
 domReady().then(() => {
   downloadURL();
