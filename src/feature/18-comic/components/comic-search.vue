@@ -68,7 +68,7 @@
   };
   load(props?.searchUrl || '');
   const reset = () => {
-    clearCache(props?.searchUrl).then(() => {
+    clearCache(props?.searchUrl as any).then(() => {
       load(props?.searchUrl || '');
     });
   };

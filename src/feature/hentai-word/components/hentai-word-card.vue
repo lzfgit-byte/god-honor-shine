@@ -20,7 +20,7 @@
       <div v-show="hasShowProgress" class="progress">
         <el-progress type="circle" :percent="progressValue"
       /></div>
-      <h4>{{ info.type }}</h4>
+      <h4>{{ info?.type }}</h4>
       <img
         itemprop="thumbnail"
         class="border"
@@ -39,7 +39,7 @@
           border-radius: 4px 0 0 0;
           font-weight: 700;
         "
-        >{{ info.count }}</span
+        >{{ info?.count }}</span
       ></a
     >
   </div>
@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
   import type { PropType } from 'vue';
-  import { defineProps, reactive, ref } from 'vue';
+  import { reactive, ref } from 'vue';
   import { api as viewerApi } from 'v-viewer';
   import type { imgInfo, mainHtml, videoInfo } from '@/feature/hentai-word/type/hw-types';
   import 'viewerjs/dist/viewer.css';
@@ -138,7 +138,7 @@
       });
     }
   };
-  const getDetail = async (isFull = false) => {
+  const getDetail = async (isFull: any = false) => {
     if (prop?.info?.type !== 'Video') {
       const imgs = await getAllImg(isFull);
       allImgs = [];

@@ -17,7 +17,7 @@
         <ComicImg
           v-for="item_ in imgs"
           :ref="setImgRefs"
-          :key="item_"
+          :key="item_?.src"
           :aid="info_?.aid"
           :scramble-id="info_?.scramble_id"
           :src="item_.src"
@@ -33,7 +33,7 @@
     <div class="content">
       <div
         v-for="item in details?.contents"
-        :key="item"
+        :key="item?.jumpUrl"
         class="row"
         :class="{ current: item?.current }"
         @click.stop="doRead(item)"

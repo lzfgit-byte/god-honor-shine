@@ -22,7 +22,7 @@
       ></PaginationHentaiWord>
     </div>
     <div class="body">
-      <HentaiWordCard v-for="item in infos" :key="item" :info="item"></HentaiWordCard>
+      <HentaiWordCard v-for="item in infos" :key="item.jumpUrl" :info="item"></HentaiWordCard>
     </div>
   </div>
   <el-drawer v-model="drawerVisable" title="标签">
@@ -82,7 +82,7 @@
     loadPage(searchUrl);
   };
   const refresh = () => {
-    clearCache(currentUrl.value, 'html').then(() => {
+    clearCache(currentUrl.value as any, 'html').then(() => {
       loadPage(currentUrl.value);
     });
   };

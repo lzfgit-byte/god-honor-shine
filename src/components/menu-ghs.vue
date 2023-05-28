@@ -3,7 +3,11 @@
     <el-icon :size="25"><Menu /></el-icon>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item v-for="item in renderRoutes" :key="item.path" @click="handlerClick(item)">
+        <el-dropdown-item
+          v-for="item in renderRoutes"
+          :key="item.path"
+          @click="handlerClick(item as any)"
+        >
           {{ item.aliasZH }}
         </el-dropdown-item>
       </el-dropdown-menu>

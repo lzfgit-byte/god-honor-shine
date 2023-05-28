@@ -20,7 +20,7 @@
     scrambleId: String,
     src: String,
   });
-  const get_num = (e, t) => {
+  const get_num = (e: any, t: any) => {
     let a = 10;
     let n: any = `${e}${t}`;
     switch (

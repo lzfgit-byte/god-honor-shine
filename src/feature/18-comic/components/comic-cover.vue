@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="typeContain">
-      <span v-for="item in coverInfo?.type" :key="item">{{ item.title }}</span>
+      <span v-for="item in coverInfo?.type" :key="item?.color as any + item?.title as any">{{
+        item.title
+      }}</span>
     </div>
     <div class="imgContainer" @click="handlerImgClick">
       <img width="213" :src="getImgUrl(coverInfo?.coverUrl as string)" />
@@ -15,7 +17,7 @@
       <div class="wrapper" align="left">
         <span
           v-for="item in coverInfo?.tags"
-          :key="item"
+          :key="item.jumpUrl"
           class="tag"
           @click="handlerTagClick(item?.jumpUrl as any)"
         >
@@ -28,7 +30,6 @@
 
 <script setup lang="ts">
   import type { PropType } from 'vue';
-  import { defineEmits, defineProps } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
   import { getHtmlByWin } from '@/utils/functions';

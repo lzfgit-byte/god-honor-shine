@@ -8,8 +8,10 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps, reactive } from 'vue';
+  import { reactive } from 'vue';
   import 'vue3-video-play/dist/style.css'; // 引入css
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   import Vue3VideoPlay from 'vue3-video-play';
   const props = defineProps({
     src: String,

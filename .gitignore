@@ -4,3 +4,4 @@ dist/
 dist-electron
 config.json
 ghs-cache
+release

@@ -2,7 +2,7 @@
   <div id="more-hentai">
     <div class="navigation">
       <ol class="wp-paginate font-inherit">
-        <li v-for="item in pageInfos" :key="item">
+        <li v-for="item in pageInfos" :key="item.jumpUrl">
           <span v-if="item.isCurrent" class="page current">{{ item.pageNumber }}</span>
           <span v-else-if="item.pageNumber === '...'">{{ item.pageNumber }}</span>
           <span v-else class="page" @click="handleClick(item.jumpUrl)">
@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
   import type { PropType } from 'vue';
-  import { defineEmits, defineProps } from 'vue';
   import type { pageInfo } from '@/feature/hentai-word/type/hw-types';
   const props = defineProps({
     pageInfos: Array as PropType<pageInfo[]>,

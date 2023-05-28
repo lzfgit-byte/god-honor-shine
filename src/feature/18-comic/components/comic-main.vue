@@ -64,14 +64,16 @@
     <div class="recoderContainer">
       <span
         v-for="(item, index) in history"
-        :key="item"
+        :key="item?.item?.jumpUrl"
         class="rowRecord"
         :title="item.detail?.title"
-        @click="handlerContent(item?.detail as detail, item.item)"
+        @click="handlerContent(item?.detail as detail, item?.item)"
         >{{
-          item.detail.title.length > 20 ? item.detail.title.substring(0, 20) : item.detail.title
+          (item?.detail?.title?.length as any) > 20
+            ? item?.detail?.title?.substring(0, 20)
+            : item?.detail?.title
         }}
-        / {{ item.item.title }}
+        / {{ item?.item?.title }}
 
         <el-text type="primary" @click.stop="removeOne(item?.item?.jumpUrl as string, index)"
           >删除</el-text
@@ -150,7 +152,7 @@
     emits('toContent', detail, item);
   };
   const reset = () => {
-    clearCache(HOME_URL, 'html');
+    clearCache(HOME_URL as any, 'html');
     load();
   };
   const searchValue = ref();
