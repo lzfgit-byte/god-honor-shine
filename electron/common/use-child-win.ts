@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import useSetting from './use-setting';
 const download = join(__dirname, '../preload/down-load.js');
+const video = join(__dirname, '../preload/video.js');
 let childWindow: BrowserWindow = null;
 let parent = null;
 ipcMain.handle('open-win', (_, arg) => {
@@ -58,3 +59,24 @@ export default (win: BrowserWindow) => {
   parent = win;
   return () => childWindow?.destroy();
 };
+// 打开新窗口
+ipcMain.handle('open-win-only', (_, arg) => {
+  childWindow = new BrowserWindow({
+    width: 900,
+    height: 788,
+    parent,
+    webPreferences: {
+      preload: video,
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+  const { proxy, needProxy } = useSetting();
+  const webContent = childWindow.webContents;
+  const session = webContent.session;
+  if (needProxy && proxy) {
+    session.setProxy({ proxyRules: proxy });
+  }
+  childWindow.loadURL(arg);
+  // childWindow.webContents.openDevTools();
+});

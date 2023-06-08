@@ -43,7 +43,7 @@
   import { reactive, ref } from 'vue';
   import type { videoData, videoInfo } from '@/feature/rule34/type/rule34Type';
   import VideoHtml5 from '@/components/video-html5.vue';
-  import { getHtml } from '@/utils/functions';
+  import { getHtml, loadUrl } from '@/utils/functions';
   import { rule34_getRule34Video } from '@/feature/rule34/utils/functions';
   import { getVideoUrl } from '@/utils/kit-utils';
 
@@ -75,12 +75,13 @@
   const videos = ref<videoData[]>([]);
   const handlerClick = () => {
     if (props?.videoD?.jumpUrl) {
-      getHtml(props?.videoD?.jumpUrl as any).then((res) => {
-        rule34_getRule34Video(res).then((src: videoData[]) => {
-          videos.value = src;
-          videoChose.show();
-        });
-      });
+      loadUrl(props?.videoD?.jumpUrl);
+      // getHtml(props?.videoD?.jumpUrl as any).then((res) => {
+      // rule34_getRule34Video(res).then((src: videoData[]) => {
+      //   videos.value = src;
+      //   videoChose.show();
+      // });
+      // });
     }
   };
   const handlerClickChose = (item: videoData) => {

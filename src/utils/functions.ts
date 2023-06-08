@@ -14,3 +14,4 @@ export const setSetting = async (key: string, value: any): Promise<any> =>
   executeFunction('setSetting', key, value);
 export const openWindows = (url = '') => executeFunction('open-win', url);
 openWindows();
+export const loadUrl = (url = '') => executeFunction('open-win-only', url);
