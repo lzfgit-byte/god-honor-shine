@@ -71,6 +71,7 @@ async function createWindow() {
   useGlobalShortcut();
   const closeChildWin = useChildWin(null);
   win.webContents.on('destroyed', () => {
+    closeServer();
     closeChildWin();
   });
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -90,6 +91,7 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+app.on('', () => {});
 
 app.on('second-instance', () => {
   if (win) {

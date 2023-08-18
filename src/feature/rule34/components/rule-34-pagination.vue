@@ -2,10 +2,11 @@
   <div class="container">
     <slot></slot>
     <div
-      v-for="item in pageInfos"
-      :key="item?.jumpUrl + new Date().getTime()"
+      v-for="(item, index) in pageInfos"
+      :key="index"
       class="item"
       :class="{ active: (item as any).current }"
+      :title="item.jumpUrl"
       @click="handlerClick(item)"
     >
       {{ (item as any).text }}

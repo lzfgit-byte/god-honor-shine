@@ -23,10 +23,10 @@ ipcMain.handle('open-win', (_, arg) => {
     session.setProxy({ proxyRules: proxy });
   }
   globalShortcut.register('ctrl+shift+s', function () {
-    childWindow.show();
+    childWindow?.show();
   });
   globalShortcut.register('ctrl+shift+h', function () {
-    childWindow.hide();
+    childWindow?.hide();
   });
   childWindow.hide();
 });
@@ -61,7 +61,7 @@ export default (win: BrowserWindow) => {
 };
 // 打开新窗口
 ipcMain.handle('open-win-only', (_, arg) => {
-  childWindow = new BrowserWindow({
+  const sChildWindow = new BrowserWindow({
     width: 900,
     height: 788,
     parent,
@@ -72,11 +72,11 @@ ipcMain.handle('open-win-only', (_, arg) => {
     },
   });
   const { proxy, needProxy } = useSetting();
-  const webContent = childWindow.webContents;
+  const webContent = sChildWindow.webContents;
   const session = webContent.session;
   if (needProxy && proxy) {
     session.setProxy({ proxyRules: proxy });
   }
-  childWindow.loadURL(arg);
+  sChildWindow.loadURL(arg);
   // childWindow.webContents.openDevTools();
 });

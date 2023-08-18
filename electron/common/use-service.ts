@@ -32,4 +32,4 @@ killByPort(port)
       console.log(`Example app listening on port http://${hostname}:${port}/`);
     });
   });
-export default () => () => server.close();
+export default () => () => server?.close();
