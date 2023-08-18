@@ -1,10 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { killByPort } from '../utils/command';
 import handlerGetImg from './service/handler-getImg';
 import handlerGetByte from './service/handler-getByte';
 const app = express();
 const hostname = '127.0.0.1';
 const port = 3356;
+
 let closeReq = null;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -18,8 +20,16 @@ app.get('/getByte', (req, res) => {
 app.get('/closed', (req, res) => {
   closeReq && closeReq();
 });
-const server = app.listen(port, () => {
-  console.log(`Example app listening on port http://${hostname}:${port}/`);
-});
-
+let server = null;
+killByPort(port)
+  .then(() => {
+    server = app.listen(port, () => {
+      console.log(`Example app listening on port http://${hostname}:${port}/`);
+    });
+  })
+  .catch(() => {
+    server = app.listen(port, () => {
+      console.log(`Example app listening on port http://${hostname}:${port}/`);
+    });
+  });
 export default () => () => server.close();

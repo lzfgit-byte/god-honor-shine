@@ -31,13 +31,6 @@ export const routes = [
     showInMenu: true,
     component: () => import('@/feature/rule34/view/rule34-main.vue'),
   },
-  {
-    path: '/douyin',
-    name: 'douyin',
-    aliasZH: '抖音',
-    showInMenu: true,
-    component: () => import('@/feature/douyin/view/douyin-main.vue'),
-  },
 ];
 
 const router = createRouter({

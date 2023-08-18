@@ -37,9 +37,13 @@ let lodashUrl = 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash
 
 domReady().then(() => {
   loadJS('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js', () => {
+    // @ts-expect-error
     $('.popup_access').remove();
+    // @ts-expect-error
     $('body').attr('class', '');
+    // @ts-expect-error
     $('iframe').hide();
+    // @ts-expect-error
     $('.spot_under').hide();
     // document.querySelector('.popup_access').remove();
     // document.body.className = '';
