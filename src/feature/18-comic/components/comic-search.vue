@@ -40,7 +40,7 @@
   import { Search } from '@element-plus/icons-vue';
   import { HOME_URL } from '@/feature/18-comic/type/18-comic-type';
   import type { detail, pageInfo, searchPageInfo } from '@/feature/18-comic/type/18-comic-type';
-  import { clearCache, getHtml } from '@/utils/functions';
+  import { clearCache, getHtmlByWin } from '@/utils/functions';
   import { comic_getSearchInfo } from '@/feature/18-comic/utils/functions';
   import ComicCover from '@/feature/18-comic/components/comic-cover.vue';
 
@@ -56,7 +56,7 @@
   const pageInfos = ref<pageInfo[]>();
   const load = (url: string) => {
     spinning.value = true;
-    getHtml(url)
+    getHtmlByWin(url)
       .then((res) => {
         return comic_getSearchInfo(res);
       })
