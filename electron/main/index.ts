@@ -8,6 +8,7 @@ import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
 import useChildWin from '../common/use-child-win';
 import useGlobalShortcut from '../common/use-global-shortcut';
+import useChildWinPic from '../utils/use-child-win-pic';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -70,9 +71,11 @@ async function createWindow() {
   });
   useGlobalShortcut();
   const closeChildWin = useChildWin(null);
+  const picClose = useChildWinPic();
   win.webContents.on('destroyed', () => {
     closeServer();
     closeChildWin();
+    picClose();
   });
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) {

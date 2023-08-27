@@ -6,6 +6,7 @@ import { getByteCache, getCache, saveByteCache, saveCache } from './cache';
 import { isFalsity, isTruth } from './KitUtil';
 // @ts-expect-error
 import code from './img-windows-conde.ts?raw';
+import { getImgBase64ByUrl } from './use-child-win-pic';
 
 export const getHtml = (url: string) => {
   const suffix = 'html';
@@ -71,28 +72,11 @@ export const getImageBase64ByWin = (url: string) => {
       resolve(h);
       return;
     }
-    const sChildWindow = new BrowserWindow({
-      width: 900,
-      height: 788,
-      show: false,
-      webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-      },
-    });
-    const { proxy, needProxy } = useSetting();
-    const webContent = sChildWindow.webContents;
-    const session = webContent.session;
-    if (needProxy && proxy) {
-      session.setProxy({ proxyRules: proxy });
-    }
-    sChildWindow.loadURL(url);
-    sChildWindow.webContents.on('did-finish-load', () => {
-      sChildWindow.webContents.executeJavaScript(code).then((r) => {
+    setTimeout(() => {
+      getImgBase64ByUrl(url).then((r) => {
         saveCache(url, r, suffix);
         resolve(r);
-        sChildWindow.close();
       });
-    });
+    }, 100);
   });
 };
