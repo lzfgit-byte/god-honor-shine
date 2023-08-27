@@ -15,3 +15,5 @@ export const setSetting = async (key: string, value: any): Promise<any> =>
 export const openWindows = (url = '') => executeFunction('open-win', url);
 openWindows();
 export const loadUrl = (url = '') => executeFunction('open-win-only', url);
+export const getImageBase64ByWin = (url: string): Promise<string> =>
+  executeFunction('getImageBase64ByWin', url);

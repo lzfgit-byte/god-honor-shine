@@ -91,7 +91,6 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-app.on('', () => {});
 
 app.on('second-instance', () => {
   if (win) {
