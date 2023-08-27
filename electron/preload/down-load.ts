@@ -40,7 +40,7 @@ function downloadURL(url = null) {
 
   xhr.open('GET', url, true);
   xhr.responseType = 'blob';
-  senMsg('异步执行中');
+  senMsg(`异步执行中标题-->${document.title}`);
   xhr.onload = function () {
     if (xhr.status === 200) {
       const blob = xhr.response;
