@@ -1,9 +1,9 @@
 import { clearInterval } from 'node:timers';
 import { BrowserWindow } from 'electron';
-import { forEach } from 'lodash';
 import useSetting from '../common/use-setting';
 // @ts-expect-error
 import code from './img-windows-conde.ts?raw';
+import { logger } from './logger';
 
 const childWinds: { win: BrowserWindow; free: boolean }[] = [];
 const getWinIndex = (win) => childWinds.findIndex((item) => item.win === win);
@@ -13,7 +13,6 @@ const toggleWinStatus = (win, flag) => {
     childWinds[index].free = flag;
   }
 };
-const isHaveFree = () => childWinds.some((item) => item.free);
 const getFreeWind = () => {
   return new Promise((resolve, reject) => {
     const index = childWinds.findIndex((item) => item.free);
@@ -41,7 +40,7 @@ const useWinGet = (sChildWindow: BrowserWindow, url: string) => {
         })
         .finally(() => {
           toggleWinStatus(sChildWindow, true);
-          console.log('toogle -> free true id:', sChildWindow.id);
+          logger.log('toogle -> free true id:', sChildWindow.id);
           webContents.off('did-finish-load', listener);
         });
     };
@@ -51,11 +50,11 @@ const useWinGet = (sChildWindow: BrowserWindow, url: string) => {
 export const getImgBase64ByUrl = (url: string) => {
   return new Promise((resolve) => {
     getFreeWind()
-      .then((win) => {
+      .then((win: any) => {
         useWinGet(win, url).then((res) => {
           resolve(res);
-          console.log('cache->', 'id:', win.id, 'length: ', childWinds.length);
-          console.log(childWinds.map((item) => item.win.id));
+          logger.log('cache->', 'id:', win.id, 'length: ', childWinds.length);
+          logger.log(childWinds.map((item) => item.win.id));
         });
       })
       .catch(() => {
@@ -69,7 +68,7 @@ export const getImgBase64ByUrl = (url: string) => {
           },
         });
         childWinds.push({ win: sChildWindow, free: false });
-        console.log('new', sChildWindow.id, '  ', childWinds.length);
+        logger.log('new', sChildWindow.id, '  ', childWinds.length);
         const { proxy, needProxy } = useSetting();
         const webContent = sChildWindow.webContents;
         const session = webContent.session;
@@ -84,12 +83,12 @@ export const getImgBase64ByUrl = (url: string) => {
 };
 const timer = setInterval(() => {
   if (childWinds.length > 0) {
-    for (let i = childWinds.length - 1; i > 20; i--) {
+    for (let i = childWinds.length - 1; i > 15; i--) {
       if (childWinds[i].free) {
         childWinds[i].win.close();
-        console.log('clear ->id', childWinds[i]?.win?.id, childWinds.length);
+        logger.log('clear ->id', childWinds[i]?.win?.id, childWinds.length);
         childWinds.splice(i, 1);
-        console.log('afterclear ->', childWinds.length);
+        logger.log('afterClear ->', childWinds.length);
         break;
       }
     }
