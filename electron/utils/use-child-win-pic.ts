@@ -1,3 +1,4 @@
+import { clearInterval } from 'node:timers';
 import { BrowserWindow } from 'electron';
 import { forEach } from 'lodash';
 import useSetting from '../common/use-setting';
@@ -59,8 +60,8 @@ export const getImgBase64ByUrl = (url: string) => {
       })
       .catch(() => {
         const sChildWindow = new BrowserWindow({
-          width: 900,
-          height: 788,
+          width: 1920,
+          height: 1080,
           show: false,
           webPreferences: {
             nodeIntegration: true,
@@ -81,10 +82,24 @@ export const getImgBase64ByUrl = (url: string) => {
       });
   });
 };
+const timer = setInterval(() => {
+  if (childWinds.length > 0) {
+    for (let i = childWinds.length - 1; i > 20; i--) {
+      if (childWinds[i].free) {
+        childWinds[i].win.close();
+        console.log('clear ->id', childWinds[i]?.win?.id, childWinds.length);
+        childWinds.splice(i, 1);
+        console.log('afterclear ->', childWinds.length);
+        break;
+      }
+    }
+  }
+}, 1000);
 export default () => {
   return () => {
     childWinds?.forEach((item) => {
       item?.win?.close();
     });
+    clearInterval(timer);
   };
 };

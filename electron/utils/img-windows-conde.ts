@@ -1,7 +1,7 @@
 (async () => {
   const image = document.querySelector('img');
-  const width = image.width;
-  const height = image.height;
+  const width = image.naturalWidth;
+  const height = image.naturalHeight;
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -13,6 +13,6 @@
   context.drawImage(image, 0, 0, width, height);
 
   // 获取绘制后的图像数据
-  const base64Data = canvas.toDataURL('image/jpg');
+  const base64Data = canvas.toDataURL('image/jpg', 1);
   return base64Data;
 })();
