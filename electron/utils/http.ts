@@ -77,6 +77,6 @@ export const getImageBase64ByWin = (url: string) => {
         saveCache(url, r, suffix);
         resolve(r);
       });
-    }, 100);
+    }, Math.random() * 10 * 600);
   });
 };

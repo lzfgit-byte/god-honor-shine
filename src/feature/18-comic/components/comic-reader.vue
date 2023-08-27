@@ -105,7 +105,6 @@
       }
     });
     item.current !== undefined && (item.current = true);
-    debugger;
     getHtmlByWin(item?.jumpUrl || '')
       .then((res) => {
         return comic_getReaderInfos(res);

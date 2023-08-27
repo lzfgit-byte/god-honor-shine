@@ -12,10 +12,12 @@ const toggleWinStatus = (win, flag) => {
     childWinds[index].free = flag;
   }
 };
+const isHaveFree = () => childWinds.some((item) => item.free);
 const getFreeWind = () => {
   return new Promise((resolve, reject) => {
     const index = childWinds.findIndex((item) => item.free);
     if (index >= 0) {
+      childWinds[index].free = false;
       resolve(childWinds[index].win);
     } else {
       reject();
@@ -25,8 +27,10 @@ const getFreeWind = () => {
 const useWinGet = (sChildWindow: BrowserWindow, url: string) => {
   return new Promise((resolve) => {
     sChildWindow.loadURL(url);
-    sChildWindow.webContents.on('did-finish-load', () => {
-      sChildWindow.webContents
+    const webContents = sChildWindow.webContents;
+
+    const listener = () => {
+      webContents
         .executeJavaScript(code)
         .then((r) => {
           resolve(r);
@@ -35,52 +39,46 @@ const useWinGet = (sChildWindow: BrowserWindow, url: string) => {
           resolve('err');
         })
         .finally(() => {
-          if (childWinds.length > 5) {
-            forEach(childWinds, (item, index) => {
-              if (index < childWinds.length - 5) {
-                item.win.close();
-              }
-            });
-            childWinds.slice(childWinds.length - 5);
-          } else {
-            toggleWinStatus(sChildWindow, true);
-          }
+          toggleWinStatus(sChildWindow, true);
+          console.log('toogle -> free true id:', sChildWindow.id);
+          webContents.off('did-finish-load', listener);
         });
-    });
+    };
+    webContents.on('did-finish-load', listener);
   });
 };
 export const getImgBase64ByUrl = (url: string) => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      getFreeWind()
-        .then((win) => {
-          useWinGet(win, url).then((res) => {
-            resolve(res);
-            console.log('cache->', childWinds.length);
-          });
-        })
-        .catch(() => {
-          const sChildWindow = new BrowserWindow({
-            width: 900,
-            height: 788,
-            show: false,
-            webPreferences: {
-              nodeIntegration: true,
-              contextIsolation: false,
-            },
-          });
-          childWinds.push({ win: sChildWindow, free: false });
-          const { proxy, needProxy } = useSetting();
-          const webContent = sChildWindow.webContents;
-          const session = webContent.session;
-          if (needProxy && proxy) {
-            session.setProxy({ proxyRules: proxy });
-            useWinGet(sChildWindow, url).then((res) => {
-              resolve(res);
-            });
-          }
+    getFreeWind()
+      .then((win) => {
+        useWinGet(win, url).then((res) => {
+          resolve(res);
+          console.log('cache->', 'id:', win.id, 'length: ', childWinds.length);
+          console.log(childWinds.map((item) => item.win.id));
         });
-    }, 1000);
+      })
+      .catch(() => {
+        const sChildWindow = new BrowserWindow({
+          width: 900,
+          height: 788,
+          show: false,
+          webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+          },
+        });
+        childWinds.push({ win: sChildWindow, free: false });
+        console.log('new', sChildWindow.id, '  ', childWinds.length);
+        const { proxy, needProxy } = useSetting();
+        const webContent = sChildWindow.webContents;
+        const session = webContent.session;
+        if (needProxy && proxy) {
+          session.setProxy({ proxyRules: proxy });
+          useWinGet(sChildWindow, url).then((res) => {
+            resolve(res);
+          });
+        }
+      });
   });
 };
 export default () => {
