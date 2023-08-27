@@ -9,11 +9,11 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, toRaw } from 'vue';
+  import { ref } from 'vue';
   import { Md5 } from 'ts-md5'; //   /dist/md5
   import 'viewerjs/dist/viewer.css';
   import { component as Viewer } from 'v-viewer';
-  import { getImgUrl } from '@/utils/kit-utils';
+  import { getImageBase64ByWin } from '@/utils/functions';
 
   const props = defineProps({
     aid: String,
@@ -67,14 +67,19 @@
   const showDirect = +(props?.aid || 0) < +(props?.scrambleId || 220980);
   if (showDirect) {
     // 没有分割的图片
-    imgSrc.value = toRaw(props?.src);
+    getImageBase64ByWin(props?.src as string).then((res) => {
+      imgSrc.value = res;
+    });
   } else {
     let url = props.src || '';
     const aid = props?.aid || '0';
     const cur = url.substring(url.indexOf(aid) + aid.length + 1, url.indexOf('.webp'));
     const num = get_num(aid, cur);
     const img = new Image();
-    img.src = getImgUrl(props.src as string);
+    getImageBase64ByWin(props?.src as string).then((res) => {
+      img.src = res;
+    });
+
     img.onload = () => {
       const ctx = canvas?.value?.getContext('2d');
       if (!ctx) {
