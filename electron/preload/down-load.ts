@@ -41,6 +41,10 @@ function downloadURL(url = null) {
   xhr.open('GET', url, true);
   xhr.responseType = 'blob';
   senMsg(`异步执行中标题-->${document.title}`);
+  if (document.title.trim() === 'Just a moment...') {
+    ipcRenderer.invoke('show-child-win');
+    return;
+  }
   xhr.onload = function () {
     if (xhr.status === 200) {
       const blob = xhr.response;
