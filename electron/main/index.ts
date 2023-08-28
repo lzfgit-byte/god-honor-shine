@@ -1,6 +1,6 @@
 import { release } from 'node:os';
 import { join } from 'node:path';
-import { BrowserWindow, Menu, app, globalShortcut, ipcMain, shell } from 'electron';
+import { BrowserWindow, Menu, app, shell } from 'electron';
 import { sendMessage } from '../utils/message';
 import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
@@ -71,7 +71,7 @@ async function createWindow() {
   });
   useGlobalShortcut();
   const closeChildWin = useChildWin(null);
-  const picClose = useChildWinPic();
+  const picClose = useChildWinPic(win);
   win.webContents.on('destroyed', () => {
     closeServer();
     closeChildWin();

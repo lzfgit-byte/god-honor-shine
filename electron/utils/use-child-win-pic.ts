@@ -4,7 +4,7 @@ import useSetting from '../common/use-setting';
 // @ts-expect-error
 import code from './img-windows-conde.ts?raw';
 import { logger } from './logger';
-
+let parent = null;
 const childWinds: { win: BrowserWindow; free: boolean }[] = [];
 const getWinIndex = (win) => childWinds.findIndex((item) => item.win === win);
 const toggleWinStatus = (win, flag) => {
@@ -62,6 +62,8 @@ export const getImgBase64ByUrl = (url: string) => {
           width: 800,
           height: 600,
           show: false,
+          title: 'picWindow',
+          parent,
           webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -94,7 +96,8 @@ const timer = setInterval(() => {
     }
   }
 }, 1000);
-export default () => {
+export default (win = null) => {
+  parent = win;
   return () => {
     childWinds?.forEach((item) => {
       item?.win?.close();
