@@ -16,7 +16,6 @@
 </template>
 <script setup lang="ts">
   import { nextTick, reactive, ref } from 'vue';
-  import { logger } from '../../../electron/utils';
   import { clearLogs, getLogs } from '@/utils/functions';
   const logContainer = ref<HTMLDivElement>();
   const logDialog = reactive({
