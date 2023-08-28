@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown trigger="click">
+  <el-dropdown trigger="hover">
     <el-icon :size="25"><Menu /></el-icon>
     <template #dropdown>
       <el-dropdown-menu>
