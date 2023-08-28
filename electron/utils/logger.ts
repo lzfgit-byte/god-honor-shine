@@ -1,11 +1,13 @@
 import * as os from 'node:os';
 import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
+import dayjs from 'dayjs';
 import { getAppDataPath } from '../common';
 
 const LOG_FILE_PATH = `${getAppDataPath()}/log.txt`;
+const getCurrentDate = () => dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss');
 const writeLog = (...args) => {
   ensureFileSync(LOG_FILE_PATH);
-  writeFileSync(LOG_FILE_PATH, `${new Date()} ${args.join('')} ${os.EOL}`, {
+  writeFileSync(LOG_FILE_PATH, `${getCurrentDate} ${args.join('')} ${os.EOL}`, {
     encoding: 'utf-8',
     flag: 'a',
   });
