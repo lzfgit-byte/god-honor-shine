@@ -38,7 +38,7 @@ export const killByPort = (portToKill: number) => {
           exec(`${killProcessCommand} ${pid}`, (killError, killStdout) => {
             if (killError) {
               reject();
-              sendMessage(`Error killing process:${killError.message}`);
+              sendMessage(`Error killing process:`);
               return;
             }
             resolve('');

@@ -40,7 +40,7 @@ const useWinGet = (sChildWindow: BrowserWindow, url: string) => {
         })
         .finally(() => {
           toggleWinStatus(sChildWindow, true);
-          logger.log('toogle -> free true id:', sChildWindow.id);
+          logger.log(`释放picwin 为可用 winid为:${sChildWindow.id}`);
           webContents.off('did-finish-load', listener);
         });
     };
@@ -53,8 +53,8 @@ export const getImgBase64ByUrl = (url: string) => {
       .then((win: any) => {
         useWinGet(win, url).then((res) => {
           resolve(res);
-          logger.log('cache->', 'id:', win.id, 'length: ', childWinds.length);
-          logger.log(childWinds.map((item) => item.win.id));
+          logger.log(`使用已经创建的cache->id:${win.id} 总创建的：length: ${childWinds.length}`);
+          logger.log(`winIds:${childWinds.map((item) => item.win.id).join(',')}`);
         });
       })
       .catch(() => {
@@ -88,9 +88,9 @@ const timer = setInterval(() => {
     for (let i = childWinds.length - 1; i > 15; i--) {
       if (childWinds[i].free) {
         childWinds[i].win.close();
-        logger.log('clear ->id', childWinds[i]?.win?.id, childWinds.length);
+        logger.log(`clear ->id${childWinds[i]?.win?.id}:剩余长度${childWinds.length}`);
         childWinds.splice(i, 1);
-        logger.log('afterClear ->', childWinds.length);
+        logger.log(`afterClear ->剩余长度${childWinds.length}`);
         break;
       }
     }
