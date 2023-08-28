@@ -1,6 +1,23 @@
+import * as os from 'node:os';
+import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
+import { getAppDataPath } from '../common';
+
+const LOG_FILE_PATH = `${getAppDataPath()}/log.txt`;
+const writeLog = (...args) => {
+  ensureFileSync(LOG_FILE_PATH);
+  writeFileSync(LOG_FILE_PATH, `${new Date()} ${args.join('')} ${os.EOL}`, {
+    encoding: 'utf-8',
+    flag: 'a',
+  });
+};
+export const getLogs = () => {
+  ensureFileSync(LOG_FILE_PATH);
+  return readFileSync(LOG_FILE_PATH, { encoding: 'utf-8' });
+};
 export const logger = {
   enable: false,
   log: (...args) => {
+    writeLog(...args);
     logger.enable && console.log(...args);
   },
 };

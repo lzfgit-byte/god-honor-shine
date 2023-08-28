@@ -25,7 +25,7 @@ export const killByPort = (portToKill: number) => {
   return new Promise((resolve, reject) => {
     exec(findProcessCommand, (error, stdout) => {
       if (error) {
-        resolve();
+        resolve('');
         sendMessage(`Error finding process:${error.message}`);
         return;
       }
@@ -41,15 +41,15 @@ export const killByPort = (portToKill: number) => {
               sendMessage(`Error killing process:${killError.message}`);
               return;
             }
-            resolve();
+            resolve('');
             sendMessage(`Process killed:${killStdout}`);
           });
         } else {
-          resolve();
+          resolve('');
           sendMessage(`No process found on port${portToKill}`);
         }
       } else {
-        resolve();
+        resolve('');
         sendMessage(`No process found on port${portToKill}`);
       }
     });

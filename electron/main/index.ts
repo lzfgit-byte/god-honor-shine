@@ -18,6 +18,7 @@ process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
 // 安全设置
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 app.commandLine.appendSwitch('disable-web-security');
+app.commandLine.appendSwitch('charset', 'utf-8');
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) {

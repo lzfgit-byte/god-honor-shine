@@ -17,3 +17,5 @@ openWindows();
 export const loadUrl = (url = '') => executeFunction('open-win-only', url);
 export const getImageBase64ByWin = (url: string): Promise<string> =>
   executeFunction('getImageBase64ByWin', url);
+// 日志
+export const getLogs = async (): Promise<any> => executeFunction('getLogs');
