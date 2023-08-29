@@ -5,7 +5,8 @@ import useSetting from '../common/use-setting';
 import code from './img-windows-conde.ts?raw';
 import { logger } from './logger';
 let parent = null;
-const { proxy, needProxy, picWinLimit } = useSetting();
+const { proxy, needProxy, picWinLimit: picLimit } = useSetting();
+let picWinLimit = JSON.parse(picLimit);
 const childWinds: { win: BrowserWindow; free: boolean }[] = [];
 const getWinIndex = (win) => childWinds.findIndex((item) => item.win === win);
 const toggleWinStatus = (win, flag) => {
@@ -51,7 +52,9 @@ const useWinGet = (sChildWindow: BrowserWindow, url: string) => {
 export const getImgBase64ByUrl = (url: string) => {
   return new Promise((resolve) => {
     if (childWinds.length >= picWinLimit[1]) {
-      logger.log(`超过最大限制，不再创建新的窗口`);
+      logger.log(
+        `超过最大限制，不再创建新的窗口，已创建数量 ${childWinds.length},限制${picWinLimit[1]}`
+      );
       const timer = setInterval(() => {
         getFreeWind()
           .then((win: any) => {
@@ -106,13 +109,15 @@ export const getImgBase64ByUrl = (url: string) => {
   });
 };
 const timer = setInterval(() => {
+  const { picWinLimit: picLimit } = useSetting();
+  picWinLimit = JSON.parse(picLimit);
   if (childWinds.length > 0) {
     for (let i = childWinds.length - 1; i > picWinLimit[0]; i--) {
       if (childWinds[i].free) {
         childWinds[i].win.close();
         logger.log(`clear ->id${childWinds[i]?.win?.id}:剩余长度${childWinds.length}`);
         childWinds.splice(i, 1);
-        logger.log(`afterClear ->剩余长度${childWinds.length}`);
+        logger.log(`afterClear ->剩余长度${childWinds.length},窗口限制配置${picWinLimit}`);
         break;
       }
     }

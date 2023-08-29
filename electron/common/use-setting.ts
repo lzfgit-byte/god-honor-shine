@@ -6,7 +6,7 @@ const configFile = `${appFilePath}/config.json`;
 const defaultConfig: settingType = {
   proxy: 'socks5://127.0.0.1:10808',
   needProxy: true,
-  picWinLimit: [8, 20],
+  picWinLimit: JSON.stringify([8, 20]),
 };
 
 const ensure = () => {
@@ -22,7 +22,11 @@ const load = () => {
   ensure();
   const cStr = readFileSync(configFile, { encoding: 'utf-8' });
   if (cStr) {
-    setJson = JSON.parse(cStr);
+    try {
+      setJson = JSON.parse(cStr);
+    } catch (e) {
+      setJson = defaultConfig;
+    }
     const setJsonKeys = keys(setJson);
     const defaultKeys = keys(defaultConfig);
     defaultKeys.forEach((key) => {
@@ -46,7 +50,9 @@ export const setSetting = (key, value) => {
 };
 export const getAppDataPath = () => appFilePath;
 
-export const getAllSet: Record<string, any> = () => setJson;
+export const getAllSet: Record<string, any> = () => {
+  return setJson;
+};
 
 export default (): settingType => {
   load();
