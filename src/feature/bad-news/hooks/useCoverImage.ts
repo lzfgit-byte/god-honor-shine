@@ -9,13 +9,8 @@ export default () => {
   const handlerLoad = () => {
     const width = imgRef.value?.naturalWidth || 0;
     const height = imgRef.value?.naturalHeight || 0;
-    if (width > height) {
-      imageWidth.value = 150;
-      imageHeight.value = 150 * (height / width);
-    } else {
-      imageHeight.value = 150;
-      imageWidth.value = 150 * (width / height);
-    }
+    imageHeight.value = 150;
+    imageWidth.value = 150 * (width / height);
   };
   return { handlerLoad, imgRef, imageWidth, imageHeight, containerWidthComp };
 };

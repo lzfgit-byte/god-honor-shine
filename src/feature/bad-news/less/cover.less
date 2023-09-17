@@ -1,6 +1,6 @@
 @import '../less/glob';
 .container {
-  width: @imageWidth;
+  width: var(--widthImage);
   display: inline-flex;
   flex-direction: column;
   position: relative;
@@ -13,7 +13,8 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    width: @imageWidth;
+    border: 1px solid #ccc;
+    width: var(--widthImage);
     height: @imageHeight;
   }
   .title {

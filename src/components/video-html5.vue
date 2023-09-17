@@ -8,14 +8,15 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
+  import { onUnmounted, reactive } from 'vue';
   import 'vue3-video-play/dist/style.css'; // 引入css
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
   // @ts-expect-error
   import Vue3VideoPlay from 'vue3-video-play';
   const props = defineProps({
     src: String,
     title: String,
+    type: String,
   });
   const options = reactive({
     width: 'auto', // 播放器高度
@@ -32,6 +33,7 @@
     ligthOff: false, // 关灯模式
     volume: 1, // 默认音量大小
     control: true, // 是否显示控制
+    type: props.type, // 视频类型
     controlBtns: [
       'audioTrack',
       'quality',
@@ -43,6 +45,7 @@
       'fullScreen',
     ], // 显示所有按钮,
   });
+  onUnmounted(() => {});
 </script>
 
 <style scoped lang="less"></style>
