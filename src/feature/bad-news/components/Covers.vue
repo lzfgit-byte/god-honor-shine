@@ -1,10 +1,14 @@
 <template>
   <div class="container" @click="handlerClick">
     <div class="img-container">
-      <CoverImage :url="videoInfo?.coverUrl || ''"></CoverImage>
+      <!--      <CoverImage :url="videoInfo?.coverUrl || ''"></CoverImage> -->
     </div>
     <div class="title" :title="videoInfo?.title">{{ videoInfo?.title }}</div>
-    <div class="type">{{ videoInfo?.videType }}</div>
+    <div v-if="videoInfo?.videType !== ''" class="type">
+      <span>
+        {{ videoInfo?.videType }}
+      </span>
+    </div>
     <div class="time">{{ videoInfo?.time }}</div>
   </div>
   <el-dialog
@@ -44,28 +48,5 @@
 </script>
 
 <style scoped lang="less">
-  div {
-    box-sizing: border-box;
-  }
-  .container {
-    width: 150px;
-    display: inline-flex;
-    flex-direction: column;
-    cursor: pointer;
-    .img-container {
-    }
-    .title {
-      width: 100%;
-      overflow: hidden;
-      word-break: keep-all;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .title {
-      //position: absolute;
-    }
-    .time {
-      //position: absolute;
-    }
-  }
+  @import '../less/cover';
 </style>

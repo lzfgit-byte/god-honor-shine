@@ -29,7 +29,7 @@ const loadVideoUrl = async (jumpUrl: string): Promise<string> => {
 };
 const getVideos = async ($: CheerioAPI): Promise<video[]> => {
   const res = [];
-  const items = $('.link.show');
+  const items = $('.spacer .link.show');
   const funEacg = async (index, el) => {
     const cEl = $(el);
     const title = cEl.find('.title').text();
