@@ -9,7 +9,7 @@
   import Covers from '@/feature/bad-news/components/Covers.vue';
   import Pagination from '@/feature/bad-news/components/Pagination.vue';
 
-  const { videos, pages, handlerJump } = usePornState('https://bad.news/tag/porn');
+  const { videos, pages, handlerJump } = usePornState('https://bad.news/av');
 </script>
 
 <style scoped lang="less">
