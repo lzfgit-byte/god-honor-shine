@@ -45,8 +45,22 @@ const getVideos = async ($: CheerioAPI): Promise<video[]> => {
   items.each(funEacg);
   return res;
 };
+const getPages = ($: CheerioAPI): pageType[] => {
+  const res: pageType[] = [];
+  $('.pagination li').each((index, el) => {
+    const cEl = $(el);
+    const isCurrent = cEl.find('a').hasClass('active');
+    const jumpUrl = BASE_URL + cEl.find('a').attr('href');
+    const page = cEl.find('a').text();
+    if (res.some((item) => item.page === page)) {
+      return;
+    }
+    res.push({ isCurrent, jumpUrl, page });
+  });
+  return res;
+};
 export const badNews_getBadNewsInfo = async (html: string): Promise<pageInfo> => {
   const $: CheerioAPI = cheerio.load(html);
 
-  return { video: await getVideos($) };
+  return { video: await getVideos($), pages: getPages($) };
 };

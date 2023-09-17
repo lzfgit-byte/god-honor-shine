@@ -6,7 +6,7 @@
     }"
     @click="handlerClick"
   >
-    <div class="img-container">
+    <div class="img-container" :title="videoInfo?.videoUrl">
       <CoverImage :url="videoInfo?.coverUrl || ''" @width-change="handlerWidthChange"></CoverImage>
     </div>
     <div class="title" :title="videoInfo?.title">{{ videoInfo?.title }}</div>
@@ -45,6 +45,8 @@
     videoSrc: '',
     type: 'video/mp4',
     playVideo: (src: string, title = '', type = 'video/mp4') => {
+      const length = title.length;
+      title = title.substring(0, length / 2);
       videoSet.videoSrc = src;
       videoSet.videoTitle = title;
       videoSet.visible = true;
