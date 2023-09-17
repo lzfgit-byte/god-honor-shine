@@ -31,6 +31,13 @@ export const routes = [
     showInMenu: true,
     component: () => import('@/feature/rule34/view/rule34-main.vue'),
   },
+  {
+    path: '/badNews',
+    name: 'badNews',
+    aliasZH: 'badNews',
+    showInMenu: true,
+    component: () => import('@/feature/bad-news/view/bad-news-main-view.vue'),
+  },
 ];
 
 const router = createRouter({
