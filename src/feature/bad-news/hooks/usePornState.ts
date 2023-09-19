@@ -12,7 +12,7 @@ export default (baseUrl?: string) => {
 
   const getPageInfo = async (url?: string): Promise<pageInfo> => {
     // @ts-expect-error
-    clearCache(url || PORN_URL);
+    clearCache(url || PORN_URL, 'html');
     const pUrl = await getHtml(url || PORN_URL);
     return await badNews_getBadNewsInfo(pUrl);
   };
