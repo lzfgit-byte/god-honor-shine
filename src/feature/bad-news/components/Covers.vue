@@ -38,6 +38,7 @@
   import CoverImage from '@/feature/bad-news/components/CoverImage.vue';
   import type { video } from '@/feature/bad-news/type/types';
   import VideoHtml5 from '@/components/video-html5.vue';
+  import { badNews_loadVideoUrl } from '@/feature/bad-news/utils/bn-functions';
   const props = defineProps({ videoInfo: { type: Object as PropType<video> } });
   const videoSet = reactive({
     visible: false,
@@ -53,12 +54,16 @@
       videoSet.type = type;
     },
   });
-  const handlerClick = () => {
-    if (props?.videoInfo?.videoUrl && props?.videoInfo?.videoUrl?.indexOf('m3u8') > -1) {
-      videoSet.playVideo(props.videoInfo?.videoUrl || '', props.videoInfo?.title || '', 'm3u8');
+  const handlerClick = async () => {
+    let url = props?.videoInfo?.videoUrl;
+    if (!url) {
+      url = await badNews_loadVideoUrl(props?.videoInfo?.jumpUrl || '');
+    }
+    if (url && url.includes('m3u8')) {
+      videoSet.playVideo(url, props.videoInfo?.title || '', 'm3u8');
       return;
     }
-    videoSet.playVideo(props.videoInfo?.videoUrl || '', props.videoInfo?.title || '');
+    videoSet.playVideo(url as string, props.videoInfo?.title || '');
   };
   const widthImage = ref(0);
   const handlerWidthChange = (width: number) => {

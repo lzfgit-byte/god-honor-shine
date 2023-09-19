@@ -21,7 +21,7 @@ interface pageInfo {
   tags?: string[];
   pages?: pageType[]; // 分页
 }
-const loadVideoUrl = async (jumpUrl: string): Promise<string> => {
+export const badNews_loadVideoUrl = async (jumpUrl: string): Promise<string> => {
   let html: string = (await getHtml(jumpUrl)) as any;
   html = html?.substring(html.indexOf('urls[0] = ["') + 12);
   html = html?.substring(0, html.indexOf('"];'));
@@ -64,26 +64,20 @@ export const badNews_getBadNewsInfo = async (html: string): Promise<pageInfo> =>
 
   return { video: await getVideos($), pages: getPages($) };
 };
-const getAvVideoUrl = async (jumpUrl: string) => {
-  let html: string = (await getHtml(jumpUrl)) as any;
-  html = html?.substring(html.indexOf('urls[0] = ["') + 12);
-  html = html?.substring(0, html.indexOf('"];'));
-  return html;
-};
 const getAVVideos = async ($: CheerioAPI): Promise<video[]> => {
   const res: video[] = [];
-  // @ts-expect-error
-  $('.content .spacer .link.col-md-4').each(async (index, el) => {
-    const cEl = $(el);
+  const lists = $('.content .spacer .link.col-md-4');
+  for (let i = 0; i < lists.length; i++) {
+    const cEl = $(lists[i]);
     const title = cEl.find('.entry h3.title a.title').text();
     const coverUrl = cEl.find('.entry .coverdiv img.lazy').attr('data-echo');
     const videType = cEl.find('.ct-time-left span').text();
     const jumpUrl = BASE_URL + cEl.find('.entry .title a')?.attr('href');
-    const videoUrl =
-      cEl?.find('.dateline[title="点击下载视频"]')?.attr('href') || (await getAvVideoUrl(jumpUrl));
+    const videoUrl = '';
+    // cEl?.find('.dateline[title="点击下载视频"]')?.attr('href') || (await getAvVideoUrl(jumpUrl));
     const time = cEl.find('.entry .coverdiv .ct-time span').text();
     res.push({ title, coverUrl, videType, jumpUrl, videoUrl, time });
-  });
+  }
   return res;
 };
 export const badNews_getAVPageInfo = async (html: string): Promise<pageInfo> => {
@@ -91,26 +85,20 @@ export const badNews_getAVPageInfo = async (html: string): Promise<pageInfo> => 
 
   return { video: await getAVVideos($), pages: getPages($) };
 };
-const getDmVideoUrl = async (jumpUrl: string) => {
-  let html: string = (await getHtml(jumpUrl)) as any;
-  html = html?.substring(html.indexOf('urls[0] = ["') + 12);
-  html = html?.substring(0, html.indexOf('"];'));
-  return html;
-};
 const getDMVideos = async ($: CheerioAPI): Promise<video[]> => {
   const res: video[] = [];
-  // @ts-expect-error
-  $('.auto-clear.stui-vodlist article').each(async (index, el) => {
-    const cEl = $(el);
+  const lists = $('.auto-clear.stui-vodlist article');
+  for (let i = 0; i < lists.length; i++) {
+    const cEl = $(lists[i]);
     const title = cEl.find('.infor a.title').text();
     const coverUrl = cEl.find('.thumbr img.img-responsive').attr('data-echo');
     const videType = cEl.find('.ct-time-left span').text();
     const jumpUrl = BASE_URL + cEl.find('.infor a.title')?.attr('href');
-    const videoUrl =
-      cEl?.find('.dateline[title="点击下载视频"]')?.attr('href') || (await getDmVideoUrl(jumpUrl));
+    const videoUrl = '';
+    // cEl?.find('.dateline[title="点击下载视频"]')?.attr('href') || (await getDmVideoUrl(jumpUrl));
     const time = cEl.find('.entry .coverdiv .ct-time span').text();
     res.push({ title, coverUrl, videType, jumpUrl, videoUrl, time });
-  });
+  }
   return res;
 };
 export const badNews_getDMPageInfo = async (html: string): Promise<pageInfo> => {
