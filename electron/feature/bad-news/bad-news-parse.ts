@@ -91,3 +91,30 @@ export const badNews_getAVPageInfo = async (html: string): Promise<pageInfo> => 
 
   return { video: await getAVVideos($), pages: getPages($) };
 };
+const getDmVideoUrl = async (jumpUrl: string) => {
+  let html: string = (await getHtml(jumpUrl)) as any;
+  html = html?.substring(html.indexOf('urls[0] = ["') + 12);
+  html = html?.substring(0, html.indexOf('"];'));
+  return html;
+};
+const getDMVideos = async ($: CheerioAPI): Promise<video[]> => {
+  const res: video[] = [];
+  // @ts-expect-error
+  $('.auto-clear.stui-vodlist article').each(async (index, el) => {
+    const cEl = $(el);
+    const title = cEl.find('.infor a.title').text();
+    const coverUrl = cEl.find('.thumbr img.img-responsive').attr('data-echo');
+    const videType = cEl.find('.ct-time-left span').text();
+    const jumpUrl = BASE_URL + cEl.find('.infor a.title')?.attr('href');
+    const videoUrl =
+      cEl?.find('.dateline[title="点击下载视频"]')?.attr('href') || (await getDmVideoUrl(jumpUrl));
+    const time = cEl.find('.entry .coverdiv .ct-time span').text();
+    res.push({ title, coverUrl, videType, jumpUrl, videoUrl, time });
+  });
+  return res;
+};
+export const badNews_getDMPageInfo = async (html: string): Promise<pageInfo> => {
+  const $: CheerioAPI = cheerio.load(html);
+
+  return { video: await getDMVideos($), pages: getPages($) };
+};

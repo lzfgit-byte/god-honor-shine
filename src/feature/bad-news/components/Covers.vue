@@ -54,7 +54,7 @@
     },
   });
   const handlerClick = () => {
-    if (props?.videoInfo?.videType === '长视频') {
+    if (props?.videoInfo?.videoUrl && props?.videoInfo?.videoUrl?.indexOf('m3u8') > -1) {
       videoSet.playVideo(props.videoInfo?.videoUrl || '', props.videoInfo?.title || '', 'm3u8');
       return;
     }
