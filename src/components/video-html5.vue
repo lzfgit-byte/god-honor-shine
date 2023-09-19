@@ -11,7 +11,7 @@
   import { onUnmounted, reactive } from 'vue';
   import 'vue3-video-play/dist/style.css'; // 引入css
 
-  // @ts-expect-error
+  // @ts-ignore
   import Vue3VideoPlay from 'vue3-video-play';
   const props = defineProps({
     src: String,
