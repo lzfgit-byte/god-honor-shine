@@ -5,11 +5,11 @@
   </div>
 </template>
 <script setup lang="ts">
-  import usePornState from '@/feature/bad-news/hooks/usePornState';
   import Covers from '@/feature/bad-news/components/Covers.vue';
   import Pagination from '@/feature/bad-news/components/Pagination.vue';
+  import usePornStateAV from '@/feature/bad-news/hooks/usePornStateAV';
 
-  const { videos, pages, handlerJump } = usePornState('https://bad.news/av');
+  const { videos, pages, handlerJump } = usePornStateAV('https://bad.news/av');
 </script>
 
 <style scoped lang="less">

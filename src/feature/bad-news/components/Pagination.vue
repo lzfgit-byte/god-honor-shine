@@ -33,6 +33,7 @@
     padding-right: 20px;
     background-color: #fff;
     color: #555;
+    margin-bottom: 10px;
     .pages {
       display: inline-flex;
       cursor: pointer;
