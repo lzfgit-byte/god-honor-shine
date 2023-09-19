@@ -3,7 +3,7 @@
     ref="imgRef"
     :width="imageWidth"
     :height="imageHeight"
-    :src="url"
+    :src="getImgUrl(url as string)"
     alt=""
     @load="handlerLoad"
   />
@@ -11,6 +11,7 @@
 <script setup lang="ts">
   import { watchEffect } from 'vue';
   import useCoverImage from '@/feature/bad-news/hooks/useCoverImage';
+  import { getImgUrl } from '@/utils/kit-utils';
 
   defineProps({ url: String });
   const emits = defineEmits(['widthChange']);

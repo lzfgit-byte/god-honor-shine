@@ -35,6 +35,7 @@
 <script setup lang="ts">
   import type { PropType } from 'vue';
   import { reactive, ref } from 'vue';
+  import { ElMessage } from 'element-plus';
   import CoverImage from '@/feature/bad-news/components/CoverImage.vue';
   import type { video } from '@/feature/bad-news/type/types';
   import VideoHtml5 from '@/components/video-html5.vue';
@@ -61,6 +62,10 @@
     }
     if (url && url.includes('m3u8')) {
       videoSet.playVideo(url, props.videoInfo?.title || '', 'm3u8');
+      return;
+    }
+    if (url === '') {
+      ElMessage.warning('播放地址为空');
       return;
     }
     videoSet.playVideo(url as string, props.videoInfo?.title || '');

@@ -23,8 +23,14 @@ interface pageInfo {
 }
 export const badNews_loadVideoUrl = async (jumpUrl: string): Promise<string> => {
   let html: string = (await getHtml(jumpUrl)) as any;
-  html = html?.substring(html.indexOf('urls[0] = ["') + 12);
-  html = html?.substring(0, html.indexOf('"];'));
+  html = html.replace(/[\r|\n]/g, '');
+  if (html.indexOf('urls[0] = ["') > 0) {
+    html = html?.substring(html.indexOf('urls[0] = ["') + 12);
+    html = html?.substring(0, html.indexOf('"];'));
+  } else {
+    html = html?.substring(html.indexOf("urls[0] = ['") + 12);
+    html = html?.substring(0, html.indexOf("'];"));
+  }
   return html;
 };
 const getVideos = async ($: CheerioAPI): Promise<video[]> => {
