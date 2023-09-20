@@ -7,7 +7,7 @@
       <el-tab-pane label="长视频" name="longPorn">
         <Porn v-if="activeName === 'longPorn'" url="https://bad.news/tag/long-porn"></Porn>
       </el-tab-pane>
-      <el-tab-pane label="成人mv" name="av">
+      <el-tab-pane label="成人Av" name="av">
         <AV v-if="activeName === 'av'"></AV>
       </el-tab-pane>
       <el-tab-pane label="H动漫" name="dm">
@@ -19,7 +19,6 @@
 <script setup lang="ts">
   import useBadNewsState from '@/feature/bad-news/hooks/useBadNewsState';
   import Porn from '@/feature/bad-news/components/Porn.vue';
-  import LongPorn from '@/feature/bad-news/components/LongPorn.vue';
   import AV from '@/feature/bad-news/components/AV.vue';
   import DM from '@/feature/bad-news/components/DM.vue';
 

@@ -108,11 +108,12 @@ const getAVVideos = async ($: CheerioAPI): Promise<video[]> => {
 };
 const getAvTages = ($: CheerioAPI): tagType[] => {
   const res: tagType[] = [];
-  $('#search_form .list-inline li').each((index, el) => {
+  $('#search-container .list-inline li').each((index, el) => {
     const cEl = $(el);
     const url = cEl.find('a').attr('href');
-    if (url) {
-      res.push({ name: cEl.find('a').text(), url: BASE_URL + url });
+    const name = cEl.find('a').text();
+    if (url && !name.includes('更多热搜')) {
+      res.push({ name, url: BASE_URL + url });
     }
   });
   return res;
@@ -141,5 +142,5 @@ const getDMVideos = async ($: CheerioAPI): Promise<video[]> => {
 export const badNews_getDMPageInfo = async (html: string): Promise<pageInfo> => {
   const $: CheerioAPI = cheerio.load(html);
 
-  return { video: await getDMVideos($), pages: getPages($) };
+  return { video: await getDMVideos($), pages: getPages($), tags: getAvTages($) };
 };
