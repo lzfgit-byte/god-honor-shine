@@ -20,9 +20,11 @@
   import { useRouter } from 'vue-router';
   import type { routerType } from '@/router/router';
   import { routes } from '@/router/router';
+  import { clearCacheBySuffix } from '@/utils/functions';
   const renderRoutes = computed(() => routes.filter((item) => item.showInMenu));
   const router = useRouter();
   const handlerClick = (item: routerType) => {
+    clearCacheBySuffix('html');
     router.push({ path: item.path });
   };
 </script>

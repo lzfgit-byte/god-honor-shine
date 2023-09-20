@@ -9,7 +9,7 @@
     <div class="img-container" :title="videoInfo?.videoUrl">
       <CoverImage :url="videoInfo?.coverUrl || ''" @width-change="handlerWidthChange"></CoverImage>
     </div>
-    <div class="title" :title="videoInfo?.title">{{ videoInfo?.title }}</div>
+    <div class="title" :title="getTitle(videoInfo?.title)">{{ getTitle(videoInfo?.title) }}</div>
     <div v-if="videoInfo?.videType !== ''" class="type">
       <span>
         {{ videoInfo?.videType }}
@@ -41,14 +41,19 @@
   import VideoHtml5 from '@/components/video-html5.vue';
   import { badNews_loadVideoUrl } from '@/feature/bad-news/utils/bn-functions';
   const props = defineProps({ videoInfo: { type: Object as PropType<video> } });
+  const getTitle = (title) => {
+    title = title.replace(/\r/g, '');
+    title = title.replace(/\n/g, '');
+    title = title.replace(0, title.indexOf('pron'));
+    return title;
+  };
   const videoSet = reactive({
     visible: false,
     videoTitle: '',
     videoSrc: '',
     type: 'video/mp4',
     playVideo: (src: string, title = '', type = 'video/mp4') => {
-      const length = title.length;
-      title = title.substring(0, length / 2);
+      title = getTitle(title);
       videoSet.videoSrc = src;
       videoSet.videoTitle = title;
       videoSet.visible = true;

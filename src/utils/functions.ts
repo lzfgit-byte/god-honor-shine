@@ -7,6 +7,8 @@ export const getHtmlByWin = async (url: string): Promise<string> =>
 // 刷新
 export const clearCache = async (url = null, suffix = ''): Promise<any> =>
   executeFunction('clearCache', url, suffix);
+export const clearCacheBySuffix = async (suffix = ''): Promise<any> =>
+  executeFunction('clearCacheBySuffix', suffix);
 // 获取设置
 export const getSetting = async (key: string): Promise<any> => executeFunction('getSetting', key);
 // 设置设置

@@ -14,7 +14,6 @@ export default (baseUrl?: string) => {
   const currentUrl = ref(PORN_URL);
   const searchInput = ref('');
   const getPageInfo = async (url?: string): Promise<pageInfo> => {
-    clearCache(url || PORN_URL, 'html');
     const pUrl = await getHtml(url || PORN_URL);
     return await badNews_getDMPageInfo(pUrl);
   };
