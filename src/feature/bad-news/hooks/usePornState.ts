@@ -34,7 +34,7 @@ export default (baseUrl?: string) => {
     if (searchInput.value) {
       handlerJump(`https://bad.news/search/q-${searchInput.value}/via-log`);
     } else {
-      ElMessage.warning('请输入搜索内容');
+      handlerJump(PORN_URL);
     }
   };
   onMounted(async () => {
