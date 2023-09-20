@@ -4,6 +4,10 @@ export interface pageType {
   page?: string;
   isCurrent?: boolean;
 }
+export interface tagType {
+  name?: string;
+  url?: string;
+}
 export interface video {
   title?: string;
   coverUrl?: string;
@@ -14,6 +18,6 @@ export interface video {
 }
 export interface pageInfo {
   video?: video[];
-  tags?: string[];
+  tags?: tagType[];
   pages?: pageType[]; // 分页
 }

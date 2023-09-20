@@ -8,6 +8,10 @@ interface pageType {
   page?: string;
   isCurrent?: boolean;
 }
+interface tagType {
+  name?: string;
+  url?: string;
+}
 interface video {
   title?: string;
   coverUrl?: string;
@@ -18,7 +22,7 @@ interface video {
 }
 interface pageInfo {
   video?: video[];
-  tags?: string[];
+  tags?: tagType[];
   pages?: pageType[]; // 分页
 }
 export const badNews_loadVideoUrl = async (jumpUrl: string): Promise<string> => {
@@ -65,10 +69,25 @@ const getPages = ($: CheerioAPI): pageType[] => {
   });
   return res;
 };
+const getTages = ($: CheerioAPI): tagType[] => {
+  const res: tagType[] = [];
+  res.push({ name: '热门', url: 'https://bad.news/tag/porn/sort-hot' });
+  res.push({ name: '最新', url: 'https://bad.news/tag/porn/sort-new' });
+  res.push({ name: '得分', url: 'https://bad.news/tag/porn/sort-score' });
+  res.push({ name: '精选', url: 'https://bad.news/tag/porn/sort-better' });
+  $('#search_form .list-inline li').each((index, el) => {
+    const cEl = $(el);
+    const url = cEl.find('a').attr('href');
+    if (url) {
+      res.push({ name: cEl.find('a').text(), url: BASE_URL + url });
+    }
+  });
+  return res;
+};
 export const badNews_getBadNewsInfo = async (html: string): Promise<pageInfo> => {
   const $: CheerioAPI = cheerio.load(html);
 
-  return { video: await getVideos($), pages: getPages($) };
+  return { video: await getVideos($), pages: getPages($), tags: getTages($) };
 };
 const getAVVideos = async ($: CheerioAPI): Promise<video[]> => {
   const res: video[] = [];
@@ -86,10 +105,21 @@ const getAVVideos = async ($: CheerioAPI): Promise<video[]> => {
   }
   return res;
 };
+const getAvTages = ($: CheerioAPI): tagType[] => {
+  const res: tagType[] = [];
+  $('#search_form .list-inline li').each((index, el) => {
+    const cEl = $(el);
+    const url = cEl.find('a').attr('href');
+    if (url) {
+      res.push({ name: cEl.find('a').text(), url: BASE_URL + url });
+    }
+  });
+  return res;
+};
 export const badNews_getAVPageInfo = async (html: string): Promise<pageInfo> => {
   const $: CheerioAPI = cheerio.load(html);
 
-  return { video: await getAVVideos($), pages: getPages($) };
+  return { video: await getAVVideos($), pages: getPages($), tags: getAvTages($) };
 };
 const getDMVideos = async ($: CheerioAPI): Promise<video[]> => {
   const res: video[] = [];
