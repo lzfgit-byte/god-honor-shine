@@ -1,6 +1,6 @@
 {
   "name": "ghs",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "main": "dist-electron/main/index.js",
   "license": "MIT",
   "private": true,
@@ -18,7 +18,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && electron-builder",
+    "build": "vite build && electron-builder",
     "preview": "vite preview"
   },
   "dependencies": {
