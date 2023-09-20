@@ -1,6 +1,10 @@
 import { ipcRenderer } from 'electron';
-
+const senMsg = (msg) => {
+  ipcRenderer.invoke('sen-msg', msg);
+};
+senMsg('异步链接加载中');
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
+  senMsg('异步 domReady');
   return new Promise((resolve) => {
     if (condition.includes(document.readyState)) {
       resolve(true);
@@ -29,9 +33,7 @@ function blobToString(blob) {
     reader.readAsText(blob);
   });
 }
-const senMsg = (msg) => {
-  ipcRenderer.invoke('sen-msg', msg);
-};
+
 function downloadURL(url = null) {
   if (!url) {
     url = window.location.href;
@@ -64,9 +66,6 @@ function downloadURL(url = null) {
 
   xhr.send();
 }
-ipcRenderer.on('re-download', (_event, args) => {
-  downloadURL();
-});
 
 domReady().then(() => {
   downloadURL();

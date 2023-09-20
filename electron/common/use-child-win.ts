@@ -30,9 +30,6 @@ ipcMain.handle('open-win', (_, arg) => {
   });
   childWindow.hide();
 });
-const reDonload = () => {
-  childWindow.webContents.send('re-download');
-};
 ipcMain.handle('show-child-win', () => {
   childWindow.show();
 });
@@ -48,11 +45,12 @@ export const hideChildWin = () => {
 export const loadAndRes = async (url: string) => {
   return new Promise((resolve) => {
     childWindow.loadURL(url);
-    ipcMain.removeHandler('sync-done');
-    ipcMain.handle('sync-done', (se, html) => {
+    const func = (se, html) => {
       hideChildWin();
       resolve(html);
-    });
+    };
+    ipcMain.removeHandler('sync-done');
+    ipcMain.handle('sync-done', func);
   });
 };
 export default (win: BrowserWindow) => {
