@@ -44,7 +44,8 @@
   const getTitle = (title) => {
     title = title.replace(/\r/g, '');
     title = title.replace(/\n/g, '');
-    title = title.replace(0, title.indexOf('pron'));
+    const index = title.indexOf('porn');
+    title = title.substring(0, index === -1 ? title.length : index);
     return title;
   };
   const videoSet = reactive({
