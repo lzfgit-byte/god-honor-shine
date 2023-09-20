@@ -78,8 +78,9 @@ const getTages = ($: CheerioAPI): tagType[] => {
   $('#search_form .list-inline li').each((index, el) => {
     const cEl = $(el);
     const url = cEl.find('a').attr('href');
-    if (url) {
-      res.push({ name: cEl.find('a').text(), url: BASE_URL + url });
+    const name = cEl.find('a').text();
+    if (url && !name.includes('更多热搜')) {
+      res.push({ name, url: BASE_URL + url });
     }
   });
   return res;
