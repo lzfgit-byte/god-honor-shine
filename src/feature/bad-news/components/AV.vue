@@ -2,7 +2,12 @@
   <div class="header-container">
     <div class="btn-container">
       <div class="btn-search-container">
-        <el-input v-model="searchInput" placeholder="Please Input" @keydown.enter="handlerSearch" />
+        <el-input
+          v-model="searchInput"
+          placeholder="请输入"
+          clearable
+          @keydown.enter="handlerSearch"
+        />
       </div>
       <el-button type="primary" plain @click="handlerSearch">搜索</el-button>
       <el-button type="primary" plain @click="handlerJump(null)">刷新</el-button>
