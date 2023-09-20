@@ -1,4 +1,5 @@
 import { onMounted, ref } from 'vue';
+import { ElMessage } from 'element-plus';
 import { clearCache, getHtml } from '@/utils/functions';
 import { badNews_getBadNewsInfo } from '@/feature/bad-news/utils/bn-functions';
 import type { pageInfo, pageType, tagType, video } from '@/feature/bad-news/type/types';
@@ -11,6 +12,7 @@ export default (baseUrl?: string) => {
   const pages = ref<pageType[]>();
   const tags = ref<tagType[]>();
   const currentUrl = ref(PORN_URL);
+  const searchInput = ref('');
   const getPageInfo = async (url?: string): Promise<pageInfo> => {
     clearCache(url || PORN_URL, 'html');
     const pUrl = await getHtml(url || PORN_URL);
@@ -29,8 +31,15 @@ export default (baseUrl?: string) => {
     currentUrl.value = url || currentUrl.value;
     loadHtml(currentUrl.value);
   };
+  const handlerSearch = () => {
+    if (searchInput.value) {
+      handlerJump(`https://bad.news/search/q-${searchInput.value}/via-log`);
+    } else {
+      ElMessage.warning('请输入搜索内容');
+    }
+  };
   onMounted(async () => {
     loadHtml();
   });
-  return { videos, pages, handlerJump, tags };
+  return { videos, pages, handlerJump, tags, searchInput, handlerSearch };
 };

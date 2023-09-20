@@ -1,6 +1,10 @@
 <template>
   <div class="header-container">
     <div class="btn-container">
+      <div class="btn-search-container">
+        <el-input v-model="searchInput" placeholder="Please Input" @keydown.enter="handlerSearch" />
+      </div>
+      <el-button type="primary" plain @click="handlerSearch">搜索</el-button>
       <el-button type="primary" plain @click="handlerJump">刷新</el-button>
       <el-button type="primary" plain @click="drawer = true">标签</el-button>
     </div>
@@ -20,8 +24,9 @@
   import Covers from '@/feature/bad-news/components/Covers.vue';
   import Pagination from '@/feature/bad-news/components/Pagination.vue';
   import usePornTag from '@/feature/bad-news/hooks/usePornTag';
+  const props = defineProps({ url: String });
 
-  const { videos, pages, handlerJump, tags } = usePornState('https://bad.news/tag/porn');
+  const { videos, pages, handlerJump, tags, searchInput, handlerSearch } = usePornState(props.url);
   const { drawer } = usePornTag();
 </script>
 
