@@ -5,7 +5,7 @@ import type { pageInfo, pageType, tagType, video } from '@/feature/bad-news/type
 import { nprogress } from '@/utils/nprogress';
 import { badNews_getDMPageInfo } from '@/feature/bad-news/utils/bn-functions';
 
-let PORN_URL = 'https://bad.news/tag/porn';
+let PORN_URL = 'https://bad.news/dm';
 export default (baseUrl?: string) => {
   PORN_URL = baseUrl || PORN_URL;
   const videos = ref<video[]>();

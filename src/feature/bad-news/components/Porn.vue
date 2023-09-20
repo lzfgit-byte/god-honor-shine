@@ -5,7 +5,7 @@
         <el-input v-model="searchInput" placeholder="Please Input" @keydown.enter="handlerSearch" />
       </div>
       <el-button type="primary" plain @click="handlerSearch">搜索</el-button>
-      <el-button type="primary" plain @click="handlerJump">刷新</el-button>
+      <el-button type="primary" plain @click="handlerJump(null)">刷新</el-button>
       <el-button type="primary" plain @click="drawer = true">标签</el-button>
     </div>
     <Pagination :pages="pages" @jump="handlerJump"></Pagination>
