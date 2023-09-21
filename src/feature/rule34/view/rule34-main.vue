@@ -16,6 +16,7 @@
             </el-input>
             <el-button type="primary" title="清空当前页面缓存" @click="reload">刷新</el-button>
             <el-button type="primary" title="清空所有缓存" @click="reset">重置</el-button>
+            <el-button type="primary" title="到首屏" @click="resetUrl">回退</el-button>
             <el-button type="primary" @click="drawer.visible = true">标签</el-button>
           </div>
         </Rule34Pagination>
@@ -60,7 +61,9 @@
   const videos = ref<videoInfo[]>([]);
   const pages = ref<pageInfo[]>([]);
   const currentUrl = ref(url);
+  const oldUrl = ref(url);
   const load = (url: string) => {
+    oldUrl.value = currentUrl.value;
     currentUrl.value = url;
     nprogress.start();
     getHtml(url)
@@ -124,6 +127,9 @@
     clearCache().then(() => {
       load(currentUrl.value);
     });
+  };
+  const resetUrl = () => {
+    load(oldUrl.value);
   };
 </script>
 
