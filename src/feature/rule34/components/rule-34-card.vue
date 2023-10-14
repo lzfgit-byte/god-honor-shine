@@ -35,7 +35,7 @@
       </el-space>
     </div>
   </el-dialog>
-  <img :src="`http://127.0.0.1:3356/closed?url=${videoSet.videoUrl2}`" style="display: none" />
+  <img :src="`${HTTP_SERVER_URL}/closed?url=${videoSet.videoUrl2}`" style="display: none" />
 </template>
 
 <script setup lang="ts">
@@ -43,9 +43,8 @@
   import { reactive, ref } from 'vue';
   import type { videoData, videoInfo } from '@/feature/rule34/type/rule34Type';
   import VideoHtml5 from '@/components/video-html5.vue';
-  import { getHtml, loadUrl } from '@/utils/functions';
-  import { rule34_getRule34Video } from '@/feature/rule34/utils/functions';
-  import { getVideoUrl } from '@/utils/kit-utils';
+  import { loadUrl } from '@/utils/functions';
+  import { HTTP_SERVER_URL, getVideoUrl } from '@/utils/kit-utils';
 
   const props = defineProps({ videoD: Object as PropType<videoInfo> });
   const videoSet = reactive({

@@ -3,6 +3,7 @@
   "version": "2.1.1",
   "main": "dist-electron/main/index.js",
   "license": "MIT",
+  "servicePort":13356,
   "private": true,
   "keywords": [
     "electron",

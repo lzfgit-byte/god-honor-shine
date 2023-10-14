@@ -1,11 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { killByPort } from '../utils/command';
+import pkg from '../../package.json';
 import handlerGetImg from './service/handler-getImg';
 import handlerGetByte from './service/handler-getByte';
 const app = express();
 const hostname = '127.0.0.1';
-const port = 3356;
+const port = pkg.servicePort;
 
 let closeReq = null;
 app.use(bodyParser.urlencoded({ extended: false }));
