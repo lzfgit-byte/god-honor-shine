@@ -44,7 +44,9 @@ const getVideos = async ($: CheerioAPI): Promise<video[]> => {
     const cEl = $(el);
     const title = cEl.find('.title').text();
     const coverUrl =
-      cEl?.find('.coverimg img.lazy')?.attr('data-echo') || cEl.find('video')?.attr('data-echo');
+      cEl?.find('.coverimg img.lazy')?.attr('data-echo') ||
+      cEl.find('video')?.attr('data-echo') ||
+      cEl.find('.my-videos').attr('poster');
     const videType = cEl?.find('.ct-time-left span')?.text();
     const jumpUrl = BASE_URL + cEl.find('.coverdiv a')?.attr('href');
     const videoUrl = cEl.find('.dateline[title="点击下载视频"]').attr('href');
