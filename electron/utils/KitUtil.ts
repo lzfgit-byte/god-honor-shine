@@ -1,13 +1,3 @@
-export const isFalsity = (data) =>
-  data === null ||
-  data === '' ||
-  data === undefined ||
-  data === 'undefined' ||
-  data === false ||
-  data === 'null';
-
-export const isTruth = (data) => !isFalsity(data);
-
 export const formatSize = (size: any, pointLength = 2, units: any = null) => {
   let unit;
   units = units || ['B', 'K', 'M', 'G'];

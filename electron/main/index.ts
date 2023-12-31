@@ -2,13 +2,9 @@ import { release } from 'node:os';
 import { join } from 'node:path';
 import { BrowserWindow, Menu, app, shell } from 'electron';
 import { sendMessage } from '../utils/message';
-import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
-import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
-import useChildWin from '../common/use-child-win';
 import useGlobalShortcut from '../common/use-global-shortcut';
-import useChildWinPic from '../utils/use-child-win-pic';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -35,7 +31,6 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0);
 }
 // 启动服务
-const closeServer = useService();
 let win: BrowserWindow | null = null;
 
 const preload = join(__dirname, '../preload/index.js');
@@ -56,10 +51,6 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
-  const { proxy, needProxy } = useSetting();
-  if (needProxy && proxy) {
-    win.webContents.session.setProxy({ proxyRules: proxy });
-  }
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(url);
     win.webContents.openDevTools();
@@ -71,13 +62,7 @@ async function createWindow() {
     sendMessage('start done');
   });
   useGlobalShortcut();
-  const closeChildWin = useChildWin(null);
-  const picClose = useChildWinPic(win);
-  win.webContents.on('destroyed', () => {
-    closeServer();
-    closeChildWin();
-    picClose();
-  });
+  win.webContents.on('destroyed', () => {});
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) {
       shell.openExternal(url);
@@ -90,7 +75,6 @@ app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   win = null;
-  closeServer();
   if (process.platform !== 'darwin') {
     app.quit();
   }
