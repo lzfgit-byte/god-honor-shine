@@ -1,7 +1,3 @@
-import * as sqlite3 from 'sqlite3';
-let db;
-export const queryConfigByName = (name: string) => {
-  db = new sqlite3.Database(`./public/sqlite.db`, (err) => {});
-};
-queryConfigByName('proxy');
+import db from './init-db';
+export const queryConfigByName = (name: string) => {};
 export default () => () => db?.close();
