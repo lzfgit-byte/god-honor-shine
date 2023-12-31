@@ -2,19 +2,24 @@ import * as sqlite3 from 'sqlite3';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
 const db_path = APP_PATHS.db_path;
-let db = new sqlite3.Database(db_path, (err) => {
+const db = new sqlite3.Database(db_path, (err) => {
   if (!err) {
     return;
   }
   logger.log(`数据库创建失败:${err?.message}`);
 });
-
+export interface TableConfig {
+  key: string;
+  value: string;
+  is_edit: number;
+}
 const createTableConfig = () => {
   db.run(
     `
   CREATE TABLE IF NOT EXISTS config (
     key TEXT PRIMARY KEY,
-    value TEXT
+    value TEXT,
+    is_edit integer
   )
 `,
     function (err) {
@@ -26,6 +31,10 @@ const createTableConfig = () => {
     }
   );
 };
+export interface TableHistory {
+  key: string;
+  value: string;
+}
 const createTableHistory = () => {
   db.run(
     `
