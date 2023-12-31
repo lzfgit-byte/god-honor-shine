@@ -1,6 +1,7 @@
 import * as sqlite3 from 'sqlite3';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
+import { SYSTEM_SET_KEY } from '../const/system';
 import { insertTableConfig, queryConfigByKey } from './table-config';
 const db_path = APP_PATHS.db_path;
 const db = new sqlite3.Database(db_path, (err) => {
@@ -15,13 +16,17 @@ export interface TableConfig {
   is_edit: number;
 }
 const initTableConfigData = async () => {
-  const proxy = await queryConfigByKey('proxy');
+  const proxy = await queryConfigByKey(SYSTEM_SET_KEY.proxy);
   if (!proxy) {
-    await insertTableConfig({ key: 'proxy', value: 'socks5://127.0.0.1:10808', is_edit: 1 });
+    await insertTableConfig({
+      key: SYSTEM_SET_KEY.proxy,
+      value: 'socks5://127.0.0.1:10808',
+      is_edit: 1,
+    });
   }
-  const needProxy = await queryConfigByKey('needProxy');
+  const needProxy = await queryConfigByKey(SYSTEM_SET_KEY.needProxy);
   if (!needProxy) {
-    await insertTableConfig({ key: 'needProxy', value: 'true', is_edit: 1 });
+    await insertTableConfig({ key: SYSTEM_SET_KEY.needProxy, value: 'true', is_edit: 1 });
   }
 };
 const createTableConfig = async () => {
