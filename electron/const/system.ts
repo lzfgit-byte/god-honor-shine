@@ -11,6 +11,7 @@ export const SYSTEM_SHORT_CUT = {
 };
 export const SYS_GLOB_KEY = {
   SEND_MESSAGE: 'send-message',
+  SEND_PROCESS: 'send-process',
 };
 
 export const HTML_WIN_EVENT = {
