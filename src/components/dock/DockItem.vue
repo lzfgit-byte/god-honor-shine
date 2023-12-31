@@ -29,6 +29,7 @@
     padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 15px;
     &:hover {
       background-color: @dock-item-hove-color;
     }

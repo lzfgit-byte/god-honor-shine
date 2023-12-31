@@ -14,8 +14,6 @@
   const init = async () => {
     const webApps = await f_getWebApps();
     setApps(webApps);
-    console.log('webapps', webApps);
-    console.log('apps', apps);
   };
   init();
 </script>

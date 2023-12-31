@@ -7,5 +7,10 @@ export const getWebApps = (): WebAppType[] => {
       name: 'HWord',
       icon: 'https://thehentaiworld.com/favicon.ico',
     },
+    {
+      baseUrl: 'https://thehentaiworld.com',
+      name: 'HWord',
+      icon: 'https://thehentaiworld.com/favicon.ico',
+    },
   ];
 };
