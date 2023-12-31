@@ -1,94 +1,66 @@
-import { release } from 'node:os';
 import { join } from 'node:path';
 import { BrowserWindow, Menu, app, shell } from 'electron';
 import { sendMessage } from '../utils/message';
-import useIpcMain from '../common/use-ipc-main';
-import useCookie from '../common/use-cookie';
-import useGlobalShortcut from '../common/use-global-shortcut';
+import useIpcMain from '../hooks/use-ipc-main';
+import useCookie from '../hooks/use-cookie';
+import useGlobalShortcut from '../hooks/use-global-shortcut';
+import './init/init-env';
+import { resolvePreload, resolvePublic } from '../utils/KitUtil';
+import useHandleMainEvent from './event/use-handle-main-event';
 
-process.env.DIST_ELECTRON = join(__dirname, '..');
-process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
-process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
-  ? join(process.env.DIST_ELECTRON, '../public')
-  : process.env.DIST;
-// 安全设置
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
-app.commandLine.appendSwitch('disable-web-security');
-app.commandLine.appendSwitch('charset', 'utf-8');
-
-// Disable GPU Acceleration for Windows 7
-if (release().startsWith('6.1')) {
-  app.disableHardwareAcceleration();
-}
-
-// Set application name for Windows 10+ notifications
-if (process.platform === 'win32') {
-  app.setAppUserModelId(app.getName());
-}
-
-if (!app.requestSingleInstanceLock()) {
-  app.quit();
-  process.exit(0);
-}
 // 启动服务
 let win: BrowserWindow | null = null;
-
-const preload = join(__dirname, '../preload/index.js');
 
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
-  Menu.setApplicationMenu(null);
   win = new BrowserWindow({
     title: 'ghs',
     width: 1450,
     height: 788,
-    icon: join(process.env.PUBLIC, 'favicon.ico'),
+    icon: resolvePublic('favicon.ico'),
     webPreferences: {
-      preload,
+      preload: resolvePreload('index'),
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
   if (process.env.VITE_DEV_SERVER_URL) {
-    win.loadURL(url);
+    await win.loadURL(url);
     win.webContents.openDevTools();
   } else {
-    win.loadFile(indexHtml);
+    await win.loadFile(indexHtml);
   }
-
-  win.webContents.on('did-finish-load', () => {
-    sendMessage('start done');
-  });
-  useGlobalShortcut();
-  win.webContents.on('destroyed', () => {});
-  win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) {
-      shell.openExternal(url);
-    }
-    return { action: 'deny' };
-  });
+  useHandleMainEvent(win);
+  useGlobalShortcut(win);
 }
 
 app.whenReady().then(createWindow);
-
+/**
+ *窗口跟app是不一样的，这说明可以在无窗口时，可以再次创建窗口
+ */
 app.on('window-all-closed', () => {
   win = null;
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
-
+/**
+ *两个实例，想要再次隐形
+ */
 app.on('second-instance', () => {
   if (win) {
     if (win.isMinimized()) {
+      // 重新恢复
       win.restore();
     }
     win.focus();
   }
 });
-
+/**
+ * 在应用变为活动时触发，展示第一个窗口
+ */
 app.on('activate', () => {
   const allWindows = BrowserWindow.getAllWindows();
   if (allWindows.length) {

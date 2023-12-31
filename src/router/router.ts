@@ -17,27 +17,6 @@ export const routes = [
     showInMenu: true,
     component: () => import('@/feature/hentai-word/view/main-view.vue'),
   },
-  {
-    path: '/18Comic',
-    name: '18Comic',
-    aliasZH: '18Comic',
-    showInMenu: true,
-    component: () => import('@/feature/18-comic/view/18-comic-main.vue'),
-  },
-  {
-    path: '/rule34',
-    name: 'rule34',
-    aliasZH: 'rule34',
-    showInMenu: true,
-    component: () => import('@/feature/rule34/view/rule34-main.vue'),
-  },
-  {
-    path: '/badNews',
-    name: 'badNews',
-    aliasZH: 'badNews',
-    showInMenu: true,
-    component: () => import('@/feature/bad-news/view/bad-news-main-view.vue'),
-  },
 ];
 
 const router = createRouter({
@@ -46,5 +25,5 @@ const router = createRouter({
 });
 export default router;
 export const registerRouter = (app: App) => {
-  app.use(router);
+  // app.use(router);
 };
