@@ -7,6 +7,7 @@ import './init/init-env';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useDbConnect from '../database/use-db-connect';
 import useSystemSetting from '../hooks/use-system-setting';
+import useProxySetting from '../hooks/use-proxy-setting';
 import useHandleMainEvent from './event/use-handle-main-event';
 
 // 启动服务
@@ -27,10 +28,7 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
-  const { proxy, needProxy } = await useSystemSetting();
-  if (needProxy && proxy) {
-    await win.webContents.session.setProxy({ proxyRules: proxy });
-  }
+  await useProxySetting(win);
   if (process.env.VITE_DEV_SERVER_URL) {
     await win.loadURL(url);
     win.webContents.openDevTools();
