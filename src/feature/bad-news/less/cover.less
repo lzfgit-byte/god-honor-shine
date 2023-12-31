@@ -1,0 +1,49 @@
+@import '../less/glob';
+.container {
+  width: var(--widthImage);
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
+  .img-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border: 1px solid #ccc;
+    width: var(--widthImage);
+    height: @imageHeight;
+  }
+  .title {
+    width: 100%;
+    overflow: hidden;
+    word-break: keep-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .type {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    margin: 5px;
+    padding: 5px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .time {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    margin: 5px;
+    padding: 5px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}

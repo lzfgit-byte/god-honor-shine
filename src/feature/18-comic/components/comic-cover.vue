@@ -6,7 +6,7 @@
       }}</span>
     </div>
     <div class="imgContainer" @click="handlerImgClick">
-      <img width="213" :src="getImgUrl(coverInfo?.coverUrl as string)" />
+      <img width="213" :src="imgSrc" :datsSrc="coverInfo?.coverUrl" />
     </div>
     <div class="heart">{{ coverInfo?.heart }}</div>
     <div class="title">{{ coverInfo?.title }}</div>
@@ -30,9 +30,10 @@
 
 <script setup lang="ts">
   import type { PropType } from 'vue';
+  import { ref } from 'vue';
   import type { comicCover } from '@/feature/18-comic/type/18-comic-type';
   import bus from '@/utils/bus';
-  import { getHtmlByWin } from '@/utils/functions';
+  import { getHtmlByWin, getImageBase64ByWin } from '@/utils/functions';
   import { comic_getComicDetailInfo } from '@/feature/18-comic/utils/functions';
   import { getImgUrl } from '@/utils/kit-utils';
   import { emitMessage } from '@/common/useMsgTitle';
@@ -43,6 +44,11 @@
   const handlerTagClick = (url: string) => {
     bus.emit('searchComic', url);
   };
+  const imgSrc = ref();
+  getImageBase64ByWin(props?.coverInfo?.coverUrl as string).then((res) => {
+    imgSrc.value = res;
+  });
+
   const handlerImgClick = () => {
     const jumpUrl = props?.coverInfo?.jumpUrl || '';
     getHtmlByWin(jumpUrl)

@@ -1,0 +1,87 @@
+<template>
+  <div
+    class="container"
+    :style="{
+      '--widthImage': `${widthImage}px`,
+    }"
+    @click="handlerClick"
+  >
+    <div class="img-container" :title="videoInfo?.videoUrl">
+      <CoverImage :url="videoInfo?.coverUrl || ''" @width-change="handlerWidthChange"></CoverImage>
+    </div>
+    <div class="title" :title="getTitle(videoInfo?.title)">{{ getTitle(videoInfo?.title) }}</div>
+    <div v-if="videoInfo?.videType !== ''" class="type">
+      <span>
+        {{ videoInfo?.videType }}
+      </span>
+    </div>
+    <div class="time">{{ videoInfo?.time }}</div>
+  </div>
+  <el-dialog
+    v-model="videoSet.visible"
+    width="1050px"
+    :title="videoSet.videoTitle"
+    @cancel="videoSet.visible = false"
+    @ok="videoSet.visible = false"
+  >
+    <VideoHtml5
+      v-if="videoSet.visible"
+      :title="videoSet.videoTitle"
+      :type="videoSet.type"
+      :src="videoSet.videoSrc"
+    ></VideoHtml5>
+  </el-dialog>
+</template>
+<script setup lang="ts">
+  import type { PropType } from 'vue';
+  import { reactive, ref } from 'vue';
+  import { ElMessage } from 'element-plus';
+  import CoverImage from '@/feature/bad-news/components/CoverImage.vue';
+  import type { video } from '@/feature/bad-news/type/types';
+  import VideoHtml5 from '@/components/video-html5.vue';
+  import { badNews_loadVideoUrl } from '@/feature/bad-news/utils/bn-functions';
+  const props = defineProps({ videoInfo: { type: Object as PropType<video> } });
+  const getTitle = (title) => {
+    title = title.replace(/\r/g, '');
+    title = title.replace(/\n/g, '');
+    const index = title.indexOf('porn');
+    title = title.substring(0, index === -1 ? title.length : index);
+    return title;
+  };
+  const videoSet = reactive({
+    visible: false,
+    videoTitle: '',
+    videoSrc: '',
+    type: 'video/mp4',
+    playVideo: (src: string, title = '', type = 'video/mp4') => {
+      title = getTitle(title);
+      videoSet.videoSrc = src;
+      videoSet.videoTitle = title;
+      videoSet.visible = true;
+      videoSet.type = type;
+    },
+  });
+  const handlerClick = async () => {
+    let url = props?.videoInfo?.videoUrl;
+    if (!url) {
+      url = await badNews_loadVideoUrl(props?.videoInfo?.jumpUrl || '');
+    }
+    if (url && url.includes('m3u8')) {
+      videoSet.playVideo(url, props.videoInfo?.title || '', 'm3u8');
+      return;
+    }
+    if (url === '') {
+      ElMessage.warning('播放地址为空');
+      return;
+    }
+    videoSet.playVideo(url as string, props.videoInfo?.title || '');
+  };
+  const widthImage = ref(0);
+  const handlerWidthChange = (width: number) => {
+    widthImage.value = width < 150 ? 150 : width;
+  };
+</script>
+
+<style scoped lang="less">
+  @import '../less/cover';
+</style>

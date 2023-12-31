@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import locale from 'element-plus/lib/locale/lang/zh-cn'; // element中文
+import locale from 'element-plus/es/locale/lang/zh-cn'; // element中文
 import ElementPlus from 'element-plus';
 import App from '@/App.vue';
 import '@/samples/node-api';

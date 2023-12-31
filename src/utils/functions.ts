@@ -7,10 +7,21 @@ export const getHtmlByWin = async (url: string): Promise<string> =>
 // 刷新
 export const clearCache = async (url = null, suffix = ''): Promise<any> =>
   executeFunction('clearCache', url, suffix);
+export const clearCacheBySuffix = async (suffix = ''): Promise<any> =>
+  executeFunction('clearCacheBySuffix', suffix);
 // 获取设置
 export const getSetting = async (key: string): Promise<any> => executeFunction('getSetting', key);
 // 设置设置
 export const setSetting = async (key: string, value: any): Promise<any> =>
   executeFunction('setSetting', key, value);
-export const openWindows = (url = '') => executeFunction('open-win', url);
+export const getAllSet = async (): Promise<Record<string, any>> => executeFunction('getAllSet');
+// 启动后台子窗口
+const openWindows = (url = '') => executeFunction('open-win', url);
 openWindows();
+////
+export const loadUrl = (url = '') => executeFunction('open-win-only', url);
+export const getImageBase64ByWin = (url: string): Promise<string> =>
+  executeFunction('getImageBase64ByWin', url);
+// 日志
+export const getLogs = async (): Promise<any> => executeFunction('getLogs');
+export const clearLogs = async (): Promise<any> => executeFunction('clearLogs');

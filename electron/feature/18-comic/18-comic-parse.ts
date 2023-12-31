@@ -11,6 +11,9 @@ export const comic_loadSingle = (res: any, $: any, el: any) => {
   cheerio$.find('.title-truncate.hidden-xs > a').each((i: any, el: any) => {
     author_.push($(el).text());
   });
+  cheerio$.find('.title-truncate-index > a').each((i: any, el: any) => {
+    author_.push($(el).text());
+  });
   const type_: any = [];
   cheerio$.find('.category-icon > div').each((i: any, el: any) => {
     const title = $(el).text();

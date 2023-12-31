@@ -1,6 +1,6 @@
 import { release } from 'node:os';
 import { join } from 'node:path';
-import { BrowserWindow, Menu, app, globalShortcut, ipcMain, shell } from 'electron';
+import { BrowserWindow, Menu, app, shell } from 'electron';
 import { sendMessage } from '../utils/message';
 import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
@@ -8,6 +8,7 @@ import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
 import useChildWin from '../common/use-child-win';
 import useGlobalShortcut from '../common/use-global-shortcut';
+import useChildWinPic from '../utils/use-child-win-pic';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
@@ -17,6 +18,7 @@ process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
 // 安全设置
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 app.commandLine.appendSwitch('disable-web-security');
+app.commandLine.appendSwitch('charset', 'utf-8');
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) {
@@ -70,8 +72,11 @@ async function createWindow() {
   });
   useGlobalShortcut();
   const closeChildWin = useChildWin(null);
+  const picClose = useChildWinPic(win);
   win.webContents.on('destroyed', () => {
+    closeServer();
     closeChildWin();
+    picClose();
   });
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) {

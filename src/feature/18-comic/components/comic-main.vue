@@ -114,7 +114,7 @@
     setWrapper,
     setting,
   } from '@/feature/18-comic/type/18-comic-type';
-  import { clearCache, getHtml, getHtmlByWin, getSetting, setSetting } from '@/utils/functions';
+  import { clearCache, getHtmlByWin, getSetting, setSetting } from '@/utils/functions';
   import { comic_getHomeInfo } from '@/feature/18-comic/utils/functions';
   import { nprogress } from '@/utils/nprogress';
 

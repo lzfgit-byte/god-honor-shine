@@ -1,8 +1,13 @@
 import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
+import { keys } from 'lodash';
 import type { settingType } from '../type/types';
-
-const configFile = `${process.cwd()}/config.json`;
-const defaultConfig = { proxy: 'socks5://127.0.0.1:10808', needProxy: true };
+const appFilePath = `${process.env.LOCALAPPDATA}/ghs`;
+const configFile = `${appFilePath}/config.json`;
+const defaultConfig: settingType = {
+  proxy: 'socks5://127.0.0.1:10808',
+  needProxy: true,
+  picWinLimit: JSON.stringify([8, 20]),
+};
 
 const ensure = () => {
   ensureFileSync(configFile);
@@ -17,7 +22,18 @@ const load = () => {
   ensure();
   const cStr = readFileSync(configFile, { encoding: 'utf-8' });
   if (cStr) {
-    setJson = JSON.parse(cStr);
+    try {
+      setJson = JSON.parse(cStr);
+    } catch (e) {
+      setJson = defaultConfig;
+    }
+    const setJsonKeys = keys(setJson);
+    const defaultKeys = keys(defaultConfig);
+    defaultKeys.forEach((key) => {
+      if (!setJsonKeys.includes(key)) {
+        setJson[key] = defaultConfig[key];
+      }
+    });
   } else {
     writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2), { encoding: 'utf-8' });
     setJson = defaultConfig;
@@ -31,6 +47,11 @@ export const setSetting = (key, value) => {
   load();
   setJson[key] = value;
   writeSetting();
+};
+export const getAppDataPath = () => appFilePath;
+
+export const getAllSet: Record<string, any> = () => {
+  return setJson;
 };
 
 export default (): settingType => {

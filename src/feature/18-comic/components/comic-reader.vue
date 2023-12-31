@@ -34,6 +34,7 @@
       <div
         v-for="item in details?.contents"
         :key="item?.jumpUrl"
+        :title="item?.jumpUrl"
         class="row"
         :class="{ current: item?.current }"
         @click.stop="doRead(item)"
@@ -67,7 +68,7 @@
     setting,
   } from '@/feature/18-comic/type/18-comic-type';
   import { COMIC_HISTORY_KEY } from '@/feature/18-comic/type/18-comic-type';
-  import { getHtml, getSetting, setSetting } from '@/utils/functions';
+  import { getHtmlByWin, getSetting, setSetting } from '@/utils/functions';
   import { comic_getReaderInfos } from '@/feature/18-comic/utils/functions';
   import ComicImg from '@/feature/18-comic/components/comic-img.vue';
 
@@ -104,7 +105,7 @@
       }
     });
     item.current !== undefined && (item.current = true);
-    getHtml(item?.jumpUrl || '')
+    getHtmlByWin(item?.jumpUrl || '')
       .then((res) => {
         return comic_getReaderInfos(res);
       })

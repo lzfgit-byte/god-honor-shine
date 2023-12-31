@@ -1,7 +1,14 @@
 import path from 'node:path';
 import { unlinkSync } from 'node:fs';
 import { Md5 } from 'ts-md5';
-import { emptyDir, ensureFileSync, existsSync, readFileSync, writeFileSync } from 'fs-extra';
+import {
+  emptyDir,
+  ensureFileSync,
+  existsSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'fs-extra';
 import { isFalsity } from './KitUtil';
 
 const CACHE_PATH = path.join(process.cwd(), '/ghs-cache/');
@@ -43,4 +50,12 @@ export const clearCache = (fileName, suffix = '') => {
   if (existsCache(fileName, suffix)) {
     unlinkSync(buildFilePathName(fileName, suffix));
   }
+};
+export const clearCacheBySuffix = (suffix = '') => {
+  const reds = readdirSync(CACHE_PATH);
+  reds.forEach((fileName) => {
+    if (fileName.endsWith(suffix)) {
+      unlinkSync(CACHE_PATH + fileName);
+    }
+  });
 };
