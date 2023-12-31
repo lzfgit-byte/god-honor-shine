@@ -8,13 +8,13 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { f_requestImage } from '@/utils/functions';
+  import { f_getImageBase64 } from '@/utils/functions';
 
   const props = defineProps({ name: String, icon: String, showMarginRight: Boolean });
   const emits = defineEmits(['click']);
   const image_url = ref();
   const init = async () => {
-    image_url.value = await f_requestImage(props.icon);
+    image_url.value = await f_getImageBase64(props.icon);
   };
   init();
 </script>
