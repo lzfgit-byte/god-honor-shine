@@ -2,17 +2,20 @@
  * 通过窗口获取页面html的preload
  */
 import { ipcRenderer } from 'electron';
+import { HTML_WIN_EVENT, SYS_GLOB_KEY } from '../const/system';
 const sendMessage = (msg: string) => {
-  ipcRenderer.invoke('send-message', `${msg} f 【${window.location.href}】`).then(() => 1);
+  ipcRenderer
+    .invoke(SYS_GLOB_KEY.SEND_MESSAGE, `${msg} f 【${window.location.href}】`)
+    .then(() => 1);
 };
 const sendHtml = (html: string) => {
-  ipcRenderer.invoke('send-html', html).then(() => 1);
+  ipcRenderer.invoke(HTML_WIN_EVENT.SEND_HTML, html).then(() => 1);
 };
 function showWindow() {
-  ipcRenderer.invoke('show-child-win').then(() => 1);
+  ipcRenderer.invoke(HTML_WIN_EVENT.SHOW_HTML_GET_WIN).then(() => 1);
 }
 function hideWindow() {
-  ipcRenderer.invoke('hide-child-win').then(() => 1);
+  ipcRenderer.invoke(HTML_WIN_EVENT.HIDE_HTML_GET_WIN).then(() => 1);
 }
 sendMessage(`获取页面中`);
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {

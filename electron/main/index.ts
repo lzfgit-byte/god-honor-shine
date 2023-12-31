@@ -8,6 +8,7 @@ import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useDbConnect from '../database/use-db-connect';
 import useSystemSetting from '../hooks/use-system-setting';
 import useProxySetting from '../hooks/use-proxy-setting';
+import useHtmlGetWin from '../hooks/use-html-get-win';
 import useHandleMainEvent from './event/use-handle-main-event';
 
 // 启动服务
@@ -15,7 +16,7 @@ let win: BrowserWindow | null = null;
 
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
-
+let execFuncOnClose = [];
 async function createWindow() {
   win = new BrowserWindow({
     title: 'ghs',
@@ -28,17 +29,18 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
-  await useProxySetting(win);
+  useProxySetting(win);
+  useHandleMainEvent(win);
+  useGlobalShortcut(win);
+  execFuncOnClose.push(useHtmlGetWin());
   if (process.env.VITE_DEV_SERVER_URL) {
     await win.loadURL(url);
     win.webContents.openDevTools();
   } else {
     await win.loadFile(indexHtml);
   }
-  useHandleMainEvent(win);
-  useGlobalShortcut(win);
 }
-const closeDb = useDbConnect();
+execFuncOnClose.push(useDbConnect());
 app.whenReady().then(createWindow);
 /**
  *窗口跟app是不一样的，这说明可以在无窗口时，可以再次创建窗口
@@ -47,7 +49,9 @@ app.on('window-all-closed', () => {
   win = null;
   if (process.platform !== 'darwin') {
     app.quit();
-    closeDb();
+    execFuncOnClose.forEach((func) => {
+      func && func();
+    });
   }
 });
 /**
