@@ -47,6 +47,9 @@
       transform: translateX(-50%);
       border-radius: 25px;
       padding: 0 25px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
     }
     .setting {
       position: absolute;

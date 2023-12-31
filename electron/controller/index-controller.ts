@@ -1,5 +1,11 @@
 import type { WebAppType } from '../types/setting-page-info';
 
 export const getWebApps = (): WebAppType[] => {
-  return [{ baseUrl: '', name: 'HWord', icon: '' }];
+  return [
+    {
+      baseUrl: 'https://thehentaiworld.com',
+      name: 'HWord',
+      icon: 'https://thehentaiworld.com/favicon.ico',
+    },
+  ];
 };
