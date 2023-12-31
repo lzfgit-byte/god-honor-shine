@@ -4,7 +4,7 @@ export interface WebAppType_F {
   icon: string;
 }
 export interface SettingType {
-  icon: string;
+  icon: any;
   title: string;
   type: string;
 }

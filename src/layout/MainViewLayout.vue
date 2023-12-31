@@ -59,6 +59,10 @@
       right: 20px;
       border-radius: 25px;
       padding: 25px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 </style>
