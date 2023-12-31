@@ -1,4 +1,4 @@
-import { getImgBase64 } from '../../electron/http';
+import { getImgBase64, requestImage } from '../../electron/http';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -19,3 +19,9 @@ export const f_getImgBase64 = async (url: string): Promise<string> =>
  */
 export const f_requestHtml = async (url: string): Promise<string> =>
   executeFunction('requestHtml', url);
+/**
+ * 获取图片,使用request
+ * @param url
+ */
+export const f_requestImage = async (url: string): Promise<string> =>
+  executeFunction('requestImage', url);
