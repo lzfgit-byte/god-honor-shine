@@ -81,3 +81,21 @@ export const deleteHistory = async (entity: Table) => {
     });
   });
 };
+export const createTableHistory = () => {
+  db.run(
+    `
+  CREATE TABLE IF NOT EXISTS history (
+    key TEXT PRIMARY KEY,
+    value TEXT
+  )
+`,
+    function (err) {
+      if (err) {
+        logger.log('Error creating history table:', err.message);
+      } else {
+        logger.log('history table created successfully');
+      }
+    }
+  );
+};
+createTableHistory();

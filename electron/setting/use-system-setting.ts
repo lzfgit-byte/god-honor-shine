@@ -15,8 +15,8 @@ let GetSet = async (): Promise<optsType> => {
   const set = {
     proxy: proxy.value,
     needProxy: needProxy.value === 'true',
-    imgWinMin: +imgWinMin.value || 5,
-    imgWinMax: +imgWinMax.value || 10,
+    imgWinMin: +imgWinMin?.value || 5,
+    imgWinMax: +imgWinMax?.value || 10,
   };
   GetSet = async (): Promise<optsType> => Promise.resolve(set);
   return GetSet();

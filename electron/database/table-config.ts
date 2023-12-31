@@ -1,4 +1,5 @@
 import { logger } from '../utils/logger';
+import { SYSTEM_SET_KEY } from '../const/system';
 import type { TableConfig as Table } from './init-db';
 import db from './init-db';
 const table_name = 'config';
@@ -81,3 +82,42 @@ export const deleteConfig = async (entity: Table) => {
     });
   });
 };
+
+const initTableConfigData = async () => {
+  const proxy = await queryConfigByKey(SYSTEM_SET_KEY.proxy);
+  if (!proxy) {
+    await insertTableConfig({
+      key: SYSTEM_SET_KEY.proxy,
+      value: 'socks5://127.0.0.1:10808',
+      is_edit: 1,
+    });
+  }
+  const needProxy = await queryConfigByKey(SYSTEM_SET_KEY.needProxy);
+  if (!needProxy) {
+    await insertTableConfig({ key: SYSTEM_SET_KEY.needProxy, value: 'true', is_edit: 1 });
+  }
+};
+const createTableConfig = async () => {
+  const proxy = await queryConfigByKey('proxy');
+  if (proxy) {
+    return;
+  }
+  db.run(
+    `
+  CREATE TABLE IF NOT EXISTS config (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    is_edit integer
+  )
+`,
+    function (err) {
+      if (err) {
+        logger.error('Error creating config table:', err.message);
+      } else {
+        initTableConfigData();
+        logger.log('Config table created successfully');
+      }
+    }
+  );
+};
+createTableConfig();
