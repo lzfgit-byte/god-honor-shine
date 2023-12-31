@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",
+    "animate.css": "^4.1.1",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.9",
     "flv.js": "^1.6.2",

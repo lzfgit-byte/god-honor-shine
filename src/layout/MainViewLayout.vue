@@ -22,10 +22,40 @@
 </script>
 
 <style scoped lang="less">
+  @import '@/styles/values';
   .container {
     display: flex;
+    flex-direction: column;
     position: relative;
     width: 100%;
     height: 100%;
+    .header {
+      height: @header-height;
+      width: 100%;
+      border-bottom: solid 1px @global-border-color;
+    }
+    .body {
+      width: 100%;
+      height: calc(100% - @header-height);
+    }
+    .dock {
+      position: absolute;
+      height: @dock-height;
+      border: 1px solid @global-border-color;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 25px;
+      padding: 0 25px;
+    }
+    .setting {
+      position: absolute;
+      width: @setting-height;
+      border: 1px solid @global-border-color;
+      bottom: 70px;
+      right: 20px;
+      border-radius: 25px;
+      padding: 25px 0;
+    }
   }
 </style>
