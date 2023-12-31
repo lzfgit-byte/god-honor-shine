@@ -2,7 +2,7 @@ import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import { HTML_WIN_EVENT, SYSTEM_SHORT_CUT, SYS_GLOB_KEY } from '../const/system';
 import { sendMessage } from '../utils/message';
-import useProxySetting from './use-proxy-setting';
+import useProxySetting from '../hooks/use-proxy-setting';
 
 const preHtmlDownload = resolvePreload('html-download');
 let htmlGetWin: BrowserWindow;

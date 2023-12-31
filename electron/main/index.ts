@@ -6,9 +6,8 @@ import useGlobalShortcut from '../hooks/use-global-shortcut';
 import './init/init-env';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useDbConnect from '../database/use-db-connect';
-import useSystemSetting from '../hooks/use-system-setting';
 import useProxySetting from '../hooks/use-proxy-setting';
-import useHtmlGetWin from '../hooks/use-html-get-win';
+import useHtmlGetWin from '../http/use-html-get-win';
 import useHandleMainEvent from './event/use-handle-main-event';
 
 // 启动服务
