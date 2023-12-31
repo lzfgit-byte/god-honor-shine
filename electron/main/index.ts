@@ -1,11 +1,11 @@
 import { join } from 'node:path';
 import { BrowserWindow, Menu, app, shell } from 'electron';
-import { sendMessage } from '../utils/message';
 import useIpcMain from '../hooks/use-ipc-main';
 import useCookie from '../hooks/use-cookie';
 import useGlobalShortcut from '../hooks/use-global-shortcut';
 import './init/init-env';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
+import useDbConnect from '../database/hooks/use-db-connect';
 import useHandleMainEvent from './event/use-handle-main-event';
 
 // 启动服务
@@ -35,7 +35,7 @@ async function createWindow() {
   useHandleMainEvent(win);
   useGlobalShortcut(win);
 }
-
+const closeDb = useDbConnect();
 app.whenReady().then(createWindow);
 /**
  *窗口跟app是不一样的，这说明可以在无窗口时，可以再次创建窗口
@@ -44,6 +44,7 @@ app.on('window-all-closed', () => {
   win = null;
   if (process.platform !== 'darwin') {
     app.quit();
+    closeDb();
   }
 });
 /**
