@@ -1,0 +1,100 @@
+/**
+ * 通过窗口获取页面html的preload
+ */
+import { ipcRenderer } from 'electron';
+const sendMessage = (msg: string) => {
+  ipcRenderer.invoke('send-message', `${msg} f 【${window.location.href}】`).then(() => 1);
+};
+const sendHtml = (html: string) => {
+  ipcRenderer.invoke('send-html', html).then(() => 1);
+};
+function showWindow() {
+  ipcRenderer.invoke('show-child-win').then(() => 1);
+}
+function hideWindow() {
+  ipcRenderer.invoke('hide-child-win').then(() => 1);
+}
+sendMessage(`获取页面中`);
+function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
+  return new Promise((resolve, reject) => {
+    try {
+      const timer = setTimeout(() => {
+        sendMessage('五秒超时文档未准备好');
+        reject('超时');
+      }, 5000);
+      document.addEventListener('readystatechange', () => {
+        if (condition.includes(document.readyState)) {
+          resolve(true);
+          clearTimeout(timer);
+        }
+      });
+    } catch (e) {
+      sendMessage('检测加载状态报错');
+      reject(e);
+    }
+  });
+}
+
+function checkBoot() {
+  // 检测人机校验
+  if (document.title.trim() === 'Just a moment...') {
+    showWindow();
+    return false;
+  }
+  return true;
+}
+function blobToString(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      const text = reader.result;
+      resolve(text);
+    };
+
+    reader.onerror = function () {
+      reject(new Error('Failed to convert Blob to string.'));
+    };
+
+    reader.readAsText(blob);
+  });
+}
+function downloadURL() {
+  // 检测人机校验
+  if (!checkBoot()) {
+    return;
+  }
+  const url = window.location.href;
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const blob = xhr.response;
+      blobToString(blob).then((html: string) => {
+        sendMessage(`获取成功，发送中`);
+        sendHtml(html);
+        hideWindow();
+      });
+    }
+  };
+  xhr.send();
+}
+
+domReady()
+  .then(() => {
+    downloadURL();
+  })
+  .catch((e) => {
+    if (document) {
+      document.body.innerHTML = `<div>${e?.message || e}</div>
+                                  <div onclick="window.location.reload()">重新加载</div>`;
+    }
+  });
+/**
+ * 窗口之间相互通信的功能
+ * @param ev
+ */
+window.onmessage = (ev) => {
+  console.log(ev.data.payload);
+};

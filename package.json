@@ -38,6 +38,7 @@
     "mui-player": "^1.8.1",
     "mui-player-desktop-plugin": "^1.6.0",
     "nprogress": "^0.2.0",
+    "sqlite3": "^5.1.7-rc.0",
     "ts-md5": "^1.2.11",
     "v-viewer": "^3.0.10",
     "vue": "^3.2.47",
