@@ -1,8 +1,13 @@
 <template>
-  <MainViewLayout></MainViewLayout>
+  <MainViewLayout>
+    <template #dock>
+      <DockLayout />
+    </template>
+  </MainViewLayout>
 </template>
 <script setup lang="ts">
   import MainViewLayout from '@/layout/MainViewLayout.vue';
+  import DockLayout from '@/components/dock/DockLayout.vue';
 </script>
 
 <style lang="less">
