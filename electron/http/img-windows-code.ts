@@ -14,5 +14,7 @@
 
   // 获取绘制后的图像数据
   const base64Data = canvas.toDataURL('image/jpg', 1);
-  return base64Data;
+  return new Promise((resolve) => {
+    resolve(base64Data);
+  });
 })();

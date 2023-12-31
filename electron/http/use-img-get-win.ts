@@ -58,7 +58,11 @@ const getAFreeWin = async (): Promise<BrowserWindow> => {
   }
   return createNewWin();
 };
-export const getImgBase64 = async (url: string) => {
+/**
+ *根据传入的url 获取其中图片的base64代码
+ * @param url
+ */
+export const getImgBase64 = async (url: string): Promise<string> => {
   const win = await getAFreeWin();
   const webContents = win.webContents;
   return new Promise((resolve) => {
