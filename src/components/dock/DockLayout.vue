@@ -4,6 +4,7 @@
     :key="index"
     :name="item.name"
     :icon="item.icon"
+    :show-margin-right="index < apps.length - 1"
   ></DockItem>
 </template>
 <script setup lang="ts">

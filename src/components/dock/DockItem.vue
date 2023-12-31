@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="{ marginRight: showMarginRight }">
     <div class="icon">
       <img :src="image_url" alt="" />
     </div>
@@ -10,7 +10,7 @@
   import { ref } from 'vue';
   import { f_getImgBase64 } from '@/utils/functions';
 
-  const props = defineProps({ name: String, icon: String });
+  const props = defineProps({ name: String, icon: String, showMarginRight: Boolean });
   const emits = defineEmits(['click']);
   const image_url = ref();
   const init = async () => {
@@ -29,7 +29,7 @@
     padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 15px;
+
     &:hover {
       background-color: @dock-item-hove-color;
     }
@@ -45,5 +45,8 @@
         border-radius: 4px;
       }
     }
+  }
+  .marginRight {
+    margin-right: 15px;
   }
 </style>
