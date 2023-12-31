@@ -10,7 +10,7 @@ export const queryConfigByKey = async (key: string): Promise<Table> => {
   return new Promise((resolve, reject) => {
     db.get(`select * from ${table_name} where key = '${key}'`, (e, r: Table) => {
       if (e) {
-        reject(e.message);
+        resolve(null);
         return;
       }
       resolve(r);
@@ -40,7 +40,7 @@ export const updateConfigByKey = async (entity: Table): Promise<boolean> => {
  *添加一条数据
  * @param entity
  */
-export const addConfig = async (entity: Table) => {
+export const insertTableConfig = async (entity: Table) => {
   if (!entity.key) {
     return Promise.reject(false);
   }

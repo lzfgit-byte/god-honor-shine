@@ -1,6 +1,7 @@
 import * as sqlite3 from 'sqlite3';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
+import { insertTableConfig, queryConfigByKey } from './table-config';
 const db_path = APP_PATHS.db_path;
 const db = new sqlite3.Database(db_path, (err) => {
   if (!err) {
@@ -13,7 +14,21 @@ export interface TableConfig {
   value: string;
   is_edit: number;
 }
-const createTableConfig = () => {
+const initTableConfigData = async () => {
+  const proxy = await queryConfigByKey('proxy');
+  if (!proxy) {
+    await insertTableConfig({ key: 'proxy', value: 'socks5://127.0.0.1:10808', is_edit: 1 });
+  }
+  const needProxy = await queryConfigByKey('needProxy');
+  if (!needProxy) {
+    await insertTableConfig({ key: 'needProxy', value: 'true', is_edit: 1 });
+  }
+};
+const createTableConfig = async () => {
+  const proxy = await queryConfigByKey('proxy');
+  if (proxy) {
+    return;
+  }
   db.run(
     `
   CREATE TABLE IF NOT EXISTS config (
@@ -24,8 +39,9 @@ const createTableConfig = () => {
 `,
     function (err) {
       if (err) {
-        logger.log('Error creating config table:', err.message);
+        logger.error('Error creating config table:', err.message);
       } else {
+        initTableConfigData();
         logger.log('Config table created successfully');
       }
     }
