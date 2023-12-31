@@ -3,3 +3,8 @@ export interface WebAppType_F {
   name: string;
   icon: string;
 }
+export interface SettingType {
+  icon: string;
+  title: string;
+  type: string;
+}

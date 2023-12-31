@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { WebAppType_F } from '@/types/setting-page-info';
+import type { WebAppType_F } from '@/types/system-info';
 
 export default defineStore('apps', () => {
   const apps = ref<WebAppType_F[]>([]);
