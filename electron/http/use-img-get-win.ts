@@ -2,8 +2,10 @@ import { BrowserWindow } from 'electron';
 import { logger } from '../utils/logger';
 
 import useProxySetting from '../setting/use-proxy-setting';
+import useSystemSetting from '../setting/use-system-setting';
 // @ts-ignore
-import code from './img-windows-conde?raw';
+import code from './img-windows-code?raw';
+
 const childWinds: { win: BrowserWindow; free: boolean }[] = [];
 const getWinIndex = (win: BrowserWindow) => childWinds.findIndex((item) => item.win.id === win.id);
 /**
@@ -40,13 +42,25 @@ const getAFreeWin = async (): Promise<BrowserWindow> => {
     childWinds[index].free = false;
     return childWinds[index].win;
   }
+  const { imgWinMax } = await useSystemSetting();
+  if (childWinds.length === imgWinMax) {
+    logger.log('创建的窗口超限制了，等待其他资源释放');
+    return new Promise((resolve) => {
+      const timer = setInterval(() => {
+        const index = childWinds.findIndex((item) => item.free);
+        if (index > -1) {
+          childWinds[index].free = false;
+          resolve(childWinds[index].win);
+          clearInterval(timer);
+        }
+      }, 200);
+    });
+  }
   return createNewWin();
 };
 export const getImgBase64 = async (url: string) => {
   const win = await getAFreeWin();
-  win.loadURL(url);
   const webContents = win.webContents;
-
   return new Promise((resolve) => {
     const listener = () => {
       webContents
@@ -64,12 +78,28 @@ export const getImgBase64 = async (url: string) => {
         });
     };
     webContents.on('did-finish-load', listener);
+    win.loadURL(url);
   });
 };
+
+const timer = setInterval(async () => {
+  const { imgWinMin } = await useSystemSetting();
+  if (childWinds.length > 0) {
+    for (let i = childWinds.length - 1; i > imgWinMin; i--) {
+      if (childWinds[i].free) {
+        childWinds[i].win.close();
+        logger.log(`释放了一个后台窗口，现在长度是:${childWinds.length}`);
+        childWinds.splice(i, 1);
+        break;
+      }
+    }
+  }
+}, 5000);
 export default () => {
   return () => {
     childWinds?.forEach((item) => {
       item?.win?.close();
     });
+    clearInterval(timer);
   };
 };

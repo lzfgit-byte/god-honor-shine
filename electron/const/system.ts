@@ -1,6 +1,8 @@
 export const SYSTEM_SET_KEY = {
   proxy: 'proxy',
   needProxy: 'needProxy',
+  imgWinMin: 'imgWinMin',
+  imgWinMax: 'imgWinMax',
 };
 export const SYSTEM_SHORT_CUT = {
   showHtmlGetWin: 'ctrl+shift+s',
