@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue';
 // eslint-disable-next-line import/default
 import electron from 'vite-plugin-electron';
 import renderer from 'vite-plugin-electron-renderer';
+import { copy } from 'fs-extra';
 import pkg from './package.json';
 
 export default defineConfig(({ command }) => {

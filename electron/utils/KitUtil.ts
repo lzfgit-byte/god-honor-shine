@@ -14,3 +14,4 @@ export const formatSize = (size: any, pointLength = 2, units: any = null) => {
 };
 export const resolvePreload = (fileName: string) => join(__dirname, `../preload/${fileName}.js`);
 export const resolvePublic = (filePath: string) => join(process.env.PUBLIC, filePath);
+export const resolveCachePath = () => '';
