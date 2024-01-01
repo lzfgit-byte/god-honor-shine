@@ -41,6 +41,8 @@
     "ts-md5": "^1.2.11",
     "v-viewer": "^3.0.10",
     "vue-router": "4.1.5",
+    "@element-plus/icons-vue": "^2.1.0",
+    "element-plus": "^2.3.4",
     "vue": "^3.2.47"
   },
   "devDependencies": {

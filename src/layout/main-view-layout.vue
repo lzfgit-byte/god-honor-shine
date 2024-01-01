@@ -31,8 +31,8 @@
     height: 100%;
     .header {
       height: @header-height;
-      width: 100%;
-      border-bottom: solid 1px @global-border-color;
+      //width: 100%;
+      //border-bottom: solid 1px @global-border-color;
     }
     .body {
       width: 100%;

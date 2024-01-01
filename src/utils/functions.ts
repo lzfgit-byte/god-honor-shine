@@ -11,3 +11,7 @@ export const f_getHtml = async (url: string): Promise<string> => executeFunction
  */
 export const f_getImageBase64 = async (url: string): Promise<string> =>
   executeFunction('getImageBase64', url);
+/**
+ * 清除缓存
+ */
+export const f_clearCache = async (url?: string, type?: string) => {};

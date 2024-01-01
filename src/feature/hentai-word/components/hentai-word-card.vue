@@ -65,21 +65,24 @@
   import type { imgInfo, mainHtml, videoInfo } from '@/feature/hentai-word/type/hw-types';
   import 'viewerjs/dist/viewer.css';
   import VideoHtml5 from '@/components/video-html5.vue';
-  import { getImgUrl } from '@/utils/kit-utils';
   import { nprogress } from '@/utils/nprogress';
-  import { getHtml } from '@/utils/functions';
+  import { f_getImageBase64, f_getHtml as getHtml } from '@/utils/functions';
   import {
     hw_getImgInfo,
     hw_getImgInfoOnly,
     hw_getVideoInfo,
   } from '@/feature/hentai-word/utils/hw-functions';
-  import { emitMessage } from '@/common/useMsgTitle';
+  import { emitMessage } from '@/utils/useMsgTitle';
   const prop = defineProps({
     info: Object as PropType<mainHtml>,
   });
   const progressValue = ref(0);
   const hasShowProgress = ref(false);
-  const imgBase64 = ref(getImgUrl(prop?.info?.coverUrl as any));
+  const imgBase64 = ref();
+  f_getImageBase64(prop?.info?.coverUrl).then((res) => {
+    imgBase64.value = res;
+  });
+  const getImgUrl = (str: string) => {};
   const videoSet = reactive({
     visible: false,
     videoTitle: '',

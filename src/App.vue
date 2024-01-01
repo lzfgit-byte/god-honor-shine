@@ -3,7 +3,9 @@
     <template #dock>
       <DockLayout />
     </template>
-    <template #body> </template>
+    <template #body>
+      <router-view></router-view>
+    </template>
     <template #setting>
       <SettingLayout />
     </template>

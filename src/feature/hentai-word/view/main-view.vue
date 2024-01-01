@@ -43,13 +43,13 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { Search } from '@element-plus/icons-vue';
-  import { clearCache, getHtml } from '@/utils/functions';
+  import { f_clearCache as clearCache, f_getHtml as getHtml } from '@/utils/functions';
   import { hw_getHtmlInfo } from '@/feature/hentai-word/utils/hw-functions';
   import type { mainHtml, pageInfo, tags } from '@/feature/hentai-word/type/hw-types';
   import PaginationHentaiWord from '@/feature/hentai-word/components/pagination-hentai-word.vue';
   import HentaiWordCard from '@/feature/hentai-word/components/hentai-word-card.vue';
   import { nprogress } from '@/utils/nprogress';
-  import { emitMessage } from '@/common/useMsgTitle';
+  import { emitMessage } from '@/utils/useMsgTitle';
 
   const HENTAI_WORD_URL = 'https://thehentaiworld.com/?new';
   const currentUrl = ref(HENTAI_WORD_URL);
