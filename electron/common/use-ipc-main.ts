@@ -3,6 +3,7 @@ import * as utils from '../utils';
 import * as feature from '../feature';
 import * as common from '../common';
 import { sendMessage } from '../utils/message';
+import { SYS_GLOB_KEY } from '../const/system';
 
 const funcs = { ...utils, ...feature, ...common };
 
@@ -13,6 +14,6 @@ export default () => {
     });
   });
 };
-ipcMain.handle('sen-msg', (s, a) => {
+ipcMain.handle(SYS_GLOB_KEY.SEND_MESSAGE, (s, a) => {
   sendMessage(a);
 });

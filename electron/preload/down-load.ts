@@ -1,21 +1,50 @@
+/**
+ * 通过窗口获取页面html的preload
+ */
 import { ipcRenderer } from 'electron';
-const senMsg = (msg) => {
-  ipcRenderer.invoke('sen-msg', msg);
+import { HTML_WIN_EVENT, SYS_GLOB_KEY } from '../const/system';
+const sendMessage = (msg: string) => {
+  ipcRenderer
+    .invoke(SYS_GLOB_KEY.SEND_MESSAGE, `${msg} f 【${window.location.href}】`)
+    .then(() => 1);
 };
-senMsg('异步链接加载中');
+const sendHtml = (html: string) => {
+  ipcRenderer.invoke(HTML_WIN_EVENT.SEND_HTML, html).then(() => 1);
+};
+function showWindow() {
+  ipcRenderer.invoke(HTML_WIN_EVENT.SHOW_HTML_GET_WIN).then(() => 1);
+}
+function hideWindow() {
+  ipcRenderer.invoke(HTML_WIN_EVENT.HIDE_HTML_GET_WIN).then(() => 1);
+}
+sendMessage(`获取页面中`);
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
-  senMsg('异步 domReady');
-  return new Promise((resolve) => {
-    if (condition.includes(document.readyState)) {
-      resolve(true);
-    } else {
+  return new Promise((resolve, reject) => {
+    try {
+      const timer = setTimeout(() => {
+        sendMessage('五秒超时文档未准备好');
+        reject('超时');
+      }, 5000);
       document.addEventListener('readystatechange', () => {
         if (condition.includes(document.readyState)) {
           resolve(true);
+          clearTimeout(timer);
         }
       });
+    } catch (e) {
+      sendMessage('检测加载状态报错');
+      reject(e);
     }
   });
+}
+
+function checkBoot() {
+  // 检测人机校验
+  if (document.title.trim() === 'Just a moment...') {
+    showWindow();
+    return false;
+  }
+  return true;
 }
 function blobToString(blob) {
   return new Promise((resolve, reject) => {
@@ -33,43 +62,42 @@ function blobToString(blob) {
     reader.readAsText(blob);
   });
 }
-
-function downloadURL(url = null) {
-  if (!url) {
-    url = window.location.href;
-  }
-  const xhr = new XMLHttpRequest();
-
-  xhr.open('GET', url, true);
-  xhr.responseType = 'blob';
-  senMsg(`异步执行中标题-->${document.title}`);
-  if (document.title.trim() === 'Just a moment...') {
-    ipcRenderer.invoke('show-child-win');
+function downloadURL() {
+  // 检测人机校验
+  if (!checkBoot()) {
     return;
   }
+  const url = window.location.href;
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'blob';
   xhr.onload = function () {
     if (xhr.status === 200) {
       const blob = xhr.response;
-      blobToString(blob).then((html) => {
-        senMsg('获取成功');
-        ipcRenderer.invoke('saveCache', window.location.href, html, 'html').then(() => {
-          senMsg(`发送中--->${document.title}`);
-          if (document.title.trim() === 'Just a moment...') {
-            ipcRenderer.invoke('show-child-win');
-            return;
-          }
-          ipcRenderer.invoke('sync-done', html);
-        });
+      blobToString(blob).then((html: string) => {
+        sendMessage(`获取成功，发送中`);
+        sendHtml(html);
+        hideWindow();
       });
     }
   };
-
   xhr.send();
 }
 
-domReady().then(() => {
-  downloadURL();
-});
+domReady()
+  .then(() => {
+    downloadURL();
+  })
+  .catch((e) => {
+    if (document) {
+      document.body.innerHTML = `<div>${e?.message || e}</div>
+                                  <div onclick="window.location.reload()">重新加载</div>`;
+    }
+  });
+/**
+ * 窗口之间相互通信的功能
+ * @param ev
+ */
 window.onmessage = (ev) => {
   console.log(ev.data.payload);
 };

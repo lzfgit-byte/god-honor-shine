@@ -1,6 +1,7 @@
 import { join } from 'node:path';
 import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
-import useSetting from './use-setting';
+import useWinProxy from '../hook/useWinProxy';
+import { HTML_WIN_EVENT, SYS_SHORT_CUT } from '../const/system';
 const download = join(__dirname, '../preload/down-load.js');
 const video = join(__dirname, '../preload/video.js');
 let childWindow: BrowserWindow = null;
@@ -16,25 +17,23 @@ ipcMain.handle('open-win', (_, arg) => {
       contextIsolation: false,
     },
   });
-  const { proxy, needProxy } = useSetting();
-  const webContent = childWindow.webContents;
-  const session = webContent.session;
-  if (needProxy && proxy) {
-    session.setProxy({ proxyRules: proxy });
-  }
-  globalShortcut.register('ctrl+shift+s', function () {
+  useWinProxy(childWindow);
+  globalShortcut.register(SYS_SHORT_CUT.showHtmlGetWin, function () {
     childWindow?.show();
   });
-  globalShortcut.register('ctrl+shift+h', function () {
+  globalShortcut.register(SYS_SHORT_CUT.hideHtmlGetWin, function () {
     childWindow?.hide();
   });
-  childWindow.hide();
+  childWindow?.hide();
 });
-ipcMain.handle('show-child-win', () => {
-  childWindow.show();
+ipcMain.handle(HTML_WIN_EVENT.SHOW_HTML_GET_WIN, () => {
+  childWindow?.show();
+});
+ipcMain.handle(HTML_WIN_EVENT.HIDE_HTML_GET_WIN, () => {
+  childWindow?.hide();
 });
 export const showChildWin = () => {
-  childWindow.show();
+  childWindow?.show();
 };
 export const hideChildWin = () => {
   if (childWindow.isVisible()) {
@@ -49,8 +48,8 @@ export const loadAndRes = async (url: string) => {
       hideChildWin();
       resolve(html);
     };
-    ipcMain.removeHandler('sync-done');
-    ipcMain.handle('sync-done', func);
+    ipcMain.removeHandler(HTML_WIN_EVENT.SEND_HTML);
+    ipcMain.handle(HTML_WIN_EVENT.SEND_HTML, func);
   });
 };
 export default (win: BrowserWindow) => {
@@ -69,12 +68,7 @@ ipcMain.handle('open-win-only', (_, arg) => {
       contextIsolation: false,
     },
   });
-  const { proxy, needProxy } = useSetting();
-  const webContent = sChildWindow.webContents;
-  const session = webContent.session;
-  if (needProxy && proxy) {
-    session.setProxy({ proxyRules: proxy });
-  }
+  useWinProxy(sChildWindow);
   sChildWindow.loadURL(arg);
   // childWindow.webContents.openDevTools();
 });
