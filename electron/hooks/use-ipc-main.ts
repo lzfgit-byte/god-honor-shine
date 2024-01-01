@@ -3,8 +3,9 @@
  */
 import { ipcMain } from 'electron';
 import * as controller from '../controller';
+import * as feature from '../feature';
 
-const funS = { ...controller };
+const funS = { ...controller, ...feature };
 
 export default () => {
   Object.keys(funS).forEach((key) => {
