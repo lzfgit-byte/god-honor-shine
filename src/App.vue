@@ -4,7 +4,7 @@
       <DockLayout />
     </template>
     <template #body>
-      <CardLayout></CardLayout>
+      <BodyLayout />
     </template>
     <template #setting>
       <SettingLayout />
@@ -16,6 +16,7 @@
   import DockLayout from '@/components/dock/dock-layout.vue';
   import SettingLayout from '@/components/setting/setting-layout.vue';
   import CardLayout from '@/components/card/card-layout.vue';
+  import BodyLayout from '@/components/body/body-layout.vue';
 </script>
 
 <style lang="less">

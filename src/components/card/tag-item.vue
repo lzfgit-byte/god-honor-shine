@@ -1,5 +1,5 @@
 <template>
-  <NTag style="cursor: pointer"> {{ name || '爱在西元前' }} </NTag>
+  <NTag style="cursor: pointer"> {{ name }} </NTag>
 </template>
 <script setup lang="ts">
   import { NTag } from 'naive-ui';

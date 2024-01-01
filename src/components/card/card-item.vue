@@ -1,8 +1,6 @@
 <template>
   <div class="item-container">
-    <div class="tag-container">
-      <TagItem> </TagItem>
-    </div>
+    <div class="tag-container"> </div>
     <div class="item-image" @click="handleImgClick">
       <ImageItem src="https://cdn.beekka.com/blogimg/asset/202312/bg2023122614.webp"></ImageItem>
     </div>
@@ -10,14 +8,20 @@
       <span>这是标题</span>
     </div>
     <div class="tag-container2">
-      <TagItem> </TagItem>
+      <TagItem name="aaaa" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+  import type { PropType } from 'vue';
   import ImageItem from '@/components/image/image-item.vue';
   import TagItem from '@/components/card/tag-item.vue';
-  const props = defineProps({ imgSrc: String, title: String });
+  import type { CardFType } from '@/components/card/card-type';
+  const props = defineProps({
+    imgSrc: String,
+    title: String,
+    tags: Array as PropType<CardFType[]>,
+  });
   const emits = defineEmits(['click']);
   const handleImgClick = () => {
     emits('click');
