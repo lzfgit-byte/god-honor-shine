@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import * as utils from '../utils';
 import * as feature from '../feature';
 import * as common from '../common';
+import { sendMessage } from '../utils/message';
 
 const funcs = { ...utils, ...feature, ...common };
 
@@ -12,3 +13,6 @@ export default () => {
     });
   });
 };
+ipcMain.handle('sen-msg', (s, a) => {
+  sendMessage(a);
+});
