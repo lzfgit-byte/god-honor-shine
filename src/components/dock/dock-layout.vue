@@ -9,7 +9,7 @@
 </template>
 <script setup lang="ts">
   import { f_getWebApps } from '@/apis/index-controller';
-  import useDockStore from '@/store/useDockStore';
+  import useDockStore from '@/store/use-dock-store';
   import DockItem from '@/components/dock/dock-item.vue';
   const { apps, setApps } = useDockStore();
   const init = async () => {

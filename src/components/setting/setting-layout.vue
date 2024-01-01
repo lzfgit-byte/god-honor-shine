@@ -9,7 +9,7 @@
 </template>
 <script setup lang="ts">
   import SettingItem from '@/components/setting/setting-item.vue';
-  import useSettingStore from '@/store/useSettingStore';
+  import useSettingStore from '@/store/use-setting-store';
   const { settings } = useSettingStore();
 </script>
 
