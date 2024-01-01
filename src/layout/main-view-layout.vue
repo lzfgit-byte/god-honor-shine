@@ -36,6 +36,7 @@
     }
     .body {
       width: 100%;
+      padding: 10px;
       height: calc(100% - @header-height);
     }
     .dock {
