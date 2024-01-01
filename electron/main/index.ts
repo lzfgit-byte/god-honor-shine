@@ -1,70 +1,41 @@
-import { release } from 'node:os';
 import { join } from 'node:path';
-import { BrowserWindow, Menu, app, shell } from 'electron';
+import { BrowserWindow, app, shell } from 'electron';
 import { sendMessage } from '../utils/message';
-import useSetting from '../common/use-setting';
 import useIpcMain from '../common/use-ipc-main';
 import useService from '../common/use-service';
 import useCookie from '../common/use-cookie';
 import useChildWin from '../common/use-child-win';
 import useGlobalShortcut from '../common/use-global-shortcut';
 import useChildWinPic from '../utils/use-child-win-pic';
-
-process.env.DIST_ELECTRON = join(__dirname, '..');
-process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
-process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
-  ? join(process.env.DIST_ELECTRON, '../public')
-  : process.env.DIST;
-// 安全设置
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
-app.commandLine.appendSwitch('disable-web-security');
-app.commandLine.appendSwitch('charset', 'utf-8');
-
-// Disable GPU Acceleration for Windows 7
-if (release().startsWith('6.1')) {
-  app.disableHardwareAcceleration();
-}
-
-// Set application name for Windows 10+ notifications
-if (process.platform === 'win32') {
-  app.setAppUserModelId(app.getName());
-}
-
-if (!app.requestSingleInstanceLock()) {
-  app.quit();
-  process.exit(0);
-}
+import useWinProxy from '../hook/useWinProxy';
+import { resolvePreload, resolvePublic } from '../utils/KitUtil';
+import { init } from './init/init-evt';
+init();
 // 启动服务
 const closeServer = useService();
 let win: BrowserWindow | null = null;
-
-const preload = join(__dirname, '../preload/index.js');
 
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
-  Menu.setApplicationMenu(null);
   win = new BrowserWindow({
     title: 'ghs',
     width: 1450,
     height: 788,
-    icon: join(process.env.PUBLIC, 'favicon.ico'),
+    icon: resolvePublic('favicon.ico'),
     webPreferences: {
-      preload,
+      preload: resolvePreload('index'),
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-  const { proxy, needProxy } = useSetting();
-  if (needProxy && proxy) {
-    win.webContents.session.setProxy({ proxyRules: proxy });
-  }
+  useWinProxy(win);
   if (process.env.VITE_DEV_SERVER_URL) {
-    win.loadURL(url);
+    await win.loadURL(url);
     win.webContents.openDevTools();
   } else {
-    win.loadFile(indexHtml);
+    await win.loadFile(indexHtml);
   }
 
   win.webContents.on('did-finish-load', () => {
