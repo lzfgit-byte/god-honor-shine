@@ -8,7 +8,7 @@
   ></SettingItem>
 </template>
 <script setup lang="ts">
-  import SettingItem from '@/components/setting/SettingItem.vue';
+  import SettingItem from '@/components/setting/setting-item.vue';
   import useSettingStore from '@/store/useSettingStore';
   const { settings } = useSettingStore();
 </script>

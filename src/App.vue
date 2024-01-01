@@ -11,8 +11,8 @@
 </template>
 <script setup lang="ts">
   import MainViewLayout from '@/layout/MainViewLayout.vue';
-  import DockLayout from '@/components/dock/DockLayout.vue';
-  import SettingLayout from '@/components/setting/SettingLayout.vue';
+  import DockLayout from '@/components/dock/dock-layout.vue';
+  import SettingLayout from '@/components/setting/setting-layout.vue';
 </script>
 
 <style lang="less">

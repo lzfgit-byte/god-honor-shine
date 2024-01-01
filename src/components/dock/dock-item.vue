@@ -1,6 +1,6 @@
 <template>
   <div class="container" :class="{ marginRight: showMarginRight }">
-    <div class="icon">
+    <div v-if="image_url" class="icon">
       <img :src="image_url" alt="" />
     </div>
     <div v-if="name" class="name">{{ name }}</div>
