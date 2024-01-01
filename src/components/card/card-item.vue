@@ -1,11 +1,7 @@
 <template>
   <div class="item-container">
     <div class="tag-container">
-      <TagItem></TagItem>
-      <TagItem></TagItem>
-      <TagItem></TagItem>
-      <TagItem></TagItem>
-      <TagItem></TagItem>
+      <TagItem> </TagItem>
     </div>
     <div class="item-image" @click="handleImgClick">
       <ImageItem src="https://cdn.beekka.com/blogimg/asset/202312/bg2023122614.webp"></ImageItem>
@@ -14,8 +10,7 @@
       <span>这是标题</span>
     </div>
     <div class="tag-container2">
-      <TagItem></TagItem>
-      <TagItem></TagItem>
+      <TagItem> </TagItem>
     </div>
   </div>
 </template>

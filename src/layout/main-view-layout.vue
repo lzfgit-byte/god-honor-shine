@@ -17,8 +17,8 @@
   </NConfigProvider>
 </template>
 <script setup lang="ts">
-  import { NConfigProvider, createTheme, dateZhCN, inputDark, zhCN } from 'naive-ui';
-  const darkTheme = createTheme([inputDark]);
+  import { NConfigProvider, createTheme, dateZhCN, inputDark, tagDark, zhCN } from 'naive-ui';
+  const darkTheme = createTheme([inputDark, tagDark]);
 </script>
 
 <style scoped lang="less">
