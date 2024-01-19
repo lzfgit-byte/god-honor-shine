@@ -1,0 +1,14 @@
+{
+  "name": "@ghs/types",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "3.7.1"
+  }
+}
