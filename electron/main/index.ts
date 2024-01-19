@@ -16,6 +16,7 @@ let win: BrowserWindow | null = null;
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 let execFuncOnClose = [];
+execFuncOnClose.push(useDbConnect());
 async function createWindow() {
   win = new BrowserWindow({
     title: 'ghs',
@@ -39,7 +40,7 @@ async function createWindow() {
     await win.loadFile(indexHtml);
   }
 }
-execFuncOnClose.push(useDbConnect());
+
 app.whenReady().then(createWindow);
 /**
  *窗口跟app是不一样的，这说明可以在无窗口时，可以再次创建窗口

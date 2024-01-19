@@ -19,7 +19,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm version patch && vite build && electron-builder",
+    "build": "pnpm version patch && vite build && electron-builder",
+    "prebuild": "vite build && electron-builder",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -55,7 +56,6 @@
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-prettier": "^4.2.1",
     "less": "^4.1.3",
-    "naive-ui": "^2.36.0",
     "prettier": "^2.8.5",
     "typescript": "^5.0.2",
     "vite": "^4.5.1",
