@@ -1,10 +1,7 @@
 {
-  "name": "ghs",
+  "name": "ghsmopo",
   "version": "3.0.2",
-  "main": "dist-electron/main/index.js",
   "license": "MIT",
-  "servicePort": 13356,
-  "private": true,
   "keywords": [
     "electron",
     "rollup",
@@ -12,19 +9,7 @@
     "vue3",
     "vue"
   ],
-  "debug": {
-    "env": {
-      "VITE_DEV_SERVER_URL": "http://127.0.0.1:3344/"
-    }
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "pnpm version patch && vite build && electron-builder",
-    "prebuild": "vite build && electron-builder",
-    "preview": "vite preview"
-  },
   "dependencies": {
-
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.36.0",
