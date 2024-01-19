@@ -28,7 +28,7 @@ importers:
 
   packages/elec:
     dependencies:
-      '@ghs/types':
+      '@ghs/share':
         specifier: workspace:^
         version: link:../types
       '@vicons/ionicons5':

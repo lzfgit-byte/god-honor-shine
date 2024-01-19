@@ -1,9 +1,10 @@
 {
-  "name": "@ghs/types",
+  "name": "@ghs/share",
   "version": "1.0.0",
   "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "vite build"
+    "share:build": "vite build"
   },
   "dependencies": {
 
