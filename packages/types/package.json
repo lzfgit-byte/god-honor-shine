@@ -1,7 +1,7 @@
 {
   "name": "@ghs/types",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "scripts": {
     "build": "vite build"
   },
