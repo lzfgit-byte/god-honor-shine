@@ -1,10 +1,10 @@
 import Database from 'better-sqlite3';
 import { keys } from 'lodash';
-import type { T_config } from '@ghs/share';
-import { T_config_Data, T_config_name } from '@ghs/share';
+import type { T_OptType } from '@ghs/share';
 
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
+
 const db_path = APP_PATHS.db_path;
 const db: any = new Database(db_path, { verbose: logger.log });
 // 创建表操作类
@@ -15,7 +15,9 @@ export class TableBuilder<T> {
   primaryKey = 'id';
   tableName: string;
   db: typeof Database.prototype = null;
-  constructor(data: T, tableName: string) {
+  constructor(opt: T_OptType) {
+    const data = opt.data;
+    const tableName = opt.tableName;
     this.fields = keys(data).filter((key: string) => key !== this.primaryKey);
     this.tableName = tableName;
     this.db = db;
@@ -139,6 +141,10 @@ export class TableBuilder<T> {
       )}`
     );
     return stm.run(...this.buildWhereSqlData(old)).changes > 0;
+  }
+
+  getByField(key: keyof T, value: string): T {
+    return null;
   }
 
   delete(entity: T): boolean {
