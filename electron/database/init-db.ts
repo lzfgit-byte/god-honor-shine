@@ -9,12 +9,12 @@ const db_path = APP_PATHS.db_path;
 const db: any = new Database(db_path, { verbose: logger.log });
 // 创建表操作类
 export class TableBuilder<T> {
-  fields: string[] = [];
-  fieldStr = '';
-  fieldMark = '';
-  primaryKey = 'id';
-  tableName: string;
-  db: typeof Database.prototype = null;
+  private fields: string[] = [];
+  private fieldStr = '';
+  private fieldMark = '';
+  private primaryKey = 'id';
+  private tableName: string;
+  private db: typeof Database.prototype = null;
   constructor(opt: T_OptType) {
     const data = opt.data;
     const tableName = opt.tableName;
@@ -147,7 +147,7 @@ export class TableBuilder<T> {
   }
 
   getByField(key: keyof T, value: string): T {
-    const stm = this.db.prepare(`SELECT * FROM ${this.tableName} WHERE '${key as string}' = ?`);
+    const stm = this.db.prepare(`SELECT * FROM ${this.tableName} WHERE ${key as any} = ?`);
     const rows = stm.all(value);
     return rows.length > 0 ? rows[0] : (null as any);
   }

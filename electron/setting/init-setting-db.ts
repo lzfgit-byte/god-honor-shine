@@ -8,8 +8,7 @@ const initData: T_config[] = [
   { name: 'imgWinMax', value: '10', flag: '1' },
   { name: 'version', value: `${currentVersion}`, flag: '1' },
 ];
-
-export default () => {
+let get = () => {
   const table = new TableBuilder<T_config>(T_config_init);
   if (!table.isTableExist()) {
     // 不存在
@@ -17,9 +16,13 @@ export default () => {
   } else {
     const data = table.getByField('name', 'version');
     if (+data?.value >= currentVersion) {
-      return;
+      get = () => table;
+      return table;
     }
     table.dropTable();
     table.createTable(initData);
   }
+  get = () => table;
+  return table;
 };
+export default () => get();

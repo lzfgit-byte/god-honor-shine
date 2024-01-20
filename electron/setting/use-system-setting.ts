@@ -1,4 +1,5 @@
-import { SYSTEM_SET_KEY, T_config, T_config_init } from '@ghs/share';
+import { SYSTEM_SET_KEY } from '@ghs/share';
+import initSettingDb from './init-setting-db';
 
 interface optsType {
   proxy: string;
@@ -7,12 +8,15 @@ interface optsType {
   imgWinMax: number;
 }
 let GetSet = async (): Promise<optsType> => {
+  const table = initSettingDb();
+  const getValue = (key: string) => table.getByField('name', key)?.value;
   const set = {
-    proxy: 'socks5://127.0.0.1:10808',
-    needProxy: true,
-    imgWinMin: 5,
-    imgWinMax: 10,
+    proxy: getValue(SYSTEM_SET_KEY.proxy),
+    needProxy: getValue(SYSTEM_SET_KEY.needProxy) === 'true',
+    imgWinMin: +getValue(SYSTEM_SET_KEY.imgWinMin) || 5,
+    imgWinMax: +getValue(SYSTEM_SET_KEY.imgWinMax) || 10,
   };
+  console.log(set);
   GetSet = async (): Promise<optsType> => Promise.resolve(set);
   return GetSet();
 };
