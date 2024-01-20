@@ -48,6 +48,72 @@ class TableBuilder<T> {
     ste.run(...this.getRowDataNoId(data));
   }
 
+  getDataById(id: string): T {
+    const stm = this.db.prepare(`SELECT * FROM ${this.tableName} WHERE ${this.primaryKey} = ?`);
+    return stm.get(id) as T;
+  }
+
+  getNullField(entity: T) {
+    return keys(entity).filter((key: string) => entity[key]);
+  }
+
+  buildWhereSql(entity: T): string {
+    let querySql = '';
+    const valueFields = this.getNullField(entity);
+    valueFields.forEach((item: string, index: number) => {
+      if (index !== 0) {
+        querySql += `and ${item} =  ?`;
+      } else {
+        querySql += `${item} =  ?`;
+      }
+    });
+    return querySql;
+  }
+
+  listDataByEntity(entity: T): T[] {
+    if (entity[this.primaryKey]) {
+      return [this.getDataById(entity[this.primaryKey])];
+    }
+    const valueFields = this.getNullField(entity);
+    const queryData = [];
+    valueFields.forEach((item: string, index: number) => {
+      queryData.push(entity[item]);
+    });
+    const stm = this.db.prepare(
+      `SELECT * FROM ${this.tableName} WHERE ${this.buildWhereSql(entity)};`
+    );
+    return stm.all(...queryData) as T[];
+  }
+
+  update(entity: T): boolean {
+    const id = entity[this.primaryKey];
+    let fields = this.getNullField(entity);
+    let setSql = '';
+    fields.forEach((field: string, index: number) => {
+      if (index === field.length - 1) {
+        setSql += `${field} = '${entity[field]}'`;
+      } else {
+        setSql += `${field} = '${entity[field]}',`;
+      }
+    });
+    const stm = this.db.prepare(
+      `UPDATE ${this.tableName} SET ${setSql} WHERE ${this.primaryKey} = '${id}'`
+    );
+    return stm.run().changes > 0;
+  }
+
+  delete(entity: T): boolean {
+    const id = entity[this.primaryKey];
+    if (id) {
+      const stm = this.db.prepare(`DELETE FROM ${this.tableName} WHERE ${this.primaryKey} = ?;`);
+      return stm.run(id).changes > 0;
+    }
+    const stm = this.db.prepare(
+      `DELETE FROM ${this.tableName} WHERE ${this.buildWhereSql(entity)};`
+    );
+    return stm.run(id).changes > 0;
+  }
+
   dropTable() {
     return this.db.exec(`DROP TABLE IF EXISTS ${this.tableName};`);
   }
