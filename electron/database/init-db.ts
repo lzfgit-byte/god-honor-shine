@@ -105,7 +105,7 @@ export class TableBuilder<T> {
     let fields = this.getNullField(entity).filter((key) => key !== this.primaryKey);
     let setSql = '';
     fields.forEach((field: string, index: number) => {
-      if (index === field.length - 1) {
+      if (index === fields.length - 1) {
         setSql += `${field} = '${entity[field]}'`;
       } else {
         setSql += `${field} = '${entity[field]}',`;
@@ -116,6 +116,9 @@ export class TableBuilder<T> {
 
   update(entity: T): boolean {
     const id = entity[this.primaryKey];
+    if (!id) {
+      return false;
+    }
     const stm = this.db.prepare(
       `UPDATE ${this.tableName} SET ${this.getUpdateValue(entity)} WHERE ${
         this.primaryKey
@@ -175,15 +178,4 @@ export class TableBuilder<T> {
     return true;
   }
 }
-
-const init = () => {
-  const table = new TableBuilder<T_config>(T_config_Data, T_config_name);
-  console.log(table.isTableExist());
-  table.dropTable();
-  const entity: T_config = { name: 'string' };
-  console.log(table.createTable([T_config_Data]));
-  console.log(table.delete(entity));
-};
-init();
-
 export default db;
