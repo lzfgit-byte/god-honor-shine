@@ -1,5 +1,4 @@
 import { SYSTEM_SET_KEY } from '@ghs/share';
-import { queryConfigByKey } from '../database/table-config';
 interface optsType {
   proxy: string;
   needProxy: boolean;
@@ -7,16 +6,11 @@ interface optsType {
   imgWinMax: number;
 }
 let GetSet = async (): Promise<optsType> => {
-  const proxy = await queryConfigByKey(SYSTEM_SET_KEY.proxy);
-  const needProxy = await queryConfigByKey(SYSTEM_SET_KEY.needProxy);
-  const imgWinMin = await queryConfigByKey(SYSTEM_SET_KEY.imgWinMin);
-  const imgWinMax = await queryConfigByKey(SYSTEM_SET_KEY.imgWinMax);
-
   const set = {
-    proxy: proxy.value,
-    needProxy: needProxy.value === 'true',
-    imgWinMin: +imgWinMin?.value || 5,
-    imgWinMax: +imgWinMax?.value || 10,
+    proxy: 'socks5://127.0.0.1:10808',
+    needProxy: true,
+    imgWinMin: 5,
+    imgWinMax: 10,
   };
   GetSet = async (): Promise<optsType> => Promise.resolve(set);
   return GetSet();

@@ -46,7 +46,7 @@
     "v-viewer": "^3.0.10",
     "vue": "^3.3.4",
     "vue-demi": "^0.14.6",
-    "sqlite3": "^5.1.6",
+    "better-sqlite3": "^9.3.0",
     "vue-router": "4.1.5"
   },
   "devDependencies": {
