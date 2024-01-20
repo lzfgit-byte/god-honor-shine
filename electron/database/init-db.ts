@@ -1,11 +1,13 @@
 import Database from 'better-sqlite3';
-import { keys, omit } from 'lodash';
+import { keys } from 'lodash';
+import type { Table_config } from '@ghs/share';
+import { Table_config_Date, Table_config_name } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
 const db_path = APP_PATHS.db_path;
 const db: any = new Database(db_path, { verbose: logger.log });
 // 创建表操作类
-class TableBuilder<T> {
+export class TableBuilder<T> {
   fields: string[] = [];
   fieldStr = '';
   fieldMark = '';
@@ -115,7 +117,7 @@ class TableBuilder<T> {
   }
 
   dropTable() {
-    return this.db.exec(`DROP TABLE IF EXISTS ${this.tableName};`);
+    this.db.exec(`DROP TABLE IF EXISTS ${this.tableName};`);
   }
 
   createTable(data: T[] = []) {
@@ -123,10 +125,12 @@ class TableBuilder<T> {
       logger.error('表已经创建完毕了');
       return false;
     }
-    const execSqlField = this.fields.map(
-      (field: string, index: number) =>
-        `${field} TEXT NOT NULL${index < this.fields.length - 1 ? ',' : ''}`
-    );
+    const execSqlField = this.fields
+      .map(
+        (field: string, index: number) =>
+          `${field} TEXT NOT NULL${index < this.fields.length - 1 ? ',' : ''}`
+      )
+      .join('\r\n');
     this.db.exec(`CREATE TABLE IF NOT EXISTS ${this.tableName} (
           ${this.primaryKey} TEXT PRIMARY KEY,
           ${execSqlField}
@@ -137,5 +141,13 @@ class TableBuilder<T> {
     return true;
   }
 }
+
+const init = () => {
+  const table = new TableBuilder<Table_config>(Table_config_Date, Table_config_name);
+  console.log(table.isTableExist());
+  table.dropTable();
+  console.log(table.createTable([Table_config_Date]));
+};
+init();
 
 export default db;
