@@ -5,14 +5,14 @@ import { APP_PATHS } from '../const/app-paths';
 
 const LOG_FILE_PATH = `${APP_PATHS.db_dir}/log.txt`;
 const getCurrentDate = () => dayjs().format('YYYY-MM-DD HH:mm:ss');
-const writeLog = (...args) => {
+const writeLog = (...args: any[]) => {
   ensureFileSync(LOG_FILE_PATH);
   writeFileSync(LOG_FILE_PATH, `[info] ${getCurrentDate()} ${args.join('')} ${os.EOL}`, {
     encoding: 'utf-8',
     flag: 'a',
   });
 };
-const writeLogError = (...args) => {
+const writeLogError = (...args: any[]) => {
   ensureFileSync(LOG_FILE_PATH);
   writeFileSync(LOG_FILE_PATH, `[error] ${getCurrentDate()} ${args.join('')} ${os.EOL}`, {
     encoding: 'utf-8',
@@ -32,10 +32,10 @@ export const clearLogs = () => {
 };
 export const logger = {
   enable: false,
-  error: (...args) => {
+  error: (...args: any[]) => {
     writeLogError(...args);
   },
-  log: (...args) => {
+  log: (...args: any[]) => {
     writeLog(...args);
     logger.enable && console.log(...args);
   },

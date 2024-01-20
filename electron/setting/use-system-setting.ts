@@ -16,7 +16,6 @@ let GetSet = async (): Promise<optsType> => {
     imgWinMin: +getValue(SYSTEM_SET_KEY.imgWinMin) || 5,
     imgWinMax: +getValue(SYSTEM_SET_KEY.imgWinMax) || 10,
   };
-  console.log(set);
   GetSet = async (): Promise<optsType> => Promise.resolve(set);
   return GetSet();
 };
