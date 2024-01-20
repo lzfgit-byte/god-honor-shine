@@ -1,13 +1,13 @@
-export interface Table_config {
+export interface T_config {
   id?: string;
   name?: string;
   value?: string;
-  label?: string;
+  flag?: string;
 }
-export const Table_config_name = 'config';
-export const Table_config_Date: Table_config = {
+export const T_config_name = 'config';
+export const T_config_Data: T_config = {
   id: 'string',
   name: 'string',
   value: 'string',
-  label: 'string',
+  flag: 'string',
 };
