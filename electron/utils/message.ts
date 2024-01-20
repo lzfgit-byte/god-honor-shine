@@ -1,5 +1,5 @@
 import { webContents } from 'electron';
-import { SYS_GLOB_KEY } from '../const/system';
+import { SYS_GLOB_KEY } from '@ghs/share';
 
 export const sendMessage = (
   msg: string,

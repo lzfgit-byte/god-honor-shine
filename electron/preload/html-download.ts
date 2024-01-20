@@ -2,7 +2,7 @@
  * 通过窗口获取页面html的preload
  */
 import { ipcRenderer } from 'electron';
-import { HTML_WIN_EVENT, SYS_GLOB_KEY } from '../const/system';
+import { HTML_WIN_EVENT, SYS_GLOB_KEY } from '@ghs/share';
 const sendMessage = (msg: string) => {
   ipcRenderer
     .invoke(SYS_GLOB_KEY.SEND_MESSAGE, `${msg} f 【${window.location.href}】`)

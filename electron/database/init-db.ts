@@ -1,7 +1,7 @@
 import * as sqlite3 from 'sqlite3';
+import { SYSTEM_SET_KEY } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
-import { SYSTEM_SET_KEY } from '../const/system';
 const db_path = APP_PATHS.db_path;
 const db = new sqlite3.Database(db_path, (err) => {
   if (!err) {

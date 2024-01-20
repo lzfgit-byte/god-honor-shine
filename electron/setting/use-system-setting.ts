@@ -1,5 +1,5 @@
+import { SYSTEM_SET_KEY } from '@ghs/share';
 import { queryConfigByKey } from '../database/table-config';
-import { SYSTEM_SET_KEY } from '../const/system';
 interface optsType {
   proxy: string;
   needProxy: boolean;
