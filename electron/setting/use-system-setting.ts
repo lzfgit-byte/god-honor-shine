@@ -1,4 +1,5 @@
-import { SYSTEM_SET_KEY } from '@ghs/share';
+import { SYSTEM_SET_KEY, T_config, T_config_init } from '@ghs/share';
+
 interface optsType {
   proxy: string;
   needProxy: boolean;

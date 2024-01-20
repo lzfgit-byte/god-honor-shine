@@ -4,7 +4,7 @@ import type { T_OptType } from '@ghs/share';
 
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
-
+export const currentVersion = 1;
 const db_path = APP_PATHS.db_path;
 const db: any = new Database(db_path, { verbose: logger.log });
 // 创建表操作类
@@ -28,6 +28,9 @@ export class TableBuilder<T> {
     }
   }
 
+  /**
+   *如果存在返回true
+   */
   isTableExist() {
     const ste = this.db.prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name= ?;`);
     const rows = ste.all(this.tableName);
@@ -144,7 +147,9 @@ export class TableBuilder<T> {
   }
 
   getByField(key: keyof T, value: string): T {
-    return null;
+    const stm = this.db.prepare(`SELECT * FROM ${this.tableName} WHERE '${key as string}' = ?`);
+    const rows = stm.all(value);
+    return rows.length > 0 ? rows[0] : (null as any);
   }
 
   delete(entity: T): boolean {
