@@ -1,9 +1,9 @@
 <template>
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
-    <div class="ghs-item-coverImg" w-full relative cursor-pointer>
-      <GhsImg :url="coverImg" :force="force" />
-      <div absolute top-0 right-0 h-full flex justify-end items-center>
-        {{ flatTags.map((i) => i.title).join(' ') }}
+    <div class="ghs-item-coverImg" w-full relative>
+      <GhsImg cursor-pointer :url="coverImg" :force="force" />
+      <div absolute top-2 right-1 flex justify-end items-center gap-1>
+        <GhsTag v-for="(item, index) in flatTags" :key="index" :info="item"></GhsTag>
       </div>
     </div>
     <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
@@ -23,6 +23,7 @@
   import { computed } from 'vue';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
+  import GhsTag from '@/components/tag/ghs-tag.vue';
 
   const props = defineProps({
     jumpUrl: String,
@@ -43,8 +44,10 @@
   @infoPadding: 5px 0 0 0px;
   .ghs-item-container {
     padding: 0 5px 10px 5px;
+    margin: 0 5px 5px 5px;
     border-radius: 8px;
     width: v-bind(c_width);
+    box-shadow: rgba(67, 71, 85, 0.27) 0 0 0.25em, rgba(90, 125, 188, 0.05) 0 0.25em 1em;
     .ghs-item-coverImg {
       height: v-bind(imgHeight);
     }
