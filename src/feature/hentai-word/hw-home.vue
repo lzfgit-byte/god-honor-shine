@@ -16,7 +16,7 @@
       </div>
     </template>
     <template #action>
-      <GhsSearch></GhsSearch>
+      <GhsSearch @search="handleSearch"></GhsSearch>
       <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
     </template>
   </ViewLayout>
@@ -47,6 +47,10 @@
   };
   const handlerPagination = (item: PaginationType) => {
     load(item.url);
+  };
+  const handleSearch = (value: string) => {
+    const searchVal = value.replaceAll(' ', '+');
+    load(`https://thehentaiworld.com/?s=${searchVal}`);
   };
   onMounted(() => {
     load();

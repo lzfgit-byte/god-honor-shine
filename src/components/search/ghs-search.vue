@@ -1,12 +1,22 @@
 <template>
-  <div flex-inline class="ghs-s-con" items-center>
-    <input v-model="value" class="ghs-search" h-full placeholder="请输入" />
+  <div flex-inline class="ghs-s-con" items-center relative>
+    <input
+      v-model="value"
+      class="ghs-search"
+      h-full
+      placeholder="请输入"
+      @keydown.enter="handleEnterClick"
+    />
   </div>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
 
+  const emits = defineEmits(['search']);
   const value = ref('');
+  const handleEnterClick = () => {
+    emits('search', value.value);
+  };
 </script>
 
 <style scoped lang="less">

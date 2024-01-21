@@ -5,10 +5,11 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
+  import src from './loading.gif?url';
   import { f_request_img_get, f_win_img_get } from '@/utils/functions';
 
   const props = defineProps({ url: String, force: Boolean });
-  const imgSrc = ref();
+  const imgSrc = ref(src);
   const init = async () => {
     if (!props.url) {
       return;
