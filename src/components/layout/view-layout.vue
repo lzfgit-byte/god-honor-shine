@@ -6,16 +6,7 @@
     <div class="view-body" w-full>
       <slot name="body"></slot>
     </div>
-    <div
-      class=""
-      w-2vw
-      z-2
-      style="height: 80%"
-      absolute
-      right-0
-      bottom-0
-      @mouseenter="handleMouseEnter"
-    ></div>
+    <div z-99 class="slideTrigger" pos="absolute right-0 " @mouseenter="handleMouseEnter"></div>
     <div
       class="view-slide"
       :class="{ slideShowSlide: slideShow, hideSlide: !slideShow }"
