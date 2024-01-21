@@ -17,3 +17,5 @@ export interface MainPageInfoType {
   pages?: PaginationType[]; // 分页
   [T: string]: any;
 }
+
+export interface ComicContent {}
