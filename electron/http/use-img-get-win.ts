@@ -5,6 +5,7 @@ import { logger } from '../utils/logger';
 import useProxySetting from '../setting/use-proxy-setting';
 import useSystemSetting from '../setting/use-system-setting';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
+import { isFalsity } from '../utils/KitUtil';
 // @ts-ignore
 import code from './img-windows-code?raw';
 
@@ -80,6 +81,9 @@ const timer = setInterval(async () => {
  * @param url
  */
 export const getImgBase64 = async (url: string): Promise<string> => {
+  if (isFalsity(url)) {
+    return;
+  }
   if (cache_exist(url, CacheFileType.img)) {
     return Promise.resolve(cache_get(url, CacheFileType.img) || '');
   }

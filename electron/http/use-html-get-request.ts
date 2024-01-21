@@ -3,6 +3,7 @@ import { CacheFileType } from '@ghs/share';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { logger } from '../utils/logger';
+import { isFalsity } from '../utils/KitUtil';
 
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
   return new Promise((resolve) => {
@@ -41,6 +42,9 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
  * @param url
  */
 export const requestHtml = (url: string) => {
+  if (isFalsity(url)) {
+    return;
+  }
   return requestFunc(url, CacheFileType.html, (blob) => String(blob));
 };
 
@@ -49,6 +53,9 @@ export const requestHtml = (url: string) => {
  * @param url
  */
 export const requestImage = (url: string) => {
+  if (isFalsity(url)) {
+    return;
+  }
   return requestFunc(
     url,
     CacheFileType.img,

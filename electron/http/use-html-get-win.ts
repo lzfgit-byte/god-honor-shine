@@ -1,6 +1,6 @@
 import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import { CacheFileType, HTML_WIN_EVENT, SYSTEM_SHORT_CUT, SYS_GLOB_KEY } from '@ghs/share';
-import { resolvePreload, resolvePublic } from '../utils/KitUtil';
+import { isFalsity, resolvePreload, resolvePublic } from '../utils/KitUtil';
 import { sendMessage } from '../utils/message';
 import useProxySetting from '../setting/use-proxy-setting';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
@@ -9,6 +9,9 @@ const preHtmlDownload = resolvePreload('html-download');
 let htmlGetWin: BrowserWindow;
 
 export const requestHtmlByWin = async (url: string) => {
+  if (isFalsity(url)) {
+    return;
+  }
   return new Promise((resolve) => {
     if (cache_exist(url, CacheFileType.html)) {
       resolve(cache_get(url, CacheFileType.html));
