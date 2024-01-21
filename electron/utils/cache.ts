@@ -1,47 +1,98 @@
 import path from 'node:path';
 import { unlinkSync } from 'node:fs';
 import { Md5 } from 'ts-md5';
-import { emptyDir, ensureFileSync, existsSync, readFileSync, writeFileSync } from 'fs-extra';
+import {
+  emptyDirSync,
+  ensureFileSync,
+  existsSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'fs-extra';
 import { APP_PATHS } from '../const/app-paths';
 import { isFalsity } from './KitUtil';
 
 const CACHE_PATH = APP_PATHS.cache_path;
 
-export const buildFilePathName = (fileName: string, suffix = '') =>
-  CACHE_PATH + Md5.hashStr(fileName) + suffix;
-
-export const getCachePath = () => CACHE_PATH;
-
-export const saveCache = (fileName: string, data: any, suffix = '') => {
-  ensureFileSync(buildFilePathName(fileName, suffix));
-  writeFileSync(buildFilePathName(fileName, suffix), data, { encoding: 'utf-8' });
+export const buildCacheFilePath = (fileName: string, suffix = '') => {
+  return CACHE_PATH + Md5.hashStr(fileName) + suffix;
 };
-export const existsCache = (fileName: string, suffix = '') => {
-  return existsSync(buildFilePathName(fileName, suffix));
+/**
+ *判断是否缓存是否存在
+ * @param fileName
+ * @param suffix
+ */
+export const cache_exist = (fileName: string, suffix = '') => {
+  return existsSync(buildCacheFilePath(fileName, suffix));
 };
-export const getCache = (fileName: string, suffix = '') => {
-  if (existsCache(fileName, suffix)) {
-    return readFileSync(buildFilePathName(fileName, suffix), { encoding: 'utf-8' });
+/**
+ *保存缓存，字符串
+ * @param fileName
+ * @param data
+ * @param suffix
+ */
+export const cache_save = (fileName: string, data: any, suffix = '') => {
+  ensureFileSync(buildCacheFilePath(fileName, suffix));
+  writeFileSync(buildCacheFilePath(fileName, suffix), data, { encoding: 'utf-8' });
+};
+/**
+ *获取缓存,字符串
+ * @param fileName
+ * @param suffix
+ */
+export const cache_get = (fileName: string, suffix = '') => {
+  if (cache_exist(fileName, suffix)) {
+    return readFileSync(buildCacheFilePath(fileName, suffix), { encoding: 'utf-8' });
   }
   return false;
 };
-
-export const saveByteCache = (fileName: string, data: any, suffix = '') => {
-  writeFileSync(buildFilePathName(fileName, suffix), data);
+/**
+ *保存缓存字节 byte
+ * @param fileName
+ * @param data
+ * @param suffix
+ */
+export const cache_byte_save = (fileName: string, data: any, suffix = '') => {
+  writeFileSync(buildCacheFilePath(fileName, suffix), data);
 };
-export const getByteCache = (fileName: string, suffix = '') => {
-  if (existsCache(fileName, suffix)) {
-    return readFileSync(buildFilePathName(fileName, suffix));
+/**
+ *获取缓存 byte
+ * @param fileName
+ * @param suffix
+ */
+export const cache_byte_get = (fileName: string, suffix = '') => {
+  if (cache_exist(fileName, suffix)) {
+    return readFileSync(buildCacheFilePath(fileName, suffix));
   }
   return false;
 };
-
-export const clearCache = (fileName: string, suffix = '') => {
+/**
+ *清理缓存 删除特定名字的缓存
+ * @param fileName
+ * @param suffix
+ */
+export const cache_clean = (fileName?: string, suffix?: string) => {
   if (isFalsity(fileName)) {
-    emptyDir(CACHE_PATH);
+    emptyDirSync(CACHE_PATH);
     return;
   }
-  if (existsCache(fileName, suffix)) {
-    unlinkSync(buildFilePathName(fileName, suffix));
+  if (cache_exist(fileName, suffix)) {
+    unlinkSync(buildCacheFilePath(fileName, suffix));
   }
+};
+/**
+ * 根据特定后缀去删除文件
+ * @param fileSuffix
+ */
+export const cache_suffix_clean = (fileSuffix = '') => {
+  if (fileSuffix === '') {
+    emptyDirSync(CACHE_PATH);
+    return;
+  }
+  const filePaths = readdirSync(CACHE_PATH);
+  const needRemoves = filePaths?.filter((file) => file.endsWith(fileSuffix));
+  needRemoves.forEach((file) => {
+    const filePath = path.join(CACHE_PATH, file);
+    unlinkSync(filePath);
+  });
 };

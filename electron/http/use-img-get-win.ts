@@ -58,6 +58,21 @@ const getAFreeWin = async (): Promise<BrowserWindow> => {
   }
   return createNewWin();
 };
+
+const timer = setInterval(async () => {
+  const { imgWinMin } = await useSystemSetting();
+  if (childWinds.length > 0) {
+    for (let i = childWinds.length - 1; i > imgWinMin; i--) {
+      if (childWinds[i].free) {
+        childWinds[i].win.close();
+        logger.log(`释放了一个后台窗口，现在长度是:${childWinds.length}`);
+        childWinds.splice(i, 1);
+        break;
+      }
+    }
+  }
+}, 5000);
+
 /**
  *根据传入的url 获取其中图片的base64代码
  * @param url
@@ -85,20 +100,6 @@ export const getImgBase64 = async (url: string): Promise<string> => {
     win.loadURL(url);
   });
 };
-
-const timer = setInterval(async () => {
-  const { imgWinMin } = await useSystemSetting();
-  if (childWinds.length > 0) {
-    for (let i = childWinds.length - 1; i > imgWinMin; i--) {
-      if (childWinds[i].free) {
-        childWinds[i].win.close();
-        logger.log(`释放了一个后台窗口，现在长度是:${childWinds.length}`);
-        childWinds.splice(i, 1);
-        break;
-      }
-    }
-  }
-}, 5000);
 export default () => {
   return () => {
     childWinds?.forEach((item) => {
