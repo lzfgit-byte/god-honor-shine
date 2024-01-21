@@ -1,9 +1,11 @@
 <template>
-  <div h-full w-full>
+  <MainLayout>
     <router-view></router-view>
-  </div>
+  </MainLayout>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import MainLayout from '@/components/layout/MainLayout.vue';
+</script>
 
 <style lang="less">
   @import '@/styles/style';
