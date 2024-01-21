@@ -31,9 +31,10 @@ export const cache_exist = (fileName: string, suffix = '') => {
  * @param data
  * @param suffix
  */
-export const cache_save = (fileName: string, data: any, suffix = '') => {
+export const cache_save = (fileName: string, data: any, suffix = ''): string => {
   ensureFileSync(buildCacheFilePath(fileName, suffix));
   writeFileSync(buildCacheFilePath(fileName, suffix), data, { encoding: 'utf-8' });
+  return data;
 };
 /**
  *获取缓存,字符串
@@ -52,8 +53,9 @@ export const cache_get = (fileName: string, suffix = '') => {
  * @param data
  * @param suffix
  */
-export const cache_byte_save = (fileName: string, data: any, suffix = '') => {
+export const cache_byte_save = (fileName: string, data: any, suffix = ''): any => {
   writeFileSync(buildCacheFilePath(fileName, suffix), data);
+  return data;
 };
 /**
  *获取缓存 byte

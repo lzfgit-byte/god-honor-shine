@@ -1,6 +1,7 @@
 import { net } from 'electron';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
+import { logger } from '../utils/logger';
 
 /**
  *使用electron的net获取html
@@ -22,17 +23,15 @@ export const requestHtml = (url: string) => {
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        processMessage('received:', blob.length, fileSize);
+        processMessage('【html】数据请求', blob.length, fileSize);
       });
       response.on('end', () => {
-        const html = String(blob);
-        cache_save(url, html, suffix);
-        resolve(html);
-        sendMessage('end');
+        resolve(cache_save(url, String(blob), suffix));
+        processMessage('【html】数据请求', fileSize, fileSize);
         blob = null;
       });
       response.on('error', () => {
-        sendMessage('net 请求 error');
+        logger.error('请求失败', url);
       });
     });
     request.on('error', () => {
