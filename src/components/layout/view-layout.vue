@@ -8,6 +8,7 @@
     </div>
     <div z-99 class="slideTrigger" pos="absolute right-0 " @mouseenter="handleMouseEnter"></div>
     <div
+      v-show="enterShow"
       class="view-slide"
       :class="{ slideShowSlide: slideShow, hideSlide: !slideShow }"
       h-full
@@ -23,11 +24,13 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { Close } from '@vicons/ionicons5';
 
   const slideShow = ref(false);
+  const enterShow = ref(false);
   const handleMouseEnter = () => {
+    enterShow.value = true;
     slideShow.value = true;
   };
   const handleMouseOut = () => {

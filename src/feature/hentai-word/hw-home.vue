@@ -2,26 +2,39 @@
   <ViewLayout>
     <template #body>
       <div h-full w-full overflow-auto>
-        <div style="width: 200px; height: 100px">
-          <GhsImg
-            url="https://thehentaiworld.com/wp-content/uploads/2024/01/Night-Elf-NoName55-Warcraft-Animated-hentai-3D-CGI-Video_thumb1-220x147.jpg"
-          ></GhsImg>
-        </div>
+        <GhsItem
+          v-for="(item, index) in items"
+          :key="index"
+          :title="item.title"
+          :cover-img="item.coverImg"
+          :jump-url="item.jumpUrl"
+          :tags="item.tags"
+          :flat-tags="item.flatTags"
+          width="220px"
+          height="147px"
+        ></GhsItem>
       </div>
     </template>
   </ViewLayout>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
-  import { hw_f_getPageInfo } from '@/feature/hentai-word/apis/HwApis';
-  import { f_request_html_get, f_win_html_get } from '@/utils/functions';
-  import ViewLayout from '@/components/layout/view-layout.vue';
-  import GhsImg from '@/components/image/ghs-img.vue';
+  import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 
-  const a = ref('1');
+  import { hw_f_getPageInfo } from '@/feature/hentai-word/apis/HwApis';
+  import { f_request_html_get } from '@/utils/functions';
+  import ViewLayout from '@/components/layout/view-layout.vue';
+  import GhsItem from '@/components/item/ghs-item.vue';
+
+  const pagination = ref<PaginationType[]>();
+  const tags = ref<PageTags[]>();
+  const items = ref<PageItemType[]>();
   const init = async () => {
     const html = await f_request_html_get('https://thehentaiworld.com/?new');
-    a.value = await hw_f_getPageInfo(html);
+    const mainPage = await hw_f_getPageInfo(html);
+    pagination.value = mainPage.pagination;
+    items.value = mainPage.items;
+    tags.value = mainPage.tags;
   };
   onMounted(() => {
     init();
