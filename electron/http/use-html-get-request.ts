@@ -1,8 +1,20 @@
 import { net } from 'electron';
 import { processMessage, sendMessage } from '../utils/message';
+import { cache_exist, cache_get, cache_save } from '../utils/cache';
 
+/**
+ *使用electron的net获取html
+ * @param url
+ */
 export const requestHtml = (url: string) => {
+  const suffix = 'html';
   return new Promise((resolve) => {
+    if (cache_exist(url, suffix)) {
+      const cache = cache_get(url, suffix);
+      resolve(cache || '');
+      return;
+    }
+
     const request = net.request(url);
     let blob: any = Buffer.alloc(0);
     request.on('response', (response) => {
@@ -13,8 +25,9 @@ export const requestHtml = (url: string) => {
         processMessage('received:', blob.length, fileSize);
       });
       response.on('end', () => {
-        // saveByteCache(url, blob, suffix);
-        resolve(String(blob));
+        const html = String(blob);
+        cache_save(url, html, suffix);
+        resolve(html);
         sendMessage('end');
         blob = null;
       });
@@ -29,6 +42,10 @@ export const requestHtml = (url: string) => {
   });
 };
 
+/**
+ * 使用electron的net获取图片base64
+ * @param url
+ */
 export const requestImage = (url: string) => {
   return new Promise((resolve) => {
     const request = net.request(url);

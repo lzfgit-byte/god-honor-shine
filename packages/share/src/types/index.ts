@@ -1,2 +1,3 @@
 export * from './dbTable/table_config';
-export * from './tableGlobal';
+export * from './dbTable/tableGlobal';
+export * from './message';
