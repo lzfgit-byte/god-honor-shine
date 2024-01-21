@@ -2,8 +2,9 @@ import { ref } from 'vue';
 import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import { nextTick } from 'vue-demi';
 interface OptType {
-  resolveMainPage: (url: string) => Promise<MainPage>;
-  resolveSearch: (value: string) => string;
+  resolveMainPage?: (url: string) => Promise<MainPage>;
+  resolveSearch?: (value: string) => string;
+  resolveImgClick?: (item: PageItemType) => void;
 }
 export default (opts: OptType) => {
   const pagination = ref<PaginationType[]>();
@@ -13,7 +14,7 @@ export default (opts: OptType) => {
     if (!url) {
       return;
     }
-    const mainPage = await opts.resolveMainPage(url);
+    const mainPage = await opts?.resolveMainPage(url);
     pagination.value = [];
     items.value = [];
     tags.value = [];
@@ -26,9 +27,11 @@ export default (opts: OptType) => {
     await load(item.url);
   };
   const handleSearch = async (value: string) => {
-    await load(opts.resolveSearch(value));
+    await load(opts?.resolveSearch(value));
   };
-  const handleImageClick = (item: PageItemType) => {};
+  const handleImageClick = (item: PageItemType) => {
+    opts?.resolveImgClick(item);
+  };
 
   return { handlerPagination, handleSearch, handleImageClick, load, pagination, items, tags };
 };

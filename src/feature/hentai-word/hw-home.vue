@@ -43,6 +43,13 @@
         const searchVal = value.replaceAll(' ', '+');
         return `https://thehentaiworld.com/?s=${searchVal}`;
       },
+      resolveImgClick: (item) => {
+        const { flatTags, jumpUrl } = item;
+        const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
+        if (isVideo) {
+        } else {
+        }
+      },
     });
 
   onMounted(() => {
