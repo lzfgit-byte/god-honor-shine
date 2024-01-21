@@ -22,12 +22,14 @@
 </script>
 
 <style scoped lang="less">
+  @import '@/styles/values';
   .img-container {
     img {
       max-width: 100%;
       max-height: 100%;
       height: auto;
       width: auto;
+      border-radius: @radius;
     }
   }
 </style>

@@ -41,11 +41,12 @@
 </script>
 
 <style scoped lang="less">
+  @import '@/styles/values';
   @infoPadding: 5px 0 0 0px;
   .ghs-item-container {
     padding: 0 5px 10px 5px;
     margin: 0 5px 5px 5px;
-    border-radius: 8px;
+    border-radius: @radius;
     width: v-bind(c_width);
     box-shadow: rgba(67, 71, 85, 0.27) 0 0 0.25em, rgba(90, 125, 188, 0.05) 0 0.25em 1em;
     .ghs-item-coverImg {
