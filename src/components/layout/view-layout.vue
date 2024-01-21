@@ -1,6 +1,6 @@
 <template>
   <div class="view-container" h-full w-full relative>
-    <div class="view-action" w-full>
+    <div class="view-action" w-full flex h-full items-center justify-end>
       <slot name="action"></slot>
     </div>
     <div class="view-body" w-full>

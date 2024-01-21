@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
-import type { MainPage, PaginationType } from '@ghs/share';
+import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
-import type { PageItemType, PageTags } from '@ghs/share/src';
-import { ElementTypes } from '@ghs/share/src';
-import { ElementAttr } from '@ghs/share';
+
+import { ElementAttr, ElementTypes } from '@ghs/share';
+
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 
 const hw_getPagination = ($: CheerioAPI): PaginationType[] => {

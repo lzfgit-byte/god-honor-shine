@@ -15,6 +15,9 @@
         ></GhsItem>
       </div>
     </template>
+    <template #action>
+      <GhsPagination :pagination="pagination"></GhsPagination>
+    </template>
   </ViewLayout>
 </template>
 <script setup lang="ts">
@@ -25,6 +28,7 @@
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
+  import GhsPagination from '@/components/pagination/ghs-pagination.vue';
 
   const pagination = ref<PaginationType[]>();
   const tags = ref<PageTags[]>();
