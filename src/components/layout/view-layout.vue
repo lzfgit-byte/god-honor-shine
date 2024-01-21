@@ -24,7 +24,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { ref } from 'vue';
   import { Close } from '@vicons/ionicons5';
 
   const slideShow = ref(false);

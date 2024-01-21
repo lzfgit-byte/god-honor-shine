@@ -1,14 +1,6 @@
 <template>
-  <div
-    class="ghs-item-container"
-    relative
-    inline-flex
-    flex-col
-    justify-start
-    items-center
-    cursor-pointer
-  >
-    <div class="ghs-item-coverImg" w-full relative>
+  <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
+    <div class="ghs-item-coverImg" w-full relative cursor-pointer>
       <GhsImg :url="coverImg" :force="force" />
     </div>
     <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
