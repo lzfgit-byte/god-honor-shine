@@ -1,7 +1,9 @@
-<template> {{ a }}</template>
-<script setup lang="ts">
-  import { SYS_GLOB_KEY, a } from '@ghs/share';
-</script>
+<template>
+  <div>
+    <router-view></router-view>
+  </div>
+</template>
+<script setup lang="ts"></script>
 
 <style lang="less">
   @import '@/styles/style';

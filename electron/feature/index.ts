@@ -1,1 +1,1 @@
-export default {};
+export * from './hentai-word';

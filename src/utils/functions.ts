@@ -4,14 +4,23 @@ import { executeFunction } from '@/utils/ipc';
  *获取html
  * @param url
  */
-export const f_getHtml = async (url: string): Promise<string> => executeFunction('getHtml', url);
+export const f_request_img_get = async (url: string): Promise<string> =>
+  executeFunction('request_img_get', url);
 /**
  * 获取图片的base64
  * @param url
  */
-export const f_getImageBase64 = async (url: string): Promise<string> =>
-  executeFunction('getImageBase64', url);
+export const f_request_html_get = async (url: string): Promise<string> =>
+  executeFunction('request_html_get', url);
 /**
- * 清除缓存
+ * 获取图片的base64
+ * @param url
  */
-export const f_clearCache = async (url?: string, type?: string) => {};
+export const f_win_img_get = async (url: string): Promise<string> =>
+  executeFunction('win_img_get', url);
+/**
+ *获取html
+ * @param url
+ */
+export const f_win_html_get = async (url: string): Promise<string> =>
+  executeFunction('win_html_get', url);

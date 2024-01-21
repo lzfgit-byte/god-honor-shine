@@ -1,11 +1,12 @@
 import { ipcRenderer } from 'electron';
+import { SYS_GLOB_KEY } from '@ghs/share';
 import bus from '@/utils/bus';
-import { SYS_F_GLOB_KEY } from '@/const/system';
-
+// 执行后台的方法
 export const executeFunction = async (funcName: string, ...args: any[]) => {
   return await ipcRenderer.invoke(funcName, ...args);
 };
 
-ipcRenderer.on(SYS_F_GLOB_KEY.SEND_MESSAGE, (_event, ...args) => {
-  bus.emit(SYS_F_GLOB_KEY.SEND_MESSAGE, args.join(' '));
+// 获取后台的消息
+ipcRenderer.on(SYS_GLOB_KEY.SEND_MESSAGE, (_event, ...args) => {
+  bus.emit(SYS_GLOB_KEY.SEND_MESSAGE, args.join(' '));
 });

@@ -1,15 +1,14 @@
-import type { RouteRecord } from 'vue-router';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import type { App } from 'vue';
 
 export const routes = [
-  // {
-  //   path: '/',
-  //   name: 'HWord',
-  //   aliasZH: 'HentaiWord',
-  //   showInMenu: true,
-  //   component: () => import('@/feature/hentai-word/view/main-view.vue'),
-  // },
+  {
+    path: '/',
+    name: 'HWord',
+    aliasZH: 'HentaiWord',
+    showInMenu: true,
+    component: () => import('@/feature/hentai-word/hw-home.vue'),
+  },
 ];
 
 const router = createRouter({
