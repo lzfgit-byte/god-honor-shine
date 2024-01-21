@@ -1,6 +1,7 @@
 import { rmSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import UnoCSS from 'unocss/vite';
 import vue from '@vitejs/plugin-vue';
 // eslint-disable-next-line import/default
 import electron from 'vite-plugin-electron';
@@ -17,6 +18,7 @@ export default defineConfig(({ command }) => {
   return {
     plugins: [
       vue(),
+      UnoCSS(),
       electron([
         {
           // Main-Process entry file of the Electron App.
