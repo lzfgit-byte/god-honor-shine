@@ -1,8 +1,10 @@
 import { BrowserWindow } from 'electron';
+import { CacheFileType } from '@ghs/share';
 import { logger } from '../utils/logger';
 
 import useProxySetting from '../setting/use-proxy-setting';
 import useSystemSetting from '../setting/use-system-setting';
+import { cache_exist, cache_get, cache_save } from '../utils/cache';
 // @ts-ignore
 import code from './img-windows-code?raw';
 
@@ -78,6 +80,9 @@ const timer = setInterval(async () => {
  * @param url
  */
 export const getImgBase64 = async (url: string): Promise<string> => {
+  if (cache_exist(url, CacheFileType.img)) {
+    return Promise.resolve(cache_get(url, CacheFileType.img) || '');
+  }
   const win = await getAFreeWin();
   const webContents = win.webContents;
   return new Promise((resolve) => {
@@ -85,6 +90,7 @@ export const getImgBase64 = async (url: string): Promise<string> => {
       webContents
         .executeJavaScript(code)
         .then((res: string) => {
+          cache_save(url, CacheFileType.img);
           resolve(res);
         })
         .catch((reason) => {
