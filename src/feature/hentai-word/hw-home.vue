@@ -10,6 +10,7 @@
   const init = async () => {
     const html = await f_request_html_get('https://thehentaiworld.com/?new');
     a.value = await hw_f_getPageInfo(html);
+    console.log(a.value);
   };
   onMounted(() => {
     init();

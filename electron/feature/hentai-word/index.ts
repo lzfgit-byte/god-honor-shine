@@ -1,7 +1,9 @@
 import * as cheerio from 'cheerio';
 import type { MainPage, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
-import type { PageItemType } from '@ghs/share/src';
+import type { PageItemType, PageTags } from '@ghs/share/src';
+import { ElementTypes } from '@ghs/share/src';
+import { ElementAttr } from '@ghs/share';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 
 const hw_getPagination = ($: CheerioAPI): PaginationType[] => {
@@ -25,10 +27,31 @@ const hw_getPagination = ($: CheerioAPI): PaginationType[] => {
 };
 const hw_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
+  $('#thumbContainer .thumb').each((i, el) => {
+    const $el = $(el);
+    const $a = $el.find(ElementTypes.a);
+    const $h4 = $a.find(ElementTypes.h4);
+    const $img = $a.find(ElementTypes.img);
+    const title = helpElAttr($a, ElementAttr.title);
+    const coverImg = helpElAttr($img, ElementAttr.src);
+    const author = '';
+    const jumpUrl = helpElAttr($a, ElementAttr.href);
+    const tags = [];
+    const flatTags: PageTags[] = [{ title: helpElText($h4) }];
+    res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
+  });
   return res;
 };
-const hw_getTags = ($: CheerioAPI): PageItemType[] => {
-  const res: PageItemType[] = [];
+const hw_getTags = ($: CheerioAPI): PageTags[] => {
+  const res: PageTags[] = [];
+  $('#tags > li').each((i, el) => {
+    const $el = $(el);
+    const $a = $el.find('a');
+    const $span = $el.find('span');
+    const title = `${helpElText($a)} ${helpElText($span)}`;
+    const url = `https:${helpElAttr($a, ElementAttr.href)}`;
+    res.push({ title, url });
+  });
   return res;
 };
 /**
