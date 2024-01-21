@@ -16,6 +16,6 @@ export const sendMessage = (msg: string, type: MessageType = 'info') => {
  * @param current
  * @param total
  */
-export const processMessage = (info: string, current: number, total: number) => {
-  webContents?.getFocusedWebContents()?.send(SYS_GLOB_KEY.SEND_PROCESS, info, current, total);
+export const processMessage = (info: string, current: number, total: number, id = '') => {
+  webContents?.getFocusedWebContents()?.send(SYS_GLOB_KEY.SEND_PROCESS, info, current, total, id);
 };

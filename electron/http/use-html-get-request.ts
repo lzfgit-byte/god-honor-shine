@@ -1,14 +1,14 @@
 import { net } from 'electron';
+import { CacheFileType } from '@ghs/share';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { logger } from '../utils/logger';
-
 /**
  *使用electron的net获取html
  * @param url
  */
 export const requestHtml = (url: string) => {
-  const suffix = 'html';
+  const suffix = CacheFileType.html;
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
       const cache = cache_get(url, suffix);
@@ -31,11 +31,11 @@ export const requestHtml = (url: string) => {
         blob = null;
       });
       response.on('error', () => {
-        logger.error('请求失败', url);
+        logger.db_error('请求失败', url);
       });
     });
     request.on('error', () => {
-      sendMessage('request error');
+      sendMessage('request error', 'error');
     });
     request.end();
   });
@@ -46,7 +46,14 @@ export const requestHtml = (url: string) => {
  * @param url
  */
 export const requestImage = (url: string) => {
+  const suffix = CacheFileType.img;
   return new Promise((resolve) => {
+    if (cache_exist(url, suffix)) {
+      const cache = cache_get(url, suffix);
+      resolve(cache || '');
+      return;
+    }
+
     const request = net.request(url);
     let blob: any = Buffer.alloc(0);
     request.on('response', (response) => {
@@ -54,21 +61,21 @@ export const requestImage = (url: string) => {
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        processMessage('received:', blob.length, fileSize);
+        processMessage('received:', blob.length, fileSize, url);
       });
       response.on('end', () => {
-        // saveByteCache(url, blob, suffix);
         const base64Image = `data:image/png;base64,${Buffer.from(blob).toString('base64')}`;
+        cache_save(url, base64Image, suffix);
         resolve(base64Image);
-        processMessage('received:', fileSize, fileSize);
+        processMessage('received:', fileSize, fileSize, url);
         blob = null;
       });
       response.on('error', () => {
-        sendMessage('net 请求 error');
+        logger.db_error('请求失败', url);
       });
     });
     request.on('error', () => {
-      sendMessage('request error');
+      sendMessage('request error', 'error');
     });
     request.end();
   });
