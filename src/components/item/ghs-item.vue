@@ -2,6 +2,9 @@
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
     <div class="ghs-item-coverImg" w-full relative cursor-pointer>
       <GhsImg :url="coverImg" :force="force" />
+      <div absolute top-0 right-0 h-full flex justify-end items-center>
+        {{ flatTags.map((i) => i.title).join(' ') }}
+      </div>
     </div>
     <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="title" />
@@ -39,7 +42,7 @@
 <style scoped lang="less">
   @infoPadding: 5px 0 0 0px;
   .ghs-item-container {
-    padding: 0 10px 10px 0;
+    padding: 0 5px 10px 5px;
     border-radius: 8px;
     width: v-bind(c_width);
     .ghs-item-coverImg {
