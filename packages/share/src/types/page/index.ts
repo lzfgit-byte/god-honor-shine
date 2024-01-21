@@ -9,6 +9,8 @@ export enum ElementTypes {
   img = 'img',
   h4 = 'h4',
   video = 'video',
+  source = 'source',
+  p = 'p',
 }
 
 export interface PaginationType {

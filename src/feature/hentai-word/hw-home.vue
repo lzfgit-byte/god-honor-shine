@@ -25,7 +25,7 @@
 <script setup lang="ts">
   import { onMounted } from 'vue';
 
-  import { hw_f_getPageInfo } from '@/feature/hentai-word/apis/HwApis';
+  import { hw_f_getPageInfo, hw_f_getVideoInfo } from '@/feature/hentai-word/apis/HwApis';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
@@ -43,11 +43,14 @@
         const searchVal = value.replaceAll(' ', '+');
         return `https://thehentaiworld.com/?s=${searchVal}`;
       },
-      resolveImgClick: (item) => {
+      resolveImgClick: async (item) => {
         const { flatTags, jumpUrl } = item;
         const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
         if (isVideo) {
+          const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
+          console.log(hwVideoInfo);
         } else {
+          console.log();
         }
       },
     });

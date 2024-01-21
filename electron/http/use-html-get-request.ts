@@ -52,7 +52,7 @@ export const requestHtml = (url: string) => {
  * 使用electron的net获取图片base64
  * @param url
  */
-export const requestImage = (url: string) => {
+export const requestImage = async (url: string) => {
   if (isFalsity(url)) {
     return;
   }

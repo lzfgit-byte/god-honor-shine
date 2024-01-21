@@ -1,10 +1,11 @@
 import * as cheerio from 'cheerio';
-import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+import type { HWVideoInfo, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
+import { request_html_get } from '../../controller';
 
 const hw_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more = $('#more-hentai li');
@@ -66,4 +67,13 @@ export const hw_getPageInfo = (html: string): MainPage => {
     items: hw_getItems($),
     tags: hw_getTags($),
   };
+};
+export const hw_getVideoInfo = async (url: string): Promise<HWVideoInfo> => {
+  const html = await request_html_get(url);
+  const $: CheerioAPI = cheerio.load(html);
+  const $img = $('#image');
+  const $video = $img.find('#video');
+  const $source = $video.find(ElementTypes.source);
+  const $span = $img.find(`span[itemprop="name"]`);
+  return { url: helpElAttr($source, ElementAttr.src), title: helpElText($span) };
 };
