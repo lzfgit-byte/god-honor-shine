@@ -12,6 +12,7 @@
           :flat-tags="item.flatTags"
           width="220px"
           height="147px"
+          @img-click="handleImageClick(item)"
         ></GhsItem>
       </div>
     </template>
@@ -22,40 +23,30 @@
   </ViewLayout>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
-  import type { PageItemType, PageTags, PaginationType } from '@ghs/share';
+  import { onMounted } from 'vue';
 
-  import { nextTick } from 'vue-demi';
   import { hw_f_getPageInfo } from '@/feature/hentai-word/apis/HwApis';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import GhsSearch from '@/components/search/ghs-search.vue';
+  import useMainPageHook from '@/feature/hook/useMainPageHook';
 
-  const pagination = ref<PaginationType[]>();
-  const tags = ref<PageTags[]>();
-  const items = ref<PageItemType[]>();
-  const load = async (url = 'https://thehentaiworld.com/?new') => {
-    const html = await f_request_html_get(url);
-    const mainPage = await hw_f_getPageInfo(html);
-    pagination.value = [];
-    items.value = [];
-    tags.value = [];
-    await nextTick();
-    pagination.value = mainPage.pagination;
-    items.value = mainPage.items;
-    tags.value = mainPage.tags;
-  };
-  const handlerPagination = (item: PaginationType) => {
-    load(item.url);
-  };
-  const handleSearch = (value: string) => {
-    const searchVal = value.replaceAll(' ', '+');
-    load(`https://thehentaiworld.com/?s=${searchVal}`);
-  };
+  const { load, handleSearch, handleImageClick, handlerPagination, pagination, items, tags } =
+    useMainPageHook({
+      resolveMainPage: async (url: string) => {
+        const html = await f_request_html_get(url);
+        return await hw_f_getPageInfo(html);
+      },
+      resolveSearch: (value: string) => {
+        const searchVal = value.replaceAll(' ', '+');
+        return `https://thehentaiworld.com/?s=${searchVal}`;
+      },
+    });
+
   onMounted(() => {
-    load();
+    load('https://thehentaiworld.com/?new');
   });
 </script>
 
