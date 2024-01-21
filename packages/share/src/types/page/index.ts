@@ -19,7 +19,7 @@ export interface PageItemType {
 }
 export interface MainPage {
   pagination?: PaginationType[]; // 当前页面的分页
-  tags?: PageTags[]; // 页面的普遍tag
+  tags?: PageTags[]; // 页面的普遍tag,处理为首页横幅
   items?: PageItemType[]; // 页面列表
 }
 
