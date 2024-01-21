@@ -16,19 +16,21 @@
       </div>
     </template>
     <template #action>
+      <GhsSearch></GhsSearch>
       <GhsPagination :pagination="pagination"></GhsPagination>
     </template>
   </ViewLayout>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
-  import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+  import type { PageItemType, PageTags, PaginationType } from '@ghs/share';
 
   import { hw_f_getPageInfo } from '@/feature/hentai-word/apis/HwApis';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
+  import GhsSearch from '@/components/search/ghs-search.vue';
 
   const pagination = ref<PaginationType[]>();
   const tags = ref<PageTags[]>();
