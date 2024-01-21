@@ -5,11 +5,17 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { f_request_img_get } from '@/utils/functions';
+  import { f_request_img_get, f_win_img_get } from '@/utils/functions';
 
-  const props = defineProps({ url: String });
+  const props = defineProps({ url: String, force: Boolean });
   const imgSrc = ref();
   const init = async () => {
+    if (!props.url) {
+      return;
+    }
+    if (props.force) {
+      imgSrc.value = await f_win_img_get(props.url);
+    }
     imgSrc.value = await f_request_img_get(props.url);
   };
   init();
