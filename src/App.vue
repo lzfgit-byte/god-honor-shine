@@ -4,7 +4,7 @@
   </MainLayout>
 </template>
 <script setup lang="ts">
-  import MainLayout from '@/components/layout/MainLayout.vue';
+  import MainLayout from '@/components/layout/main-layout.vue';
 </script>
 
 <style lang="less">

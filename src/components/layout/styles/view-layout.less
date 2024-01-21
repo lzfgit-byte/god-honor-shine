@@ -1,0 +1,38 @@
+@height: 50px;
+@slideWidth: 400px;
+@keyframes slideIn {
+  0% {
+  }
+  100% {
+    right: 0;
+    z-index: 3;
+  }
+}
+@keyframes slideOut {
+  0% {
+    right: 0;
+  }
+  100% {
+    right: 0 - @slideWidth;
+  }
+}
+.view-action {
+  height: @height;
+}
+.view-body {
+  height: calc(100% - @height);
+}
+.view-slide {
+  width: @slideWidth;
+  transition: right 0.5s linear;
+  right: 0 - @slideWidth;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+.slideShowSlide {
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+.hideSlide {
+  animation: slideOut 0.5s ease-in-out forwards !important;
+}
