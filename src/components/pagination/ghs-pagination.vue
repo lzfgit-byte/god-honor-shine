@@ -9,7 +9,7 @@
       justify-center
       items-center
       cursor-pointer
-      @click="emits('click', item)"
+      @click="handleClick(item)"
     >
       {{ item.title }}
     </div>
@@ -21,6 +21,11 @@
 
   defineProps({ pagination: Array as PropType<PaginationType[]> });
   const emits = defineEmits(['click']);
+  const handleClick = (item: PaginationType) => {
+    if (item.url && !item.isCurrent) {
+      emits('click', item);
+    }
+  };
 </script>
 
 <style scoped lang="less">

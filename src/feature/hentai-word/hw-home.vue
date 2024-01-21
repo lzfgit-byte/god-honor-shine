@@ -17,7 +17,7 @@
     </template>
     <template #action>
       <GhsSearch></GhsSearch>
-      <GhsPagination :pagination="pagination"></GhsPagination>
+      <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
     </template>
   </ViewLayout>
 </template>
@@ -35,15 +35,21 @@
   const pagination = ref<PaginationType[]>();
   const tags = ref<PageTags[]>();
   const items = ref<PageItemType[]>();
-  const init = async () => {
-    const html = await f_request_html_get('https://thehentaiworld.com/?new');
+  const load = async (url = 'https://thehentaiworld.com/?new') => {
+    pagination.value = [];
+    items.value = [];
+    tags.value = [];
+    const html = await f_request_html_get(url);
     const mainPage = await hw_f_getPageInfo(html);
     pagination.value = mainPage.pagination;
     items.value = mainPage.items;
     tags.value = mainPage.tags;
   };
+  const handlerPagination = (item: PaginationType) => {
+    load(item.url);
+  };
   onMounted(() => {
-    init();
+    load();
   });
 </script>
 

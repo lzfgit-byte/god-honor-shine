@@ -1,5 +1,5 @@
 <template>
-  <div class="ghs-tag-container" flex-inline justify-center items-center>
+  <div v-if="info.title" class="ghs-tag-container" flex-inline justify-center items-center>
     {{ info.title }}
   </div>
 </template>

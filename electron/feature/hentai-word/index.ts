@@ -32,12 +32,13 @@ const hw_getItems = ($: CheerioAPI): PageItemType[] => {
     const $a = $el.find(ElementTypes.a);
     const $h4 = $a.find(ElementTypes.h4);
     const $img = $a.find(ElementTypes.img);
+    const $span = $a.find('span');
     const title = helpElAttr($a, ElementAttr.title);
     const coverImg = helpElAttr($img, ElementAttr.src);
     const author = '';
     const jumpUrl = helpElAttr($a, ElementAttr.href);
     const tags = [];
-    const flatTags: PageTags[] = [{ title: helpElText($h4) }];
+    const flatTags: PageTags[] = [{ title: helpElText($h4) }, { title: helpElText($span) }];
     res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
   });
   return res;
