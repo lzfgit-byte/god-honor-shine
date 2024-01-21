@@ -25,7 +25,11 @@
 <script setup lang="ts">
   import { onMounted } from 'vue';
 
-  import { hw_f_getPageInfo, hw_f_getVideoInfo } from '@/feature/hentai-word/apis/HwApis';
+  import {
+    hw_f_getImgInfo,
+    hw_f_getPageInfo,
+    hw_f_getVideoInfo,
+  } from '@/feature/hentai-word/apis/HwApis';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
@@ -50,7 +54,8 @@
           const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
           console.log(hwVideoInfo);
         } else {
-          console.log();
+          const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
+          console.log(hwImgInfos);
         }
       },
     });
