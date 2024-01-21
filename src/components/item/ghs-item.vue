@@ -10,7 +10,7 @@
       <GhsText :value="title" />
     </div>
     <div v-if="author" class="ghs-item-author" w-full flex justify-start items-center>
-      {{ author }}
+      <GhsText :value="author" />
     </div>
     <div v-if="tags" class="ghs-item-tags" w-full relative flex justify-start items-center>
       {{ tags.map((i) => i.title).join(' ') }}
@@ -44,7 +44,7 @@
   @import '@/styles/values';
   @infoPadding: 5px 0 0 0px;
   .ghs-item-container {
-    padding: 0 5px 10px 5px;
+    padding: 0 5px 1px 5px;
     margin: 0 5px 5px 5px;
     border-radius: @radius;
     width: v-bind(c_width);
