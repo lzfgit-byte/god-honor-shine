@@ -1,11 +1,20 @@
+import { it } from 'node:test';
 import * as cheerio from 'cheerio';
-import type { HWVideoInfo, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+import type {
+  HWImgInfo,
+  HWVideoInfo,
+  MainPage,
+  PageItemType,
+  PageTags,
+  PaginationType,
+} from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
+import { processMessage } from '../../utils/message';
 
 const hw_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more = $('#more-hentai li');
@@ -76,4 +85,28 @@ export const hw_getVideoInfo = async (url: string): Promise<HWVideoInfo> => {
   const $source = $video.find(ElementTypes.source);
   const $span = $img.find(`span[itemprop="name"]`);
   return { url: helpElAttr($source, ElementAttr.src), title: helpElText($span) };
+};
+export const hw_getImgInfo = async (url: string): Promise<HWImgInfo[]> => {
+  const html = await request_html_get(url);
+  const $: CheerioAPI = cheerio.load(html);
+  const thumbs = $('#miniThumbContainer .minithumb');
+  processMessage('获取图片', 0, thumbs.length);
+  const res: HWImgInfo[] = [];
+  const urls: string[] = [];
+  thumbs.each((i, el) => {
+    urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
+  });
+  for (const url of urls) {
+    const html = await request_html_get(url);
+    const $: CheerioAPI = cheerio.load(html);
+    const $grid = $('#grid');
+    const $h1 = $grid.find(ElementTypes.h1);
+    const $minImg = $grid.find('#doujin img');
+    const $fullA = $('#info a');
+    const fullUrl = helpElAttr($fullA, ElementAttr.href);
+    const minUrl = helpElAttr($minImg, ElementAttr.src);
+    const title = helpElText($h1);
+    res.push({ fullUrl, minUrl, title });
+  }
+  return res;
 };

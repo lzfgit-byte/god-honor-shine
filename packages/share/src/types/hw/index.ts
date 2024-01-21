@@ -1,6 +1,7 @@
 export interface HWImgInfo {
-  minUrl?: String;
+  minUrl?: string;
   fullUrl?: string;
+  title?: string;
 }
 export interface HWVideoInfo {
   title?: string;

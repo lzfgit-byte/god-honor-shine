@@ -8,6 +8,7 @@ export enum ElementTypes {
   a = 'a',
   img = 'img',
   h4 = 'h4',
+  h1 = 'h1',
   video = 'video',
   source = 'source',
   p = 'p',
