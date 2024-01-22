@@ -19,10 +19,7 @@
       </div>
     </div>
     <div class="ghsn-body" w-full>
-      <div class="ghsn-progress" w-full relative>
-        <div class="ghsn-current-percentage-gray" absolute></div>
-        <div class="ghsn-current-percentage" absolute></div>
-      </div>
+      <GhsProgress v-model:percentage="percentageRef"></GhsProgress>
     </div>
   </div>
 </template>
@@ -34,8 +31,9 @@
   import type { NotifyExpose } from '../types';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import bus from '@/utils/bus';
+  import GhsProgress from '@/components/progress/ghs-progress.vue';
 
-  const props = defineProps({ percentage: String, title: String, top: Number, index: Number });
+  const props = defineProps({ percentage: Number, title: String, top: Number, index: Number });
   const emits = defineEmits(['close']);
   const id = new Date().getTime();
   const notifyRef = ref<HTMLDivElement>();
@@ -45,7 +43,6 @@
     () => `${indexRef.value * elementHeight.value + 10 + indexRef.value * 10}px`
   );
   const percentageRef = ref(props.percentage || 0);
-  const percentageWidth = computed(() => `${percentageRef.value}%`);
   const expose: NotifyExpose = {
     show: () => {
       notifyRef.value.classList.remove('hideNotify');
@@ -130,21 +127,5 @@
   }
   .hideNotify {
     animation: hideNotifyAnimate 0.3s linear forwards;
-  }
-  .ghsn-progress {
-    padding: 5px 0;
-    margin: 5px 0;
-    .ghsn-current-percentage {
-      height: 6px;
-      background: #409eff;
-      border-radius: 3px;
-      width: v-bind(percentageWidth);
-    }
-    .ghsn-current-percentage-gray {
-      height: 6px;
-      background: #ebeef5;
-      border-radius: 3px;
-      width: 100%;
-    }
   }
 </style>
