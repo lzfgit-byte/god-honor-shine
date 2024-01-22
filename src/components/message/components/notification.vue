@@ -1,5 +1,5 @@
 <template>
-  <div ref="notifyRef" absolute class="ghs-notification" pos="absolute" flex flex-col>
+  <div :id="id" ref="notifyRef" absolute class="ghs-notification" pos="absolute" flex flex-col>
     <div class="ghsn-header" w-full flex items-center>
       <div class="ghsn-h-title" flex items-center justify-start h-full>
         <h2>{{ title }}</h2>
@@ -12,8 +12,11 @@
         h-full
         cursor-pointer
         @click="emits('close')"
-        >x</div
       >
+        <GhsIcon>
+          <Close></Close>
+        </GhsIcon>
+      </div>
     </div>
     <div class="ghsn-body" w-full>
       <div class="ghsn-progress" w-full relative>
@@ -26,16 +29,23 @@
 <script setup lang="ts">
   import { ref } from 'vue-demi';
   import { useMouseInElement } from '@vueuse/core';
-  import { computed } from 'vue';
+  import { computed, onMounted, onUnmounted } from 'vue';
+  import { Close } from '@vicons/ionicons5';
   import type { NotifyExpose } from '../types';
+  import GhsIcon from '@/components/icon/ghs-icon.vue';
+  import bus from '@/utils/bus';
 
-  const props = defineProps({ percentage: String, title: String, top: Number });
+  const props = defineProps({ percentage: String, title: String, top: Number, index: Number });
   const emits = defineEmits(['close']);
+  const id = new Date().getTime();
   const notifyRef = ref<HTMLDivElement>();
-  const { isOutside } = useMouseInElement(notifyRef);
-  const indexRef = ref(props.top || 10);
-  const currentTop = computed(() => `${indexRef.value}px`);
-  const percentageWidth = computed(() => `${props.percentage}%`);
+  const { isOutside, elementHeight } = useMouseInElement(notifyRef);
+  const indexRef = ref(props.index || 0);
+  const currentTop = computed(
+    () => `${indexRef.value * elementHeight.value + 10 + indexRef.value * 10}px`
+  );
+  const percentageRef = ref(props.percentage || 0);
+  const percentageWidth = computed(() => `${percentageRef.value}%`);
   const expose: NotifyExpose = {
     show: () => {
       notifyRef.value.classList.remove('hideNotify');
@@ -45,9 +55,27 @@
       notifyRef.value.classList.add('hideNotify');
       notifyRef.value.classList.remove('showNotify');
     },
-    update: (index, msg, title) => {},
+    update: (index, percentage, title) => {
+      indexRef.value = index || indexRef.value;
+      percentageRef.value = percentage || percentageRef.value;
+    },
     check: () => isOutside.value,
+    calculateNewPos: () => {
+      const els = document.querySelectorAll('.ghs-notification');
+      els.forEach((el, i) => {
+        if (+el.id === id) {
+          indexRef.value = i;
+        }
+      });
+    },
   };
+  onMounted(() => {
+    bus.on('calculateNewPos', expose.calculateNewPos);
+  });
+  onUnmounted(() => {
+    bus.off('calculateNewPos', expose.calculateNewPos);
+  });
+
   defineExpose(expose);
 </script>
 
@@ -79,12 +107,13 @@
     box-shadow: 0 12px 32px 4px rgba(0, 0, 0, 0.04), 0 8px 20px rgba(0, 0, 0, 0.08);
     background: white;
     border-radius: 8px;
+    transition: top 0.2s linear;
     z-index: 99999;
     .ghsn-header {
       .ghsn-h-title {
         width: @titleWidth;
         h2 {
-          margin-bottom: 0 !important;
+          margin: 0 !important;
         }
       }
       .ghsn-h-extra {

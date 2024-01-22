@@ -8,6 +8,7 @@ import type {
 } from './types';
 import message from './components/message-item.vue';
 import notify from './components/notification.vue';
+import bus from '@/utils/bus';
 
 const waitTime = (during = 200): Promise<any> => {
   return new Promise((resolve) => {
@@ -17,7 +18,7 @@ const waitTime = (during = 200): Promise<any> => {
   });
 };
 
-export class Message {
+export class GHSMessage {
   static key = 1;
   static wrapperClass = 'ghs-message-wrapper';
   static getKey() {
@@ -77,7 +78,7 @@ export class Message {
 /**
  *侧边弹出栏
  */
-export class Notify {
+export class GHSNotify {
   static wrapperClass = 'ghs-notification';
   static getShowLength() {
     return document.querySelectorAll(`.${this.wrapperClass}`).length;
@@ -87,6 +88,7 @@ export class Notify {
     expose.hide();
     await waitTime(200);
     container.remove();
+    bus.emit('calculateNewPos');
   }
 
   static getCurrentTop() {
@@ -94,20 +96,18 @@ export class Notify {
     let top = 10;
     els.forEach((el: HTMLDivElement) => {
       top += el.offsetHeight + 10;
-      console.log(el.offsetHeight);
     });
     return top;
   }
 
   static async show(percentage: number, title: string) {
     const $app = document.getElementById('app');
-    const key = Message.getKey();
+    const key = GHSMessage.getKey();
     const props: NotifyItemProp = {
       key,
       percentage,
       title,
       index: this.getShowLength(),
-      top: this.getCurrentTop(),
       onClose: () => {
         this.destroy(expose, divEl);
       },
@@ -120,5 +120,6 @@ export class Notify {
     $app.appendChild(divEl);
     await waitTime(1);
     expose.show();
+    return { update: expose.update, destroy: () => this.destroy(expose, divEl) };
   }
 }

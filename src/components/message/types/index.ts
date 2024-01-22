@@ -31,4 +31,5 @@ export interface NotifyExpose {
   hide: () => void;
   update: (index?: number, percentage?: number, title?: string) => void;
   check: () => boolean;
+  calculateNewPos: () => void;
 }
