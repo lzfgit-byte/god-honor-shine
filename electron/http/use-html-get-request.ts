@@ -3,7 +3,7 @@ import { CacheFileType } from '@ghs/share';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { logger } from '../utils/logger';
-import { isFalsity } from '../utils/KitUtil';
+import { formatSize, isFalsity } from '../utils/KitUtil';
 
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
   return new Promise((resolve) => {
@@ -19,11 +19,38 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        processMessage(`【${suffix}】数据请求`, blob.length, fileSize, url);
+        if (fileSize) {
+          processMessage({
+            title: `【${suffix}】数据请求`,
+            percentage: +((blob.length / fileSize) * 100).toFixed(0),
+            key: url,
+          });
+        } else {
+          processMessage({
+            title: `【${suffix}】数据请求`,
+            key: url,
+            global: true,
+            info: formatSize(blob.length),
+          });
+        }
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));
-        processMessage(`【${suffix}】数据请求`, fileSize, fileSize, url);
+        if (fileSize) {
+          processMessage({
+            title: `【${suffix}】数据请求`,
+            percentage: 100,
+            key: url,
+          });
+        } else {
+          processMessage({
+            title: `【${suffix}】数据请求`,
+            key: url,
+            global: true,
+            info: formatSize(blob.length),
+            down: true,
+          });
+        }
         blob = null;
       });
       response.on('error', () => {

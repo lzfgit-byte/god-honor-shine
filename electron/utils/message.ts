@@ -1,5 +1,5 @@
 import { webContents } from 'electron';
-import type { MessageType } from '@ghs/share';
+import type { MessageType, ProcessMsgType } from '@ghs/share';
 import { SYS_GLOB_KEY } from '@ghs/share';
 
 /**
@@ -12,10 +12,7 @@ export const sendMessage = (msg: string, type: MessageType = 'info') => {
 };
 /**
  * 发送进度信息
- * @param info
- * @param current
- * @param total
  */
-export const processMessage = (info: string, current: number, total: number, id = '') => {
-  webContents?.getFocusedWebContents()?.send(SYS_GLOB_KEY.SEND_PROCESS, info, current, total, id);
+export const processMessage = (opts: ProcessMsgType) => {
+  webContents?.getFocusedWebContents()?.send(SYS_GLOB_KEY.SEND_PROCESS, opts);
 };
