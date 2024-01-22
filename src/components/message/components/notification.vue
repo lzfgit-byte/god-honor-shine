@@ -2,7 +2,7 @@
   <div :id="id" ref="notifyRef" absolute class="ghs-notification" pos="absolute" flex flex-col>
     <div class="ghsn-header" w-full flex items-center>
       <div class="ghsn-h-title" flex items-center justify-start h-full>
-        <h2>{{ title }}</h2>
+        {{ title }}
       </div>
       <div
         class="ghsn-h-extra"
@@ -124,9 +124,7 @@
     .ghsn-header {
       .ghsn-h-title {
         width: @titleWidth;
-        h2 {
-          margin: 0 !important;
-        }
+        font-weight: 600;
       }
       .ghsn-h-extra {
         width: calc(100% - @titleWidth);

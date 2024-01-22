@@ -40,3 +40,7 @@ export interface NotifyExpose {
   check: () => boolean;
   calculateNewPos: () => void;
 }
+export interface NotifyShow {
+  update: (opt: UpdateOpt) => void;
+  destroy: () => void;
+}
