@@ -19,7 +19,14 @@
       </div>
     </div>
     <div class="ghsn-body" w-full>
-      <GhsProgress v-model:percentage="percentageRef"></GhsProgress>
+      <GhsProgress v-if="percentage !== undefined" v-model:percentage="percentageRef"></GhsProgress>
+      <div
+        v-if="info"
+        w-full
+        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis"
+        :title="infoRef"
+        >{{ infoRef }}</div
+      >
     </div>
   </div>
 </template>
@@ -33,7 +40,13 @@
   import bus from '@/utils/bus';
   import GhsProgress from '@/components/progress/ghs-progress.vue';
 
-  const props = defineProps({ percentage: Number, title: String, top: Number, index: Number });
+  const props = defineProps({
+    percentage: Number,
+    title: String,
+    info: String,
+    top: Number,
+    index: Number,
+  });
   const emits = defineEmits(['close']);
   const id = new Date().getTime();
   const notifyRef = ref<HTMLDivElement>();
@@ -43,6 +56,7 @@
     () => `${indexRef.value * elementHeight.value + 10 + indexRef.value * 10}px`
   );
   const percentageRef = ref(props.percentage || 0);
+  const infoRef = ref(props.info || '');
   const expose: NotifyExpose = {
     show: () => {
       notifyRef.value.classList.remove('hideNotify');
@@ -52,9 +66,10 @@
       notifyRef.value.classList.add('hideNotify');
       notifyRef.value.classList.remove('showNotify');
     },
-    update: (index, percentage, title) => {
-      indexRef.value = index || indexRef.value;
-      percentageRef.value = percentage || percentageRef.value;
+    update: (opt) => {
+      indexRef.value = opt?.index || indexRef.value;
+      percentageRef.value = opt.percentage || percentageRef.value;
+      infoRef.value = opt.info || infoRef.value;
     },
     check: () => isOutside.value,
     calculateNewPos: () => {

@@ -67,9 +67,6 @@
 
   onMounted(() => {
     load('https://thehentaiworld.com/?new');
-    GHSNotify.show(0, 'aaa').then(({ update, destroy }) => {
-      update(null, 50);
-    });
   });
 </script>
 

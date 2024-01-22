@@ -21,15 +21,22 @@ export const color: Record<MessageType, any> = {
 export interface NotifyItemProp {
   percentage?: number;
   title?: string;
+  info?: string;
   key?: string;
   index?: number;
   top?: number;
   onClose?: () => void;
 }
+interface UpdateOpt {
+  index?: number;
+  percentage?: number;
+  title?: string;
+  info?: string;
+}
 export interface NotifyExpose {
   show: () => void;
   hide: () => void;
-  update: (index?: number, percentage?: number, title?: string) => void;
+  update: (opt: UpdateOpt) => void;
   check: () => boolean;
   calculateNewPos: () => void;
 }

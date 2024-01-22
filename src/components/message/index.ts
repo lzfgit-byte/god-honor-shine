@@ -100,13 +100,14 @@ export class GHSNotify {
     return top;
   }
 
-  static async show(percentage: number, title: string) {
+  static async show(opt: { percentage?: number; title?: string; info?: string }) {
     const $app = document.getElementById('app');
     const key = GHSMessage.getKey();
     const props: NotifyItemProp = {
       key,
-      percentage,
-      title,
+      percentage: opt.percentage,
+      title: opt.title,
+      info: opt.info,
       index: this.getShowLength(),
       onClose: () => {
         this.destroy(expose, divEl);
