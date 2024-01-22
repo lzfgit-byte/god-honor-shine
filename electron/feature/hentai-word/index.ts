@@ -15,6 +15,7 @@ import { ElementAttr, ElementTypes } from '@ghs/share';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
 import { processMessage } from '../../utils/message';
+import { execPercentage } from '../../utils/KitUtil';
 
 const hw_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more = $('#more-hentai li');
@@ -111,9 +112,15 @@ export const hw_getImgInfo = async (url: string): Promise<HWImgInfo[]> => {
     urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
   });
   for (let i = 0; i < urls.length; i++) {
-    const url = urls[i];
-    processMessage('获取图片中', i, url.length);
-    const html = await request_html_get(url);
+    const url_ = urls[i];
+    processMessage({
+      title: '图片获取',
+      info: `${i + 1}/${urls.length}`,
+      key: url,
+      global: true,
+      down: i + 1 === urls.length,
+    });
+    const html = await request_html_get(url_);
     const $: CheerioAPI = cheerio.load(html);
     res.push(getHWImgInfo($));
   }

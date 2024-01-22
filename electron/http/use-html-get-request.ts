@@ -29,7 +29,6 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
           processMessage({
             title: `【${suffix}】数据请求`,
             key: url,
-            global: true,
             info: formatSize(blob.length),
           });
         }
@@ -46,7 +45,6 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
           processMessage({
             title: `【${suffix}】数据请求`,
             key: url,
-            global: true,
             info: formatSize(blob.length),
             down: true,
           });

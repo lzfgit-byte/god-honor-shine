@@ -22,6 +22,9 @@ export const formatSize = (size: any, pointLength = 2, units: any = null) => {
     (unit === units[0] ? size : size.toFixed(pointLength === undefined ? 2 : pointLength)) + unit
   );
 };
+export const execPercentage = (cur: number, total: number): number => {
+  return Math.min(+((cur / total) * 100).toFixed(0), 100);
+};
 export const resolvePreload = (fileName: string) => join(__dirname, `../preload/${fileName}.js`);
 export const resolvePublic = (filePath: string) => join(process.env.PUBLIC, filePath);
 export const resolveCachePath = () => '';
