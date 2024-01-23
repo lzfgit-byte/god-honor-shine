@@ -28,5 +28,5 @@ export const f_win_html_get = async (url: string): Promise<string> =>
 /**
  * 清除缓存
  */
-export const f_cache_suffix_clean = async (suffix: CacheFileType): Promise<string> =>
+export const f_cache_suffix_clean = async (suffix?: CacheFileType): Promise<string> =>
   executeFunction('cache_suffix_clean', suffix);

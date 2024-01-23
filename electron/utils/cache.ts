@@ -12,6 +12,7 @@ import {
 import type { CacheFileType } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
 import { isFalsity } from './KitUtil';
+import { sendMessage } from './message';
 
 const CACHE_PATH = APP_PATHS.cache_path;
 
@@ -90,6 +91,7 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
 export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
   if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
+    sendMessage('清除了所有缓存');
     return;
   }
   const filePaths = readdirSync(CACHE_PATH);
@@ -98,4 +100,5 @@ export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
     const filePath = path.join(CACHE_PATH, file);
     unlinkSync(filePath);
   });
+  sendMessage(`清除了缓存--${fileSuffix}`);
 };

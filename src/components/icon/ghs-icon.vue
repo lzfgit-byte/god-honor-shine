@@ -4,12 +4,16 @@
   </div>
 </template>
 <script setup lang="ts">
-  defineProps({ height: String, width: String });
+  import { computed } from 'vue';
+
+  const props = defineProps({ height: String, width: String, color: String });
+  const colorComp = computed(() => props.color || 'white');
 </script>
 
 <style scoped lang="less">
   .ghs-icon {
-    color: white;
+    color: v-bind(colorComp);
+    cursor: pointer;
     &:hover {
       color: #8e8e8e;
     }

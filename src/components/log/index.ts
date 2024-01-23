@@ -34,7 +34,7 @@ export class GHSClassLog {
     this.timer && clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.hide();
-    }, 1500);
+    }, 2000);
   }
 
   private static hover() {

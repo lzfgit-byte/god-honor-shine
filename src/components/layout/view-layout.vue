@@ -16,16 +16,28 @@
       top-0
       @mouseleave="handleMouseOut"
     >
-      <div absolute right-4 top-4 h-4 w-4 cursor-pointer @click="slideShow = false">
-        <Close></Close>
+      <div w-full flex justify-between items-center class="slide-header" gap-1>
+        <div class="header-btn" gap-1>
+          <GhsButton m-r-2 @click="f_cache_suffix_clean()">清除缓存</GhsButton>
+          <GhsButton @click="f_cache_suffix_clean(CacheFileType.html)">清除页面缓存</GhsButton>
+        </div>
+        <GhsIcon color="black" @click="slideShow = false">
+          <Close></Close>
+        </GhsIcon>
       </div>
-      <slot name="slide"></slot>
+      <div class="slide-body">
+        <slot name="slide"></slot>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
   import { Close } from '@vicons/ionicons5';
+  import { CacheFileType } from '@ghs/share';
+  import GhsIcon from '@/components/icon/ghs-icon.vue';
+  import GhsButton from '@/components/button/ghs-button.vue';
+  import { f_cache_suffix_clean } from '@/utils/functions';
 
   const slideShow = ref(false);
   const enterShow = ref(false);

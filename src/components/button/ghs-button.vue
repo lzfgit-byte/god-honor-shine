@@ -24,6 +24,7 @@
   .ghs-button {
     color: #737478;
     border-radius: 4px;
+    line-height: 16px;
     &:hover {
       background-color: #ecf5ff;
       color: #4fa6ff;
@@ -31,7 +32,7 @@
     }
   }
   .defaultClass {
-    padding: 10px 5px;
+    padding: 5px 1px;
     border: 1px solid #dcdfe6;
     &:hover {
       border: 1px solid #c6e2ff;
