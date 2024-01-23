@@ -4,7 +4,18 @@ import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { logger } from '../utils/logger';
 import { formatSize, isFalsity } from '../utils/KitUtil';
-
+const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
+  if (fileSize && fileSize > SHOW_FILE_SIZE) {
+    processMessage({
+      title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
+      percentage: +((blob.length / fileSize) * 100).toFixed(0),
+      key: url,
+      global: true,
+    });
+  } else {
+    sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
+  }
+};
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
@@ -24,29 +35,11 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        if (fileSize) {
-          processMessage({
-            title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
-            percentage: +((blob.length / fileSize) * 100).toFixed(0),
-            key: url,
-            global: fileSize > SHOW_FILE_SIZE,
-          });
-        } else {
-          sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
-        }
+        sendMsg(fileSize, suffix, blob, url);
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));
-        if (fileSize) {
-          processMessage({
-            title: `【${suffix}】数据请求`,
-            percentage: 100,
-            key: url,
-            global: fileSize > SHOW_FILE_SIZE,
-          });
-        } else {
-          sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
-        }
+        sendMsg(fileSize, suffix, blob, url);
         blob = null;
       });
       response.on('error', () => {

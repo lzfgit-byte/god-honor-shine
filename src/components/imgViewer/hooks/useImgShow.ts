@@ -18,6 +18,9 @@ export default (transX: Ref<number>, transY: Ref<number>) => {
     transY.value = 0;
   };
   const preImg = () => {
+    if (images.value.length === 1) {
+      return;
+    }
     beforeChange();
     if (current.value > 0) {
       current.value--;
@@ -26,6 +29,9 @@ export default (transX: Ref<number>, transY: Ref<number>) => {
     }
   };
   const nextImg = () => {
+    if (images.value.length === 1) {
+      return;
+    }
     beforeChange();
     if (current.value < images.value.length - 1) {
       current.value++;

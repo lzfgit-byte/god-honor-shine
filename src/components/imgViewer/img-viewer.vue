@@ -30,7 +30,7 @@
             {{ images.length > 0 && images[current]?.title }}
           </div>
           <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full>
-            <GhsIcon cursor-pointer @click="visible = false"><Close></Close></GhsIcon>
+            <GhsIcon cursor-pointer color="white" @click="visible = false"><Close></Close></GhsIcon>
           </div>
         </div>
         <div
@@ -46,7 +46,7 @@
           left-0
           z-9997
         >
-          <div ref="imgContainerRef" class="img-container" h-auto w-auto>
+          <div ref="imgContainerRef" class="img-container" h-full w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <GhsImg2
                 :key="imgUrl"
@@ -112,8 +112,8 @@
 </script>
 
 <style scoped lang="less">
-  @titleWidth: 70%;
-  @extraWidth: 15%;
+  @titleWidth: 60%;
+  @extraWidth: 20%;
   .ghsiv-con {
     background: rgba(0, 0, 0, 0.54);
     .ghsiv-header {

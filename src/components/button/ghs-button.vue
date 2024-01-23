@@ -32,7 +32,7 @@
     }
   }
   .defaultClass {
-    padding: 5px 1px;
+    padding: 5px 5px;
     border: 1px solid #dcdfe6;
     &:hover {
       border: 1px solid #c6e2ff;

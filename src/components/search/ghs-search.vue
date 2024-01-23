@@ -5,6 +5,7 @@
       class="ghs-search"
       h-full
       placeholder="请输入"
+      h-4
       @keydown.enter="handleEnterClick"
     />
   </div>
@@ -21,13 +22,12 @@
 
 <style scoped lang="less">
   .ghs-s-con {
-    line-height: 1rem;
   }
   .ghs-search {
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 8px;
+    padding: 0.4rem;
     transition: border-color 0.3s;
     outline: none;
     &:focus {
