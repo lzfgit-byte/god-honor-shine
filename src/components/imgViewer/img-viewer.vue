@@ -1,6 +1,7 @@
 <template>
   <teleport to="#app">
     <transition
+      :duration="300"
       enter-active-class="animate__animated animate__fadeInDown"
       leave-active-class="animate__animated animate__fadeOutDown"
     >
@@ -13,12 +14,13 @@
         absolute
         left-0
         top-0
+        @contextmenu="visible = false"
       >
         <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-9998>
           <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full gap-10px>
             <span>{{ showCurrent }} / {{ images.length }}</span>
-            <span @click="choseUrl = 'fullUrl'">full</span>
-            <span @click="choseUrl = 'minUrl'">min</span>
+            <GhsButton type="text" @click="choseUrl = 'fullUrl'">full</GhsButton>
+            <GhsButton type="text" @click="choseUrl = 'minUrl'">min</GhsButton>
           </div>
           <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
             {{ images.length > 0 && images[current]?.title }}
@@ -40,10 +42,10 @@
             justify-center
           >
             <transition
-              enter-active-class="animate__animated animate__slideInRight"
-              leave-active-class="animate__animated animate__zoomOutLeft"
+              enter-active-class="animate__animated animate__zoomIn"
+              leave-active-class="animate__animated animate__zoomOut"
             >
-              <GhsImg2 :key="imgUrl" :url="imgUrl" :force="force"></GhsImg2>
+              <GhsImg2 :key="imgUrl" class="img-img" :url="imgUrl" :force="force"></GhsImg2>
             </transition>
           </div>
           <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999>
@@ -68,12 +70,15 @@
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
+  import GhsButton from '@/components/button/ghs-button.vue';
   defineProps({ force: Boolean });
   const { bodyRef, imgContainerRef, scaleComp, translateXComp, translateYComp } = useImgViewer();
   // 业务
   const { showCurrent, visible, imgUrl, preImg, nextImg, images, choseUrl, current } = useImgShow();
   defineExpose({
     show: (ims: HWImgInfo[]) => {
+      current.value = 0;
+      choseUrl.value = 'minUrl';
       images.value = ims;
       visible.value = true;
     },

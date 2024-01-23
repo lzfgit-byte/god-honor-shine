@@ -21,9 +21,10 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
         if (fileSize) {
           processMessage({
-            title: `【${suffix}】数据请求`,
+            title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
             percentage: +((blob.length / fileSize) * 100).toFixed(0),
             key: url,
+            global: fileSize > 10000,
           });
         } else {
           processMessage({

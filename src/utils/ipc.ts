@@ -19,7 +19,6 @@ ipcRenderer.on(SYS_GLOB_KEY.SEND_MESSAGE, (_event, ...args) => {
 const cacheNotify: Record<string, NotifyShow> = {};
 const func = debounce(async (_event, args: ProcessMsgType) => {
   const { percentage, global, down, title, key, info } = args;
-  console.log(1);
   if (global) {
     cacheNotify[key] = cacheNotify[key] || (await GHSNotify.show({ percentage, title, info }));
     cacheNotify[key].update({ percentage, title, info });
