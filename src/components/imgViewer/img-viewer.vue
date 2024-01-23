@@ -19,8 +19,12 @@
         <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-9998>
           <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full gap-10px>
             <span>{{ showCurrent }} / {{ images.length }}</span>
-            <GhsButton type="text" @click="choseUrl = 'fullUrl'">缩略</GhsButton>
-            <GhsButton type="text" @click="choseUrl = 'minUrl'">全图</GhsButton>
+            <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
+              缩略
+            </GhsButton>
+            <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
+              全图
+            </GhsButton>
           </div>
           <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
             {{ images.length > 0 && images[current]?.title }}

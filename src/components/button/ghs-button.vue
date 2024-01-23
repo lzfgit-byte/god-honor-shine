@@ -5,7 +5,11 @@
     items-center
     cursor-pointer
     class="ghs-button"
-    :class="{ defaultClass: !type || type === 'default', buttonText: type === 'text' }"
+    :class="{
+      defaultClass: !type || type === 'default',
+      buttonText: type === 'text',
+      choseText: active,
+    }"
   >
     <slot></slot>
   </div>
@@ -13,7 +17,7 @@
 <script setup lang="ts">
   import type { PropType } from 'vue';
 
-  defineProps({ type: String as PropType<'default' | 'text'> });
+  defineProps({ type: String as PropType<'default' | 'text'>, active: Boolean });
 </script>
 
 <style scoped lang="less">
@@ -35,5 +39,10 @@
   }
   .buttonText {
     padding: 3px;
+  }
+  .choseText {
+    background-color: #ecf5ff;
+    color: #4fa6ff;
+    border: 1px solid #c6e2ff;
   }
 </style>
