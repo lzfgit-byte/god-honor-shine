@@ -46,7 +46,7 @@
           left-0
           z-9997
         >
-          <div ref="imgContainerRef" class="img-container" h-full w-auto>
+          <div ref="imgContainerRef" class="img-container" h-auto w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <GhsImg2
                 :key="imgUrl"
