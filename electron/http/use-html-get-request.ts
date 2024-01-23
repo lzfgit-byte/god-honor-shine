@@ -43,11 +43,11 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
         blob = null;
       });
       response.on('error', () => {
-        logger.db_error('请求失败', url);
+        sendMessage(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage('request error', 'error');
+      sendMessage(`请求失败远程${url}`);
     });
     request.end();
   });

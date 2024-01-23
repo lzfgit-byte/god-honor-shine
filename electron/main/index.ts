@@ -1,15 +1,14 @@
 import { join } from 'node:path';
-import { BrowserWindow, Menu, app, shell } from 'electron';
+import { BrowserWindow, app } from 'electron';
+import useDbConnect from '../database/use-db-connect';
 import useIpcMain from '../hooks/use-ipc-main';
 import useCookie from '../hooks/use-cookie';
 import useGlobalShortcut from '../hooks/use-global-shortcut';
 import './init/init-env';
-import useDbConnect from '../database/use-db-connect';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useHtmlGetWin from '../http/use-html-get-win';
 import useProxySetting from '../setting/use-proxy-setting';
 import useHandleMainEvent from './event/use-handle-main-event';
-
 // 启动服务
 let win: BrowserWindow | null = null;
 
