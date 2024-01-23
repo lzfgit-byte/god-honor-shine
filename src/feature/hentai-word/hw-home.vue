@@ -22,7 +22,7 @@
     </template>
   </ViewLayout>
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
-  <ImgViewer></ImgViewer>
+  <ImgViewer ref="imgViewRef"></ImgViewer>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
@@ -40,9 +40,10 @@
   import useMainPageHook from '@/feature/hook/useMainPageHook';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import type { GhsPlayerExpose } from '@/components/player/types';
-  import { GHSNotify } from '@/components/message';
   import ImgViewer from '@/components/imgViewer/img-viewer.vue';
+  import type { ImgViewerExpose } from '@/components/imgViewer/type';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
+  const imgViewRef = ref<ImgViewerExpose>();
   const { load, handleSearch, handleImageClick, handlerPagination, pagination, items, tags } =
     useMainPageHook({
       resolveMainPage: async (url: string) => {
@@ -58,11 +59,10 @@
         const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
         if (isVideo) {
           const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
-          console.log(hwVideoInfo);
           ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
         } else {
           const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
-          console.log(hwImgInfos);
+          imgViewRef.value.show(hwImgInfos);
         }
       },
     });
