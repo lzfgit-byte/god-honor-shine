@@ -29,18 +29,20 @@
             <GhsIcon cursor-pointer @click="visible = false"><Close></Close></GhsIcon>
           </div>
         </div>
-        <div ref="bodyRef" class="ghsiv-body" absolute h-full w-full top-0 left-0 z-9997>
-          <div
-            ref="imgContainerRef"
-            class="img-container"
-            h-auto
-            w-auto
-            absolute
-            top-0
-            flex
-            items-center
-            justify-center
-          >
+        <div
+          ref="bodyRef"
+          class="ghsiv-body"
+          absolute
+          h-full
+          w-full
+          flex
+          justify-center
+          items-center
+          top-0
+          left-0
+          z-9997
+        >
+          <div ref="imgContainerRef" class="img-container" h-auto w-auto>
             <transition
               enter-active-class="animate__animated animate__zoomIn"
               leave-active-class="animate__animated animate__zoomOut"
@@ -92,9 +94,9 @@
   @titleWidth: 70%;
   @extraWidth: 15%;
   .ghsiv-con {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.54);
     .ghsiv-header {
-      background: rgba(0, 0, 0, 0.94);
+      background: rgba(0, 0, 0, 0.72);
       color: #bdb5b5;
       height: 40px;
       .ghsiv-left {
@@ -119,6 +121,7 @@
       .img-container {
         transition: transform 0.1s linear;
         transform: v-bind(translateXComp) v-bind(translateYComp) v-bind(scaleComp);
+        box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
       }
     }
   }

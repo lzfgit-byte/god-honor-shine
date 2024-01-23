@@ -12,6 +12,7 @@ export default () => {
     images.value.length > 0 ? images.value[current.value][choseUrl.value] : ''
   );
   const preImg = () => {
+    choseUrl.value = 'minUrl';
     if (current.value > 0) {
       current.value--;
     } else {
@@ -19,6 +20,7 @@ export default () => {
     }
   };
   const nextImg = () => {
+    choseUrl.value = 'minUrl';
     if (current.value < images.value.length - 1) {
       current.value++;
     } else {
