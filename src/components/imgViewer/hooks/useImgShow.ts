@@ -1,8 +1,9 @@
 import { ref } from 'vue-demi';
 import type { HWImgInfo } from '@ghs/share';
+import type { Ref } from 'vue';
 import { computed } from 'vue';
 
-export default () => {
+export default (transX: Ref<number>, transY: Ref<number>) => {
   const images = ref<HWImgInfo[]>([]);
   const current = ref(0);
   const showCurrent = computed(() => current.value + 1);
@@ -11,8 +12,13 @@ export default () => {
   const imgUrl = computed(() =>
     images.value.length > 0 ? images.value[current.value][choseUrl.value] : ''
   );
-  const preImg = () => {
+  const beforeChange = () => {
     choseUrl.value = 'minUrl';
+    transX.value = 0;
+    transY.value = 0;
+  };
+  const preImg = () => {
+    beforeChange();
     if (current.value > 0) {
       current.value--;
     } else {
@@ -20,7 +26,7 @@ export default () => {
     }
   };
   const nextImg = () => {
-    choseUrl.value = 'minUrl';
+    beforeChange();
     if (current.value < images.value.length - 1) {
       current.value++;
     } else {

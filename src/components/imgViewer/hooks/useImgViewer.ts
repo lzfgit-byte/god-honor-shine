@@ -50,5 +50,13 @@ export default () => {
       isMove.value = false;
     });
   });
-  return { bodyRef, imgContainerRef, scaleComp, translateXComp, translateYComp };
+  return {
+    bodyRef,
+    imgContainerRef,
+    scaleComp,
+    translateXComp,
+    translateYComp,
+    translateX,
+    translateY,
+  };
 };

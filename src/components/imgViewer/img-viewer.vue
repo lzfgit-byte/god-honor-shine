@@ -19,8 +19,8 @@
         <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-9998>
           <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full gap-10px>
             <span>{{ showCurrent }} / {{ images.length }}</span>
-            <GhsButton type="text" @click="choseUrl = 'fullUrl'">full</GhsButton>
-            <GhsButton type="text" @click="choseUrl = 'minUrl'">min</GhsButton>
+            <GhsButton type="text" @click="choseUrl = 'fullUrl'">缩略</GhsButton>
+            <GhsButton type="text" @click="choseUrl = 'minUrl'">全图</GhsButton>
           </div>
           <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
             {{ images.length > 0 && images[current]?.title }}
@@ -43,13 +43,17 @@
           z-9997
         >
           <div ref="imgContainerRef" class="img-container" h-auto w-auto>
-            <transition
-              enter-active-class="animate__animated animate__zoomIn"
-              leave-active-class="animate__animated animate__zoomOut"
-            >
-              <GhsImg2 :key="imgUrl" class="img-img" :url="imgUrl" :force="force"></GhsImg2>
+            <transition enter-active-class="animate__animated animate__zoomIn">
+              <GhsImg2
+                :key="imgUrl"
+                class="img-img"
+                :url="imgUrl"
+                :force="force"
+                @contextmenu.stop="nextImg"
+              ></GhsImg2>
             </transition>
           </div>
+
           <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999>
             <GhsIcon cursor-pointer width="30px" height="30px" @click="preImg">
               <ArrowBackCircleOutline />
@@ -74,11 +78,24 @@
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsButton from '@/components/button/ghs-button.vue';
   defineProps({ force: Boolean });
-  const { bodyRef, imgContainerRef, scaleComp, translateXComp, translateYComp } = useImgViewer();
+  const {
+    bodyRef,
+    imgContainerRef,
+    scaleComp,
+    translateXComp,
+    translateYComp,
+    translateX,
+    translateY,
+  } = useImgViewer();
   // 业务
-  const { showCurrent, visible, imgUrl, preImg, nextImg, images, choseUrl, current } = useImgShow();
+  const { showCurrent, visible, imgUrl, preImg, nextImg, images, choseUrl, current } = useImgShow(
+    translateX,
+    translateY
+  );
   defineExpose({
     show: (ims: HWImgInfo[]) => {
+      translateX.value = 0;
+      translateY.value = 0;
       current.value = 0;
       choseUrl.value = 'minUrl';
       images.value = ims;
@@ -119,7 +136,7 @@
         cursor: pointer;
       }
       .img-container {
-        transition: transform 0.1s linear;
+        transition: all 0.1s linear;
         transform: v-bind(translateXComp) v-bind(translateYComp) v-bind(scaleComp);
         box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
       }
