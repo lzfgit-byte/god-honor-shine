@@ -59,12 +59,12 @@
           </div>
 
           <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999>
-            <GhsIcon cursor-pointer width="30px" height="30px" @click="preImg">
+            <GhsIcon color="white" cursor-pointer width="30px" height="30px" @click="preImg">
               <ArrowBackCircleOutline />
             </GhsIcon>
           </div>
           <div class="ghsiv-dir" absolute right-4 flex justify-center items-center z-9999>
-            <GhsIcon width="30px" height="30px" cursor-pointer @click="nextImg">
+            <GhsIcon color="white" width="30px" height="30px" cursor-pointer @click="nextImg">
               <ArrowForwardCircleOutline />
             </GhsIcon>
           </div>

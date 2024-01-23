@@ -7,7 +7,7 @@
   import { computed } from 'vue';
 
   const props = defineProps({ height: String, width: String, color: String });
-  const colorComp = computed(() => props.color || 'white');
+  const colorComp = computed(() => props.color || 'black');
 </script>
 
 <style scoped lang="less">

@@ -7,6 +7,7 @@ export const SYSTEM_SET_KEY = {
   imgWinMin: 'imgWinMin',
   imgWinMax: 'imgWinMax',
 };
+export const SHOW_FILE_SIZE = 350000; // aka 341.8K
 /**
  * 系统快捷键
  */

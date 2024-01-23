@@ -1,5 +1,5 @@
 import { net } from 'electron';
-import { CacheFileType } from '@ghs/share';
+import { CacheFileType, SHOW_FILE_SIZE } from '@ghs/share';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { logger } from '../utils/logger';
@@ -29,7 +29,7 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
             title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
             percentage: +((blob.length / fileSize) * 100).toFixed(0),
             key: url,
-            global: fileSize > 10000,
+            global: fileSize > SHOW_FILE_SIZE,
           });
         } else {
           sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
@@ -42,7 +42,7 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
             title: `【${suffix}】数据请求`,
             percentage: 100,
             key: url,
-            global: fileSize > 10000,
+            global: fileSize > SHOW_FILE_SIZE,
           });
         } else {
           sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);

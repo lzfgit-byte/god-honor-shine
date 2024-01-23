@@ -23,6 +23,7 @@
       background: #409eff;
       border-radius: 3px;
       width: v-bind(percentageWidth);
+      transition: width 0.2s linear;
     }
     .ghsn-current-percentage-gray {
       height: 6px;
