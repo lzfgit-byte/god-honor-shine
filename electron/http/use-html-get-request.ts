@@ -12,7 +12,12 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       resolve(cache || '');
       return;
     }
+
+    if (suffix === CacheFileType.html) {
+      sendMessage(`${CacheFileType.html}请求开始->${url}`);
+    }
     const request = net.request(url);
+
     let blob: any = Buffer.alloc(0);
     request.on('response', (response) => {
       const header = response.headers;
@@ -27,11 +32,7 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
             global: fileSize > 10000,
           });
         } else {
-          processMessage({
-            title: `【${suffix}】数据请求`,
-            key: url,
-            info: formatSize(blob.length),
-          });
+          sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
         }
       });
       response.on('end', () => {
@@ -41,14 +42,10 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
             title: `【${suffix}】数据请求`,
             percentage: 100,
             key: url,
+            global: fileSize > 10000,
           });
         } else {
-          processMessage({
-            title: `【${suffix}】数据请求`,
-            key: url,
-            info: formatSize(blob.length),
-            down: true,
-          });
+          sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
         }
         blob = null;
       });

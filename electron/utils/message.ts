@@ -8,7 +8,9 @@ import { SYS_GLOB_KEY } from '@ghs/share';
  * @param type
  */
 export const sendMessage = (msg: string, type: MessageType = 'info') => {
-  webContents?.getFocusedWebContents()?.send(SYS_GLOB_KEY.SEND_MESSAGE, msg, type);
+  if (type === 'info') {
+    webContents?.getFocusedWebContents()?.send(SYS_GLOB_KEY.SEND_MESSAGE, msg);
+  }
 };
 /**
  * 发送进度信息
