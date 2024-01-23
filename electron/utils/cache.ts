@@ -9,6 +9,7 @@ import {
   readdirSync,
   writeFileSync,
 } from 'fs-extra';
+import type { CacheFileType } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
 import { isFalsity } from './KitUtil';
 
@@ -86,8 +87,8 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
  * 根据特定后缀去删除文件
  * @param fileSuffix
  */
-export const cache_suffix_clean = (fileSuffix = '') => {
-  if (fileSuffix === '') {
+export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
+  if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
     return;
   }

@@ -1,3 +1,4 @@
+import type { CacheFileType } from '@ghs/share';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -24,3 +25,8 @@ export const f_win_img_get = async (url: string): Promise<string> =>
  */
 export const f_win_html_get = async (url: string): Promise<string> =>
   executeFunction('win_html_get', url);
+/**
+ * 清除缓存
+ */
+export const f_cache_suffix_clean = async (suffix: CacheFileType): Promise<string> =>
+  executeFunction('cache_suffix_clean', suffix);
