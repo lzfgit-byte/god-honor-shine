@@ -22,6 +22,7 @@
     </template>
   </ViewLayout>
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
+  <ImgViewer></ImgViewer>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
@@ -40,6 +41,7 @@
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import type { GhsPlayerExpose } from '@/components/player/types';
   import { GHSNotify } from '@/components/message';
+  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const { load, handleSearch, handleImageClick, handlerPagination, pagination, items, tags } =
     useMainPageHook({

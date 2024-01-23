@@ -18,10 +18,9 @@
           items-center
           justify-center
         >
-          <img
-            src="https://pic1.zhimg.com/70/v2-3b4fc7e3a1195a081d0259246c38debc_1440w.avis?source=172ae18b&biz_tag=Post"
-            alt=""
-          />
+          <GhsImg2
+            url="https://pic1.zhimg.com/70/v2-3b4fc7e3a1195a081d0259246c38debc_1440w.avis?source=172ae18b&biz_tag=Post"
+          ></GhsImg2>
         </div>
         <div class="ghsiv-dir ghsiv-left" absolute left-4 flex justify-center items-center>
           {{ '<' }}
@@ -38,9 +37,10 @@
   import { ref, watchEffect } from 'vue-demi';
   import { computed, onMounted } from 'vue';
   import { useElementSize } from '@vueuse/core';
-  import type { ImgType } from './type';
+  import type { HWImgInfo } from '@ghs/share';
+  import GhsImg2 from '@/components/image/ghs-img2.vue';
 
-  const props = defineProps({ images: Array as PropType<ImgType[]> });
+  const props = defineProps({ images: Array as PropType<HWImgInfo[]> });
   const bodyRef = ref<HTMLDivElement>();
   const imgContainerRef = ref<HTMLDivElement>();
   const scale = ref(100);
@@ -127,21 +127,5 @@
         transform: v-bind(translateXComp) v-bind(translateYComp) v-bind(scaleComp);
       }
     }
-  }
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    width: auto;
-    border-radius: 8px;
-    cursor: grab;
-    &:active {
-      cursor: grabbing !important;
-    }
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
   }
 </style>
