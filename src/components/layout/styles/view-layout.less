@@ -19,6 +19,7 @@
 .view-action {
   height: @height;
   padding-right: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 .view-body {
   height: calc(100% - @height);
@@ -30,7 +31,7 @@
   right: 0 - @slideWidth  - 1vw;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  box-shadow: rgba(14, 30, 37, 0.12) 0 2px 4px 0, rgba(14, 30, 37, 0.32) 0 2px 16px 0;
 }
 .slideShowSlide {
   animation: slideIn 0.5s ease-in-out forwards;
@@ -49,6 +50,19 @@
   :hover{
   }
 }
+@keyframes loading {
+  100%{
+    transform: rotate(360deg);
+  }
+}
 .slide-header{
   padding: 10px 5px;
+}
+.view-loading{
+  background: rgba(0, 0, 0, 0.53);
+  .loading-svg{
+    width: 50px;
+    height: 50px;
+    animation: loading 2s linear infinite;
+  }
 }

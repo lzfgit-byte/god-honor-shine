@@ -7,6 +7,8 @@ interface OptType {
   resolveImgClick?: (item: PageItemType) => void;
 }
 export default (opts: OptType) => {
+  const loading = ref(false);
+  const currentUrl = ref();
   const pagination = ref<PaginationType[]>();
   const tags = ref<PageTags[]>();
   const items = ref<PageItemType[]>();
@@ -14,6 +16,8 @@ export default (opts: OptType) => {
     if (!url) {
       return;
     }
+    loading.value = true;
+    currentUrl.value = url;
     const mainPage = await opts?.resolveMainPage(url);
     pagination.value = [];
     items.value = [];
@@ -22,6 +26,7 @@ export default (opts: OptType) => {
     pagination.value = mainPage.pagination;
     items.value = mainPage.items;
     tags.value = mainPage.tags;
+    loading.value = false;
   };
   const handlerPagination = async (item: PaginationType) => {
     await load(item.url);
@@ -32,6 +37,19 @@ export default (opts: OptType) => {
   const handleImageClick = (item: PageItemType) => {
     opts?.resolveImgClick(item);
   };
+  const reload = async () => {
+    await load(currentUrl.value);
+  };
 
-  return { handlerPagination, handleSearch, handleImageClick, load, pagination, items, tags };
+  return {
+    handlerPagination,
+    handleSearch,
+    handleImageClick,
+    load,
+    pagination,
+    items,
+    tags,
+    reload,
+    loading,
+  };
 };

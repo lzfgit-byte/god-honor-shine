@@ -1,5 +1,5 @@
 <template>
-  <ViewLayout>
+  <ViewLayout v-model:loading="loading" :reload="reload">
     <template #body>
       <div h-full w-full overflow-auto>
         <GhsItem
@@ -44,28 +44,37 @@
   import type { ImgViewerExpose } from '@/components/imgViewer/type';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
-  const { load, handleSearch, handleImageClick, handlerPagination, pagination, items, tags } =
-    useMainPageHook({
-      resolveMainPage: async (url: string) => {
-        const html = await f_request_html_get(url);
-        return await hw_f_getPageInfo(html);
-      },
-      resolveSearch: (value: string) => {
-        const searchVal = value.replaceAll(' ', '+');
-        return `https://thehentaiworld.com/?s=${searchVal}`;
-      },
-      resolveImgClick: async (item) => {
-        const { flatTags, jumpUrl } = item;
-        const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
-        if (isVideo) {
-          const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
-          ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
-        } else {
-          const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
-          imgViewRef.value.show(hwImgInfos);
-        }
-      },
-    });
+  const {
+    load,
+    handleSearch,
+    handleImageClick,
+    handlerPagination,
+    pagination,
+    items,
+    tags,
+    reload,
+    loading,
+  } = useMainPageHook({
+    resolveMainPage: async (url: string) => {
+      const html = await f_request_html_get(url);
+      return await hw_f_getPageInfo(html);
+    },
+    resolveSearch: (value: string) => {
+      const searchVal = value.replaceAll(' ', '+');
+      return `https://thehentaiworld.com/?s=${searchVal}`;
+    },
+    resolveImgClick: async (item) => {
+      const { flatTags, jumpUrl } = item;
+      const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
+      if (isVideo) {
+        const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
+        ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
+      } else {
+        const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
+        imgViewRef.value.show(hwImgInfos);
+      }
+    },
+  });
 
   onMounted(() => {
     load('https://thehentaiworld.com/?new');
