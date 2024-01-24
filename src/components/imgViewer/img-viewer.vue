@@ -14,22 +14,22 @@
         absolute
         left-0
         top-0
-        @contextmenu="visible = false"
+        @click="handleBackClick"
       >
         <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-9998>
-          <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full gap-10px>
+          <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
             <span>{{ showCurrent }} / {{ images.length }}</span>
+          </div>
+          <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
+            {{ images.length > 0 && images[current]?.title }}
+          </div>
+          <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
             <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
               缩略
             </GhsButton>
             <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
               全图
             </GhsButton>
-          </div>
-          <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
-            {{ images.length > 0 && images[current]?.title }}
-          </div>
-          <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full>
             <GhsIcon cursor-pointer color="white" @click="visible = false"><Close></Close></GhsIcon>
           </div>
         </div>
@@ -90,17 +90,26 @@
     translateYComp,
     translateX,
     translateY,
+    scale,
   } = useImgViewer();
   // 业务
-  const { showCurrent, visible, imgUrl, preImg, nextImg, images, choseUrl, current } = useImgShow(
-    translateX,
-    translateY
-  );
+  const {
+    showCurrent,
+    visible,
+    imgUrl,
+    preImg,
+    nextImg,
+    images,
+    choseUrl,
+    current,
+    handleBackClick,
+  } = useImgShow(translateX, translateY);
   defineExpose({
     show: (ims: HWImgInfo[]) => {
       translateX.value = 0;
       translateY.value = 0;
       current.value = 0;
+      scale.value = 100;
       choseUrl.value = 'minUrl';
       images.value = ims;
       visible.value = true;

@@ -39,5 +39,21 @@ export default (transX: Ref<number>, transY: Ref<number>) => {
       current.value = 0;
     }
   };
-  return { showCurrent, visible, imgUrl, preImg, nextImg, images, choseUrl, current };
+  const handleBackClick = (evt: PointerEvent) => {
+    const el = evt.target as HTMLDivElement;
+    if (el.classList.contains('ghsiv-body')) {
+      visible.value = false;
+    }
+  };
+  return {
+    showCurrent,
+    visible,
+    imgUrl,
+    preImg,
+    nextImg,
+    images,
+    choseUrl,
+    current,
+    handleBackClick,
+  };
 };

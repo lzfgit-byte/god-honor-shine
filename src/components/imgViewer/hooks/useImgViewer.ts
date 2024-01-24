@@ -58,5 +58,6 @@ export default () => {
     translateYComp,
     translateX,
     translateY,
+    scale,
   };
 };

@@ -39,14 +39,10 @@ export const clearLogs = () => {
 };
 let getLoggerDb = () => {
   const table = new TableBuilder<T_logger>(T_logger_init);
-  if (table.isTableExist()) {
-    getLoggerDb = () => table;
-    return table;
-  } else {
-    table.createTable();
-    getLoggerDb = () => table;
-    return table;
-  }
+  table.dropTable();
+  table.createTable();
+  getLoggerDb = () => table;
+  return table;
 };
 
 export const logger = {
