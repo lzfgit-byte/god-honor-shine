@@ -1,24 +1,24 @@
 <template>
   <div class="view-container" h-full w-full relative>
+    <div
+      v-if="loading"
+      absolute
+      h-full
+      w-full
+      z-2
+      flex
+      justify-center
+      items-center
+      class="view-loading"
+    >
+      <div class="loading-svg">
+        <Loading :height="50" :width="50"></Loading>
+      </div>
+    </div>
     <div class="view-action" w-full flex h-full items-center justify-end gap-1>
       <slot name="action"></slot>
     </div>
     <div class="view-body" w-full relative>
-      <div
-        v-if="loading"
-        absolute
-        h-full
-        w-full
-        z-2
-        flex
-        justify-center
-        items-center
-        class="view-loading"
-      >
-        <div class="loading-svg">
-          <Loading :height="50" :width="50"></Loading>
-        </div>
-      </div>
       <slot name="body"></slot>
     </div>
     <div z-99 class="slideTrigger" pos="absolute right-0 " @mouseenter="handleMouseEnter"></div>

@@ -1,13 +1,33 @@
 <template>
-  <div v-if="info.title" class="ghs-tag-container" flex-inline justify-center items-center>
+  <div
+    v-if="info.title"
+    class="ghs-tag-container"
+    :class="{
+      tageInfo: type === 'info',
+      tageSuccess: type === 'success',
+      tagDanger: type === 'danger',
+      tagWaring: type === 'waring',
+      tagGap: showGap,
+    }"
+    flex-inline
+    justify-center
+    items-center
+    @click="emits('click', info)"
+  >
     {{ info.title }}
   </div>
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
   import type { PageTags } from '@ghs/share';
+  import type { GhsTagsType } from '@/components/tag/ghs-tage-type';
 
-  defineProps({ info: Object as PropType<PageTags> });
+  defineProps({
+    info: Object as PropType<PageTags>,
+    type: { type: String as PropType<GhsTagsType>, default: 'default' },
+    showGap: Boolean,
+  });
+  const emits = defineEmits(['click']);
 </script>
 
 <style scoped lang="less">
@@ -17,5 +37,38 @@
     color: white;
     font-size: 0.8rem;
     border-radius: 0.2rem;
+    box-sizing: unset;
+    cursor: pointer;
+  }
+  .tagGap {
+    margin: 0 6px 6px 0;
+  }
+  .base {
+    padding: 2px 9px;
+    border-radius: 4px;
+  }
+  .tageInfo {
+    .base();
+    background-color: #ecf5ff;
+    color: #53a8ff;
+    border-color: #d9ecff;
+  }
+  .tageSuccess {
+    .base();
+    background-color: #f0f9eb;
+    color: #87cf63;
+    border-color: #e1f3d8;
+  }
+  .tagDanger {
+    .base();
+    background-color: #fef0f0;
+    color: #f78b8b;
+    border-color: #fde2e2;
+  }
+  .tagWaring {
+    .base();
+    background-color: #fdf6ec;
+    color: #e9ac52;
+    border-color: #faecd8;
   }
 </style>

@@ -1,6 +1,6 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
-import { nextTick } from 'vue-demi';
+import { nextTick, watchEffect } from 'vue-demi';
 interface OptType {
   resolveMainPage?: (url: string) => Promise<MainPage>;
   resolveSearch?: (value: string) => string;
@@ -12,6 +12,7 @@ export default (opts: OptType) => {
   const pagination = ref<PaginationType[]>();
   const tags = ref<PageTags[]>();
   const items = ref<PageItemType[]>();
+  const bodyRef = ref<HTMLDivElement>();
   const load = async (url: string) => {
     if (!url) {
       return;
@@ -27,6 +28,7 @@ export default (opts: OptType) => {
     items.value = mainPage.items;
     tags.value = mainPage.tags;
     loading.value = false;
+    bodyRef.value.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handlerPagination = async (item: PaginationType) => {
     await load(item.url);
@@ -40,7 +42,11 @@ export default (opts: OptType) => {
   const reload = async () => {
     await load(currentUrl.value);
   };
-
+  const handleTagClick = async (info: PageTags) => {
+    if (info.url) {
+      await load(info.url);
+    }
+  };
   return {
     handlerPagination,
     handleSearch,
@@ -51,5 +57,7 @@ export default (opts: OptType) => {
     tags,
     reload,
     loading,
+    handleTagClick,
+    bodyRef,
   };
 };

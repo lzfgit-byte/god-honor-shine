@@ -1,7 +1,7 @@
 <template>
   <ViewLayout v-model:loading="loading" :reload="reload">
     <template #body>
-      <div h-full w-full overflow-auto>
+      <div ref="bodyRef" h-full w-full overflow-auto>
         <GhsItem
           v-for="(item, index) in items"
           :key="index"
@@ -19,6 +19,18 @@
     <template #action>
       <GhsSearch @search="handleSearch"></GhsSearch>
       <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
+    </template>
+    <template #slide>
+      <div h-full w-full>
+        <GhsTag
+          v-for="(item, index) in tags"
+          :key="index"
+          :info="item"
+          type="waring"
+          :show-gap="true"
+          @click="handleTagClick"
+        ></GhsTag>
+      </div>
     </template>
   </ViewLayout>
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
@@ -42,6 +54,7 @@
   import type { GhsPlayerExpose } from '@/components/player/types';
   import ImgViewer from '@/components/imgViewer/img-viewer.vue';
   import type { ImgViewerExpose } from '@/components/imgViewer/type';
+  import GhsTag from '@/components/tag/ghs-tag.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
   const {
@@ -54,6 +67,8 @@
     tags,
     reload,
     loading,
+    handleTagClick,
+    bodyRef,
   } = useMainPageHook({
     resolveMainPage: async (url: string) => {
       const html = await f_request_html_get(url);
