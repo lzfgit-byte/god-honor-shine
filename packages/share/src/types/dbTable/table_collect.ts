@@ -1,20 +1,21 @@
 import type { SearchHistoryType, T_OptType } from '@/types/dbTable/tableGlobal';
+import type { PageItemType } from '@/types';
 
-export interface T_search_history {
+export interface T_collect {
   id?: string;
   type?: SearchHistoryType;
-  value?: string;
+  value?: string | PageItemType;
   time?: string;
 }
-const name = 'search_history';
-const data: T_search_history = {
+const name = 'collect';
+const data: T_collect = {
   id: 'id',
   type: 'hentaiWord',
   value: 'value',
   time: 'date',
 };
 
-export const T_search_history_init: T_OptType = {
+export const T_collect_init: T_OptType = {
   data,
   tableName: name,
 };
