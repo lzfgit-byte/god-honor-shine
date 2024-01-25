@@ -1,13 +1,13 @@
 import * as os from 'node:os';
 import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
-import dayjs from 'dayjs';
 import type { T_logger } from '@ghs/share';
 import { T_logger_init } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
 import { TableBuilder } from '../database/init-db';
+import { getCurrentDate } from './KitUtil';
 
 const LOG_FILE_PATH = `${APP_PATHS.db_dir}/log.txt`;
-const getCurrentDate = () => dayjs().format('YYYY-MM-DD HH:mm:ss');
+
 const writeLog = (...args: any[]): string => {
   ensureFileSync(LOG_FILE_PATH);
   const info = `[info] ${getCurrentDate()} ${args.join('')} ${os.EOL}`;
@@ -39,8 +39,12 @@ export const clearLogs = () => {
 };
 let getLoggerDb = () => {
   const table = new TableBuilder<T_logger>(T_logger_init);
-  table.dropTable();
-  table.createTable();
+  if (table.isTableExist()) {
+    table.clearTable();
+  } else {
+    table.createTable();
+  }
+
   getLoggerDb = () => table;
   return table;
 };

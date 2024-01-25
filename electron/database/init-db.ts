@@ -101,9 +101,13 @@ export class TableBuilder<T> {
     return stm.all(...this.buildWhereSqlData(entity)) as T[];
   }
 
-  getByEntity(entity: T) {
+  getByEntity(entity: T): T {
     const row = this.listByEntity(entity);
     return row.length > 0 ? row[0] : null;
+  }
+
+  clearTable() {
+    this.db.exec(`delete FROM ${this.tableName} where 1 = 1;`);
   }
 
   private getUpdateValue(entity: T) {
