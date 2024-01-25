@@ -174,8 +174,7 @@ export class TableBuilder<T> {
 
   createTable(data: T[] = []) {
     if (this.isTableExist()) {
-      logger.error('表已经创建完毕了');
-      return false;
+      return true;
     }
     const execSqlField = this.fields
       .map(
