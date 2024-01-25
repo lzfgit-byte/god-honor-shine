@@ -16,6 +16,7 @@
     "prefer-promise-reject-errors":"off",
     "@typescript-eslint/prefer-ts-expect-error":"off",
     "@typescript-eslint/ban-ts-comment":"off",
+    "no-unmodified-loop-condition":"off",
     "@typescript-eslint/no-use-before-define":"off",
     "prefer-const": "off"
   }

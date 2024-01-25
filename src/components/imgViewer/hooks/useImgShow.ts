@@ -3,7 +3,7 @@ import type { HWImgInfo } from '@ghs/share';
 import type { Ref } from 'vue';
 import { computed } from 'vue';
 
-export default (transX: Ref<number>, transY: Ref<number>) => {
+export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) => {
   const images = ref<HWImgInfo[]>([]);
   const current = ref(0);
   const showCurrent = computed(() => current.value + 1);
@@ -12,10 +12,39 @@ export default (transX: Ref<number>, transY: Ref<number>) => {
   const imgUrl = computed(() =>
     images.value.length > 0 ? images.value[current.value][choseUrl.value] : ''
   );
+  const preloadUrl = computed(() => {
+    const allImgLength = images.value.length;
+    const executeCacheLength = +(allImgLength / 4).toFixed(0);
+    const cacheLength = executeCacheLength ? Math.min(3, executeCacheLength) : 0;
+    if (!cacheLength) {
+      console.log('不需要');
+      return [];
+    }
+    const afterRes = [];
+    let currentNor = current.value;
+    while (+cacheLength > 0 && currentNor < allImgLength - 1 && afterRes.length < cacheLength) {
+      afterRes.push(images.value[++currentNor].minUrl);
+    }
+    // 前边的
+    const beforeRes = [];
+    let currentNorBefore = current.value;
+    while (+cacheLength > 0 && currentNorBefore > 0 && beforeRes.length < cacheLength) {
+      beforeRes.push(images.value[--currentNorBefore].minUrl);
+    }
+    if (beforeRes.length < +cacheLength) {
+      let c = +cacheLength - beforeRes.length;
+      while (c >= 1 && beforeRes.length < cacheLength) {
+        beforeRes.push(images.value[allImgLength - c].minUrl);
+        c--;
+      }
+    }
+    return [...afterRes, ...beforeRes];
+  });
   const beforeChange = () => {
     choseUrl.value = 'minUrl';
     transX.value = 0;
     transY.value = 0;
+    scale.value = 100;
   };
   const preImg = () => {
     if (images.value.length === 1) {
@@ -55,5 +84,6 @@ export default (transX: Ref<number>, transY: Ref<number>) => {
     choseUrl,
     current,
     handleBackClick,
+    preloadUrl,
   };
 };

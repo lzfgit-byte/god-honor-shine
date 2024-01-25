@@ -46,7 +46,7 @@
           left-0
           z-9997
         >
-          <div ref="imgContainerRef" class="img-container" h-full w-auto>
+          <div ref="imgContainerRef" class="img-container" h-auto w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <GhsImg2
                 :key="imgUrl"
@@ -71,6 +71,13 @@
         </div>
       </div>
     </transition>
+    <GhsImg
+      v-for="item in preloadUrl"
+      :key="item"
+      style="display: none"
+      :url="item"
+      :force="force"
+    ></GhsImg>
   </teleport>
 </template>
 <script setup lang="ts">
@@ -81,6 +88,7 @@
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsButton from '@/components/button/ghs-button.vue';
+  import GhsImg from '@/components/image/ghs-img.vue';
   defineProps({ force: Boolean });
   const {
     bodyRef,
@@ -103,7 +111,8 @@
     choseUrl,
     current,
     handleBackClick,
-  } = useImgShow(translateX, translateY);
+    preloadUrl,
+  } = useImgShow(translateX, translateY, scale);
   defineExpose({
     show: (ims: HWImgInfo[]) => {
       translateX.value = 0;
