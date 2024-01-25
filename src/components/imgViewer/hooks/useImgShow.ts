@@ -17,7 +17,6 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     const executeCacheLength = +(allImgLength / 4).toFixed(0);
     const cacheLength = executeCacheLength ? Math.min(3, executeCacheLength) : 0;
     if (!cacheLength) {
-      console.log('不需要');
       return [];
     }
     const afterRes = [];

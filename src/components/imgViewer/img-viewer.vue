@@ -21,7 +21,9 @@
             <span>{{ showCurrent }} / {{ images.length }}</span>
           </div>
           <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
-            {{ images.length > 0 && images[current]?.title }}
+            <span :title="imgUrl">
+              {{ images.length > 0 && images[current]?.title }}
+            </span>
           </div>
           <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
             <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
@@ -46,7 +48,7 @@
           left-0
           z-9997
         >
-          <div ref="imgContainerRef" class="img-container" h-auto w-auto>
+          <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <GhsImg2
                 :key="imgUrl"
