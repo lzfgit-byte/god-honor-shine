@@ -8,6 +8,7 @@ interface OptType {
 }
 export default (opts: OptType) => {
   const loading = ref(false);
+  const firstUrl = ref();
   const currentUrl = ref();
   const pagination = ref<PaginationType[]>();
   const tags = ref<PageTags[]>();
@@ -19,6 +20,7 @@ export default (opts: OptType) => {
     }
     loading.value = true;
     currentUrl.value = url;
+    firstUrl.value = firstUrl.value || url;
     const mainPage = await opts?.resolveMainPage(url);
     pagination.value = [];
     items.value = [];
@@ -42,6 +44,9 @@ export default (opts: OptType) => {
   const reload = async () => {
     await load(currentUrl.value);
   };
+  const reset = async () => {
+    await load(firstUrl.value);
+  };
   const handleTagClick = async (info: PageTags) => {
     if (info.url) {
       await load(info.url);
@@ -59,5 +64,6 @@ export default (opts: OptType) => {
     loading,
     handleTagClick,
     bodyRef,
+    reset,
   };
 };

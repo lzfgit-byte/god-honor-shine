@@ -17,7 +17,12 @@
       </div>
     </template>
     <template #action>
-      <GhsSearch @search="handleSearch"></GhsSearch>
+      <GhsSearch
+        :history-data="historyData"
+        @reset="reset"
+        @search="handleSearch"
+        @delete-search="handleDelete"
+      ></GhsSearch>
       <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
     </template>
     <template #slide>
@@ -55,8 +60,12 @@
   import ImgViewer from '@/components/imgViewer/img-viewer.vue';
   import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsTag from '@/components/tag/ghs-tag.vue';
+
+  import useSearchHistory from '@/feature/hook/useSearchHistory';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
+  const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
+    useSearchHistory('hentaiWord');
   const {
     load,
     handleSearch,
@@ -69,12 +78,14 @@
     loading,
     handleTagClick,
     bodyRef,
+    reset,
   } = useMainPageHook({
     resolveMainPage: async (url: string) => {
       const html = await f_request_html_get(url);
       return await hw_f_getPageInfo(html);
     },
     resolveSearch: (value: string) => {
+      searchHistorySave(value);
       const searchVal = value.replaceAll(' ', '+');
       return `https://thehentaiworld.com/?s=${searchVal}`;
     },
@@ -91,8 +102,9 @@
     },
   });
 
-  onMounted(() => {
-    load('https://thehentaiworld.com/?new');
+  onMounted(async () => {
+    await load('https://thehentaiworld.com/?new');
+    await loadHistoryData();
   });
 </script>
 
