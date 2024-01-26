@@ -8,7 +8,7 @@
       placeholder="请输入"
       h-4
       @keydown.enter="handleEnterClick"
-      @focus="showHistory = true"
+      @focus="handleFocus"
       @blur="showHistory = false"
     />
     <GhsIcon v-show="value?.length > 0" absolute class="clearIcon" @click="handlerClear">
@@ -52,6 +52,10 @@
   const inputRef = ref<HTMLInputElement>();
   const showHistory = ref(false);
   const active = ref(false);
+  const handleFocus = () => {
+    showHistory.value = true;
+    active.value = true;
+  };
   const handleEnterClick = () => {
     showHistory.value = false;
     active.value = false;

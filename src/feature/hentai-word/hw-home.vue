@@ -27,16 +27,19 @@
       <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
     </template>
     <template #slide>
-      <div h-full w-full>
-        <GhsTag
-          v-for="(item, index) in tags"
-          :key="index"
-          :info="item"
-          type="waring"
-          :show-gap="true"
-          @click="handleTagClick"
-        ></GhsTag>
-        <GhsScroller max-height="45vh">
+      <div h-full w-full flex flex-col justify-between>
+        <div>
+          <GhsTag
+            v-for="(item, index) in tags"
+            :key="index"
+            :info="item"
+            type="waring"
+            :show-gap="true"
+            @click="handleTagClick"
+          ></GhsTag>
+        </div>
+
+        <GhsScroller max-height="45vh" absolute bottom-0>
           <GhsCollectItem
             v-for="item in cCollect"
             :key="item.jumpUrl"
