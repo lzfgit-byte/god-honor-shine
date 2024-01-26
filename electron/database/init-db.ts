@@ -181,11 +181,11 @@ export class TableBuilder<T> {
     const execSqlField = this.fields
       .map(
         (field: string, index: number) =>
-          `${field} TEXT NOT NULL${index < this.fields.length - 1 ? ',' : ''}`
+          `${field} TEXT ${index < this.fields.length - 1 ? ',' : ''}`
       )
       .join('\r\n');
     this.db.exec(`CREATE TABLE IF NOT EXISTS ${this.tableName} (
-          ${this.primaryKey} TEXT PRIMARY KEY,
+          ${this.primaryKey} TEXT PRIMARY KEY NOT NULL,
           ${execSqlField}
         );`);
     data?.forEach((data) => {

@@ -5,6 +5,7 @@ export interface T_collect {
   id?: string;
   type?: SearchHistoryType;
   value?: string | PageItemType;
+  count?: string;
   time?: string;
 }
 const name = 'collect';
@@ -13,6 +14,7 @@ const data: T_collect = {
   type: 'hentaiWord',
   value: 'value',
   time: 'date',
+  count: 'string',
 };
 
 export const T_collect_init: T_OptType = {
