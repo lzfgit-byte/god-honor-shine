@@ -44,7 +44,7 @@
             v-for="item in cCollect"
             :key="item.jumpUrl"
             :info="item"
-            @click="imgClick(item)"
+            @click="collect_click(item, imgClick)"
             @delete="collect_delete(JSON.stringify(item))"
           ></GhsCollectItem>
         </GhsScroller>
@@ -118,7 +118,8 @@
     },
     resolveImgClick: imgClick,
   });
-  const { collect_save, collect_delete, cCollect, collect_list } = useCollect('hentaiWord');
+  const { collect_save, collect_delete, collect_click, cCollect, collect_list } =
+    useCollect('hentaiWord');
   onMounted(async () => {
     await load('https://thehentaiworld.com/?new');
     await loadHistoryData();

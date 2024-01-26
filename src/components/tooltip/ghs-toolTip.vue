@@ -26,7 +26,7 @@
     },
   });
   const commentVision = ref(false);
-  const { currentStyle, currentArrowStyle } = useDirection(props);
+  const { currentStyle, currentArrowStyle } = useDirection(props as any);
 </script>
 
 <style scoped lang="less">

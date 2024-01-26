@@ -1,6 +1,7 @@
 import type { PageItemType, SearchHistoryType, T_collect } from '@ghs/share';
 import { ref } from 'vue-demi';
 import { computed } from 'vue';
+import { executeFunc } from '@ghs/share';
 import { collect_f_delete, collect_f_list, collect_f_save } from '@/apis/collect-controller';
 
 export default (type: SearchHistoryType) => {
@@ -19,6 +20,11 @@ export default (type: SearchHistoryType) => {
   const cCollect = computed<PageItemType[]>(() =>
     collects.value.map((i) => i && JSON.parse(i.value as any))
   );
+  const collect_click = async (item: PageItemType, func: Function) => {
+    await collect_save(JSON.stringify(item));
+    executeFunc(func, item);
+    await collect_list();
+  };
 
-  return { collects, cCollect, collect_list, collect_delete, collect_save };
+  return { collects, cCollect, collect_click, collect_list, collect_delete, collect_save };
 };

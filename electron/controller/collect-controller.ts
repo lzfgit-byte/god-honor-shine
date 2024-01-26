@@ -21,7 +21,10 @@ export const collect_save = (value: string, type: SearchHistoryType) => {
   const entity: T_collect = { value, type };
   const one = table.getByEntity(entity);
   if (one) {
-    sendMessage('已经收藏');
+    const count = +one.count || 1;
+    one.count = `${count + 1}`;
+    table.update(one);
+    sendMessage(`已经收藏-->count(${one.count})`);
     return;
   }
   table.insertData({ ...entity, time: getCurrentDate() });
