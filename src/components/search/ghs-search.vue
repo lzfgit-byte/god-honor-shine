@@ -15,27 +15,28 @@
       <Close />
     </GhsIcon>
     <transition duration="200">
-      <div v-if="showHistory || active" class="historySearch" w-full absolute z-2>
-        <div
-          v-for="item in historyData"
-          :key="item"
-          h-full
-          p-2
-          m-1
-          class="search-history"
-          relative
-          flex
-          justify-between
-          items-center
-          @mouseleave="active = false"
-          @click="handlerSearch(item)"
-        >
-          <span> {{ item }}</span>
+      <div v-if="true" class="historySearch" w-full absolute z-2>
+        <GhsScroller max-height="30vh">
+          <div
+            v-for="item in historyData"
+            :key="item"
+            p-2
+            m-1
+            class="search-history"
+            relative
+            flex
+            justify-between
+            items-center
+            @mouseleave="active = false"
+            @click="handlerSearch(item)"
+          >
+            <span> {{ item }}</span>
 
-          <GhsIcon absolute @click.stop="handlerDelete(item)">
-            <Close />
-          </GhsIcon>
-        </div>
+            <GhsIcon absolute @click.stop="handlerDelete(item)">
+              <Close />
+            </GhsIcon>
+          </div>
+        </GhsScroller>
       </div>
     </transition>
   </div>
@@ -44,6 +45,7 @@
   import { ref } from 'vue';
   import { Close } from '@vicons/ionicons5';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
+  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   defineProps({ historyData: Array });
   const emits = defineEmits(['search', 'reset', 'deleteSearch']);
   const value = ref('');
@@ -91,7 +93,6 @@
   }
   .historySearch {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    max-height: 30vh;
     background-color: white;
     border-radius: @radius;
     bottom: 0;
@@ -99,7 +100,7 @@
     transition: transform 0.3s linear, opacity 0.3s linear;
     .search-history {
       cursor: pointer;
-      border-radius: inherit;
+      border-radius: @radius;
       &:hover {
         background-color: #e2e3e5;
       }

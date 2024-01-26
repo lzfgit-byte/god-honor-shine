@@ -112,8 +112,7 @@
     },
     resolveImgClick: imgClick,
   });
-  const { collects, collect_save, collect_delete, cCollect, collect_list } =
-    useCollect('hentaiWord');
+  const { collect_save, collect_delete, cCollect, collect_list } = useCollect('hentaiWord');
   onMounted(async () => {
     await load('https://thehentaiworld.com/?new');
     await loadHistoryData();
