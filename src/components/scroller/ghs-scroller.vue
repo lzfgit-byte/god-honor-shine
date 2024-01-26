@@ -1,5 +1,5 @@
 <template>
-  <div w-full>
+  <div w-full relative>
     <div ref="el" w-full class="ghs-scroller" relative>
       <slot></slot>
     </div>
@@ -36,6 +36,9 @@
 <style scoped lang="less">
   .ghs-scroller {
     overflow: auto;
+    height: v-bind(maxHeight);
+  }
+  .scroller-container {
     height: v-bind(maxHeight);
   }
   @keyframes downAndUp {

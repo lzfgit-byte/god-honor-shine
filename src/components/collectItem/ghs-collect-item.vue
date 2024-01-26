@@ -11,7 +11,7 @@
     <div class="ghs-img" h-full>
       <GhsImg :url="info.coverImg"></GhsImg>
     </div>
-    <div class="ghs-title"> <GhsText :value="info.title" /></div>
+    <div class="ghs-title" flex justify-start items-center> <GhsText :value="info.title" /></div>
     <div absolute right-4>
       <GhsIcon @click.stop="handleDelete"><Close></Close></GhsIcon>
     </div>

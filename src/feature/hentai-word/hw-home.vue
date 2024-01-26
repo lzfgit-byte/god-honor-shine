@@ -36,13 +36,15 @@
           :show-gap="true"
           @click="handleTagClick"
         ></GhsTag>
-        <GhsCollectItem
-          v-for="item in cCollect"
-          :key="item.jumpUrl"
-          :info="item"
-          @click="imgClick(item)"
-          @delete="collect_delete(JSON.stringify(item))"
-        ></GhsCollectItem>
+        <GhsScroller max-height="45vh">
+          <GhsCollectItem
+            v-for="item in cCollect"
+            :key="item.jumpUrl"
+            :info="item"
+            @click="imgClick(item)"
+            @delete="collect_delete(JSON.stringify(item))"
+          ></GhsCollectItem>
+        </GhsScroller>
       </div>
     </template>
   </ViewLayout>
@@ -72,6 +74,7 @@
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollectItem from '@/components/collectItem/ghs-collect-item.vue';
+  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =

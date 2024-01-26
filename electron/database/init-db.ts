@@ -66,7 +66,7 @@ export class TableBuilder<T> {
         querySql += `${item} =  ?`;
       }
     });
-    return `${querySql} ${this.orderBy}`;
+    return querySql;
   }
 
   private buildWhereSqlData(entity: T): any[] {
@@ -98,7 +98,7 @@ export class TableBuilder<T> {
       return [this.getById(entity[this.primaryKey])];
     }
     const stm = this.db.prepare(
-      `SELECT * FROM ${this.tableName} WHERE ${this.buildWhereSql(entity)};`
+      `SELECT * FROM ${this.tableName} WHERE ${this.buildWhereSql(entity)} ${this.orderBy};`
     );
     return stm.all(...this.buildWhereSqlData(entity)) as T[];
   }
