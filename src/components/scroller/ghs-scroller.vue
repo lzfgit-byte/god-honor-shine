@@ -30,7 +30,7 @@
   const props = defineProps({ maxHeight: String, color: String });
   const maxHeight = computed(() => props.maxHeight || '30vh');
   const el = ref<HTMLElement | null>(null);
-  const { x, y, isScrolling, arrivedState, directions } = useScroll(el);
+  const { arrivedState } = useScroll(el);
   const colorComp = computed(() => props.color || '#333');
 </script>
 
