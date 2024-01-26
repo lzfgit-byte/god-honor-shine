@@ -20,6 +20,7 @@
     flex-col
     justify-start
     items-center
+    @dblclick="hideBigger"
   >
     <div
       class="ghs-log-title"
