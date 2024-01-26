@@ -8,6 +8,9 @@
     </div>
     <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="title" />
+      <GhsIcon absolute title="收藏" @click="handleCollect">
+        <StarOutline />
+      </GhsIcon>
     </div>
     <div v-if="author" class="ghs-item-author" w-full flex justify-start items-center>
       <GhsText :value="author" />
@@ -21,9 +24,12 @@
   import type { PropType } from 'vue-demi';
   import type { PageTags } from '@ghs/share';
   import { computed } from 'vue';
+  import { StarOutline } from '@vicons/ionicons5';
+  import { toRaw } from 'vue-demi';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import GhsTag from '@/components/tag/ghs-tag.vue';
+  import GhsIcon from '@/components/icon/ghs-icon.vue';
 
   const props = defineProps({
     jumpUrl: String,
@@ -36,11 +42,14 @@
     height: String,
     force: Boolean,
   });
-  const emits = defineEmits(['imgClick']);
+  const emits = defineEmits(['imgClick', 'triggerCollect']);
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
   const handleImgClick = () => {
     emits('imgClick');
+  };
+  const handleCollect = () => {
+    emits('triggerCollect', toRaw(props));
   };
 </script>
 

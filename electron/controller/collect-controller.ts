@@ -2,6 +2,7 @@ import type { SearchHistoryType, T_collect } from '@ghs/share';
 import { T_collect_init } from '@ghs/share';
 import { TableBuilder } from '../database/init-db';
 import { getCurrentDate } from '../utils/KitUtil';
+import { sendMessage } from '../utils/message';
 
 let getTable = () => {
   const table = new TableBuilder<T_collect>(T_collect_init);
@@ -20,9 +21,11 @@ export const collect_save = (value: string, type: SearchHistoryType) => {
   const entity: T_collect = { value, type };
   const one = table.getByEntity(entity);
   if (one) {
+    sendMessage('已经收藏');
     return;
   }
   table.insertData({ ...entity, time: getCurrentDate() });
+  sendMessage('收藏成功');
 };
 export const collect_list = (type: SearchHistoryType): T_collect[] => {
   const table = getTable();
@@ -30,5 +33,7 @@ export const collect_list = (type: SearchHistoryType): T_collect[] => {
 };
 export const collect_delete = (value: string, type: SearchHistoryType): boolean => {
   const table = getTable();
-  return table.delete({ value, type });
+  const flag = table.delete({ value, type });
+  flag ? sendMessage('删除成功') : sendMessage('删除失败');
+  return flag;
 };

@@ -13,6 +13,7 @@
           width="220px"
           height="147px"
           @img-click="handleImageClick(item)"
+          @trigger-collect="collect_save(JSON.stringify(item))"
         ></GhsItem>
       </div>
     </template>
@@ -35,6 +36,13 @@
           :show-gap="true"
           @click="handleTagClick"
         ></GhsTag>
+        <GhsCollectItem
+          v-for="item in cCollect"
+          :key="item.jumpUrl"
+          :info="item"
+          @click="imgClick(item)"
+          @delete="collect_delete(JSON.stringify(item))"
+        ></GhsCollectItem>
       </div>
     </template>
   </ViewLayout>
@@ -62,10 +70,23 @@
   import GhsTag from '@/components/tag/ghs-tag.vue';
 
   import useSearchHistory from '@/feature/hook/useSearchHistory';
+  import useCollect from '@/feature/hook/useCollect';
+  import GhsCollectItem from '@/components/collectItem/ghs-collect-item.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('hentaiWord');
+  const imgClick = async (item) => {
+    const { flatTags, jumpUrl } = item;
+    const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
+    if (isVideo) {
+      const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
+      ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
+    } else {
+      const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
+      imgViewRef.value.show(hwImgInfos);
+    }
+  };
   const {
     load,
     handleSearch,
@@ -89,22 +110,14 @@
       const searchVal = value.replaceAll(' ', '+');
       return `https://thehentaiworld.com/?s=${searchVal}`;
     },
-    resolveImgClick: async (item) => {
-      const { flatTags, jumpUrl } = item;
-      const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
-      if (isVideo) {
-        const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
-        ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
-      } else {
-        const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
-        imgViewRef.value.show(hwImgInfos);
-      }
-    },
+    resolveImgClick: imgClick,
   });
-
+  const { collects, collect_save, collect_delete, cCollect, collect_list } =
+    useCollect('hentaiWord');
   onMounted(async () => {
     await load('https://thehentaiworld.com/?new');
     await loadHistoryData();
+    await collect_list();
   });
 </script>
 
