@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="info.title"
+    v-if="info?.title || $slots.default"
     class="ghs-tag-container"
     :class="{
       tageInfo: type === 'info',
@@ -14,7 +14,9 @@
     items-center
     @click="emits('click', info)"
   >
-    {{ info.title }}
+    <slot>
+      {{ info?.title }}
+    </slot>
   </div>
 </template>
 <script setup lang="ts">

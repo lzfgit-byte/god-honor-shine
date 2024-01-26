@@ -15,7 +15,14 @@
       <Close />
     </GhsIcon>
     <transition duration="200">
-      <div v-if="showHistory || active" class="historySearch" w-full absolute z-2>
+      <div
+        v-if="showHistory || active"
+        class="historySearch"
+        w-full
+        absolute
+        z-2
+        @mouseleave="active = false"
+      >
         <GhsScroller max-height="30vh">
           <div
             v-for="item in historyData"
@@ -27,12 +34,17 @@
             flex
             justify-between
             items-center
-            @mouseleave="active = false"
             @click="handlerSearch(item)"
           >
             <span> {{ item }}</span>
 
-            <GhsIcon absolute @click.stop="handlerDelete(item)">
+            <GhsIcon
+              height="15px"
+              width="15px"
+              absolute
+              @mouseenter="active = true"
+              @click.stop="handlerDelete(item)"
+            >
               <Close />
             </GhsIcon>
           </div>
@@ -54,7 +66,6 @@
   const active = ref(false);
   const handleFocus = () => {
     showHistory.value = true;
-    active.value = true;
   };
   const handleEnterClick = () => {
     showHistory.value = false;

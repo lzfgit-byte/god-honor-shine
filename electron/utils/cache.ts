@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { unlinkSync } from 'node:fs';
+import { statSync, unlinkSync } from 'node:fs';
+
 import { Md5 } from 'ts-md5';
 import {
   emptyDirSync,
@@ -11,7 +12,7 @@ import {
 } from 'fs-extra';
 import type { CacheFileType } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
-import { isFalsity } from './KitUtil';
+import { formatSize, isFalsity } from './KitUtil';
 import { sendMessage } from './message';
 
 const CACHE_PATH = APP_PATHS.cache_path;
@@ -101,4 +102,14 @@ export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
     unlinkSync(filePath);
   });
   sendMessage(`清除了缓存--${fileSuffix}`);
+};
+export const cache_dir_size = () => {
+  const files = readdirSync(CACHE_PATH);
+  let res = 0;
+  files.forEach((file) => {
+    const fullPath = path.join(CACHE_PATH, file);
+    const stats = statSync(fullPath);
+    res += stats.size;
+  });
+  return formatSize(res);
 };

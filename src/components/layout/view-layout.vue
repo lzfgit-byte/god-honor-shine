@@ -41,7 +41,10 @@
           <Close></Close>
         </GhsIcon>
       </div>
-      <div class="slide-body">
+      <div w-full flex justify-between items-center m-b-2 m-l-2>
+        <GhsTag type="info">已使用的缓存大小:{{ cacheDirSize }}</GhsTag>
+      </div>
+      <div class="slide-body" p-l-2 p-r-2>
         <slot name="slide"></slot>
       </div>
     </div>
@@ -54,8 +57,9 @@
   import { useVModel } from '@vueuse/core';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
-  import { f_cache_suffix_clean } from '@/utils/functions';
+  import { f_cache_dir_size, f_cache_suffix_clean } from '@/utils/functions';
   import Loading from '@/components/layout/components/loading.vue';
+  import GhsTag from '@/components/tag/ghs-tag.vue';
 
   const props = defineProps({ reload: Function, loading: Boolean });
   const emits = defineEmits(['update:loading']);
@@ -63,9 +67,11 @@
 
   const slideShow = ref(false);
   const enterShow = ref(false);
-  const handleMouseEnter = () => {
+  const cacheDirSize = ref();
+  const handleMouseEnter = async () => {
     enterShow.value = true;
     slideShow.value = true;
+    cacheDirSize.value = await f_cache_dir_size();
   };
   const handleMouseOut = () => {
     slideShow.value = false;
