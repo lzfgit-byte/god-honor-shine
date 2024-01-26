@@ -33,10 +33,10 @@
       @mouseleave="handleMouseOut"
     >
       <div w-full flex justify-between items-center class="slide-header" gap-1>
-        <div class="header-btn" gap-1>
+        <div class="header-btn">
           <GhsButton m-r-2 @click="cacheClean">清除缓存</GhsButton>
-          <GhsButton @click="cleanHtml">清除页面缓存</GhsButton>
-          <GhsButton @click="checkLog">查看日志</GhsButton>
+          <GhsButton m-r-2 @click="cleanHtml">清除页面缓存</GhsButton>
+          <GhsButton m-r-2 @click="checkLog">查看日志</GhsButton>
         </div>
         <GhsIcon color="black" @click="slideShow = false">
           <Close></Close>

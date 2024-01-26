@@ -13,7 +13,7 @@
         bottom-2
         class="ghs-scroller-icon"
       >
-        <GhsIcon width="15px" height="15px">
+        <GhsIcon width="15px" height="15px" :color="colorComp">
           <ChevronDownCircleOutline></ChevronDownCircleOutline>
         </GhsIcon>
       </div>
@@ -27,10 +27,11 @@
   import { ChevronDownCircleOutline } from '@vicons/ionicons5';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
 
-  const props = defineProps({ maxHeight: String });
+  const props = defineProps({ maxHeight: String, color: String });
   const maxHeight = computed(() => props.maxHeight || '30vh');
   const el = ref<HTMLElement | null>(null);
   const { x, y, isScrolling, arrivedState, directions } = useScroll(el);
+  const colorComp = computed(() => props.color || '#333');
 </script>
 
 <style scoped lang="less">

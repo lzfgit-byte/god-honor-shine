@@ -34,9 +34,11 @@
       <GhsIcon width="15px" height="15px" color="white"> <Close></Close></GhsIcon>
     </div>
     <div ref="scrollerRef" w-full class="ghs-log-body">
-      <div v-for="(item, index) in detailRef.reverse()" :key="index" w-full p-t-1 p-b-1 flex>
-        {{ item }}
-      </div>
+      <GhsScroller max-height="85vh" color="white">
+        <div v-for="(item, index) in detailRef" :key="index" w-full p-t-1 p-b-1 flex>
+          {{ item }}
+        </div>
+      </GhsScroller>
     </div>
   </div>
 </template>
@@ -45,6 +47,7 @@
   import { Close } from '@vicons/ionicons5';
   import type { GHSLogExpose } from './index';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
+  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
 
   const props = defineProps({ log: String });
   const emits = defineEmits(['showDialog', 'hideDialog']);
