@@ -11,7 +11,7 @@
       @focus="handleFocus"
       @blur="showHistory = false"
     />
-    <GhsIcon v-show="value?.length > 0" absolute class="clearIcon" @click="handlerClear">
+    <GhsIcon v-show="value?.length > 0" absolute right-0 class="clearIcon" @click="handlerClear">
       <Close />
     </GhsIcon>
     <transition duration="200">
@@ -122,7 +122,8 @@
     }
   }
   .clearIcon {
-    transform: translateX(-120%);
+    position: absolute !important;
+    transform: translateX(-50%);
   }
 
   .v-leave-from,
@@ -132,7 +133,8 @@
   }
   .v-enter-from,
   .v-leave-to {
-    transform: translateY(90%);
+    transform: translateY(96%);
     opacity: 0;
+    pointer-events: none;
   }
 </style>
