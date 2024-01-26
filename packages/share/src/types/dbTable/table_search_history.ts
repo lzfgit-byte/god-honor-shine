@@ -17,4 +17,5 @@ const data: T_search_history = {
 export const T_search_history_init: T_OptType = {
   data,
   tableName: name,
+  orderBy: ' ORDER BY  time desc ',
 };

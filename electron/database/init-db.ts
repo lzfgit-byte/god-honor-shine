@@ -14,12 +14,14 @@ export class TableBuilder<T> {
   private fieldMark = '';
   private primaryKey = 'id';
   private tableName: string;
+  private orderBy: string;
   private db: typeof Database.prototype = null;
   constructor(opt: T_OptType) {
     const data = opt.data;
     const tableName = opt.tableName;
     this.fields = keys(data).filter((key: string) => key !== this.primaryKey);
     this.tableName = tableName;
+    this.orderBy = opt.orderBy;
     this.db = db;
     this.fieldStr = this.fields.join(',');
     this.fieldMark = this.fields.map(() => '?').join(',');
@@ -64,7 +66,7 @@ export class TableBuilder<T> {
         querySql += `${item} =  ?`;
       }
     });
-    return querySql;
+    return `${querySql} ${this.orderBy}`;
   }
 
   private buildWhereSqlData(entity: T): any[] {

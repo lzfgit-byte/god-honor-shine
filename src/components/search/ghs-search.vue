@@ -15,7 +15,7 @@
       <Close />
     </GhsIcon>
     <transition duration="200">
-      <div v-if="true" class="historySearch" w-full absolute z-2>
+      <div v-if="showHistory || active" class="historySearch" w-full absolute z-2>
         <GhsScroller max-height="30vh">
           <div
             v-for="item in historyData"

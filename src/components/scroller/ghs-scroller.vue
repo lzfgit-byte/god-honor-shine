@@ -3,19 +3,21 @@
     <div ref="el" w-full class="ghs-scroller" relative>
       <slot></slot>
     </div>
-    <div
-      v-if="!arrivedState.bottom"
-      absolute
-      flex
-      justify-center
-      items-center
-      bottom-2
-      class="ghs-scroller-icon"
-    >
-      <GhsIcon width="15px" height="15px">
-        <ChevronDownCircleOutline></ChevronDownCircleOutline>
-      </GhsIcon>
-    </div>
+    <transition>
+      <div
+        v-if="!arrivedState.bottom"
+        absolute
+        flex
+        justify-center
+        items-center
+        bottom-2
+        class="ghs-scroller-icon"
+      >
+        <GhsIcon width="15px" height="15px">
+          <ChevronDownCircleOutline></ChevronDownCircleOutline>
+        </GhsIcon>
+      </div>
+    </transition>
   </div>
 </template>
 <script setup lang="ts">
@@ -49,5 +51,14 @@
     pointer-events: none;
     transform: translateX(-50%);
     animation: downAndUp 0.3s linear infinite;
+  }
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
   }
 </style>
