@@ -1,4 +1,5 @@
 import { createVNode, render } from 'vue';
+import { executeFunc } from '@ghs/share';
 import GhsLog from './ghs-log.vue';
 
 const waitTime = (during = 200): Promise<any> => {
@@ -12,6 +13,7 @@ export interface GHSLogExpose {
   log: (info: string) => void;
   show: () => void;
   hide: () => void;
+  showDialog: () => void;
   detail: (detail: string[]) => void;
 }
 type VoidFunc = () => void;
@@ -21,8 +23,9 @@ export class GHSClassLog {
   private static show: VoidFunc;
   private static hide: VoidFunc;
   private static detail: (detail: string[]) => void;
+  private static onShowDialog: VoidFunc;
   private static showDialog: VoidFunc;
-  private static hideDialog: VoidFunc;
+  private static onHideDialog: VoidFunc;
   private static timer: any;
   private static el: HTMLDivElement;
   private static clear() {
@@ -47,16 +50,19 @@ export class GHSClassLog {
   }
 
   static registerEvent(show?: VoidFunc, hide?: VoidFunc) {
-    this.showDialog = show;
-    this.hideDialog = hide;
+    this.onShowDialog = show;
+    this.onHideDialog = hide;
   }
 
-  static async log(info: string) {
+  static async log(info = '') {
     if (this.doLog) {
-      this.doLog(info);
-      this.show();
-      this.watch();
-      return this.detail;
+      if (info) {
+        this.doLog(info);
+        this.show();
+        this.watch();
+      }
+
+      return { detail: this.detail, showDialog: this.showDialog };
     }
     if (document.getElementById(this.id)) {
       return;
@@ -65,10 +71,10 @@ export class GHSClassLog {
     const vNode = createVNode(GhsLog, {
       log: info,
       onShowDialog: () => {
-        this.showDialog && this.showDialog();
+        executeFunc(this.onShowDialog);
       },
       onHideDialog: () => {
-        this.hideDialog && this.hideDialog();
+        executeFunc(this.onHideDialog);
       },
     });
     const el = document.createElement('div');
@@ -81,10 +87,13 @@ export class GHSClassLog {
     this.show = expose.show;
     this.hide = expose.hide;
     this.detail = expose.detail;
-    expose.show();
-    this.watch();
-    this.hover();
+    this.showDialog = expose.showDialog;
+    if (info) {
+      expose.show();
+      this.watch();
+      this.hover();
+    }
     this.doLog = expose.log;
-    return expose.detail;
+    return { detail: this.detail, showDialog: this.showDialog };
   }
 }

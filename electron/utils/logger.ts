@@ -49,6 +49,10 @@ let getLoggerDb = () => {
   return table;
 };
 
+export const logger_db_list = (): T_logger[] => {
+  const table = getLoggerDb();
+  return table.listByEntity(null);
+};
 export const logger = {
   enable: false,
   error: (...args: any[]) => {

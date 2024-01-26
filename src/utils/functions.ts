@@ -1,4 +1,4 @@
-import type { CacheFileType } from '@ghs/share';
+import type { CacheFileType, T_logger } from '@ghs/share';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -34,3 +34,8 @@ export const f_cache_suffix_clean = async (suffix?: CacheFileType): Promise<stri
  * 获取缓存文件大小
  */
 export const f_cache_dir_size = async (): Promise<string> => executeFunction('cache_dir_size');
+
+/**
+ * 获取数据库日志
+ */
+export const f_logger_db_list = async (): Promise<T_logger[]> => executeFunction('logger_db_list');

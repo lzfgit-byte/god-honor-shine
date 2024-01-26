@@ -93,13 +93,18 @@ export class TableBuilder<T> {
     return stm.get(id) as T;
   }
 
-  listByEntity(entity: T): T[] {
-    if (entity[this.primaryKey]) {
+  listByEntity(entity: T = null): T[] {
+    if (entity && entity[this.primaryKey]) {
       return [this.getById(entity[this.primaryKey])];
     }
-    const stm = this.db.prepare(
-      `SELECT * FROM ${this.tableName} WHERE ${this.buildWhereSql(entity)} ${this.orderBy};`
-    );
+    let stm: any;
+    if (entity) {
+      stm = this.db.prepare(
+        `SELECT * FROM ${this.tableName} WHERE ${this.buildWhereSql(entity)} ${this.orderBy};`
+      );
+    } else {
+      stm = this.db.prepare(`SELECT * FROM ${this.tableName} ${this.orderBy};`);
+    }
     return stm.all(...this.buildWhereSqlData(entity)) as T[];
   }
 

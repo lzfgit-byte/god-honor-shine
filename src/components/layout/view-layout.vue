@@ -36,6 +36,7 @@
         <div class="header-btn" gap-1>
           <GhsButton m-r-2 @click="cacheClean">清除缓存</GhsButton>
           <GhsButton @click="cleanHtml">清除页面缓存</GhsButton>
+          <GhsButton @click="checkLog">查看日志</GhsButton>
         </div>
         <GhsIcon color="black" @click="slideShow = false">
           <Close></Close>
@@ -57,9 +58,10 @@
   import { useVModel } from '@vueuse/core';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
-  import { f_cache_dir_size, f_cache_suffix_clean } from '@/utils/functions';
+  import { f_cache_dir_size, f_cache_suffix_clean, f_logger_db_list } from '@/utils/functions';
   import Loading from '@/components/layout/components/loading.vue';
   import GhsTag from '@/components/tag/ghs-tag.vue';
+  import { GHSClassLog } from '@/components/log';
 
   const props = defineProps({ reload: Function, loading: Boolean });
   const emits = defineEmits(['update:loading']);
@@ -83,6 +85,12 @@
   const cleanHtml = async () => {
     await f_cache_suffix_clean(CacheFileType.html);
     executeFunc(props.reload);
+  };
+  const checkLog = async () => {
+    const { detail, showDialog } = await GHSClassLog?.log();
+    showDialog();
+    const data = await f_logger_db_list();
+    detail(data.map((i) => i.value));
   };
 </script>
 

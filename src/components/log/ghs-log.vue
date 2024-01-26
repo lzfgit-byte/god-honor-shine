@@ -1,8 +1,8 @@
 <template>
   <div
     id="ghs-log-container"
-    class="ghs-log-container"
     ref="logRef"
+    class="ghs-log-container"
     absolute
     flex
     justify-start
@@ -13,13 +13,13 @@
     <div w-full h-full flex justify-start items-center>{{ infoRef }}</div>
   </div>
   <div
+    ref="dialogRef"
     class="ghs-log-container ghs-log-bigger"
     absolute
     flex
     flex-col
     justify-start
     items-center
-    ref="dialogRef"
   >
     <div
       class="ghs-log-title"
@@ -31,10 +31,10 @@
       cursor-pointer
       @click="hideBigger"
     >
-      X
+      <GhsIcon width="15px" height="15px" color="white"> <Close></Close></GhsIcon>
     </div>
-    <div w-full class="ghs-log-body" ref="scrollerRef">
-      <div w-full p-t-1 p-b-1 flex v-for="(item, index) in detailRef.reverse()" :key="index">
+    <div ref="scrollerRef" w-full class="ghs-log-body">
+      <div v-for="(item, index) in detailRef.reverse()" :key="index" w-full p-t-1 p-b-1 flex>
         {{ item }}
       </div>
     </div>
@@ -42,7 +42,9 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
+  import { Close } from '@vicons/ionicons5';
   import type { GHSLogExpose } from './index';
+  import GhsIcon from '@/components/icon/ghs-icon.vue';
 
   const props = defineProps({ log: String });
   const emits = defineEmits(['showDialog', 'hideDialog']);
@@ -51,11 +53,13 @@
   const dialogRef = ref<HTMLDivElement>();
   const scrollerRef = ref<HTMLDivElement>();
   const detailRef = ref<string[]>([]);
-  let timer: any;
 
-  const handleClick = () => {
+  const showDialog = () => {
     dialogRef.value.classList.add('showDialog');
     dialogRef.value.classList.remove('hideDialog');
+  };
+  const handleClick = () => {
+    showDialog();
     emits('showDialog');
   };
   const hideBigger = () => {
@@ -78,6 +82,7 @@
       logRef.value.classList.add('hideLog');
       logRef.value.classList.remove('showLog');
     },
+    showDialog,
   };
   defineExpose(expose);
 </script>
