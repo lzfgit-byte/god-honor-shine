@@ -5,7 +5,7 @@
     </div>
     <transition>
       <div
-        v-if="!arrivedState.bottom"
+        v-if="!arrivedState.bottom && show"
         absolute
         flex
         justify-center
@@ -29,9 +29,17 @@
 
   const props = defineProps({ maxHeight: String, color: String });
   const maxHeight = computed(() => props.maxHeight || '30vh');
-  const el = ref<HTMLElement | null>(null);
+  const el = ref<HTMLDivElement>();
   const { arrivedState } = useScroll(el);
   const colorComp = computed(() => props.color || '#333');
+  const show = computed(() => {
+    const d: HTMLDivElement[] = Array.from(el?.value?.children || []) as any;
+    let total = 0;
+    d?.forEach((i) => {
+      total += i.clientHeight;
+    });
+    return total > el?.value?.offsetHeight;
+  });
 </script>
 
 <style scoped lang="less">
