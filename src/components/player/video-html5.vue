@@ -39,6 +39,7 @@
       title: props.title,
       autoFit: false,
       height: '80vh',
+      loop: true,
       objectFit: 'contain',
       src: props.src,
       custom: { footerControls: [] },

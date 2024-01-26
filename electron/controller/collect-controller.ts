@@ -27,7 +27,7 @@ export const collect_save = (value: string, type: SearchHistoryType) => {
     sendMessage(`已经收藏-->count(${one.count})`);
     return;
   }
-  table.insertData({ ...entity, time: getCurrentDate() });
+  table.insertData({ ...entity, count: '1', time: getCurrentDate() });
   sendMessage('收藏成功');
 };
 export const collect_list = (type: SearchHistoryType): T_collect[] => {
