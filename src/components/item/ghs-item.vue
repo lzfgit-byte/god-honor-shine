@@ -8,7 +8,7 @@
     </div>
     <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="title" />
-      <GhsIcon absolute title="收藏" @click="handleCollect">
+      <GhsIcon v-if="$attrs?.onTriggerCollect" absolute title="收藏" @click="handleCollect">
         <StarOutline />
       </GhsIcon>
     </div>

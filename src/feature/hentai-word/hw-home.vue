@@ -38,14 +38,13 @@
             @click="handleTagClick"
           ></GhsTag>
         </div>
-        <GhsScroller max-height="45vh" absolute bottom-0>
-          <GhsCollect
-            :img-click="imgClick"
-            :collect="cCollect"
-            :collect-click="collect_click"
-            :collect-delete="collect_delete"
-          ></GhsCollect>
-        </GhsScroller>
+        <GhsCollect
+          max-height="45vh"
+          :img-click="imgClick"
+          :collect="cCollect"
+          :collect-click="collect_click"
+          :collect-delete="collect_delete"
+        ></GhsCollect>
       </div>
     </template>
   </ViewLayout>
