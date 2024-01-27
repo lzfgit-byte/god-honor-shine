@@ -42,7 +42,7 @@
   import { Close } from '@vicons/ionicons5';
   import { CacheFileType, executeFunc } from '@ghs/share';
   import { useVModel } from '@vueuse/core';
-  import { watchEffect } from 'vue-demi';
+  import { watch, watchEffect } from 'vue-demi';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
   import { f_cache_dir_size, f_cache_suffix_clean, f_logger_db_list } from '@/utils/functions';
@@ -53,10 +53,6 @@
   const props = defineProps({ reload: Function, loading: Boolean });
   const emits = defineEmits(['update:loading']);
   const loading_ = useVModel(props, 'loading', emits);
-  watchEffect(() => {
-    console.log(loading_.value);
-  });
-
   const slideShow = ref(false);
   const enterShow = ref(false);
   const cacheDirSize = ref();
