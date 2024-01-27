@@ -14,8 +14,13 @@ export default () => {
   const translateY = ref(0);
   const translateYComp = computed(() => `translateY(${translateY.value}px)`);
 
-  // const { width, height } = useElementSize(bodyRef);
-  // const { width: imgWidth, height: imgHeight } = useElementSize(imgContainerRef);
+  const { width, height } = useElementSize(bodyRef);
+  const { width: imgWidth, height: imgHeight } = useElementSize(imgContainerRef);
+
+  watchEffect(() => {
+    scale.value = 100 * Math.min(height.value / imgHeight.value, width.value / imgWidth.value);
+  });
+
   const isMove = ref(false);
   onMounted(() => {
     bodyRef.value.addEventListener('wheel', (evt) => {

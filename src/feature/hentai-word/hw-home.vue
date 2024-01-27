@@ -1,5 +1,16 @@
 <template>
   <ViewLayout v-model:loading="loading" :reload="reload">
+    <template #action>
+      <div flex w-full h-full justify-between items-center p-l-4>
+        <GhsSearch
+          :history-data="historyData"
+          @reset="reset"
+          @search="handleSearch"
+          @delete-search="handleDelete"
+        ></GhsSearch>
+        <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
+      </div>
+    </template>
     <template #body>
       <div ref="bodyRef" h-full w-full overflow-auto>
         <transition-group
@@ -21,15 +32,6 @@
           ></GhsItem>
         </transition-group>
       </div>
-    </template>
-    <template #action>
-      <GhsSearch
-        :history-data="historyData"
-        @reset="reset"
-        @search="handleSearch"
-        @delete-search="handleDelete"
-      ></GhsSearch>
-      <GhsPagination :pagination="pagination" @click="handlerPagination"></GhsPagination>
     </template>
     <template #slide>
       <div h-full w-full flex flex-col justify-between>
