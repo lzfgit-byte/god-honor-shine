@@ -21,9 +21,9 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import { ref } from 'vue-demi';
-  import { useScroll } from '@vueuse/core';
+  import { computed, onMounted } from 'vue';
+  import { ref, watch } from 'vue-demi';
+  import { useElementSize, useScroll } from '@vueuse/core';
   import { ChevronDownCircleOutline } from '@vicons/ionicons5';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
 
@@ -31,14 +31,15 @@
   const maxHeight = computed(() => props.maxHeight || '30vh');
   const el = ref<HTMLDivElement>();
   const { arrivedState } = useScroll(el);
+  const { height } = useElementSize(el);
   const colorComp = computed(() => props.color || '#333');
-  const show = computed(() => {
-    const d: HTMLDivElement[] = Array.from(el?.value?.children || []) as any;
-    let total = 0;
-    d?.forEach((i) => {
-      total += i.clientHeight;
-    });
-    return total > el?.value?.offsetHeight;
+  const show = ref(true);
+  const judgeScroll = () => {
+    show.value = el?.value?.scrollHeight > el?.value?.clientHeight;
+  };
+
+  watch(height, () => {
+    judgeScroll();
   });
 </script>
 
