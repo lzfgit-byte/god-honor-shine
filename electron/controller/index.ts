@@ -1,4 +1,3 @@
-export * from './index-controller';
 export * from './html5-controller';
 export * from './search-history-controller';
 export * from './collect-controller';

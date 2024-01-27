@@ -1,4 +1,11 @@
-import { getImgBase64, requestHtml, requestHtmlByWin, requestImage } from '../http';
+import {
+  getImgBase64,
+  requestHtml,
+  requestHtmlByWin,
+  requestImage,
+  win_get_data,
+  win_open,
+} from '../http';
 
 /**
  * 默认使用electron的request
@@ -27,4 +34,17 @@ export const win_img_get = (url: string): Promise<string> => {
  */
 export const win_html_get = (url: string): Promise<string> => {
   return requestHtmlByWin(url) as any;
+};
+/**
+ * 使用新窗口获取数据
+ * @param url
+ */
+export const win_get_data_code = (code: string, url: string): Promise<any> => {
+  return win_get_data(code, url);
+};
+/**
+ * 使用新窗口打开
+ */
+export const win_open_any = (url: string, code: string, width: number, height: number) => {
+  win_open(url, code, width, height);
 };

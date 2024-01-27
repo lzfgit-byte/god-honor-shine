@@ -39,3 +39,17 @@ export const f_cache_dir_size = async (): Promise<string> => executeFunction('ca
  * 获取数据库日志
  */
 export const f_logger_db_list = async (): Promise<T_logger[]> => executeFunction('logger_db_list');
+
+/**
+ * 使用新窗口获取数据
+ */
+export const f_win_get_data_code = (code: string, url: string): Promise<any> => {
+  return executeFunction('win_get_data_code', code, url);
+};
+
+/**
+ * 使用新窗口打开
+ */
+export const f_win_open_any = (url: string, code?: string, width?: number, height?: number) => {
+  executeFunction('win_open_any', url, code, width, height);
+};

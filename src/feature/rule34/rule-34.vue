@@ -55,27 +55,30 @@
       </div>
     </template>
   </ViewLayout>
+  <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
 </template>
 <script setup lang="ts">
-  import { onMounted } from 'vue-demi';
-
-  import { f_request_html_get } from '@/utils/functions';
+  import { onMounted, ref } from 'vue-demi';
+  import code from '@/feature/rule34/code/get-video-code?raw';
+  import { f_request_html_get, f_win_get_data_code, f_win_open_any } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import GhsSearch from '@/components/search/ghs-search.vue';
   import useMainPageHook from '@/feature/hook/useMainPageHook';
   import GhsTag from '@/components/tag/ghs-tag.vue';
-
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   import { r34_f_getPageInfo } from '@/feature/rule34/apis/R34Apis';
+  import GhsPlayer from '@/components/player/ghs-player.vue';
+  import type { GhsPlayerExpose } from '@/components/player/types';
+  const ghsPlayerRef = ref<GhsPlayerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('rule34');
   const imgClick = async (item) => {
-    // TODO debugger
-    console.log(item);
+    const data: string = await f_win_get_data_code(code, item.jumpUrl);
+    f_win_open_any(data);
   };
   const {
     load,

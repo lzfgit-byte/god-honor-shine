@@ -8,7 +8,7 @@
     </div>
     <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="title" />
-      <GhsIcon v-if="$attrs?.onTriggerCollect" absolute title="收藏" @click="handleCollect">
+      <GhsIcon v-if="$props?.onTriggerCollect" absolute title="收藏" @click="handleCollect">
         <StarOutline />
       </GhsIcon>
     </div>
@@ -41,6 +41,7 @@
     width: String,
     height: String,
     force: Boolean,
+    onTriggerCollect: Function,
   });
   const emits = defineEmits(['imgClick', 'triggerCollect']);
   const c_width = computed(() => props.width || '250px');
