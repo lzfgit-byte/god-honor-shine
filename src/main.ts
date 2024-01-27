@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import App from '@/App.vue';
 import 'animate.css';
 import { registerRouter } from '@/router/router';
+import '@/router/guard';
 import 'virtual:uno.css';
 const pinia = createPinia();
 
