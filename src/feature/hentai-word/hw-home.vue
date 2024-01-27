@@ -2,19 +2,24 @@
   <ViewLayout v-model:loading="loading" :reload="reload">
     <template #body>
       <div ref="bodyRef" h-full w-full overflow-auto>
-        <GhsItem
-          v-for="(item, index) in items"
-          :key="index"
-          :title="item.title"
-          :cover-img="item.coverImg"
-          :jump-url="item.jumpUrl"
-          :tags="item.tags"
-          :flat-tags="item.flatTags"
-          width="220px"
-          height="147px"
-          @img-click="handleImageClick(item)"
-          @trigger-collect="collect_save(JSON.stringify(item))"
-        ></GhsItem>
+        <transition-group
+          name="custom-classes"
+          enter-active-class="animate__animated animate__pulse"
+        >
+          <GhsItem
+            v-for="(item, index) in items"
+            :key="index"
+            :title="item.title"
+            :cover-img="item.coverImg"
+            :jump-url="item.jumpUrl"
+            :tags="item.tags"
+            :flat-tags="item.flatTags"
+            width="220px"
+            height="147px"
+            @img-click="handleImageClick(item)"
+            @trigger-collect="collect_save(JSON.stringify(item))"
+          ></GhsItem>
+        </transition-group>
       </div>
     </template>
     <template #action>

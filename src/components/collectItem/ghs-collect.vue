@@ -10,28 +10,32 @@
     </div>
     <GhsScroller :max-height="maxHeight">
       <template v-if="layout === 'list'">
-        <GhsCollectItem
-          v-for="item in cCollect"
-          :key="item.jumpUrl"
-          :info="item"
-          @click="collectClick(item, imgClick)"
-          @delete="collectDelete(JSON.stringify(item))"
-        >
-        </GhsCollectItem>
+        <TransitionGroup name="list">
+          <GhsCollectItem
+            v-for="item in cCollect"
+            :key="item.jumpUrl"
+            :info="item"
+            @click="collectClick(item, imgClick)"
+            @delete="collectDelete(JSON.stringify(item))"
+          >
+          </GhsCollectItem>
+        </TransitionGroup>
       </template>
       <template v-if="layout === 'grid'">
-        <GhsItem
-          v-for="item in cCollect"
-          :key="item.jumpUrl"
-          :title="item.title"
-          :cover-img="item.coverImg"
-          :jump-url="item.jumpUrl"
-          :tags="item.tags"
-          :flat-tags="item.flatTags"
-          width="30.5%"
-          height="100px"
-          @img-click="collectClick(item, imgClick)"
-        ></GhsItem>
+        <TransitionGroup name="list">
+          <GhsItem
+            v-for="item in cCollect"
+            :key="item.jumpUrl"
+            :title="item.title"
+            :cover-img="item.coverImg"
+            :jump-url="item.jumpUrl"
+            :tags="item.tags"
+            :flat-tags="item.flatTags"
+            width="30.5%"
+            height="100px"
+            @img-click="collectClick(item, imgClick)"
+          ></GhsItem>
+        </TransitionGroup>
       </template>
     </GhsScroller>
   </div>
@@ -62,5 +66,19 @@
 
 <style scoped lang="less">
   .ghs-collect-layout {
+  }
+  .list-move, /* 对移动中的元素应用的过渡 */
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  .list-leave-active {
+    position: absolute;
   }
 </style>
