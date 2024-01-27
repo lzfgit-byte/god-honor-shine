@@ -13,6 +13,9 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
     $more = $($('#custom_list_videos_latest_videos_list_pagination .item'));
   }
   if ($more.length === 0) {
+    $more = $($('#custom_list_videos_videos_list_search_pagination .item'));
+  }
+  if ($more.length === 0) {
     return;
   }
   const res: PaginationType[] = [];
@@ -37,10 +40,13 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
 };
 const r34_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
-  let list: any; // custom_list_videos_latest_videos_list_items
-  const main = $('#custom_list_videos_most_recent_videos .thumbs > div.item.thumb');
-  const second = $('#custom_list_videos_latest_videos_list .thumbs > div.item.thumb');
-  list = main.length === 0 ? second : main;
+  let list = $('#custom_list_videos_most_recent_videos .thumbs > div.item.thumb');
+  if (list.length === 0) {
+    list = $('#custom_list_videos_latest_videos_list .thumbs > div.item.thumb');
+  }
+  if (list.length === 0) {
+    list = $('#custom_list_videos_videos_list_search .thumbs > div.item.thumb');
+  }
   list.each((i, el) => {
     const $el = $(el);
     const $a = $el.find('a.js-open-popup');

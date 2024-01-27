@@ -61,7 +61,7 @@
     maxHeight: String,
   });
   const layout = ref<'grid' | 'list'>('grid');
-  const cCollect = computed(() => props.collect);
+  const cCollect = computed(() => props.collect.map((item) => ({ ...item, flatTags: [] })));
 </script>
 
 <style scoped lang="less">

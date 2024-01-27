@@ -1,10 +1,19 @@
 <template>
-  <div class="view-container" h-full w-full relative @click="slideShow = false">
+  <div class="view-container" h-full w-full relative>
     <GhsLoading v-model:loading="loading_"></GhsLoading>
-    <div class="view-action" w-full flex h-full items-center justify-end gap-1>
+    <div
+      class="view-action"
+      w-full
+      flex
+      h-full
+      items-center
+      justify-end
+      gap-1
+      @click="slideShow = false"
+    >
       <slot name="action"></slot>
     </div>
-    <div class="view-body" w-full relative>
+    <div class="view-body" w-full relative @click="slideShow = false">
       <slot name="body"></slot>
     </div>
     <div z-99 class="slideTrigger" pos="absolute right-0 " @mouseenter="handleMouseEnter"></div>
@@ -42,7 +51,6 @@
   import { Close } from '@vicons/ionicons5';
   import { CacheFileType, executeFunc } from '@ghs/share';
   import { useVModel } from '@vueuse/core';
-  import { watch, watchEffect } from 'vue-demi';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
   import { f_cache_dir_size, f_cache_suffix_clean, f_logger_db_list } from '@/utils/functions';

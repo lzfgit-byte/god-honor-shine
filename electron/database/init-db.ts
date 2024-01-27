@@ -61,9 +61,9 @@ export class TableBuilder<T> {
     const valueFields = this.getNullField(entity);
     valueFields.forEach((item: string, index: number) => {
       if (index !== 0) {
-        querySql += `and ${item} =  ?`;
+        querySql += `and ${item} =  ? `;
       } else {
-        querySql += `${item} =  ?`;
+        querySql += `${item} =  ? `;
       }
     });
     return querySql;

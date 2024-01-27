@@ -59,7 +59,7 @@
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
-  import code from '@/feature/rule34/code/get-video-code?raw';
+  import code from '@/feature/rule34/code/clear-others?raw';
   import { f_request_html_get, f_win_get_data_code, f_win_open_any } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
@@ -77,8 +77,7 @@
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('rule34');
   const imgClick = async (item) => {
-    const data: string = await f_win_get_data_code(code, item.jumpUrl);
-    f_win_open_any(data);
+    f_win_open_any(item.jumpUrl, code, 831, 600);
   };
   const {
     load,
@@ -102,10 +101,8 @@
       return await r34_f_getPageInfo(html);
     },
     resolveSearch: (value: string) => {
-      // TODO debugger
       searchHistorySave(value);
-      const searchVal = value.replaceAll(' ', '+');
-      return `https://thehentaiworld.com/?s=${searchVal}`;
+      return `https://rule34video.com/search/${value}/`;
     },
     resolveImgClick: imgClick,
   });

@@ -34,7 +34,7 @@
             flex
             justify-between
             items-center
-            @click="handlerSearch(item)"
+            @click.stop="handlerSearch(item)"
           >
             <span> {{ item }}</span>
 
