@@ -16,11 +16,14 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
   $more.each((i, el) => {
     // li标签
     const $el = $(el);
+    if ($el.hasClass('jump_to')) {
+      return;
+    }
     const $a = $el.find('a');
     //
-    const title = helpElText($a);
+    const title = $el.hasClass('next') ? 'next' : helpElText($a);
     const url = helpElAttr($a, 'href');
-    const isCurrent = $a.hasClass('active');
+    const isCurrent = $el.hasClass('active');
     res.push({ title, isCurrent, url });
   });
   return res;
