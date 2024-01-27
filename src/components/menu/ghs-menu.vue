@@ -1,7 +1,20 @@
 <template>
   <teleport to="#app">
-    <transition enter-active-class="animate__animated animate__bounceIn">
-      <div v-show="fullSize" absolute flex justify-center items-center class="ghs-menu-container">
+    <transition
+      enter-active-class="animate__animated animate__bounceIn"
+      leave-active-class="animate__animated animate__fadeOutDown"
+    >
+      <div
+        v-show="fullSize"
+        absolute
+        flex
+        justify-center
+        items-center
+        class="ghs-menu-container"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+        @mousemove="onMouseEnter"
+      >
         <div
           v-for="(item, index) in culRoutes"
           :key="index"
@@ -18,8 +31,11 @@
         </div>
       </div>
     </transition>
-    <transition enter-active-class="animate__animated animate__bounceIn">
-      <div v-show="!fullSize" absolute class="ghs-menu-mimiSize" @click="fullSize = true"></div>
+    <transition
+      enter-active-class="animate__animated animate__bounceIn"
+      leave-active-class="animate__animated animate__fadeOutDown"
+    >
+      <div v-show="!fullSize" absolute class="ghs-menu-mimiSize" @mouseenter="handleMinClick"></div>
     </transition>
   </teleport>
 </template>
@@ -35,6 +51,23 @@
   const handleClick = (item) => {
     router.push(item.path);
   };
+  let timer: any;
+  const setTimer = () => {
+    timer = setTimeout(() => {
+      fullSize.value = false;
+    }, 1500);
+  };
+  const handleMinClick = () => {
+    fullSize.value = true;
+    setTimer();
+  };
+  const onMouseEnter = () => {
+    timer && clearTimeout(timer);
+    timer = null;
+  };
+  const onMouseLeave = () => {
+    setTimer();
+  };
 </script>
 
 <style scoped lang="less">
@@ -43,7 +76,7 @@
     padding: 3px 5px;
     background-color: #333;
     border-radius: @radius;
-    bottom: 1%;
+    bottom: 10px;
     right: 0;
     left: 0;
     margin: auto;
@@ -60,7 +93,7 @@
   }
   .ghs-menu-mimiSize {
     bottom: 3px;
-    padding: 5px 10px;
+    padding: 6px 40px;
     background-color: #333;
     border-radius: @radius;
     cursor: pointer;
