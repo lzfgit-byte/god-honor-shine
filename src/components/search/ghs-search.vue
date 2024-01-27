@@ -135,6 +135,5 @@
   .v-leave-to {
     transform: translateY(96%);
     opacity: 0;
-    pointer-events: none;
   }
 </style>

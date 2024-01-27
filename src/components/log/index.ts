@@ -41,12 +41,12 @@ export class GHSClassLog {
   }
 
   private static hover() {
-    this.el.addEventListener('mouseenter', () => {
-      this.clear();
-    });
-    this.el.addEventListener('mouseleave', () => {
-      this.watch();
-    });
+    // this.el.addEventListener('mouseenter', () => {
+    //   this.clear();
+    // });
+    // this.el.addEventListener('mouseleave', () => {
+    //   this.watch();
+    // });
   }
 
   static registerEvent(show?: VoidFunc, hide?: VoidFunc) {
