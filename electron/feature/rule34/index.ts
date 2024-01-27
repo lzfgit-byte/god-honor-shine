@@ -105,16 +105,12 @@ const r34_getItems = ($: CheerioAPI): PageItemType[] => {
   return res;
 };
 const r34_getTags = ($: CheerioAPI): PageTags[] => {
-  const res: PageTags[] = [];
-  // $('#tags > li').each((i, el) => {
-  //   const $el = $(el);
-  //   const $a = $el.find('a');
-  //   const $span = $el.find('span');
-  //   const title = `${helpElText($a)} ${helpElText($span)}`;
-  //   const url = `https:${helpElAttr($a, ElementAttr.href)}`;
-  //   res.push({ title, url });
-  // });
-  return res;
+  return [
+    { title: 'Most Relevant', url: '' },
+    { title: 'Latest', url: 'sort_by;post_date' },
+    { title: 'Most Viewed', url: 'sort_by;video_viewed' },
+    { title: 'Top Rated', url: 'sort_by;rating' },
+  ];
 };
 /**
  * 获取首屏的信息

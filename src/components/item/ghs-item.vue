@@ -2,7 +2,7 @@
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
     <div class="ghs-item-coverImg" w-full relative>
       <GhsImg cursor-pointer :url="coverImg" :force="force" @click="handleImgClick" />
-      <div absolute top-2 right-1 flex justify-end items-center gap-1>
+      <div v-if="!hideTag" absolute top-2 right-1 flex justify-end items-center gap-1>
         <GhsTag v-for="(item, index) in flatTags" :key="index" :info="item"></GhsTag>
       </div>
     </div>
@@ -42,6 +42,7 @@
     height: String,
     force: Boolean,
     onTriggerCollect: Function,
+    hideTag: Boolean,
   });
   const emits = defineEmits(['imgClick', 'triggerCollect']);
   const c_width = computed(() => props.width || '250px');

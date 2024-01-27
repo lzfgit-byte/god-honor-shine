@@ -33,6 +33,7 @@
             :flat-tags="item.flatTags"
             width="30.5%"
             height="100px"
+            :hide-tag="true"
             @img-click="collectClick(item, imgClick)"
           ></GhsItem>
         </TransitionGroup>
@@ -61,7 +62,7 @@
     maxHeight: String,
   });
   const layout = ref<'grid' | 'list'>('grid');
-  const cCollect = computed(() => props.collect.map((item) => ({ ...item, flatTags: [] })));
+  const cCollect = computed(() => props.collect.map((item) => item));
 </script>
 
 <style scoped lang="less">

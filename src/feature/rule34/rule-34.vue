@@ -42,11 +42,12 @@
             :info="item"
             type="waring"
             :show-gap="true"
-            @click="handleTagClick"
+            @click="customTagClick(item)"
           ></GhsTag>
+          <GhsTag type="info">当前排序规则【{{ sortComp }}】</GhsTag>
         </div>
         <GhsCollect
-          max-height="45vh"
+          max-height="90vh"
           :img-click="imgClick"
           :collect="cCollect"
           :collect-click="collect_click"
@@ -58,7 +59,10 @@
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
 </template>
 <script setup lang="ts">
+  import { it } from 'node:test';
   import { onMounted, ref } from 'vue-demi';
+  import { computed } from 'vue';
+  import type { PageTags } from '@ghs/share';
   import code from '@/feature/rule34/code/clear-others?raw';
   import { f_request_html_get, f_win_open_any } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
@@ -76,6 +80,12 @@
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('rule34');
+  const sort = ref<PageTags>();
+  const sortComp = computed(() => sort?.value?.title || 'Most Relevant');
+  const customTagClick = (item) => {
+    sort.value = item;
+    reload();
+  };
   const imgClick = async (item) => {
     f_win_open_any(item.jumpUrl, code, 831, 600);
   };
@@ -89,10 +99,22 @@
     tags,
     reload,
     loading,
-    handleTagClick,
     bodyRef,
     reset,
   } = useMainPageHook({
+    resolvePageUrl: (url: string) => {
+      const sort_url = sort?.value?.url;
+      if (sort_url) {
+        const arr = sort_url.split(';');
+        if (arr.length === 2) {
+          const [key, value] = arr;
+          let newUrl = new URL(url);
+          newUrl.searchParams.set(key, value);
+          return newUrl.toString();
+        }
+      }
+      return url;
+    },
     resolveCacheHtml: (url: string) => {
       f_request_html_get(url);
     },

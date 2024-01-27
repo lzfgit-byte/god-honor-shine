@@ -7,6 +7,7 @@ interface OptType {
   resolveMainPage?: (url: string) => Promise<MainPage>;
   resolveSearch?: (value: string) => string;
   resolveImgClick?: (item: PageItemType) => void;
+  resolvePageUrl?: (url: string) => string;
 }
 export default (opts: OptType) => {
   const loading = ref(false);
@@ -20,6 +21,9 @@ export default (opts: OptType) => {
   const load = async (url: string) => {
     if (!url) {
       return;
+    }
+    if (opts.resolvePageUrl) {
+      url = opts.resolvePageUrl(url);
     }
     loading.value = true;
     currentUrl.value = url;
@@ -45,7 +49,10 @@ export default (opts: OptType) => {
     }
   });
   const handlerPagination = async (item: PaginationType) => {
-    console.log(item);
+    if (opts.resolvePageUrl) {
+      await load(opts.resolvePageUrl(item.url));
+      return;
+    }
     await load(item.url);
   };
   const handleSearch = async (value: string) => {

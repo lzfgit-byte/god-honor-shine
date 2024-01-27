@@ -63,11 +63,11 @@ export const win_open = (url: string, code = '', width = 800, height = 800) => {
       .then((res: string) => {})
       .catch((reason) => {})
       .finally(() => {
-        webContents.off('did-finish-load', listener);
+        webContents.off('dom-ready', listener);
       });
   };
   if (code) {
-    webContents.on('did-finish-load', listener);
+    webContents.on('dom-ready', listener);
   }
   win.loadURL(url);
 };
