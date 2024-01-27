@@ -8,7 +8,7 @@ import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
 
 const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
-  let $more = $('#more-hentai li');
+  let $more = $('#custom_list_videos_most_recent_videos_pagination .item');
   if ($more.length === 0) {
     return [];
   }
@@ -16,44 +16,53 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
   $more.each((i, el) => {
     // li标签
     const $el = $(el);
-    const $span = $el.find('span');
     const $a = $el.find('a');
     //
-    const title = helpElText($span) || helpElText($a);
+    const title = helpElText($a);
     const url = helpElAttr($a, 'href');
-    const isCurrent = $span.hasClass('current');
+    const isCurrent = $a.hasClass('active');
     res.push({ title, isCurrent, url });
   });
   return res;
 };
 const r34_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
-  $('#thumbContainer .thumb').each((i, el) => {
+  $('#custom_list_videos_most_recent_videos .thumbs > div.item.thumb').each((i, el) => {
     const $el = $(el);
-    const $a = $el.find(ElementTypes.a);
-    const $h4 = $a.find(ElementTypes.h4);
+    const $a = $el.find('a.js-open-popup');
     const $img = $a.find(ElementTypes.img);
-    const $span = $a.find('span');
-    const title = helpElAttr($a, ElementAttr.title);
-    const coverImg = helpElAttr($img, ElementAttr.src);
+    const $title = $a.find('div.thumb_title');
+    // tags
+    const $quality = $a.find('div.quality');
+    const $time = $a.find('div.time');
+    const $added = $a.find('div.thumb_info div.added');
+    const $views = $a.find('div.thumb_info div.views');
+
+    const title = helpElText($title);
+    const coverImg = helpElAttr($img, ElementAttr.dataWebp);
     const author = '';
     const jumpUrl = helpElAttr($a, ElementAttr.href);
     const tags = [];
-    const flatTags: PageTags[] = [{ title: helpElText($h4) }, { title: helpElText($span) }];
+    const flatTags: PageTags[] = [
+      { title: helpElText($quality) },
+      { title: helpElText($time) },
+      { title: helpElText($added) },
+      { title: helpElText($views) },
+    ];
     res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
   });
   return res;
 };
 const r34_getTags = ($: CheerioAPI): PageTags[] => {
   const res: PageTags[] = [];
-  $('#tags > li').each((i, el) => {
-    const $el = $(el);
-    const $a = $el.find('a');
-    const $span = $el.find('span');
-    const title = `${helpElText($a)} ${helpElText($span)}`;
-    const url = `https:${helpElAttr($a, ElementAttr.href)}`;
-    res.push({ title, url });
-  });
+  // $('#tags > li').each((i, el) => {
+  //   const $el = $(el);
+  //   const $a = $el.find('a');
+  //   const $span = $el.find('span');
+  //   const title = `${helpElText($a)} ${helpElText($span)}`;
+  //   const url = `https:${helpElAttr($a, ElementAttr.href)}`;
+  //   res.push({ title, url });
+  // });
   return res;
 };
 /**

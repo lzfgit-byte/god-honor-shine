@@ -25,8 +25,8 @@
             :jump-url="item.jumpUrl"
             :tags="item.tags"
             :flat-tags="item.flatTags"
-            width="220px"
-            height="147px"
+            width="270px"
+            height="150px"
             @img-click="handleImageClick(item)"
             @trigger-collect="collect_save(JSON.stringify(item))"
           ></GhsItem>
@@ -72,7 +72,7 @@
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   import { r34_f_getPageInfo } from '@/feature/rule34/apis/R34Apis';
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
-    useSearchHistory('hentaiWord');
+    useSearchHistory('rule34');
   const imgClick = async (item) => {
     const { flatTags, jumpUrl } = item;
     // TODO debugger
