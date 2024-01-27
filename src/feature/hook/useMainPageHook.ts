@@ -40,9 +40,12 @@ export default (opts: OptType) => {
     bodyRef.value.scrollTo({ top: 0, behavior: 'smooth' });
     const index = pagination.value.findIndex((i) => i.isCurrent);
     if (index > -1 && index < pagination.value.length - 1) {
-      nextPage.value = pagination.value[index + 1].url;
+      nextPage.value = opts.resolvePageUrl
+        ? opts.resolvePageUrl(pagination.value[index + 1].url)
+        : pagination.value[index + 1].url;
     }
   };
+  // 预加载
   watch(nextPage, () => {
     if (nextPage.value) {
       executeFunc(opts.resolveCacheHtml, nextPage.value);

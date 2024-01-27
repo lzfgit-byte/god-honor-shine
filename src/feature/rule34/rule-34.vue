@@ -103,6 +103,7 @@
     reset,
   } = useMainPageHook({
     resolvePageUrl: (url: string) => {
+      url = url.replace('%20', '-');
       const sort_url = sort?.value?.url;
       if (sort_url) {
         const arr = sort_url.split(';');
@@ -112,6 +113,10 @@
           newUrl.searchParams.set(key, value);
           return newUrl.toString();
         }
+      } else {
+        let newUrl = new URL(url);
+        newUrl.searchParams.set('sort_by', '');
+        return newUrl.toString();
       }
       return url;
     },
@@ -124,7 +129,7 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
-      return `https://rule34video.com/search/${value}/`;
+      return `https://rule34video.com/search/${value.replace(' ', '-')}/`;
     },
     resolveImgClick: imgClick,
   });
