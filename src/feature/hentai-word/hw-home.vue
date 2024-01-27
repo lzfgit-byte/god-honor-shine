@@ -78,7 +78,6 @@
 
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
-  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
@@ -109,6 +108,9 @@
     bodyRef,
     reset,
   } = useMainPageHook({
+    resolveCacheHtml: (url: string) => {
+      f_request_html_get(url);
+    },
     resolveMainPage: async (url: string) => {
       const html = await f_request_html_get(url);
       return await hw_f_getPageInfo(html);
