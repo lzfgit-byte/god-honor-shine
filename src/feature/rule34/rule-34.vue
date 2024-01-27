@@ -74,8 +74,8 @@
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('rule34');
   const imgClick = async (item) => {
-    const { flatTags, jumpUrl } = item;
     // TODO debugger
+    console.log(item);
   };
   const {
     load,

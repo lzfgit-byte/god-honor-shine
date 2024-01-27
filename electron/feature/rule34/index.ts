@@ -10,7 +10,10 @@ import { request_html_get } from '../../controller';
 const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more = $('#custom_list_videos_most_recent_videos_pagination .item');
   if ($more.length === 0) {
-    return [];
+    $more = $($('#custom_list_videos_latest_videos_list_pagination .item'));
+  }
+  if ($more.length === 0) {
+    return;
   }
   const res: PaginationType[] = [];
   $more.each((i, el) => {
@@ -21,8 +24,12 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
     }
     const $a = $el.find('a');
     //
-    const title = $el.hasClass('next') ? 'next' : helpElText($a);
-    const url = helpElAttr($a, 'href');
+    let title = $el.hasClass('next') ? 'next' : $el.hasClass('prev') ? 'prev' : helpElText($a);
+    title = title.replace(/\n/g, '').trim();
+    let url = helpElAttr($a, 'href');
+    if (!url.startsWith('https://rule34video.com')) {
+      url = `https://rule34video.com${url}`;
+    }
     const isCurrent = $el.hasClass('active');
     res.push({ title, isCurrent, url });
   });
@@ -30,7 +37,11 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
 };
 const r34_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
-  $('#custom_list_videos_most_recent_videos .thumbs > div.item.thumb').each((i, el) => {
+  let list: any; // custom_list_videos_latest_videos_list_items
+  const main = $('#custom_list_videos_most_recent_videos .thumbs > div.item.thumb');
+  const second = $('#custom_list_videos_latest_videos_list .thumbs > div.item.thumb');
+  list = main.length === 0 ? second : main;
+  list.each((i, el) => {
     const $el = $(el);
     const $a = $el.find('a.js-open-popup');
     const $img = $a.find(ElementTypes.img);

@@ -45,6 +45,7 @@ export default (opts: OptType) => {
     }
   });
   const handlerPagination = async (item: PaginationType) => {
+    console.log(item);
     await load(item.url);
   };
   const handleSearch = async (value: string) => {
