@@ -13,6 +13,7 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     images.value.length > 0 ? images.value[current.value][choseUrl.value] : ''
   );
   const preloadUrl = computed(() => {
+    const alreadyCache = ref([]);
     const allImgLength = images.value.length;
     const executeCacheLength = +(allImgLength / 4).toFixed(0);
     const cacheLength = executeCacheLength ? Math.min(3, executeCacheLength) : 0;
@@ -37,7 +38,9 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
         c--;
       }
     }
-    return [...afterRes, ...beforeRes];
+    const all = [...afterRes, ...beforeRes];
+    alreadyCache.value.push(...all);
+    return all.filter((item) => !alreadyCache.value.includes(item));
   });
   const beforeChange = () => {
     choseUrl.value = 'minUrl';

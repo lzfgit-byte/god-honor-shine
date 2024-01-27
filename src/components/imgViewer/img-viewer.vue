@@ -160,7 +160,7 @@
         cursor: pointer;
       }
       .img-container {
-        transition: all 0.1s linear;
+        transition: all 0.2s linear;
         transform: v-bind(translateXComp) v-bind(translateYComp) v-bind(scaleComp);
         box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
       }
