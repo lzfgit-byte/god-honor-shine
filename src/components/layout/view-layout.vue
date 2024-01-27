@@ -1,5 +1,5 @@
 <template>
-  <div class="view-container" h-full w-full relative>
+  <div class="view-container" h-full w-full relative @click="slideShow = false">
     <div
       v-if="loading"
       absolute
