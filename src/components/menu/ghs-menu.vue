@@ -23,6 +23,7 @@
           justify-center
           items-center
           @click="handleClick(item)"
+          @mouseenter="onMouseEnter"
         >
           <div class="ghs-menu-icon" m-r-1>
             <GhsImg :url="item.icon"></GhsImg>
@@ -86,6 +87,7 @@
       margin: 3px;
       cursor: pointer;
       border-radius: @radius;
+      color: white;
       &:hover {
         background-color: #484747;
       }

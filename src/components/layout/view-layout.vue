@@ -1,20 +1,6 @@
 <template>
   <div class="view-container" h-full w-full relative @click="slideShow = false">
-    <div
-      v-if="loading"
-      absolute
-      h-full
-      w-full
-      z-2
-      flex
-      justify-center
-      items-center
-      class="view-loading"
-    >
-      <div class="loading-svg">
-        <Loading :height="50" :width="50"></Loading>
-      </div>
-    </div>
+    <GhsLoading v-model:loading="loading_"></GhsLoading>
     <div class="view-action" w-full flex h-full items-center justify-end gap-1>
       <slot name="action"></slot>
     </div>
@@ -56,16 +42,20 @@
   import { Close } from '@vicons/ionicons5';
   import { CacheFileType, executeFunc } from '@ghs/share';
   import { useVModel } from '@vueuse/core';
+  import { watchEffect } from 'vue-demi';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
   import { f_cache_dir_size, f_cache_suffix_clean, f_logger_db_list } from '@/utils/functions';
-  import Loading from '@/components/layout/components/loading.vue';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import { GHSClassLog } from '@/components/log';
+  import GhsLoading from '@/components/loading/ghs-loading.vue';
 
   const props = defineProps({ reload: Function, loading: Boolean });
   const emits = defineEmits(['update:loading']);
-  const loading = useVModel(props, 'loading', emits);
+  const loading_ = useVModel(props, 'loading', emits);
+  watchEffect(() => {
+    console.log(loading_.value);
+  });
 
   const slideShow = ref(false);
   const enterShow = ref(false);
