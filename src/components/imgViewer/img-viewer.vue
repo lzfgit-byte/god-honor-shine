@@ -32,7 +32,9 @@
             <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
               全图
             </GhsButton>
-            <GhsIcon cursor-pointer color="white" @click="visible = false"><Close></Close></GhsIcon>
+            <GhsIcon v-if="!readerMode" cursor-pointer color="white" @click="visible = false">
+              <Close> </Close>
+            </GhsIcon>
           </div>
         </div>
         <div
