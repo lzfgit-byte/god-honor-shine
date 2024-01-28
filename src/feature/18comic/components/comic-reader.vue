@@ -1,7 +1,8 @@
 <template>
   <ViewLayout>
     <template #action>
-      <GhsButton>显示目录</GhsButton>
+      <GhsButton @click="visible = true">显示目录</GhsButton>
+      <GhsButton @click="router.back()">返回</GhsButton>
     </template>
     <template #body>
       <div h-full w-full relative>
@@ -9,15 +10,10 @@
           ref="imgViewRef"
           :solve-img-comp="ComicImg"
           :reader-mode="true"
+          :images-arr="imagesArr"
           :img-attrs="attrBind"
         ></ImgViewer>
       </div>
-
-      <!--      <div flex flex-col items-center class="ghs-18-container" h-full w-full> -->
-      <!--        <div v-for="item in images" :key="item.imgUrl" class="ghs-18-image" flex> -->
-      <!--          <ComicImg :url="item.imgUrl" :aid="item.aid" :scramble-id="item.scrambleId"></ComicImg> -->
-      <!--        </div> -->
-      <!--      </div> -->
     </template>
   </ViewLayout>
 
@@ -29,10 +25,11 @@
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
-  import type { Comic18Detail, ComicReader } from '@ghs/share';
-  import { useRoute } from 'vue-router';
+  import type { Comic18Detail, ComicReader, HWImgInfo } from '@ghs/share';
+  import { useRoute, useRouter } from 'vue-router';
 
   import { computed } from 'vue';
+
   import { f_win_html_get } from '@/utils/functions';
   import { c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
   import { GHSMessage } from '@/components/message';
@@ -43,10 +40,14 @@
   import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsImgContent from '@/feature/18comic/components/ghs-img-content.vue';
   const route = useRoute();
+  const router = useRouter();
   const imgViewRef = ref<ImgViewerExpose>();
   const visible = ref(false);
   const detail = ref<Comic18Detail>();
   const images = ref<ComicReader[]>([]);
+  const imagesArr = computed<HWImgInfo[]>(() =>
+    images?.value?.map((img) => ({ minUrl: img.imgUrl, fullUrl: img.imgUrl }))
+  );
   const attrBind = computed(() => {
     if (images?.value?.length > 0) {
       return { aid: images.value[0].aid, scrambleId: images.value[0].scrambleId };

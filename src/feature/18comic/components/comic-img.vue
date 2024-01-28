@@ -1,8 +1,10 @@
 <template>
-  <div h-full w-full relative flex justify-center items-center class="img-container">
-    <img ref="imagesRef" :src="imgSrc" alt="" />
+  <div h-full w-full relative>
+    <div h-full w-full relative flex justify-center items-center class="img-container">
+      <img ref="imagesRef" h-full w-full :src="imgSrc" alt="" />
+    </div>
+    <canvas v-show="false" ref="canvas"></canvas>
   </div>
-  <canvas v-show="false" ref="canvas"></canvas>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
@@ -104,13 +106,20 @@
 
 <style scoped lang="less">
   @import '@/styles/values';
-  .img-container {
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      height: auto;
-      width: auto;
-      border-radius: @radius;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+    border-radius: @radius;
+    cursor: grab;
+    &:active {
+      cursor: grabbing !important;
     }
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
 </style>

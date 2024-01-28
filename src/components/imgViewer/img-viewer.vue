@@ -11,17 +11,18 @@
         h-full
         w-full
         absolute
+        z-2
         left-0
         top-0
         @click="handleBackClick"
       >
-        <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0>
+        <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-4>
           <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
             <span>{{ showCurrent }} / {{ images.length }}</span>
           </div>
           <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
             <span :title="imgUrl">
-              {{ images.length > 0 && images[current]?.title }}
+              {{ images.length > 0 && (images[current]?.title || imgUrl) }}
             </span>
           </div>
           <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
@@ -45,6 +46,7 @@
           items-center
           top-0
           left-0
+          z-3
         >
           <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
@@ -85,15 +87,14 @@
 <script setup lang="ts">
   import type { HWImgInfo } from '@ghs/share';
   import { ArrowBackCircleOutline, ArrowForwardCircleOutline, Close } from '@vicons/ionicons5';
-  import { computed } from 'vue';
   import type { PropType } from 'vue-demi';
-  import { watch } from 'vue-demi';
   import GhsImg2 from '@/components/image/ghs-img2.vue';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsButton from '@/components/button/ghs-button.vue';
   import GhsImg from '@/components/image/ghs-img.vue';
+  import useReadModel from '@/components/imgViewer/hooks/useReadModel';
   const props = defineProps({
     force: Boolean,
     readerMode: Boolean,
@@ -124,9 +125,6 @@
     handleBackClick,
     preloadUrl,
   } = useImgShow(translateX, translateY, scale);
-  const background = computed(() =>
-    props.readerMode ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.54)'
-  );
   const expose = {
     show: (ims: HWImgInfo[]) => {
       translateX.value = 0;
@@ -141,14 +139,7 @@
       visible.value = false;
     },
   };
-  watch(
-    () => props.imagesArr,
-    () => {
-      if (props.imagesArr.length > 0) {
-        expose.show(props.imagesArr);
-      }
-    }
-  );
+  useReadModel(props, expose);
   defineExpose(expose);
 </script>
 
@@ -156,7 +147,7 @@
   @titleWidth: 60%;
   @extraWidth: 20%;
   .ghsiv-con {
-    background: v-bind(background);
+    background: rgba(0, 0, 0, 0.54);
     .ghsiv-header {
       background: rgba(0, 0, 0, 0.72);
       color: #bdb5b5;
