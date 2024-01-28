@@ -1,7 +1,7 @@
 <template>
   <div flex flex-col>
     <div w-full flex m-b-2>
-      <GhsText :value="detail.detail" />
+      <GhsText :value="detail?.detail" />
     </div>
     <GhsScroller max-height="80vh">
       <div
@@ -15,7 +15,7 @@
         class="c18-container"
         @click="showDetail(item)"
       >
-        <div class="c18-title" flex-inline><GhsText :value="item.title" /></div>
+        <div class="c18-title" flex-inline><GhsText :value="item?.title" /></div>
         <div class="c18-time" flex justify-end>{{ item.time }}</div>
       </div>
     </GhsScroller>
@@ -37,7 +37,7 @@
     images: Array as PropType<ComicReader[]>,
   });
   const emits = defineEmits(['update:visible', 'update:images']);
-  const contents = computed(() => props.detail.contents);
+  const contents = computed(() => props?.detail?.contents || []);
   const _images = useVModel(props, 'images', emits);
   const showDetail = async (item: Comic18Content) => {
     const html = await f_win_html_get(item.link);
@@ -51,8 +51,8 @@
     cursor: pointer;
     border-radius: @radius;
     &:hover {
-      background-color: white;
-      color: black;
+      background-color: #333;
+      color: white;
     }
     .c18-title {
       width: calc(100% - 100px);

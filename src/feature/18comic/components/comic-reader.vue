@@ -1,7 +1,6 @@
 <template>
   <ViewLayout :init-slide-show="true">
     <template #action>
-      <GhsButton @click="visible = true">显示目录</GhsButton>
       <GhsButton @click="router.back()">返回</GhsButton>
     </template>
     <template #body>
@@ -16,7 +15,7 @@
       </div>
     </template>
     <template #slide>
-      <!--      <GhsImgContent v-model:detail="detail" v-model:images="images"></GhsImgContent> -->
+      <GhsImgContent v-model:detail="detail" v-model:images="images"></GhsImgContent>
     </template>
   </ViewLayout>
 </template>
