@@ -1,22 +1,21 @@
 <template>
-  <teleport to="#app">
+  <teleport to="#app" :disabled="readerMode">
     <transition
       :duration="300"
       enter-active-class="animate__animated animate__fadeInDown"
       leave-active-class="animate__animated animate__fadeOutDown"
     >
       <div
-        v-show="visible && images.length > 0"
+        v-show="(visible || readerMode) && images.length > 0"
         class="ghsiv-con"
         h-full
         w-full
-        z-9996
         absolute
         left-0
         top-0
         @click="handleBackClick"
       >
-        <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-9998>
+        <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0>
           <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
             <span>{{ showCurrent }} / {{ images.length }}</span>
           </div>
@@ -46,17 +45,18 @@
           items-center
           top-0
           left-0
-          z-9997
         >
           <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
-              <GhsImg2
+              <Component
+                :is="solveImgComp"
                 :key="imgUrl"
                 class="img-img"
                 :url="imgUrl"
                 :force="force"
+                v-bind="imgAttrs"
                 @contextmenu.stop="nextImg"
-              ></GhsImg2>
+              ></Component>
             </transition>
           </div>
 
@@ -85,13 +85,22 @@
 <script setup lang="ts">
   import type { HWImgInfo } from '@ghs/share';
   import { ArrowBackCircleOutline, ArrowForwardCircleOutline, Close } from '@vicons/ionicons5';
+  import { computed } from 'vue';
+  import type { PropType } from 'vue-demi';
+  import { watch } from 'vue-demi';
   import GhsImg2 from '@/components/image/ghs-img2.vue';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsButton from '@/components/button/ghs-button.vue';
   import GhsImg from '@/components/image/ghs-img.vue';
-  defineProps({ force: Boolean });
+  const props = defineProps({
+    force: Boolean,
+    readerMode: Boolean,
+    solveImgComp: { type: Object, default: GhsImg2 },
+    imgAttrs: Object,
+    imagesArr: Array as PropType<HWImgInfo[]>,
+  });
   const {
     bodyRef,
     imgContainerRef,
@@ -115,7 +124,10 @@
     handleBackClick,
     preloadUrl,
   } = useImgShow(translateX, translateY, scale);
-  defineExpose({
+  const background = computed(() =>
+    props.readerMode ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.54)'
+  );
+  const expose = {
     show: (ims: HWImgInfo[]) => {
       translateX.value = 0;
       translateY.value = 0;
@@ -128,14 +140,23 @@
     close: () => {
       visible.value = false;
     },
-  });
+  };
+  watch(
+    () => props.imagesArr,
+    () => {
+      if (props.imagesArr.length > 0) {
+        expose.show(props.imagesArr);
+      }
+    }
+  );
+  defineExpose(expose);
 </script>
 
 <style scoped lang="less">
   @titleWidth: 60%;
   @extraWidth: 20%;
   .ghsiv-con {
-    background: rgba(0, 0, 0, 0.54);
+    background: v-bind(background);
     .ghsiv-header {
       background: rgba(0, 0, 0, 0.72);
       color: #bdb5b5;
