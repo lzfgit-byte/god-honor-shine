@@ -130,11 +130,23 @@ export const c18_get_contents = (html: string): Comic18Detail => {
 
 export const c18_get_images = (html: string): ComicReader[] => {
   const $: CheerioAPI = cheerio.load(html);
+  const html_sub = html.substring(
+    html.indexOf('lang_delete_photo_ask'),
+    html.indexOf('page_initial')
+  );
+  const infos = html_sub.split(';');
+  const scramble_id$ = infos[1].split('=')[1].trim();
+  const aid$ = infos[3].split('=')[1].trim();
   const res: ComicReader[] = [];
   $('div.panel-body > div.row.thumb-overlay-albums > div.center.scramble-page').each((i, el) => {
     const $el = $(el);
     const $img = $el.find(ElementTypes.img);
-    res.push({ imgUrl: helpElAttr($img, ElementAttr.dataOriginal) });
+    res.push({
+      imgUrl: helpElAttr($img, ElementAttr.dataOriginal),
+      aid: aid$,
+      scrambleId: scramble_id$,
+    });
   });
+
   return res;
 };

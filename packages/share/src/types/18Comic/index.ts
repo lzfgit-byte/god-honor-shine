@@ -12,4 +12,6 @@ export interface Comic18Detail {
 }
 export interface ComicReader {
   imgUrl?: string;
+  aid?: string;
+  scrambleId?: string;
 }

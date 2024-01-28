@@ -1,5 +1,9 @@
 <template>
-  <div flex flex-col> </div>
+  <div flex flex-col items-center class="ghs-18-container" h-full w-full>
+    <div v-for="item in images" :key="item.imgUrl" class="ghs-18-image" flex>
+      <ComicImg :url="item.imgUrl" :aid="item.aid" :scramble-id="item.scrambleId"></ComicImg>
+    </div>
+  </div>
   <GhsDialog
     v-model:visible="visible"
     title="目录"
@@ -42,8 +46,8 @@
   import { GHSMessage } from '@/components/message';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   import GhsText from '@/components/text/ghs-text.vue';
-  import Comic18Row from '@/feature/18comic/components/comic-18-row.vue';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
+  import ComicImg from '@/feature/18comic/components/comic-img.vue';
   const route = useRoute();
 
   const visible = ref(false);
@@ -85,6 +89,12 @@
     }
     .c18-time {
       width: 100px;
+    }
+  }
+  .ghs-18-container {
+    overflow: auto;
+    .ghs-18-image {
+      width: 90%;
     }
   }
 </style>
