@@ -16,7 +16,7 @@
       <GhsText :value="author" />
     </div>
     <div v-if="tags" class="ghs-item-tags" w-full relative flex justify-start items-center>
-      {{ tags.map((i) => i.title).join(' ') }}
+      <GhsText :value="tags.map((i) => i.title).join(' ')" />
     </div>
   </div>
 </template>

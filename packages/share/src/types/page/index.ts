@@ -4,6 +4,8 @@ export enum ElementAttr {
   href = 'href',
   class = 'class',
   dataWebp = 'data-webp',
+  dataSrc = 'data-src',
+  dataOriginal = 'data-original',
 }
 export enum ElementTypes {
   a = 'a',

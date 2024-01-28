@@ -34,7 +34,7 @@ export const routes: RouterType[] = [
     path: '/18-comic',
     name: '18Comic',
     aliasZH: '18C',
-    icon: 'https://rule34video.com/favicon.ico',
+    icon: 'https://18comic.vip/favicon.ico',
     showInMenu: true,
     component: () => import('@/feature/18comic/18-comic.vue'),
   },
