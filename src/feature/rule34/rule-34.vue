@@ -59,7 +59,6 @@
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
 </template>
 <script setup lang="ts">
-  import { it } from 'node:test';
   import { onMounted, ref } from 'vue-demi';
   import { computed } from 'vue';
   import type { PageTags } from '@ghs/share';

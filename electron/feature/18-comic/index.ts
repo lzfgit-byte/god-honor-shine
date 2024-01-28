@@ -7,7 +7,7 @@ import { ElementAttr, ElementTypes } from '@ghs/share';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Comic18Detail } from '@ghs/share/src';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
-const BASE_URL = `https://18comic.vip/`;
+const BASE_URL = `https://18comic.vip`;
 const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more: Cheerio<AnyNode> = $('ul.pagination > li');
   // 首页无分页

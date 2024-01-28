@@ -55,11 +55,28 @@
       </div>
     </template>
   </ViewLayout>
-  <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
+  <GhsDialog
+    v-model:visible="visible"
+    title="目录"
+    :destroy-on-close="true"
+    top="5%"
+    :mask-closed="true"
+  >
+    <div flex flex-col>
+      <div w-full flex m-b-2>
+        <GhsText :value="detail.detail" />
+      </div>
+      <GhsScroller max-height="80vh">
+        <Comic18Row :detail="detail" @click="showDetail"></Comic18Row>
+      </GhsScroller>
+    </div>
+  </GhsDialog>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
-  import { f_request_html_get, f_win_html_get, f_win_open_any } from '@/utils/functions';
+  import type { Comic18Detail } from '@ghs/share';
+  import type { Comic18Content } from '@ghs/share/src';
+  import { f_request_html_get, f_win_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -70,15 +87,21 @@
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   import { c18_f_getPageInfo, c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
-  import GhsPlayer from '@/components/player/ghs-player.vue';
-  import type { GhsPlayerExpose } from '@/components/player/types';
-  const ghsPlayerRef = ref<GhsPlayerExpose>();
+  import GhsDialog from '@/components/dialog/ghs-dialog.vue';
+  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
+  import GhsText from '@/components/text/ghs-text.vue';
+  import Comic18Row from '@/feature/18comic/components/comic-18-row.vue';
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('18Comic');
+  const visible = ref(false);
+  const detail = ref<Comic18Detail>();
   const imgClick = async (item) => {
     const html = await f_win_html_get(item.jumpUrl);
-    const detail = await c18_f_get_contents(html);
-    console.log(detail);
+    detail.value = await c18_f_get_contents(html);
+    visible.value = true;
+  };
+  const showDetail = (item: Comic18Content) => {
+    const html = f_win_html_get(item.link);
   };
   const {
     load,
