@@ -59,8 +59,7 @@
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
-  import code from '@/feature/rule34/code/clear-others?raw';
-  import { f_request_html_get, f_win_open_any } from '@/utils/functions';
+  import { f_request_html_get, f_win_html_get, f_win_open_any } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -77,7 +76,7 @@
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('18Comic');
   const imgClick = async (item) => {
-    f_win_open_any(item.jumpUrl, code, 1200, 800);
+    const h = await f_win_html_get(item.jumpUrl);
   };
   const {
     load,
@@ -103,6 +102,7 @@
       return await c18_f_getPageInfo(html);
     },
     resolveSearch: (value: string) => {
+      searchHistorySave(value);
       // TODO
       return `https://rule34video.com/search/${value.replace(' ', '-')}/`;
     },

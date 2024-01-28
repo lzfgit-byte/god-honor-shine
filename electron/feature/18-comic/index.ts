@@ -8,14 +8,19 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 
 const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
-  let $more: Cheerio<AnyNode>;
+  let $more: Cheerio<AnyNode> = $('ul.pagination > li');
   // 首页无分页
   const res: PaginationType[] = [];
   $more?.each((i, el) => {
     // li标签
     const $el = $(el);
     const $a = $el.find('a');
-    let title = $el.hasClass('next') ? 'next' : $el.hasClass('prev') ? 'prev' : helpElText($a);
+    const $span = $a.find('span');
+    let title = $el.hasClass('prevnext')
+      ? 'next'
+      : $el.hasClass('prev')
+      ? 'prev'
+      : helpElText($a) || helpElText($span);
     title = title.replace(/\n/g, '').trim();
     let url = helpElAttr($a, 'href');
     const isCurrent = $el.hasClass('active');
@@ -56,7 +61,7 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
   $category.each((i, el) => {
     flatTags.push({ title: helpElText($(el)) });
   });
-  res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
+  res.push({ title, coverImg, author, tags, flatTags, jumpUrl: `https://18comic.vip/${jumpUrl}` });
 };
 const c18_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
@@ -69,6 +74,10 @@ const c18_getItems = ($: CheerioAPI): PageItemType[] => {
     loadItem(res, $, $el);
   });
   $('div.row > div.col-sm-12 > div.row.m-0 div.well').each((i, el) => {
+    const $el = $(el);
+    loadItem(res, $, $el);
+  });
+  $('div.col-xs-6.col-sm-6.col-md-4.list-col div.well').each((i, el) => {
     const $el = $(el);
     loadItem(res, $, $el);
   });
