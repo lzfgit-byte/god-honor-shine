@@ -1,5 +1,5 @@
 <template>
-  <ViewLayout>
+  <ViewLayout :init-slide-show="true">
     <template #action>
       <GhsButton @click="visible = true">显示目录</GhsButton>
       <GhsButton @click="router.back()">返回</GhsButton>
@@ -15,13 +15,10 @@
         ></ImgViewer>
       </div>
     </template>
+    <template #slide>
+      <!--      <GhsImgContent v-model:detail="detail" v-model:images="images"></GhsImgContent> -->
+    </template>
   </ViewLayout>
-
-  <GhsImgContent
-    v-model:visible="visible"
-    v-model:detail="detail"
-    v-model:images="images"
-  ></GhsImgContent>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
@@ -59,7 +56,6 @@
     if (link) {
       const html = await f_win_html_get(link);
       detail.value = await c18_f_get_contents(html);
-      visible.value = true;
     } else {
       await GHSMessage.info('link 为空');
     }

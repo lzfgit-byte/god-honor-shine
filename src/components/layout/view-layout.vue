@@ -51,6 +51,7 @@
   import { Close } from '@vicons/ionicons5';
   import { CacheFileType, executeFunc } from '@ghs/share';
   import { useVModel } from '@vueuse/core';
+  import { onMounted } from 'vue-demi';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
   import { f_cache_dir_size, f_cache_suffix_clean, f_logger_db_list } from '@/utils/functions';
@@ -58,7 +59,7 @@
   import { GHSClassLog } from '@/components/log';
   import GhsLoading from '@/components/loading/ghs-loading.vue';
 
-  const props = defineProps({ reload: Function, loading: Boolean });
+  const props = defineProps({ reload: Function, loading: Boolean, initSlideShow: Boolean });
   const emits = defineEmits(['update:loading']);
   const loading_ = useVModel(props, 'loading', emits);
   const slideShow = ref(false);
@@ -86,6 +87,10 @@
     const data = await f_logger_db_list();
     detail(data.map((i) => i.value));
   };
+  onMounted(() => {
+    slideShow.value = props.initSlideShow;
+    enterShow.value = props.initSlideShow;
+  });
 </script>
 
 <style scoped lang="less">
