@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import { nextTick, watch } from 'vue-demi';
 import { executeFunc } from '@ghs/share';
+import { GHSMessage } from '@/components/message';
 interface OptType {
   resolveCacheHtml?: (url: string) => void;
   resolveMainPage?: (url: string) => Promise<MainPage>;
@@ -29,6 +30,10 @@ export default (opts: OptType) => {
     currentUrl.value = url;
     firstUrl.value = firstUrl.value || url;
     const mainPage = await opts?.resolveMainPage(url);
+    if (mainPage.items.length === 0) {
+      await GHSMessage.error(`当前数据链接没有获取元素->${url}`);
+      return;
+    }
     pagination.value = [];
     items.value = [];
     tags.value = [];

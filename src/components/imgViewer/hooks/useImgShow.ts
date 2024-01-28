@@ -12,8 +12,8 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
   const imgUrl = computed(() =>
     images.value.length > 0 ? images.value[current.value][choseUrl.value] : ''
   );
+  const alreadyCache = [];
   const preloadUrl = computed(() => {
-    const alreadyCache = ref([]);
     const allImgLength = images.value.length;
     const executeCacheLength = +(allImgLength / 4).toFixed(0);
     const cacheLength = executeCacheLength ? Math.min(3, executeCacheLength) : 0;
@@ -38,9 +38,9 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
         c--;
       }
     }
-    const all = [...afterRes, ...beforeRes];
-    alreadyCache.value.push(...all);
-    return all.filter((item) => !alreadyCache.value.includes(item));
+    const all = [...afterRes, ...beforeRes].filter((item) => !alreadyCache.includes(item));
+    alreadyCache.push(...all);
+    return all;
   });
   const beforeChange = () => {
     choseUrl.value = 'minUrl';

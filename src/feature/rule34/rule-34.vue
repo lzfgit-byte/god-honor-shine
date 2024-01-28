@@ -87,7 +87,7 @@
     reload();
   };
   const imgClick = async (item) => {
-    f_win_open_any(item.jumpUrl, code, 831, 600);
+    f_win_open_any(item.jumpUrl, code, 1200, 800);
   };
   const {
     load,
