@@ -1,12 +1,13 @@
 import * as cheerio from 'cheerio';
-import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+import type { Comic18Content, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { AnyNode, CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import type { Cheerio } from 'cheerio/lib/cheerio';
+import type { Comic18Detail } from '@ghs/share/src';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
-
+const BASE_URL = `https://18comic.vip/`;
 const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more: Cheerio<AnyNode> = $('ul.pagination > li');
   // 首页无分页
@@ -61,7 +62,7 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
   $category.each((i, el) => {
     flatTags.push({ title: helpElText($(el)) });
   });
-  res.push({ title, coverImg, author, tags, flatTags, jumpUrl: `https://18comic.vip/${jumpUrl}` });
+  res.push({ title, coverImg, author, tags, flatTags, jumpUrl: `${BASE_URL}${jumpUrl}` });
 };
 const c18_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
@@ -98,4 +99,22 @@ export const c18_getPageInfo = (html: string): MainPage => {
     items: c18_getItems($),
     tags: c18_getTags($),
   };
+};
+
+export const c18_get_contents = (html: string): Comic18Detail => {
+  const $: CheerioAPI = cheerio.load(html);
+  const res: Comic18Content[] = [];
+  const $detail = $('#intro-block div.p-t-5.p-b-5');
+  $('#episode-block div.episode > ul.btn-toolbar > a').each((i, el) => {
+    const $a = $(el);
+    const $li = $a.find('li');
+    const $time = $a.find('span.hidden-xs');
+    const title = helpElText($li);
+    res.push({
+      title,
+      time: helpElText($time),
+      link: `${BASE_URL}${helpElAttr($a, ElementAttr.href)}`,
+    });
+  });
+  return { detail: helpElText($detail), contents: res };
 };

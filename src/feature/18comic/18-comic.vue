@@ -69,14 +69,16 @@
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
-  import { c18_f_getPageInfo } from '@/feature/18comic/apis/18ComicApis';
+  import { c18_f_getPageInfo, c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import type { GhsPlayerExpose } from '@/components/player/types';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('18Comic');
   const imgClick = async (item) => {
-    const h = await f_win_html_get(item.jumpUrl);
+    const html = await f_win_html_get(item.jumpUrl);
+    const detail = await c18_f_get_contents(html);
+    console.log(detail);
   };
   const {
     load,
