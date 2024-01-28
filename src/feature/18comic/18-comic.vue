@@ -55,28 +55,11 @@
       </div>
     </template>
   </ViewLayout>
-  <GhsDialog
-    v-model:visible="visible"
-    title="目录"
-    :destroy-on-close="true"
-    top="5%"
-    :mask-closed="true"
-  >
-    <div flex flex-col>
-      <div w-full flex m-b-2>
-        <GhsText :value="detail.detail" />
-      </div>
-      <GhsScroller max-height="80vh">
-        <Comic18Row :detail="detail" @click="showDetail"></Comic18Row>
-      </GhsScroller>
-    </div>
-  </GhsDialog>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue-demi';
-  import type { Comic18Detail, ComicReader } from '@ghs/share';
-  import type { Comic18Content } from '@ghs/share/src';
-  import { f_request_html_get, f_win_html_get } from '@/utils/functions';
+  import { onMounted } from 'vue-demi';
+  import { useRouter } from 'vue-router';
+  import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -86,28 +69,13 @@
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
-  import {
-    c18_f_getPageInfo,
-    c18_f_get_contents,
-    c18_f_get_images,
-  } from '@/feature/18comic/apis/18ComicApis';
-  import GhsDialog from '@/components/dialog/ghs-dialog.vue';
-  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
-  import GhsText from '@/components/text/ghs-text.vue';
-  import Comic18Row from '@/feature/18comic/components/comic-18-row.vue';
+  import { c18_f_getPageInfo } from '@/feature/18comic/apis/18ComicApis';
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('18Comic');
-  const visible = ref(false);
-  const detail = ref<Comic18Detail>();
-  const imgClick = async (item) => {
-    const html = await f_win_html_get(item.jumpUrl);
-    detail.value = await c18_f_get_contents(html);
-    visible.value = true;
-  };
-  const showDetail = async (item: Comic18Content) => {
-    const html = await f_win_html_get(item.link);
-    const images: ComicReader[] = await c18_f_get_images(html);
-    console.log(images);
+
+  const router = useRouter();
+  const imgClick = (item) => {
+    router.push({ path: '/18-comic-reader', query: { link: item.jumpUrl } });
   };
   const {
     load,

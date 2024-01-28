@@ -38,6 +38,13 @@ export const routes: RouterType[] = [
     showInMenu: true,
     component: () => import('@/feature/18comic/18-comic.vue'),
   },
+  {
+    path: '/18-comic-reader',
+    name: '18-comic-reader',
+    aliasZH: '18C',
+    showInMenu: true,
+    component: () => import('@/feature/18comic/components/comic-reader.vue'),
+  },
 ];
 
 const router = createRouter({
