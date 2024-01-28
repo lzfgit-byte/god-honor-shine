@@ -26,9 +26,17 @@ export const routes: RouterType[] = [
     path: '/rule34',
     name: 'rule34',
     aliasZH: 'R34',
-    icon: 'https://thehentaiworld.com/favicon.ico',
+    icon: 'https://rule34video.com/favicon.ico',
     showInMenu: true,
     component: () => import('@/feature/rule34/rule-34.vue'),
+  },
+  {
+    path: '/18-comic',
+    name: '18Comic',
+    aliasZH: '18C',
+    icon: 'https://rule34video.com/favicon.ico',
+    showInMenu: true,
+    component: () => import('@/feature/18comic/18-comic.vue'),
   },
 ];
 

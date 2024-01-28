@@ -1,4 +1,4 @@
-import type { HWImgInfo, HWVideoInfo, MainPage } from '@ghs/share';
+import type { MainPage } from '@ghs/share';
 import { executeFunction } from '@/utils/ipc';
 
 export const r34_f_getPageInfo = (html: string): Promise<MainPage> => {

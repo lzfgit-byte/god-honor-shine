@@ -8,7 +8,7 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
 
-const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
+const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
   const ids = [
     '#custom_list_videos_most_recent_videos_pagination',
     '#custom_list_videos_latest_videos_list_pagination',
@@ -32,40 +32,12 @@ const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
     let title = $el.hasClass('next') ? 'next' : $el.hasClass('prev') ? 'prev' : helpElText($a);
     title = title.replace(/\n/g, '').trim();
     let url = helpElAttr($a, 'href');
-    if (url === '#search') {
-      const dataParameters = helpElAttr($a, 'data-parameters');
-      const arr1 = dataParameters.split(';');
-      let qStr = 'mode:async&function:get_block&block_id:custom_list_videos_videos_list_search';
-      let qValue = '';
-      arr1.forEach((item) => {
-        const arr2 = item.split(':');
-        if (arr2.length === 2) {
-          const [key, value] = arr2;
-          const arr3 = key.split('+');
-          if (arr3.length > 0) {
-            arr3.forEach((tm) => {
-              qStr += `${tm}=${value}&`;
-            });
-          } else {
-            qStr += `${key}=${value}&`;
-          }
-
-          if (key === 'q') {
-            qValue = value;
-          }
-        }
-      });
-      url = `https://rule34video.com/search/${qValue}/?${qStr.substring(0, qStr.length - 1)}`;
-    }
-    if (!url.startsWith('https://rule34video.com')) {
-      url = `https://rule34video.com${url}`;
-    }
     const isCurrent = $el.hasClass('active');
     res.push({ title, isCurrent, url });
   });
   return res;
 };
-const r34_getItems = ($: CheerioAPI): PageItemType[] => {
+const c18_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
   const ids = [
     '#custom_list_videos_most_recent_videos',
@@ -104,7 +76,7 @@ const r34_getItems = ($: CheerioAPI): PageItemType[] => {
   });
   return res;
 };
-const r34_getTags = ($: CheerioAPI): PageTags[] => {
+const c18_getTags = ($: CheerioAPI): PageTags[] => {
   return [
     { title: 'Most Relevant', url: '' },
     { title: 'Latest', url: 'sort_by;post_date' },
@@ -116,11 +88,11 @@ const r34_getTags = ($: CheerioAPI): PageTags[] => {
  * 获取首屏的信息
  * @param html
  */
-export const r34_getPageInfo = (html: string): MainPage => {
+export const c18_getPageInfo = (html: string): MainPage => {
   const $: CheerioAPI = cheerio.load(html);
   return {
-    pagination: r34_getPagination($),
-    items: r34_getItems($),
-    tags: r34_getTags($),
+    pagination: c18_getPagination($),
+    items: c18_getItems($),
+    tags: c18_getTags($),
   };
 };
