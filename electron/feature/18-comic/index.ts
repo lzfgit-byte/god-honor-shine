@@ -1,12 +1,21 @@
 import * as cheerio from 'cheerio';
-import type { Comic18Content, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+import type {
+  Comic18Content,
+  Comic18Detail,
+  ComicReader,
+  MainPage,
+  PageItemType,
+  PageTags,
+  PaginationType,
+} from '@ghs/share';
 import type { AnyNode, CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import type { Cheerio } from 'cheerio/lib/cheerio';
-import type { Comic18Detail } from '@ghs/share/src';
+
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
+import { sendMessage } from '../../utils/message';
 const BASE_URL = `https://18comic.vip`;
 const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more: Cheerio<AnyNode> = $('ul.pagination > li');
@@ -117,4 +126,15 @@ export const c18_get_contents = (html: string): Comic18Detail => {
     });
   });
   return { detail: helpElText($detail), contents: res };
+};
+
+export const c18_get_images = (html: string): ComicReader[] => {
+  const $: CheerioAPI = cheerio.load(html);
+  const res: ComicReader[] = [];
+  $('div.panel-body > div.row.thumb-overlay-albums > div.center.scramble-page').each((i, el) => {
+    const $el = $(el);
+    const $img = $el.find(ElementTypes.img);
+    res.push({ imgUrl: helpElAttr($img, ElementAttr.dataOriginal) });
+  });
+  return res;
 };

@@ -10,3 +10,6 @@ export interface Comic18Detail {
   detail?: string;
   contents?: Comic18Content[];
 }
+export interface ComicReader {
+  imgUrl?: string;
+}

@@ -74,7 +74,7 @@
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
-  import type { Comic18Detail } from '@ghs/share';
+  import type { Comic18Detail, ComicReader } from '@ghs/share';
   import type { Comic18Content } from '@ghs/share/src';
   import { f_request_html_get, f_win_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
@@ -86,7 +86,11 @@
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
-  import { c18_f_getPageInfo, c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
+  import {
+    c18_f_getPageInfo,
+    c18_f_get_contents,
+    c18_f_get_images,
+  } from '@/feature/18comic/apis/18ComicApis';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import GhsText from '@/components/text/ghs-text.vue';
@@ -100,8 +104,10 @@
     detail.value = await c18_f_get_contents(html);
     visible.value = true;
   };
-  const showDetail = (item: Comic18Content) => {
-    const html = f_win_html_get(item.link);
+  const showDetail = async (item: Comic18Content) => {
+    const html = await f_win_html_get(item.link);
+    const images: ComicReader[] = await c18_f_get_images(html);
+    console.log(images);
   };
   const {
     load,
