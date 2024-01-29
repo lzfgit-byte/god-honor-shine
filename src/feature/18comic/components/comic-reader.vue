@@ -7,6 +7,8 @@
       <div h-full w-full relative>
         <ImgViewer
           ref="imgViewRef"
+          v-model:current-img="currentImg_"
+          v-model:total-img="totalImg_"
           :solve-img-comp="ComicImg"
           :reader-mode="true"
           :images-arr="imagesArr"
@@ -15,7 +17,13 @@
       </div>
     </template>
     <template #slide>
-      <GhsImgContent v-model:detail="detail" v-model:images="images" :link="link"></GhsImgContent>
+      <GhsImgContent
+        v-model:detail="detail"
+        v-model:images="images"
+        v-model:total-img="totalImg_"
+        v-model:current-img="currentImg_"
+        :link="link"
+      ></GhsImgContent>
     </template>
   </ViewLayout>
 </template>
@@ -24,6 +32,7 @@
   import type { Comic18Detail, ComicReader, HWImgInfo } from '@ghs/share';
   import { useRoute, useRouter } from 'vue-router';
   import { computed } from 'vue';
+  import { useVModel } from '@vueuse/core';
   import { f_win_html_get } from '@/utils/functions';
   import { c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
   import { GHSMessage } from '@/components/message';
@@ -47,6 +56,8 @@
     }
     return {};
   });
+  const currentImg_ = ref();
+  const totalImg_ = ref();
   const link: string = route.query.link as any;
   const onInit = async () => {
     if (link) {

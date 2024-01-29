@@ -28,9 +28,9 @@
 
   import type { Comic18Content } from '@ghs/share/src';
   import type { Ref } from 'vue';
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { useVModel } from '@vueuse/core';
-  import { onMounted } from 'vue-demi';
+  import { onMounted, watchEffect } from 'vue-demi';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import { f_win_html_get } from '@/utils/functions';
@@ -40,8 +40,17 @@
     detail: Object as PropType<Comic18Detail>,
     images: Array as PropType<ComicReader[]>,
     link: String,
+    currentImg: String,
+    totalImg: String,
   });
-  const emits = defineEmits(['update:visible', 'update:images']);
+  const emits = defineEmits([
+    'update:visible',
+    'update:images',
+    'update:currentImg',
+    'update:totalImg',
+  ]);
+  const currentImg_ = useVModel(props, 'currentImg', emits);
+  const totalImg_ = useVModel(props, 'totalImg', emits);
   const contents = computed(() => props?.detail?.contents || []);
   const _images: Ref<ComicReader[]> = useVModel(props, 'images', emits) as any;
   const { initHistory, saveOrUpdateHistory, historyData } = useComicHistory(props.link);
@@ -54,14 +63,24 @@
     }
     return '';
   });
+  watchEffect(() => {
+    if (currentImg_.value && totalImg_.value && historyData?.value?.content_link) {
+      saveOrUpdateHistory({
+        comic_link: props.link,
+        content_link: historyData.value.content_link,
+        current_page: `${+currentImg_.value + 1}`,
+        total_page: `${totalImg_.value}`,
+      });
+    }
+  });
   const showDetail = async (item: Comic18Content) => {
     const html = await f_win_html_get(item.link);
     _images.value = await c18_f_get_images(html);
     await saveOrUpdateHistory({
       comic_link: props.link,
       content_link: item.link,
-      current_page: `${contents.value.findIndex((i) => i.link === item.link)}`,
-      total_page: `${contents.value.length}`,
+      current_page: `${currentImg_.value}`,
+      total_page: `${totalImg_.value}`,
     });
     await initHistory();
   };

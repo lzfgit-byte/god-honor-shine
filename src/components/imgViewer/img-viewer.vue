@@ -90,6 +90,8 @@
   import type { HWImgInfo } from '@ghs/share';
   import { ArrowBackCircleOutline, ArrowForwardCircleOutline, Close } from '@vicons/ionicons5';
   import type { PropType } from 'vue-demi';
+  import { useVModel } from '@vueuse/core';
+  import { watchEffect } from 'vue-demi';
   import GhsImg2 from '@/components/image/ghs-img2.vue';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
@@ -103,7 +105,11 @@
     solveImgComp: { type: Object, default: GhsImg2 },
     imgAttrs: Object,
     imagesArr: Array as PropType<HWImgInfo[]>,
+    currentImg: String,
+    totalImg: String,
   });
+  const emits = defineEmits(['update:currentImg', 'update:totalImg']);
+
   const {
     bodyRef,
     imgContainerRef,
@@ -127,6 +133,12 @@
     handleBackClick,
     preloadUrl,
   } = useImgShow(translateX, translateY, scale);
+  const currentImg_ = useVModel(props, 'currentImg', emits);
+  const totalImg_ = useVModel(props, 'totalImg', emits);
+  watchEffect(() => {
+    currentImg_.value = `${current.value}`;
+    totalImg_.value = `${images?.value?.length}`;
+  });
   const expose = {
     show: (ims: HWImgInfo[]) => {
       translateX.value = 0;
