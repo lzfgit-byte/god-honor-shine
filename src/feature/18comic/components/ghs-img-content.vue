@@ -14,6 +14,7 @@
         p-2
         class="c18-container"
         :class="{ 'c18-current': currentLink === item.link }"
+        :title="item.link"
         @click="showDetail(item)"
       >
         <div class="c18-title" flex-inline><GhsText :value="item?.title" /></div>
@@ -65,18 +66,6 @@
     }
     return content_link.value;
   });
-
-  watchEffect(() => {
-    if (content_link.value && currentImg_.value && totalImg_.value) {
-      saveOrUpdateHistory({
-        id: historyData?.value?.id,
-        comic_link: props.link,
-        content_link: content_link.value,
-        current_page: `${+currentImg_.value + 1}`,
-        total_page: `${totalImg_.value}`,
-      });
-    }
-  });
   const showDetail = async (item: Comic18Content) => {
     const html = await f_win_html_get(item.link);
     _images.value = await c18_f_get_images(html);
@@ -92,10 +81,34 @@
   };
 
   const initDetail = async (item: T_comic_history) => {
-    // const html = await f_win_html_get(item.content_link);
-    // _images.value = await c18_f_get_images(html);
-    // currentImg_.value = `${+item.current_page - 1}`;
+    if (!item?.content_link) {
+      return;
+    }
+    const html = await f_win_html_get(item.content_link);
+    _images.value = await c18_f_get_images(html);
+    currentImg_.value = `${+item.current_page - 1}`;
+    await saveOrUpdateHistory({
+      id: historyData.value?.id,
+      comic_link: props.link,
+      content_link: item.content_link,
+      current_page: `${+currentImg_.value + 1}`,
+      total_page: `${totalImg_.value}`,
+    });
   };
+  watchEffect(() => {
+    if (content_link.value && currentImg_.value !== null && totalImg_.value) {
+      saveOrUpdateHistory({
+        id: historyData?.value?.id,
+        comic_link: props.link,
+        content_link: content_link.value,
+        current_page: `${+currentImg_.value + 1}`,
+        total_page: `${totalImg_.value}`,
+      });
+    }
+    if (currentLink.value && _images.value?.length === 0 && !historyData.value) {
+      initDetail({ content_link: currentLink.value });
+    }
+  });
 
   onMounted(() => {
     initHistory(initDetail);

@@ -27,5 +27,5 @@ export const c18_f_history_update = (data: T_comic_history): Promise<boolean> =>
   return executeFunction('c18_history_update', data);
 };
 export const c18_f_history_get = (data: T_comic_history): Promise<T_comic_history> => {
-  return executeFunction('c18_history_get');
+  return executeFunction('c18_history_get', data);
 };
