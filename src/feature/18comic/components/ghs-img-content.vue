@@ -24,13 +24,14 @@
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
-  import type { Comic18Detail, ComicReader } from '@ghs/share';
+  import type { Comic18Detail, ComicReader, T_comic_history } from '@ghs/share';
 
   import type { Comic18Content } from '@ghs/share/src';
   import type { Ref } from 'vue';
   import { computed, ref } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { onMounted, watchEffect } from 'vue-demi';
+
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import { f_win_html_get } from '@/utils/functions';
@@ -79,14 +80,19 @@
     await saveOrUpdateHistory({
       comic_link: props.link,
       content_link: item.link,
-      current_page: `${currentImg_.value}`,
+      current_page: `${+currentImg_.value + 1}`,
       total_page: `${totalImg_.value}`,
     });
     await initHistory();
   };
+  const initDetail = async (item: T_comic_history) => {
+    const html = await f_win_html_get(item.content_link);
+    _images.value = await c18_f_get_images(html);
+    currentImg_.value = `${+item.current_page - 1}`;
+  };
 
   onMounted(() => {
-    initHistory();
+    initHistory(initDetail);
   });
 </script>
 
