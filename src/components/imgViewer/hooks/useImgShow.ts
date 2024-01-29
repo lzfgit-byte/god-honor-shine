@@ -1,7 +1,7 @@
-import { ref } from 'vue-demi';
+import { onMounted, ref } from 'vue-demi';
 import type { HWImgInfo } from '@ghs/share';
 import type { Ref } from 'vue';
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 
 export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) => {
   const images = ref<HWImgInfo[]>([]);
@@ -76,6 +76,23 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
       visible.value = false;
     }
   };
+  const func = (event: KeyboardEvent) => {
+    if (event.type === 'keydown') {
+      if (event.key === 'ArrowRight') {
+        nextImg();
+      }
+      if (event.key === 'ArrowLeft') {
+        preImg();
+      }
+    }
+  };
+  onMounted(() => {
+    window.addEventListener('keydown', func);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', func);
+  });
   return {
     showCurrent,
     visible,
