@@ -8,7 +8,7 @@ let getTable = () => {
   return table;
 };
 
-export const c18_history_save = (data: T_comic_history) => {
+export const c18_history_saveOrUpdate = (data: T_comic_history) => {
   const table = getTable();
   table.insertData(data);
 };
@@ -19,4 +19,8 @@ export const c18_history_delete = (data: T_comic_history): boolean => {
 export const c18_history_update = (data: T_comic_history): boolean => {
   const table = getTable();
   return table.update(data);
+};
+export const c18_history_get = (data: T_comic_history): T_comic_history => {
+  const table = getTable();
+  return table.getByEntity(data);
 };

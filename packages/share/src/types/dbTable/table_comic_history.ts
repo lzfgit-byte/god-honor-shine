@@ -5,18 +5,18 @@ import type { T_OptType } from '@/types/dbTable/tableGlobal';
  */
 export interface T_comic_history {
   id?: string;
-  comicLink?: string; // 漫画链接
-  contentLink?: string; // 目录跳转链接
-  currentPage?: string; // 当前页数
-  totalPage?: string; // 全文页数
+  comic_link?: string; // 漫画链接
+  content_link?: string; // 目录跳转链接
+  current_page?: string; // 当前页数
+  total_page?: string; // 全文页数
 }
-const name = 'search_history';
+const name = 'comic_history';
 const data: T_comic_history = {
   id: 'id',
-  comicLink: 'hentaiWord',
-  contentLink: 'value',
-  currentPage: 'date',
-  totalPage: 'date',
+  comic_link: 'hentaiWord',
+  content_link: 'value',
+  current_page: 'date',
+  total_page: 'date',
 };
 
 export const T_comic_history_init: T_OptType = {

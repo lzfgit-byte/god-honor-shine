@@ -15,7 +15,7 @@
       </div>
     </template>
     <template #slide>
-      <GhsImgContent v-model:detail="detail" v-model:images="images"></GhsImgContent>
+      <GhsImgContent v-model:detail="detail" v-model:images="images" :link="link"></GhsImgContent>
     </template>
   </ViewLayout>
 </template>
@@ -23,9 +23,7 @@
   import { onMounted, ref } from 'vue-demi';
   import type { Comic18Detail, ComicReader, HWImgInfo } from '@ghs/share';
   import { useRoute, useRouter } from 'vue-router';
-
   import { computed } from 'vue';
-
   import { f_win_html_get } from '@/utils/functions';
   import { c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
   import { GHSMessage } from '@/components/message';
@@ -38,7 +36,6 @@
   const route = useRoute();
   const router = useRouter();
   const imgViewRef = ref<ImgViewerExpose>();
-  const visible = ref(false);
   const detail = ref<Comic18Detail>();
   const images = ref<ComicReader[]>([]);
   const imagesArr = computed<HWImgInfo[]>(() =>
@@ -50,8 +47,8 @@
     }
     return {};
   });
+  const link: string = route.query.link as any;
   const onInit = async () => {
-    const link: string = route.query.link as any;
     if (link) {
       const html = await f_win_html_get(link);
       detail.value = await c18_f_get_contents(html);

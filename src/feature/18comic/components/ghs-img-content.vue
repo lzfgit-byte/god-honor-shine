@@ -28,21 +28,30 @@
   import type { Comic18Content } from '@ghs/share/src';
   import { computed } from 'vue';
   import { useVModel } from '@vueuse/core';
+  import { onMounted } from 'vue-demi';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import { f_win_html_get } from '@/utils/functions';
   import { c18_f_get_images } from '@/feature/18comic/apis/18ComicApis';
+  import useComicHistory from '@/feature/18comic/hook/useComicHistory';
   const props = defineProps({
     detail: Object as PropType<Comic18Detail>,
     images: Array as PropType<ComicReader[]>,
+    link: String,
   });
   const emits = defineEmits(['update:visible', 'update:images']);
   const contents = computed(() => props?.detail?.contents || []);
   const _images = useVModel(props, 'images', emits);
+  const { initHistory, saveOrUpdateHistory, historyData } = useComicHistory(props.link);
   const showDetail = async (item: Comic18Content) => {
     const html = await f_win_html_get(item.link);
     _images.value = await c18_f_get_images(html);
+    await saveOrUpdateHistory({ comic_link: props.link, content_link: item.link });
   };
+
+  onMounted(() => {
+    initHistory();
+  });
 </script>
 
 <style scoped lang="less">
@@ -50,6 +59,7 @@
   .c18-container {
     cursor: pointer;
     border-radius: @radius;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 2px 8px;
     &:hover {
       background-color: #333;
       color: white;
