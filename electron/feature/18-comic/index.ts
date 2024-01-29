@@ -125,6 +125,14 @@ export const c18_get_contents = (html: string): Comic18Detail => {
       link: `${BASE_URL}${helpElAttr($a, ElementAttr.href)}`,
     });
   });
+  if (res.length === 0) {
+    const $link = $('link[rel=canonical]');
+    res.push({
+      title: '开始阅读',
+      time: 'now',
+      link: `${helpElAttr($link, ElementAttr.href)}`,
+    });
+  }
   return { detail: helpElText($detail), contents: res };
 };
 
