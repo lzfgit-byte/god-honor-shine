@@ -5,19 +5,21 @@ import type { T_OptType } from '@/types/dbTable/tableGlobal';
  */
 export interface T_comic_history {
   id?: string;
-  comicLink?: string;
-  contentLink?: string;
-  page?: string;
+  comicLink?: string; // 漫画链接
+  contentLink?: string; // 目录跳转链接
+  currentPage?: string; // 当前页数
+  totalPage?: string; // 全文页数
 }
 const name = 'search_history';
 const data: T_comic_history = {
   id: 'id',
   comicLink: 'hentaiWord',
   contentLink: 'value',
-  page: 'date',
+  currentPage: 'date',
+  totalPage: 'date',
 };
 
-export const T_search_history_init: T_OptType = {
+export const T_comic_history_init: T_OptType = {
   data,
   tableName: name,
 };

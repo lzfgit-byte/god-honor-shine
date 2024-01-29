@@ -1,5 +1,4 @@
-import type { ComicReader, MainPage } from '@ghs/share';
-import type { Comic18Detail } from '@ghs/share/src';
+import type { Comic18Detail, ComicReader, MainPage, T_comic_history } from '@ghs/share';
 
 import { executeFunction } from '@/utils/ipc';
 
@@ -15,4 +14,14 @@ export const c18_f_get_contents = (html: string): Promise<Comic18Detail> => {
  */
 export const c18_f_get_images = (html: string): Promise<ComicReader[]> => {
   return executeFunction('c18_get_images', html);
+};
+
+export const c18_f_history_save = (data: T_comic_history) => {
+  return executeFunction('c18_history_save', data);
+};
+export const c18_f_history_delete = (data: T_comic_history): Promise<boolean> => {
+  return executeFunction('c18_history_delete', data);
+};
+export const c18_f_history_update = (data: T_comic_history): Promise<boolean> => {
+  return executeFunction('c18_history_update', data);
 };
