@@ -63,6 +63,7 @@
       current_page: `${contents.value.findIndex((i) => i.link === item.link)}`,
       total_page: `${contents.value.length}`,
     });
+    await initHistory();
   };
 
   onMounted(() => {
