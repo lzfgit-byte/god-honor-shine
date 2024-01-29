@@ -30,7 +30,7 @@
   import type { Ref } from 'vue';
   import { computed, ref } from 'vue';
   import { useVModel } from '@vueuse/core';
-  import { onMounted, watchEffect } from 'vue-demi';
+  import { onMounted, watch, watchEffect } from 'vue-demi';
 
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import GhsText from '@/components/text/ghs-text.vue';
@@ -55,6 +55,7 @@
   const contents = computed(() => props?.detail?.contents || []);
   const _images: Ref<ComicReader[]> = useVModel(props, 'images', emits) as any;
   const { initHistory, saveOrUpdateHistory, historyData } = useComicHistory(props.link);
+  const content_link = ref('');
   const currentLink = computed(() => {
     if (historyData.value) {
       return historyData.value.content_link;
@@ -62,13 +63,15 @@
     if (props?.detail?.contents && props?.detail?.contents.length > 0) {
       return contents.value[0].link;
     }
-    return '';
+    return content_link.value;
   });
+
   watchEffect(() => {
-    if (currentImg_.value && totalImg_.value && historyData?.value?.content_link) {
+    if (content_link.value && currentImg_.value && totalImg_.value) {
       saveOrUpdateHistory({
+        id: historyData?.value?.id,
         comic_link: props.link,
-        content_link: historyData.value.content_link,
+        content_link: content_link.value,
         current_page: `${+currentImg_.value + 1}`,
         total_page: `${totalImg_.value}`,
       });
@@ -77,7 +80,9 @@
   const showDetail = async (item: Comic18Content) => {
     const html = await f_win_html_get(item.link);
     _images.value = await c18_f_get_images(html);
+    content_link.value = item.link;
     await saveOrUpdateHistory({
+      id: historyData.value.id,
       comic_link: props.link,
       content_link: item.link,
       current_page: `${+currentImg_.value + 1}`,
@@ -85,10 +90,11 @@
     });
     await initHistory();
   };
+
   const initDetail = async (item: T_comic_history) => {
-    const html = await f_win_html_get(item.content_link);
-    _images.value = await c18_f_get_images(html);
-    currentImg_.value = `${+item.current_page - 1}`;
+    // const html = await f_win_html_get(item.content_link);
+    // _images.value = await c18_f_get_images(html);
+    // currentImg_.value = `${+item.current_page - 1}`;
   };
 
   onMounted(() => {
