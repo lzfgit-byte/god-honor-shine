@@ -21,7 +21,7 @@ export class TableBuilder<T> {
     const tableName = opt.tableName;
     this.fields = keys(data).filter((key: string) => key !== this.primaryKey);
     this.tableName = tableName;
-    this.orderBy = opt.orderBy;
+    this.orderBy = opt?.orderBy || '';
     this.db = db;
     this.fieldStr = this.fields.join(',');
     this.fieldMark = this.fields.map(() => '?').join(',');

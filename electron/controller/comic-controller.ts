@@ -10,7 +10,17 @@ let getTable = () => {
 
 export const c18_history_saveOrUpdate = (data: T_comic_history) => {
   const table = getTable();
-  table.insertData(data);
+  const old = table.getByEntity({ comic_link: data.comic_link });
+  if (old) {
+    table.update({
+      ...old,
+      content_link: data.content_link,
+      current_page: data.current_page,
+      total_page: data.total_page,
+    });
+  } else {
+    table.insertData(data);
+  }
 };
 export const c18_history_delete = (data: T_comic_history): boolean => {
   const table = getTable();

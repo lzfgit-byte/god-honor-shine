@@ -13,6 +13,7 @@
         items-center
         p-2
         class="c18-container"
+        :class="{ 'c18-current': currentLink === item.link }"
         @click="showDetail(item)"
       >
         <div class="c18-title" flex-inline><GhsText :value="item?.title" /></div>
@@ -26,6 +27,7 @@
   import type { Comic18Detail, ComicReader } from '@ghs/share';
 
   import type { Comic18Content } from '@ghs/share/src';
+  import type { Ref } from 'vue';
   import { computed } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { onMounted } from 'vue-demi';
@@ -41,12 +43,26 @@
   });
   const emits = defineEmits(['update:visible', 'update:images']);
   const contents = computed(() => props?.detail?.contents || []);
-  const _images = useVModel(props, 'images', emits);
+  const _images: Ref<ComicReader[]> = useVModel(props, 'images', emits) as any;
   const { initHistory, saveOrUpdateHistory, historyData } = useComicHistory(props.link);
+  const currentLink = computed(() => {
+    if (historyData.value) {
+      return historyData.value.content_link;
+    }
+    if (props?.detail?.contents && props?.detail?.contents.length > 0) {
+      return contents.value[0].link;
+    }
+    return '';
+  });
   const showDetail = async (item: Comic18Content) => {
     const html = await f_win_html_get(item.link);
     _images.value = await c18_f_get_images(html);
-    await saveOrUpdateHistory({ comic_link: props.link, content_link: item.link });
+    await saveOrUpdateHistory({
+      comic_link: props.link,
+      content_link: item.link,
+      current_page: `${contents.value.findIndex((i) => i.link === item.link)}`,
+      total_page: `${contents.value.length}`,
+    });
   };
 
   onMounted(() => {
@@ -70,5 +86,9 @@
     .c18-time {
       width: 100px;
     }
+  }
+  .c18-current {
+    background-color: #333;
+    color: white;
   }
 </style>
