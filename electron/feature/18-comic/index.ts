@@ -48,7 +48,10 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
   if ($a.length === 0) {
     return;
   }
-  const $img = $a.find(ElementTypes.img);
+  let $img = $a.find(ElementTypes.img);
+  if ($img.length === 0) {
+    $img = $el.find('img');
+  }
   // author
   const $author = $el.find('div.title-truncate-index.hidden-xs > a');
   // tags
@@ -58,7 +61,9 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
 
   const title = helpElAttr($img, ElementAttr.title);
   const coverImg =
-    helpElAttr($img, ElementAttr.dataSrc) || helpElAttr($img, ElementAttr.dataOriginal);
+    helpElAttr($img, ElementAttr.dataSrc) ||
+    helpElAttr($img, ElementAttr.dataOriginal) ||
+    helpElAttr($img, ElementAttr.src);
   let author = '';
   $author.each((i, el) => {
     author += `${helpElText($(el))},`;
@@ -96,6 +101,10 @@ const c18_getItems = ($: CheerioAPI): PageItemType[] => {
     loadItem(res, $, $el);
   });
   $('div.list-col div.well').each((i, el) => {
+    const $el = $(el);
+    loadItem(res, $, $el);
+  });
+  $('div.list-col div.p-b-15.p-l-5.p-r-5').each((i, el) => {
     const $el = $(el);
     loadItem(res, $, $el);
   });
