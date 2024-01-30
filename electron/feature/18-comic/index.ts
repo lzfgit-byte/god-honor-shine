@@ -18,19 +18,20 @@ import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { sendMessage } from '../../utils/message';
 const BASE_URL = `https://18comic.vip`;
 const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
-  let $more: Cheerio<AnyNode> = $('ul.pagination > li');
+  let $more: Cheerio<AnyNode> = $('div.hidden-xs ul.pagination > li');
   // 首页无分页
   const res: PaginationType[] = [];
   $more?.each((i, el) => {
     // li标签
     const $el = $(el);
     const $a = $el.find('a');
-    const $span = $a.find('span');
-    let title = $el.hasClass('prevnext')
+    const $span = $a.length > 0 ? $a.find('span') : $el.find('span');
+    let title = $a.hasClass('prevnext')
       ? 'next'
-      : $el.hasClass('prev')
+      : $a.hasClass('prev')
       ? 'prev'
       : helpElText($a) || helpElText($span);
+    title = title === '«' ? 'prev' : title;
     title = title.replace(/\n/g, '').trim();
     let url = helpElAttr($a, 'href');
     const isCurrent = $el.hasClass('active');
@@ -39,7 +40,13 @@ const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
   return res;
 };
 const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheerio.Element>) => {
-  const $a = $el.find('div.thumb-overlay-albums a');
+  let $a = $el.find('div.thumb-overlay-albums a');
+  if ($a.length === 0) {
+    $a = $el.find('div.thumb-overlay a');
+  }
+  if ($a.length === 0) {
+    return;
+  }
   const $img = $a.find(ElementTypes.img);
   // author
   const $author = $el.find('div.title-truncate-index.hidden-xs > a');
@@ -87,7 +94,7 @@ const c18_getItems = ($: CheerioAPI): PageItemType[] => {
     const $el = $(el);
     loadItem(res, $, $el);
   });
-  $('div.col-xs-6.col-sm-6.col-md-4.list-col div.well').each((i, el) => {
+  $('div.list-col div.well').each((i, el) => {
     const $el = $(el);
     loadItem(res, $, $el);
   });

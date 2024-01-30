@@ -16,27 +16,43 @@
         top-0
         @click="handleBackClick"
       >
-        <div class="ghsiv-header" absolute flex items-center w-full left-0 top-0 z-4>
-          <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
-            <span>{{ showCurrent }} / {{ images.length }}</span>
+        <transition
+          enter-active-class="animate__animated animate__slideInDown"
+          leave-active-class="animate__animated animate__slideOutUp"
+        >
+          <div
+            v-show="!idle"
+            class="ghsiv-header"
+            absolute
+            flex
+            items-center
+            w-full
+            left-0
+            top-0
+            z-4
+          >
+            <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
+              <span>{{ showCurrent }} / {{ images.length }}</span>
+            </div>
+            <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
+              <span :title="imgUrl">
+                {{ images.length > 0 && (images[current]?.title || imgUrl) }}
+              </span>
+            </div>
+            <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
+              <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
+                缩略
+              </GhsButton>
+              <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
+                全图
+              </GhsButton>
+              <GhsIcon v-if="!readerMode" cursor-pointer color="white" @click="visible = false">
+                <Close> </Close>
+              </GhsIcon>
+            </div>
           </div>
-          <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
-            <span :title="imgUrl">
-              {{ images.length > 0 && (images[current]?.title || imgUrl) }}
-            </span>
-          </div>
-          <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
-            <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
-              缩略
-            </GhsButton>
-            <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
-              全图
-            </GhsButton>
-            <GhsIcon v-if="!readerMode" cursor-pointer color="white" @click="visible = false">
-              <Close> </Close>
-            </GhsIcon>
-          </div>
-        </div>
+        </transition>
+
         <div
           ref="bodyRef"
           class="ghsiv-body"
@@ -90,7 +106,7 @@
   import type { HWImgInfo } from '@ghs/share';
   import { ArrowBackCircleOutline, ArrowForwardCircleOutline, Close } from '@vicons/ionicons5';
   import type { PropType } from 'vue-demi';
-  import { useVModel } from '@vueuse/core';
+  import { useIdle, useVModel } from '@vueuse/core';
   import { watchEffect } from 'vue-demi';
   import GhsImg2 from '@/components/image/ghs-img2.vue';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
@@ -109,6 +125,7 @@
     totalImg: String,
   });
   const emits = defineEmits(['update:currentImg', 'update:totalImg']);
+  const { idle } = useIdle(2 * 1000); // 2s
 
   const {
     bodyRef,

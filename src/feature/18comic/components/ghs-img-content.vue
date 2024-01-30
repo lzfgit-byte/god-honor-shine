@@ -71,7 +71,7 @@
     _images.value = await c18_f_get_images(html);
     content_link.value = item.link;
     await saveOrUpdateHistory({
-      id: historyData.value.id,
+      id: historyData.value?.id,
       comic_link: props.link,
       content_link: item.link,
       current_page: `${+currentImg_.value + 1}`,

@@ -102,8 +102,7 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
-      // TODO
-      return `https://rule34video.com/search/${value.replace(' ', '-')}/`;
+      return `https://18comic.vip/search/photos?search_query=${value}`;
     },
     resolveImgClick: imgClick,
   });
