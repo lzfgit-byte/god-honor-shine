@@ -133,11 +133,11 @@ export const c18_get_contents = (html: string): Comic18Detail => {
     });
   });
   if (res.length === 0) {
-    const $link = $('link[rel=canonical]');
+    const $link = $('#album_photo_cover a');
     res.push({
       title: '开始阅读',
-      time: 'now',
-      link: `${helpElAttr($link, ElementAttr.href)}`,
+      time: '--',
+      link: `${BASE_URL}${helpElAttr($link, ElementAttr.href)}`,
     });
   }
   return { detail: helpElText($detail), contents: res };
