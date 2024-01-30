@@ -25,8 +25,8 @@
             :jump-url="item.jumpUrl"
             :tags="item.tags"
             :flat-tags="item.flatTags"
-            width="220px"
-            height="147px"
+            width="270px"
+            height="150px"
             @img-click="handleImageClick(item)"
             @trigger-collect="collect_save(JSON.stringify(item))"
           ></GhsItem>

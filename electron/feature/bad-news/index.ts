@@ -25,9 +25,21 @@ const bdn_getPagination = ($: CheerioAPI): PaginationType[] => {
     const $el = $(el);
     const $a = $el.find('a');
     //
-    const title = helpElText($a);
-    const url = helpElAttr($a, 'href');
-    const isCurrent = $a.hasClass('current');
+    let title = helpElText($a);
+    title = title.replace(/\n/g, '');
+    const url = `https://bad.news${helpElAttr($a, 'href')}`;
+    const isCurrent = $a.hasClass('active');
+    if (title === '下一页' && !res.some((i) => i.title === '下一页')) {
+      res.push({ title, isCurrent, url });
+      return;
+    }
+    if (title === '...' && !res.some((i) => i.title === '...')) {
+      res.push({ title, isCurrent, url });
+      return;
+    }
+    if (res.some((i) => i.url === url)) {
+      return;
+    }
     res.push({ title, isCurrent, url });
   });
   return res;
