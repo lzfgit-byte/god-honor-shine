@@ -61,6 +61,7 @@
   import { onMounted, ref } from 'vue-demi';
 
   import type { PageItemType } from '@ghs/share';
+  import { BadNewVideoType } from '@ghs/share/src';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
@@ -117,8 +118,16 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
-      const searchVal = value.replaceAll(' ', '+');
-      return `https://thehentaiworld.com/?s=${searchVal}`;
+      if (items.value.length > 0) {
+        const flatTags = items.value[0].flatTags;
+        if (flatTags.some((i) => i.title === BadNewVideoType.dm)) {
+          return `https://bad.news/dm/search/q-${value}`;
+        }
+        if (flatTags.some((i) => i.title === BadNewVideoType.av)) {
+          return `https://bad.news/av/search/q-${value}`;
+        }
+      }
+      return `https://bad.news/search/q-${value}/type-porn`;
     },
     resolveImgClick: imgClick,
   });

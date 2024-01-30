@@ -2,9 +2,10 @@ import * as cheerio from 'cheerio';
 import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
 
-import { ElementAttr, ElementTypes } from '@ghs/share';
+import { ElementAttr } from '@ghs/share';
 
 import type { BadNewVideoInfo } from '@ghs/share/src';
+import { BadNewVideoType } from '@ghs/share/src';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
 const base_url = 'https://bad.news';
@@ -60,7 +61,7 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const coverImg = helpElAttr($img, ElementAttr.dataEcho);
     const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
     const tags = [];
-    const flatTags: PageTags[] = [{ title: helpElText($time) }, { title: 'av' }];
+    const flatTags: PageTags[] = [{ title: helpElText($time) }, { title: BadNewVideoType.av }];
     res.push({ title: helpElText($a), coverImg, author, tags, flatTags, jumpUrl });
   });
   $('div.stui-vodlist article').each((i, el) => {
@@ -71,7 +72,7 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const coverImg = helpElAttr($img, ElementAttr.dataEcho);
     const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
     const tags = [];
-    const flatTags: PageTags[] = [{ title: 'dm' }];
+    const flatTags: PageTags[] = [{ title: BadNewVideoType.dm }];
     res.push({
       title: helpElAttr($img, ElementAttr.alt),
       coverImg,
