@@ -39,6 +39,14 @@ export const routes: RouterType[] = [
     component: () => import('@/feature/18comic/18-comic.vue'),
   },
   {
+    path: '/badnews',
+    name: 'badnews',
+    aliasZH: 'BAN',
+    icon: 'https://bad.news/favicon.ico',
+    showInMenu: true,
+    component: () => import('@/feature/badnews/bad-news.vue'),
+  },
+  {
     path: '/18-comic-reader',
     name: '18-comic-reader',
     aliasZH: '18C',

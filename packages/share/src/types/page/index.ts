@@ -6,6 +6,9 @@ export enum ElementAttr {
   dataWebp = 'data-webp',
   dataSrc = 'data-src',
   dataOriginal = 'data-original',
+  poster = 'poster',
+  dataSource = 'data-source',
+  dataType = 'data-type',
 }
 export enum ElementTypes {
   a = 'a',
