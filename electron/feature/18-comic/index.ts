@@ -16,6 +16,7 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { sendMessage } from '../../utils/message';
+import { search_history_list } from '../../controller';
 const BASE_URL = `https://18comic.vip`;
 const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more: Cheerio<AnyNode> = $('div.hidden-xs ul.pagination > li');
@@ -101,7 +102,23 @@ const c18_getItems = ($: CheerioAPI): PageItemType[] => {
   return res;
 };
 const c18_getTags = ($: CheerioAPI): PageTags[] => {
-  const tags: PageTags[] = [];
+  const tags: PageTags[] = [
+    { title: '总排行', url: `https://18comic.vip/albums?o=mv` },
+    { title: '月排行', url: `https://18comic.vip/albums?t=m&o=mv` },
+    { title: '周排行', url: `https://18comic.vip/albums?o=mv&t=w` },
+    { title: '天排行', url: `https://18comic.vip/albums?o=mv&t=t` },
+    { title: '全彩', url: `https://18comic.vip/search/photos?search_query=全彩` },
+  ];
+  const history = search_history_list('18Comic');
+  ['全彩', '火影'].forEach((item) => {
+    tags.push({ title: item, url: `https://18comic.vip/search/photos?search_query=${item}` });
+  });
+  history.forEach((item) => {
+    tags.push({
+      title: item.value,
+      url: `https://18comic.vip/search/photos?search_query=${item.value}`,
+    });
+  });
   return tags;
 };
 /**

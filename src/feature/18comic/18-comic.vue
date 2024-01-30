@@ -42,7 +42,7 @@
             :info="item"
             type="waring"
             :show-gap="true"
-            @click="imgClick"
+            @click="imgClick(item, true)"
           ></GhsTag>
         </div>
         <GhsCollect
@@ -74,7 +74,11 @@
     useSearchHistory('18Comic');
 
   const router = useRouter();
-  const imgClick = (item) => {
+  const imgClick = (item, isLoad = false) => {
+    if (isLoad) {
+      load(item.url);
+      return;
+    }
     router.push({ path: '/18-comic-reader', query: { link: item.jumpUrl } });
   };
   const {
