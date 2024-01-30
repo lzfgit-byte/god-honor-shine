@@ -17,6 +17,9 @@
     } else {
       imgSrc.value = await f_request_img_get(props.url);
     }
+    if (imgSrc.value === 'data:image/png;base64,') {
+      imgSrc.value = src;
+    }
   };
   init();
 </script>
