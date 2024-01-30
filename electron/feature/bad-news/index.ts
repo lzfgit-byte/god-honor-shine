@@ -1,19 +1,12 @@
 import * as cheerio from 'cheerio';
-import type {
-  HWImgInfo,
-  HWVideoInfo,
-  MainPage,
-  PageItemType,
-  PageTags,
-  PaginationType,
-} from '@ghs/share';
+import type { HWVideoInfo, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
-
+const base_url = 'https://bad.news';
 const bdn_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more = $('.pagination > ul > li');
   if ($more.length === 0) {
@@ -27,7 +20,7 @@ const bdn_getPagination = ($: CheerioAPI): PaginationType[] => {
     //
     let title = helpElText($a);
     title = title.replace(/\n/g, '');
-    const url = `https://bad.news${helpElAttr($a, 'href')}`;
+    const url = `${base_url}${helpElAttr($a, 'href')}`;
     const isCurrent = $a.hasClass('active');
     if (title === '下一页' && !res.some((i) => i.title === '下一页')) {
       res.push({ title, isCurrent, url });
@@ -57,15 +50,32 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const flatTags: PageTags[] = [{ title: helpElAttr($video, ElementAttr.dataType) }];
     res.push({ title: helpElText($title), coverImg, author, tags, flatTags, jumpUrl });
   });
+  $('div.content div.spacer div.link.col-md-4').each((i, el) => {
+    const $el = $(el);
+    const $a = $el.find('h3.title > a:eq(0)');
+    const $img = $el.find('div.coverimg img');
+    const $time = $el.find('div.coverimg div.ct-time span');
+    const author = '';
+    const coverImg = helpElAttr($img, ElementAttr.dataEcho);
+    const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
+    const tags = [];
+    const flatTags: PageTags[] = [{ title: helpElText($time) }];
+    res.push({ title: helpElText($a), coverImg, author, tags, flatTags, jumpUrl });
+  });
   return res;
 };
 
 const bdn_getTags = ($: CheerioAPI): PageTags[] => {
-  const res: PageTags[] = [];
-  $('ul.list-inline a').each((i, el) => {
+  const res: PageTags[] = [
+    { title: '短视频', url: 'https://bad.news/tag/porn' },
+    { title: '长视频', url: 'https://bad.news/tag/long-porn' },
+    { title: '日本AV', url: 'https://bad.news/av' },
+    { title: '动漫', url: 'https://bad.news/dm' },
+  ];
+  $('div.input-group ul.list-inline a').each((i, el) => {
     const $a = $(el);
     const title = `${helpElText($a)}`;
-    const url = `https://bad.news/${helpElAttr($a, ElementAttr.href)}`;
+    const url = `${base_url}${helpElAttr($a, ElementAttr.href)}`;
     res.push({ title, url });
   });
   return res;

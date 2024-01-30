@@ -56,12 +56,11 @@
     </template>
   </ViewLayout>
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
-  <ImgViewer ref="imgViewRef"></ImgViewer>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
 
-  import { hw_f_getImgInfo, hw_f_getVideoInfo } from '@/feature/hentai-word/apis/HwApis';
+  import type { PageItemType } from '@ghs/share';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
@@ -70,8 +69,6 @@
   import useMainPageHook from '@/feature/hook/useMainPageHook';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import type { GhsPlayerExpose } from '@/components/player/types';
-  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
-  import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsTag from '@/components/tag/ghs-tag.vue';
 
   import useSearchHistory from '@/feature/hook/useSearchHistory';
@@ -79,18 +76,15 @@
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   import { bdn_f_getPageInfo } from '@/feature/badnews/apis/badApis';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
-  const imgViewRef = ref<ImgViewerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('bedNews');
-  const imgClick = async (item) => {
-    const { flatTags, jumpUrl } = item;
-    const isVideo = flatTags.some((item) => item.title.toUpperCase() === 'VIDEO');
-    if (isVideo) {
-      const hwVideoInfo = await hw_f_getVideoInfo(jumpUrl);
-      ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
-    } else {
-      const hwImgInfos = await hw_f_getImgInfo(jumpUrl);
-      imgViewRef.value.show(hwImgInfos);
+  const imgClick = async (item: PageItemType) => {
+    const { flatTags, jumpUrl, title } = item;
+    if (flatTags.some((item) => item.title === 'm3u8')) {
+      ghsPlayerRef.value.show(jumpUrl, title, 'm3u8');
+    }
+    if (flatTags.some((item) => item.title === 'mp4')) {
+      ghsPlayerRef.value.show(jumpUrl, title, 'mp4');
     }
   };
   const {

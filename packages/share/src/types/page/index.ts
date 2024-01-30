@@ -9,6 +9,7 @@ export enum ElementAttr {
   poster = 'poster',
   dataSource = 'data-source',
   dataType = 'data-type',
+  dataEcho = 'data-echo',
 }
 export enum ElementTypes {
   a = 'a',
