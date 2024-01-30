@@ -74,7 +74,7 @@
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
-  import { bdn_f_getPageInfo } from '@/feature/badnews/apis/badApis';
+  import { bdn_f_getPageInfo, bdn_f_getVideoInfo } from '@/feature/badnews/apis/badApis';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('bedNews');
@@ -85,6 +85,13 @@
     }
     if (flatTags.some((item) => item.title === 'mp4')) {
       ghsPlayerRef.value.show(jumpUrl, title, 'mp4');
+    }
+    if (
+      flatTags.some((item) => item.title === 'av') ||
+      flatTags.some((item) => item.title === 'dm')
+    ) {
+      const info = await bdn_f_getVideoInfo(item.jumpUrl);
+      ghsPlayerRef.value.show(info.url, title, info.type);
     }
   };
   const {

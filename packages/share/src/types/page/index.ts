@@ -10,6 +10,7 @@ export enum ElementAttr {
   dataSource = 'data-source',
   dataType = 'data-type',
   dataEcho = 'data-echo',
+  alt = 'alt',
 }
 export enum ElementTypes {
   a = 'a',

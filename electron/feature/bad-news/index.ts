@@ -1,9 +1,10 @@
 import * as cheerio from 'cheerio';
-import type { HWVideoInfo, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
+import type { BadNewVideoInfo } from '@ghs/share/src';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
 const base_url = 'https://bad.news';
@@ -59,8 +60,26 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const coverImg = helpElAttr($img, ElementAttr.dataEcho);
     const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
     const tags = [];
-    const flatTags: PageTags[] = [{ title: helpElText($time) }];
+    const flatTags: PageTags[] = [{ title: helpElText($time) }, { title: 'av' }];
     res.push({ title: helpElText($a), coverImg, author, tags, flatTags, jumpUrl });
+  });
+  $('div.stui-vodlist article').each((i, el) => {
+    const $el = $(el);
+    const $a = $el.find('div.thumbr > a');
+    const $img = $el.find('div.thumbr img');
+    const author = '';
+    const coverImg = helpElAttr($img, ElementAttr.dataEcho);
+    const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
+    const tags = [];
+    const flatTags: PageTags[] = [{ title: 'dm' }];
+    res.push({
+      title: helpElAttr($img, ElementAttr.alt),
+      coverImg,
+      author,
+      tags,
+      flatTags,
+      jumpUrl,
+    });
   });
   return res;
 };
@@ -75,6 +94,9 @@ const bdn_getTags = ($: CheerioAPI): PageTags[] => {
   $('div.input-group ul.list-inline a').each((i, el) => {
     const $a = $(el);
     const title = `${helpElText($a)}`;
+    if (title.includes('更多')) {
+      return;
+    }
     const url = `${base_url}${helpElAttr($a, ElementAttr.href)}`;
     res.push({ title, url });
   });
@@ -96,12 +118,14 @@ export const bdn_getPageInfo = (html: string): MainPage => {
  *
  * @param url
  */
-export const bdn_getVideoInfo = async (url: string): Promise<HWVideoInfo> => {
+export const bdn_getVideoInfo = async (url: string): Promise<BadNewVideoInfo> => {
   const html = await request_html_get(url);
   const $: CheerioAPI = cheerio.load(html);
-  const $img = $('#image');
-  const $video = $img.find('#video');
-  const $source = $video.find(ElementTypes.source);
-  const $span = $img.find(`span[itemprop="name"]`);
-  return { url: helpElAttr($source, ElementAttr.src), title: helpElText($span) };
+  const $video = $('video');
+  const jumpUrl = helpElAttr($video, ElementAttr.dataSource);
+  let type: any = helpElAttr($video, ElementAttr.dataType);
+  if (type === '') {
+    type = jumpUrl.includes('m3u8') ? 'm3u8' : 'mp4';
+  }
+  return { url: jumpUrl, type };
 };
