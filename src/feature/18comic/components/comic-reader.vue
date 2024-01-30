@@ -4,17 +4,23 @@
       <GhsButton @click="router.back()">返回</GhsButton>
     </template>
     <template #body>
-      <div h-full w-full relative>
-        <ImgViewer
-          ref="imgViewRef"
-          v-model:current-img="currentImg_"
-          v-model:total-img="totalImg_"
-          :solve-img-comp="ComicImg"
-          :reader-mode="true"
-          :images-arr="imagesArr"
-          :img-attrs="attrBind"
-        ></ImgViewer>
-      </div>
+      <GhsScroller max-height="85vh">
+        <div w-full flex flex-col items-center>
+          <div v-for="item in images" :key="item.imgUrl" class="comic-img-container">
+            <ComicImg :url="item.imgUrl" :aid="item.aid" :scramble-id="item.scrambleId"></ComicImg>
+          </div>
+        </div>
+      </GhsScroller>
+
+      <!--        <ImgViewer -->
+      <!--          ref="imgViewRef" -->
+      <!--          v-model:current-img="currentImg_" -->
+      <!--          v-model:total-img="totalImg_" -->
+      <!--          :solve-img-comp="ComicImg" -->
+      <!--          :reader-mode="true" -->
+      <!--          :images-arr="imagesArr" -->
+      <!--          :img-attrs="attrBind" -->
+      <!--        ></ImgViewer> -->
     </template>
     <template #slide>
       <GhsImgContent
@@ -42,6 +48,7 @@
   import ImgViewer from '@/components/imgViewer/img-viewer.vue';
   import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsImgContent from '@/feature/18comic/components/ghs-img-content.vue';
+  import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   const route = useRoute();
   const router = useRouter();
   const imgViewRef = ref<ImgViewerExpose>();
@@ -79,5 +86,9 @@
     .ghs-18-image {
       width: 90%;
     }
+  }
+  .comic-img-container {
+    width: 60%;
+    height: auto;
   }
 </style>
