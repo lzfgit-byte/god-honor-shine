@@ -22,7 +22,7 @@
   },
   "scripts": {
     "app:dev": "vite",
-    "app:build": "pnpm version patch && vite build && electron-builder",
+    "app:build": "npm version patch && vite build && electron-builder",
     "app:prebuild": "vite build && electron-builder",
     "app:elbuild": "electron-builder",
     "app:preview": "vite preview"
