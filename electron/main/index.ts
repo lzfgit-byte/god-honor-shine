@@ -53,7 +53,6 @@ app.on('window-all-closed', () => {
   win = null;
   if (process.platform !== 'darwin') {
     app.quit();
-    console.log('quit');
   }
 });
 /**
