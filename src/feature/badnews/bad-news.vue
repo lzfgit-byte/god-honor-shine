@@ -51,6 +51,8 @@
           :collect="cCollect"
           :collect-click="collect_click"
           :collect-delete="collect_delete"
+          width="114px"
+          height="60px"
         ></GhsCollect>
       </div>
     </template>

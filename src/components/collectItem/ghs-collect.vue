@@ -32,8 +32,8 @@
               :jump-url="item.jumpUrl"
               :tags="item.tags"
               :flat-tags="item.flatTags"
-              width="30.5%"
-              height="100px"
+              :width="width"
+              :height="height"
               :hide-tag="true"
               @img-click="collectClick(item, imgClick)"
               @close-click="collectDelete(JSON.stringify(item))"
@@ -63,6 +63,8 @@
     collectDelete: Function,
     imgClick: Function,
     maxHeight: String,
+    width: { type: String, default: '30.5%' },
+    height: { type: String, default: '80px' },
   });
   const layout = ref<'grid' | 'list'>('grid');
   const cCollect = computed(() => props.collect.map((item) => item));

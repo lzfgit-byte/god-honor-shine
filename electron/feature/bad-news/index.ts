@@ -32,7 +32,7 @@ const bdn_getPagination = ($: CheerioAPI): PaginationType[] => {
       res.push({ title, isCurrent, url });
       return;
     }
-    if (res.some((i) => i.url === url)) {
+    if (res.some((i) => i.url === url) && res.some((i) => i.title === title)) {
       return;
     }
     res.push({ title, isCurrent, url });
