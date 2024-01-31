@@ -9,35 +9,38 @@
       </GhsIcon>
     </div>
     <GhsScroller :max-height="maxHeight">
-      <template v-if="layout === 'list'">
-        <TransitionGroup name="list">
-          <GhsCollectItem
-            v-for="item in cCollect"
-            :key="item.jumpUrl"
-            :info="item"
-            @click="collectClick(item, imgClick)"
-            @delete="collectDelete(JSON.stringify(item))"
-          >
-          </GhsCollectItem>
-        </TransitionGroup>
-      </template>
-      <template v-if="layout === 'grid'">
-        <TransitionGroup name="list">
-          <GhsItem
-            v-for="item in cCollect"
-            :key="item.jumpUrl"
-            :title="item.title"
-            :cover-img="item.coverImg"
-            :jump-url="item.jumpUrl"
-            :tags="item.tags"
-            :flat-tags="item.flatTags"
-            width="30.5%"
-            height="100px"
-            :hide-tag="true"
-            @img-click="collectClick(item, imgClick)"
-          ></GhsItem>
-        </TransitionGroup>
-      </template>
+      <div p-t-1>
+        <template v-if="layout === 'list'">
+          <TransitionGroup name="list">
+            <GhsCollectItem
+              v-for="item in cCollect"
+              :key="item.jumpUrl"
+              :info="item"
+              @click="collectClick(item, imgClick)"
+              @delete="collectDelete(JSON.stringify(item))"
+            >
+            </GhsCollectItem>
+          </TransitionGroup>
+        </template>
+        <template v-if="layout === 'grid'">
+          <TransitionGroup name="list">
+            <GhsItem
+              v-for="item in cCollect"
+              :key="item.jumpUrl"
+              :title="item.title"
+              :cover-img="item.coverImg"
+              :jump-url="item.jumpUrl"
+              :tags="item.tags"
+              :flat-tags="item.flatTags"
+              width="30.5%"
+              height="100px"
+              :hide-tag="true"
+              @img-click="collectClick(item, imgClick)"
+              @close-click="collectDelete(JSON.stringify(item))"
+            ></GhsItem>
+          </TransitionGroup>
+        </template>
+      </div>
     </GhsScroller>
   </div>
 

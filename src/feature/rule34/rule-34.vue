@@ -47,7 +47,7 @@
           <GhsTag type="info">当前排序规则【{{ sortComp }}】</GhsTag>
         </div>
         <GhsCollect
-          max-height="90vh"
+          max-height="75vh"
           :img-click="imgClick"
           :collect="cCollect"
           :collect-click="collect_click"

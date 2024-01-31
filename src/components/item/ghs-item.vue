@@ -1,5 +1,8 @@
 <template>
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
+    <div v-if="$props?.onCloseClick" absolute class="ghs-delete-icon" @click="handleCloseClick">
+      <GhsIcon width="20px" height="20px" color="#9f9898"><CloseCircleOutline /></GhsIcon>
+    </div>
     <div class="ghs-item-coverImg" w-full relative>
       <GhsImg cursor-pointer :url="coverImg" :force="force" @click="handleImgClick" />
       <div v-if="!hideTag" absolute top-2 right-1 flex justify-end items-center gap-1>
@@ -24,7 +27,7 @@
   import type { PropType } from 'vue-demi';
   import type { PageTags } from '@ghs/share';
   import { computed } from 'vue';
-  import { StarOutline } from '@vicons/ionicons5';
+  import { CloseCircleOutline, StarOutline } from '@vicons/ionicons5';
   import { toRaw } from 'vue-demi';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
@@ -42,9 +45,10 @@
     height: String,
     force: Boolean,
     onTriggerCollect: Function,
+    onCloseClick: Function,
     hideTag: Boolean,
   });
-  const emits = defineEmits(['imgClick', 'triggerCollect']);
+  const emits = defineEmits(['imgClick', 'triggerCollect', 'closeClick']);
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
   const handleImgClick = () => {
@@ -52,6 +56,9 @@
   };
   const handleCollect = () => {
     emits('triggerCollect', toRaw(props));
+  };
+  const handleCloseClick = () => {
+    emits('closeClick');
   };
 </script>
 
@@ -76,5 +83,12 @@
     .ghs-item-tags {
       padding: @infoPadding;
     }
+  }
+  .ghs-delete-icon {
+    width: 15px;
+    height: 15px;
+    right: -2%;
+    top: -4%;
+    z-index: 3;
   }
 </style>
