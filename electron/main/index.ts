@@ -38,6 +38,11 @@ async function createWindow() {
   } else {
     await win.loadFile(indexHtml);
   }
+  win.addListener('closed', () => {
+    execFuncOnClose.forEach((func) => {
+      func && func();
+    });
+  });
 }
 
 app.whenReady().then(createWindow);
@@ -48,9 +53,7 @@ app.on('window-all-closed', () => {
   win = null;
   if (process.platform !== 'darwin') {
     app.quit();
-    execFuncOnClose.forEach((func) => {
-      func && func();
-    });
+    console.log('quit');
   }
 });
 /**
