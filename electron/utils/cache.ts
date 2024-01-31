@@ -113,3 +113,4 @@ export const cache_dir_size = () => {
   });
   return formatSize(res);
 };
+export const cache_dir_db = () => APP_PATHS.db_path;

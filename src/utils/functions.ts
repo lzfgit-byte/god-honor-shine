@@ -1,4 +1,5 @@
 import type { CacheFileType, T_logger } from '@ghs/share';
+import { cache_dir_db } from '../../electron/utils';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -34,6 +35,10 @@ export const f_cache_suffix_clean = async (suffix?: CacheFileType): Promise<stri
  * 获取缓存文件大小
  */
 export const f_cache_dir_size = async (): Promise<string> => executeFunction('cache_dir_size');
+/**
+ *获取db文件
+ */
+export const f_cache_dir_db = async (): Promise<string> => executeFunction('cache_dir_db');
 
 /**
  * 获取数据库日志

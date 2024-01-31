@@ -40,6 +40,9 @@
       <div w-full flex justify-between items-center m-b-2 m-l-2>
         <GhsTag type="info">已使用的缓存大小:{{ cacheDirSize }}</GhsTag>
       </div>
+      <div w-full flex justify-between items-center m-b-2 m-l-2>
+        <GhsTag type="info">{{ db_path }}</GhsTag>
+      </div>
       <div class="slide-body" p-l-2 p-r-2>
         <slot name="slide"></slot>
       </div>
@@ -54,7 +57,12 @@
   import { onMounted } from 'vue-demi';
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
-  import { f_cache_dir_size, f_cache_suffix_clean, f_logger_db_list } from '@/utils/functions';
+  import {
+    f_cache_dir_db,
+    f_cache_dir_size,
+    f_cache_suffix_clean,
+    f_logger_db_list,
+  } from '@/utils/functions';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import { GHSClassLog } from '@/components/log';
   import GhsLoading from '@/components/loading/ghs-loading.vue';
@@ -64,11 +72,13 @@
   const loading_ = useVModel(props, 'loading', emits);
   const slideShow = ref(false);
   const enterShow = ref(false);
+  const db_path = ref('');
   const cacheDirSize = ref();
   const handleMouseEnter = async () => {
     enterShow.value = true;
     slideShow.value = true;
     cacheDirSize.value = await f_cache_dir_size();
+    db_path.value = await f_cache_dir_db();
   };
   const handleMouseOut = () => {
     slideShow.value = false;
@@ -87,6 +97,7 @@
     const data = await f_logger_db_list();
     detail(data.map((i) => i.value));
   };
+
   onMounted(() => {
     slideShow.value = props.initSlideShow;
     enterShow.value = props.initSlideShow;
