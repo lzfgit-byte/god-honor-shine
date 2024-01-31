@@ -34,6 +34,9 @@ const c18_getPagination = ($: CheerioAPI): PaginationType[] => {
       : helpElText($a) || helpElText($span);
     title = title === '«' ? 'prev' : title;
     title = title.replace(/\n/g, '').trim();
+    if (title === '') {
+      return;
+    }
     let url = helpElAttr($a, 'href');
     const isCurrent = $el.hasClass('active');
     res.push({ title, isCurrent, url });
@@ -46,6 +49,13 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
     $a = $el.find('div.thumb-overlay a');
   }
   if ($a.length === 0) {
+    return;
+  }
+  const jumpUrl = `${BASE_URL}${helpElAttr($a, ElementAttr.href)}`;
+  if (jumpUrl === '') {
+    return;
+  }
+  if (res.some((i) => i.jumpUrl === jumpUrl)) {
     return;
   }
   let $img = $a.find(ElementTypes.img);
@@ -68,10 +78,7 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
   $author.each((i, el) => {
     author += `${helpElText($(el))},`;
   });
-  const jumpUrl = helpElAttr($a, ElementAttr.href);
-  if (jumpUrl === '') {
-    return;
-  }
+
   const tags: PageTags[] = [];
   $tags.each((i, el) => {
     const $el = $(el);
@@ -84,7 +91,7 @@ const loadItem = (res: PageItemType[], $: CheerioAPI, $el: cheerio.Cheerio<cheer
   $category.each((i, el) => {
     flatTags.push({ title: helpElText($(el)) });
   });
-  res.push({ title, coverImg, author, tags, flatTags, jumpUrl: `${BASE_URL}${jumpUrl}` });
+  res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
 };
 const c18_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
