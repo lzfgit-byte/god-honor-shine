@@ -5,7 +5,7 @@ import { app } from 'electron';
 let config_json = null;
 let db_dir = `${process.env.LOCALAPPDATA}\\ghs3.0`;
 const cache_path = path.join(process.cwd(), '\\ghs-cache\\');
-const config_path = path.join(process.cwd(), '\\config.json');
+const config_path = path.join(db_dir, '\\config.json');
 
 const loadConfigFile = () => {
   if (config_json) {
