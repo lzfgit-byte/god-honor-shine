@@ -48,6 +48,9 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const author = '';
     const coverImg = helpElAttr($video, ElementAttr.poster);
     const jumpUrl = helpElAttr($video, ElementAttr.dataSource);
+    if (res.some((i) => i.jumpUrl === jumpUrl)) {
+      return;
+    }
     const tags = [];
     const flatTags: PageTags[] = [{ title: helpElAttr($video, ElementAttr.dataType) }];
     res.push({ title: helpElText($title), coverImg, author, tags, flatTags, jumpUrl });
@@ -60,6 +63,9 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const author = '';
     const coverImg = helpElAttr($img, ElementAttr.dataEcho);
     const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
+    if (res.some((i) => i.jumpUrl === jumpUrl)) {
+      return;
+    }
     const tags = [];
     const flatTags: PageTags[] = [{ title: helpElText($time) }, { title: BadNewVideoType.av }];
     res.push({ title: helpElText($a), coverImg, author, tags, flatTags, jumpUrl });
@@ -71,6 +77,9 @@ const bdn_getItems = ($: CheerioAPI): PageItemType[] => {
     const author = '';
     const coverImg = helpElAttr($img, ElementAttr.dataEcho);
     const jumpUrl = base_url + helpElAttr($a, ElementAttr.href);
+    if (res.some((i) => i.jumpUrl === jumpUrl)) {
+      return;
+    }
     const tags = [];
     const flatTags: PageTags[] = [{ title: BadNewVideoType.dm }];
     res.push({
