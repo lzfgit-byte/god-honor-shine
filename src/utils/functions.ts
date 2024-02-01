@@ -1,5 +1,7 @@
+import { existsSync, statSync } from 'node:fs';
 import type { CacheFileType, T_logger } from '@ghs/share';
 import { cache_dir_db } from '../../electron/utils';
+import { app_set_config_dir } from '../../electron/const/app-paths';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -57,4 +59,11 @@ export const f_win_get_data_code = (code: string, url: string): Promise<any> => 
  */
 export const f_win_open_any = (url: string, code?: string, width?: number, height?: number) => {
   executeFunction('win_open_any', url, code, width, height);
+};
+/**
+ * 存储db path
+ * @param path
+ */
+export const f_app_set_db_dir = (path: string): Promise<boolean> => {
+  return executeFunction('app_set_db_dir', path);
 };

@@ -41,7 +41,7 @@
         <GhsTag type="info">已使用的缓存大小:{{ cacheDirSize }}</GhsTag>
       </div>
       <div w-full flex justify-between items-center m-b-2 m-l-2>
-        <GhsTag type="info">{{ db_path }}</GhsTag>
+        <GhsTag type="info" @click="choseDbPath">{{ db_path }}</GhsTag>
       </div>
       <div class="slide-body" p-l-2 p-r-2>
         <slot name="slide"></slot>
@@ -58,6 +58,7 @@
   import GhsIcon from '@/components/icon/ghs-icon.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
   import {
+    f_app_set_db_dir,
     f_cache_dir_db,
     f_cache_dir_size,
     f_cache_suffix_clean,
@@ -96,6 +97,17 @@
     showDialog();
     const data = await f_logger_db_list();
     detail(data.map((i) => i.value));
+  };
+  const choseDbPath = () => {
+    const fileInput: HTMLInputElement = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.db';
+    fileInput.addEventListener('change', function () {
+      let selectedFile = fileInput.files[0];
+      const path = selectedFile.path;
+      f_app_set_db_dir(path);
+    });
+    fileInput.click();
   };
 
   onMounted(() => {
