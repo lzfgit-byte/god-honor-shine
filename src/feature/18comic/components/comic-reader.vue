@@ -6,7 +6,12 @@
     <template #body>
       <GhsScroller max-height="85vh">
         <div w-full flex flex-col items-center>
-          <div v-for="item in images" :key="item.imgUrl" class="comic-img-container">
+          <div
+            v-for="item in images"
+            :key="item.imgUrl"
+            ref="imgReaderRef"
+            class="comic-img-container"
+          >
             <ComicImg
               :url="item.imgUrl"
               :aid="item.aid"
@@ -16,16 +21,6 @@
           </div>
         </div>
       </GhsScroller>
-
-      <!--        <ImgViewer -->
-      <!--          ref="imgViewRef" -->
-      <!--          v-model:current-img="currentImg_" -->
-      <!--          v-model:total-img="totalImg_" -->
-      <!--          :solve-img-comp="ComicImg" -->
-      <!--          :reader-mode="true" -->
-      <!--          :images-arr="imagesArr" -->
-      <!--          :img-attrs="attrBind" -->
-      <!--        ></ImgViewer> -->
     </template>
     <template #slide>
       <GhsImgContent
@@ -39,38 +34,30 @@
   </ViewLayout>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue-demi';
-  import type { Comic18Detail, ComicReader, HWImgInfo } from '@ghs/share';
+  import { onMounted, ref, watch } from 'vue-demi';
+  import type { Comic18Detail, ComicReader } from '@ghs/share';
   import { useRoute, useRouter } from 'vue-router';
-  import { computed } from 'vue';
-  import { useVModel } from '@vueuse/core';
   import { f_win_html_get } from '@/utils/functions';
   import { c18_f_get_contents } from '@/feature/18comic/apis/18ComicApis';
   import { GHSMessage } from '@/components/message';
   import ComicImg from '@/feature/18comic/components/comic-img.vue';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
-  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
-  import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsImgContent from '@/feature/18comic/components/ghs-img-content.vue';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   const route = useRoute();
   const router = useRouter();
-  const imgViewRef = ref<ImgViewerExpose>();
   const detail = ref<Comic18Detail>();
   const images = ref<ComicReader[]>([]);
-  const imagesArr = computed<HWImgInfo[]>(() =>
-    images?.value?.map((img) => ({ minUrl: img.imgUrl, fullUrl: img.imgUrl }))
-  );
-  const attrBind = computed(() => {
-    if (images?.value?.length > 0) {
-      return { aid: images.value[0].aid, scrambleId: images.value[0].scrambleId };
-    }
-    return {};
-  });
   const currentImg_ = ref();
   const totalImg_ = ref();
   const link: string = route.query.link as any;
+  const imgReaderRef = ref<HTMLDivElement>();
+  watch(images, () => {
+    setTimeout(() => {
+      imgReaderRef.value.scrollTop = 0;
+    }, 200);
+  });
   const onInit = async () => {
     if (link) {
       const html = await f_win_html_get(link);

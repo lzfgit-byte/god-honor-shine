@@ -63,7 +63,6 @@
   };
   const loadImg = async () => {
     if (props.force) {
-      debugger;
       imgSrc.value = await f_win_img_get(props.url);
     } else {
       imgSrc.value = await f_request_img_get(props.url);
