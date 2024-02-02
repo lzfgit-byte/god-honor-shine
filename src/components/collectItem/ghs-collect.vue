@@ -16,6 +16,7 @@
               v-for="item in cCollect"
               :key="item.jumpUrl"
               :info="item"
+              :force="force"
               @click="collectClick(item, imgClick)"
               @delete="collectDelete(JSON.stringify(item))"
             >
@@ -30,6 +31,7 @@
               :title="item.title"
               :cover-img="item.coverImg"
               :jump-url="item.jumpUrl"
+              :force="force"
               :tags="item.tags"
               :flat-tags="item.flatTags"
               :width="width"
@@ -63,6 +65,7 @@
     collectDelete: Function,
     imgClick: Function,
     maxHeight: String,
+    force: Boolean,
     width: { type: String, default: '30.5%' },
     height: { type: String, default: '80px' },
   });

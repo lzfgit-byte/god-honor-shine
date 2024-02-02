@@ -25,6 +25,7 @@
             :jump-url="item.jumpUrl"
             :tags="item.tags"
             :flat-tags="item.flatTags"
+            :force="true"
             width="190px"
             height="247px"
             @img-click="handleImageClick(item)"
@@ -49,6 +50,7 @@
           max-height="90vh"
           :img-click="imgClick"
           :collect="cCollect"
+          :force="true"
           :collect-click="collect_click"
           :collect-delete="collect_delete"
         ></GhsCollect>
@@ -59,7 +61,7 @@
 <script setup lang="ts">
   import { onMounted } from 'vue-demi';
   import { useRouter } from 'vue-router';
-  import { f_request_html_get } from '@/utils/functions';
+  import { f_request_html_get, f_win_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -98,10 +100,10 @@
       return url;
     },
     resolveCacheHtml: (url: string) => {
-      f_request_html_get(url);
+      f_win_html_get(url);
     },
     resolveMainPage: async (url: string) => {
-      const html = await f_request_html_get(url);
+      const html = await f_win_html_get(url);
       return await c18_f_getPageInfo(html);
     },
     resolveSearch: (value: string) => {

@@ -9,7 +9,7 @@
     @click="handlerClick"
   >
     <div class="ghs-img" h-full>
-      <GhsImg :url="info.coverImg"></GhsImg>
+      <GhsImg :url="info.coverImg" :force="force"></GhsImg>
     </div>
     <div class="ghs-title" flex justify-start items-center> <GhsText :value="info.title" /></div>
     <div absolute right-4>
@@ -27,6 +27,7 @@
 
   const props = defineProps({
     info: Object as PropType<PageItemType>,
+    force: Boolean,
   });
   const emits = defineEmits(['click', 'delete']);
   const handlerClick = () => {

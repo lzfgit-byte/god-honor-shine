@@ -7,7 +7,12 @@
       <GhsScroller max-height="85vh">
         <div w-full flex flex-col items-center>
           <div v-for="item in images" :key="item.imgUrl" class="comic-img-container">
-            <ComicImg :url="item.imgUrl" :aid="item.aid" :scramble-id="item.scrambleId"></ComicImg>
+            <ComicImg
+              :url="item.imgUrl"
+              :aid="item.aid"
+              :scramble-id="item.scrambleId"
+              :force="true"
+            ></ComicImg>
           </div>
         </div>
       </GhsScroller>
