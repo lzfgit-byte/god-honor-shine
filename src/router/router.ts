@@ -4,6 +4,7 @@ export interface RouterType {
   path?: string;
   icon?: string;
   aliasZH?: string;
+  force?: boolean;
   [T: string]: any;
 }
 export const routes: RouterType[] = [
@@ -35,6 +36,7 @@ export const routes: RouterType[] = [
     name: '18Comic',
     aliasZH: '18C',
     icon: 'https://18comic.vip/favicon.ico',
+    force: true,
     showInMenu: true,
     component: () => import('@/feature/18comic/18-comic.vue'),
   },

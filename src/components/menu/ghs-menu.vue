@@ -26,7 +26,7 @@
           @mouseenter="onMouseEnter"
         >
           <div class="ghs-menu-icon" m-r-1>
-            <GhsImg :url="item.icon"></GhsImg>
+            <GhsImg :url="item.icon" :force="item.force"></GhsImg>
           </div>
           <div class="ghs-title">{{ item.aliasZH }}</div>
         </div>

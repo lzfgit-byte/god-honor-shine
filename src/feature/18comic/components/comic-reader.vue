@@ -55,7 +55,9 @@
   const imgReaderRef = ref<HTMLDivElement>();
   watch(images, () => {
     setTimeout(() => {
-      imgReaderRef.value.scrollTop = 0;
+      if (imgReaderRef.value?.scrollHeight > 0) {
+        imgReaderRef.value.scrollTop = 0;
+      }
     }, 200);
   });
   const onInit = async () => {
@@ -68,7 +70,9 @@
   };
 
   onMounted(() => {
-    onInit();
+    setTimeout(() => {
+      onInit();
+    }, 1000);
   });
 </script>
 

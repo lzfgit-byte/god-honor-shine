@@ -2,7 +2,6 @@ import { net } from 'electron';
 import { CacheFileType, SHOW_FILE_SIZE } from '@ghs/share';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
-import { logger } from '../utils/logger';
 import { formatSize, isFalsity } from '../utils/KitUtil';
 const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
   if (fileSize && fileSize > SHOW_FILE_SIZE) {
