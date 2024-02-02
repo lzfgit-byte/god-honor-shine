@@ -8,6 +8,7 @@ import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { isFalsity } from '../utils/KitUtil';
 // @ts-ignore
 import code from './img-windows-code?raw';
+let parentWin: BrowserWindow;
 
 const childWinds: { win: BrowserWindow; free: boolean }[] = [];
 const getWinIndex = (win: BrowserWindow) => childWinds.findIndex((item) => item.win.id === win.id);
@@ -28,6 +29,7 @@ const createNewWin = async () => {
     width: 800,
     height: 600,
     show: false,
+    parent: parentWin,
     title: 'picWindow',
     webPreferences: {
       nodeIntegration: true,
@@ -110,7 +112,8 @@ export const getImgBase64 = async (url: string): Promise<string> => {
     win.loadURL(url);
   });
 };
-export default () => {
+export default (win: BrowserWindow) => {
+  parentWin = win;
   return () => {
     childWinds?.forEach((item) => {
       item?.win?.close();

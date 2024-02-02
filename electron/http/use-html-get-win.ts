@@ -27,10 +27,11 @@ export const requestHtmlByWin = async (url: string) => {
     htmlGetWin.loadURL(url);
   });
 };
-export default () => {
+export default (win: BrowserWindow) => {
   htmlGetWin = new BrowserWindow({
     width: 1450,
     height: 788,
+    parent: win,
     icon: resolvePublic('favicon.ico'),
     webPreferences: {
       preload: preHtmlDownload,

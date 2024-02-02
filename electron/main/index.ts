@@ -8,6 +8,7 @@ import './init/init-env';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useHtmlGetWin from '../http/use-html-get-win';
 import useProxySetting from '../setting/use-proxy-setting';
+import useImgGetWin from '../http/use-img-get-win';
 import useHandleMainEvent from './event/use-handle-main-event';
 // 启动服务
 let win: BrowserWindow | null = null;
@@ -31,7 +32,8 @@ async function createWindow() {
   useProxySetting(win);
   useHandleMainEvent(win);
   useGlobalShortcut(win);
-  execFuncOnClose.push(useHtmlGetWin());
+  useHtmlGetWin(win);
+  useImgGetWin(win);
   if (process.env.VITE_DEV_SERVER_URL) {
     await win.loadURL(url);
     win.webContents.openDevTools();
