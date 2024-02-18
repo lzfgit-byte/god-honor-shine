@@ -1,4 +1,7 @@
-const HTTP_SERVER_URL = 'http://127.0.0.1:3356/';
-export const getImgUrl = (url: string) => `${HTTP_SERVER_URL}getImg?url=${url}`;
-
-export const getVideoUrl = (url: string) => `${HTTP_SERVER_URL}getByte?url=${url}`;
+export const waitTime = (during = 200): Promise<any> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, during);
+  });
+};

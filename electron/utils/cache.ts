@@ -1,46 +1,116 @@
 import path from 'node:path';
-import { unlinkSync } from 'node:fs';
+import { statSync, unlinkSync } from 'node:fs';
+
 import { Md5 } from 'ts-md5';
-import { emptyDir, ensureFileSync, existsSync, readFileSync, writeFileSync } from 'fs-extra';
-import { isFalsity } from './KitUtil';
+import {
+  emptyDirSync,
+  ensureFileSync,
+  existsSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'fs-extra';
+import type { CacheFileType } from '@ghs/share';
+import { APP_PATHS } from '../const/app-paths';
+import { formatSize, isFalsity } from './KitUtil';
+import { sendMessage } from './message';
 
-const CACHE_PATH = path.join(process.cwd(), '/ghs-cache/');
+const CACHE_PATH = APP_PATHS.cache_path;
 
-export const buildFilePathName = (fileName, suffix = '') =>
-  CACHE_PATH + Md5.hashStr(fileName) + suffix;
-
-export const getCachePath = () => CACHE_PATH;
-
-export const saveCache = (fileName, data, suffix = '') => {
-  ensureFileSync(buildFilePathName(fileName, suffix));
-  writeFileSync(buildFilePathName(fileName, suffix), data, { encoding: 'utf-8' });
+export const buildCacheFilePath = (fileName: string, suffix = '') => {
+  return CACHE_PATH + Md5.hashStr(fileName) + suffix;
 };
-export const existsCache = (fileName, suffix = '') => {
-  return existsSync(buildFilePathName(fileName, suffix));
+/**
+ *判断是否缓存是否存在
+ * @param fileName
+ * @param suffix
+ */
+export const cache_exist = (fileName: string, suffix = '') => {
+  return existsSync(buildCacheFilePath(fileName, suffix));
 };
-export const getCache = (fileName, suffix = '') => {
-  if (existsCache(fileName, suffix)) {
-    return readFileSync(buildFilePathName(fileName, suffix), { encoding: 'utf-8' });
+/**
+ *保存缓存，字符串
+ * @param fileName
+ * @param data
+ * @param suffix
+ */
+export const cache_save = (fileName: string, data: any, suffix = ''): string => {
+  ensureFileSync(buildCacheFilePath(fileName, suffix));
+  writeFileSync(buildCacheFilePath(fileName, suffix), data, { encoding: 'utf-8' });
+  return data;
+};
+/**
+ *获取缓存,字符串
+ * @param fileName
+ * @param suffix
+ */
+export const cache_get = (fileName: string, suffix = '') => {
+  if (cache_exist(fileName, suffix)) {
+    return readFileSync(buildCacheFilePath(fileName, suffix), { encoding: 'utf-8' });
   }
   return false;
 };
-
-export const saveByteCache = (fileName, data, suffix = '') => {
-  writeFileSync(buildFilePathName(fileName, suffix), data);
+/**
+ *保存缓存字节 byte
+ * @param fileName
+ * @param data
+ * @param suffix
+ */
+export const cache_byte_save = (fileName: string, data: any, suffix = ''): any => {
+  writeFileSync(buildCacheFilePath(fileName, suffix), data);
+  return data;
 };
-export const getByteCache = (fileName, suffix = '') => {
-  if (existsCache(fileName, suffix)) {
-    return readFileSync(buildFilePathName(fileName, suffix));
+/**
+ *获取缓存 byte
+ * @param fileName
+ * @param suffix
+ */
+export const cache_byte_get = (fileName: string, suffix = '') => {
+  if (cache_exist(fileName, suffix)) {
+    return readFileSync(buildCacheFilePath(fileName, suffix));
   }
   return false;
 };
-
-export const clearCache = (fileName, suffix = '') => {
+/**
+ *清理缓存 删除特定名字的缓存
+ * @param fileName
+ * @param suffix
+ */
+export const cache_clean = (fileName?: string, suffix?: string) => {
   if (isFalsity(fileName)) {
-    emptyDir(CACHE_PATH);
+    emptyDirSync(CACHE_PATH);
     return;
   }
-  if (existsCache(fileName, suffix)) {
-    unlinkSync(buildFilePathName(fileName, suffix));
+  if (cache_exist(fileName, suffix)) {
+    unlinkSync(buildCacheFilePath(fileName, suffix));
   }
 };
+/**
+ * 根据特定后缀去删除文件
+ * @param fileSuffix
+ */
+export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
+  if (!fileSuffix) {
+    emptyDirSync(CACHE_PATH);
+    sendMessage('清除了所有缓存');
+    return;
+  }
+  const filePaths = readdirSync(CACHE_PATH);
+  const needRemoves = filePaths?.filter((file) => file.endsWith(fileSuffix));
+  needRemoves.forEach((file) => {
+    const filePath = path.join(CACHE_PATH, file);
+    unlinkSync(filePath);
+  });
+  sendMessage(`清除了缓存--${fileSuffix}`);
+};
+export const cache_dir_size = () => {
+  const files = readdirSync(CACHE_PATH);
+  let res = 0;
+  files.forEach((file) => {
+    const fullPath = path.join(CACHE_PATH, file);
+    const stats = statSync(fullPath);
+    res += stats.size;
+  });
+  return formatSize(res);
+};
+export const cache_dir_db = () => APP_PATHS.db_path;

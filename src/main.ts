@@ -1,14 +1,13 @@
 import { createApp } from 'vue';
-import locale from 'element-plus/lib/locale/lang/zh-cn'; // element中文
-import ElementPlus from 'element-plus';
+import { createPinia } from 'pinia';
 import App from '@/App.vue';
-import '@/samples/node-api';
-import 'element-plus/dist/index.css';
-
+import 'animate.css';
 import { registerRouter } from '@/router/router';
+import '@/router/guard';
+import 'virtual:uno.css';
+const pinia = createPinia();
 
 const app = createApp(App);
+app.use(pinia);
 registerRouter(app);
-app.use(ElementPlus, { locale }).mount('#app');
-// 可以给 preload 进程发消息
-// postMessage({ payload: 'removeLoading' }, '*')
+app.mount('#app');

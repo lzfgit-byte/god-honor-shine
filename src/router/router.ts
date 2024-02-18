@@ -1,35 +1,59 @@
-import type { RouteRecord } from 'vue-router';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import type { App } from '@vue/runtime-core';
-
-export type routerType = {
+import type { App } from 'vue';
+export interface RouterType {
   path?: string;
-  name?: string;
-  aliasZH?: string;
-  showInMenu?: boolean;
   icon?: string;
-} & RouteRecord;
-export const routes = [
+  aliasZH?: string;
+  force?: boolean;
+  [T: string]: any;
+}
+export const routes: RouterType[] = [
   {
     path: '/',
     name: 'HWord',
     aliasZH: 'HentaiWord',
     showInMenu: true,
-    component: () => import('@/feature/hentai-word/view/main-view.vue'),
+    component: () => import('@/feature/hentai-word/hw-home.vue'),
   },
   {
-    path: '/18Comic',
-    name: '18Comic',
-    aliasZH: '18Comic',
+    path: '/hentai-word',
+    name: 'hentai-word',
+    aliasZH: 'HW',
+    icon: 'https://thehentaiworld.com/favicon.ico',
     showInMenu: true,
-    component: () => import('@/feature/18-comic/view/18-comic-main.vue'),
+    component: () => import('@/feature/hentai-word/hw-home.vue'),
   },
   {
     path: '/rule34',
     name: 'rule34',
-    aliasZH: 'rule34',
+    aliasZH: 'R34',
+    icon: 'https://rule34video.com/favicon.ico',
     showInMenu: true,
-    component: () => import('@/feature/rule34/view/rule34-main.vue'),
+    component: () => import('@/feature/rule34/rule-34.vue'),
+  },
+  {
+    path: '/18-comic',
+    name: '18Comic',
+    aliasZH: '18C',
+    icon: 'https://18comic.vip/favicon.ico',
+    force: true,
+    showInMenu: true,
+    component: () => import('@/feature/18comic/18-comic.vue'),
+  },
+  {
+    path: '/badnews',
+    name: 'badnews',
+    aliasZH: 'BAN',
+    icon: 'https://bad.news/favicon.ico',
+    showInMenu: true,
+    component: () => import('@/feature/badnews/bad-news.vue'),
+  },
+  {
+    path: '/18-comic-reader',
+    name: '18-comic-reader',
+    aliasZH: '18C',
+    showInMenu: true,
+    component: () => import('@/feature/18comic/components/comic-reader.vue'),
   },
 ];
 

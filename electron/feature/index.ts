@@ -1,3 +1,4 @@
-export * from './hentai-word/parse';
-export * from './18-comic/18-comic-parse';
-export * from './rule34/rule34-parse';
+export * from './hentai-word';
+export * from './rule34';
+export * from './18-comic';
+export * from './bad-news';
