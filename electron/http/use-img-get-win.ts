@@ -96,6 +96,10 @@ export const getImgBase64 = async (url: string): Promise<string> => {
       webContents
         .executeJavaScript(code)
         .then((res: string) => {
+          if (res === '') {
+            resolve(res);
+            return;
+          }
           cache_save(url, CacheFileType.img);
           resolve(res);
         })

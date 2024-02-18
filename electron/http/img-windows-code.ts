@@ -1,5 +1,10 @@
 (async () => {
   const image = document.querySelector('img');
+  if (!image) {
+    return new Promise((resolve) => {
+      resolve('');
+    });
+  }
   const width = image.naturalWidth;
   const height = image.naturalHeight;
   const canvas = document.createElement('canvas');
