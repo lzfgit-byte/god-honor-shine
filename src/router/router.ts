@@ -49,6 +49,14 @@ export const routes: RouterType[] = [
     component: () => import('@/feature/badnews/bad-news.vue'),
   },
   {
+    path: '/lulu',
+    name: 'lulu',
+    aliasZH: 'lulu',
+    icon: 'https://www.pornlulu.com/favicon.ico',
+    showInMenu: true,
+    component: () => import('@/feature/lulu/lulu-home.vue'),
+  },
+  {
     path: '/18-comic-reader',
     name: '18-comic-reader',
     aliasZH: '18C',
