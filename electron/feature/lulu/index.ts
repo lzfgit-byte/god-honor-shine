@@ -48,7 +48,17 @@ const lulu_getItems = ($: CheerioAPI): PageItemType[] => {
   return res;
 };
 const lulu_getTags = ($: CheerioAPI): PageTags[] => {
-  return [{ title: 'Most Relevant', url: '' }];
+  const pageTags: PageTags[] = [];
+  $('#w4 > li').each((i, el) => {
+    const $el = $(el);
+    const $a = $el.find(ElementTypes.a);
+    const $p = $el.find(ElementTypes.p);
+    pageTags.push({
+      title: helpElText($p),
+      url: `https://www.pornlulu.com${helpElAttr($a, ElementAttr.href)}`,
+    });
+  });
+  return pageTags;
 };
 /**
  * 获取首屏的信息

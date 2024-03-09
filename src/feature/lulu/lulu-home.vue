@@ -25,8 +25,8 @@
             :jump-url="item.jumpUrl"
             :tags="item.tags"
             :flat-tags="item.flatTags"
-            width="220px"
-            height="147px"
+            width="223px"
+            height="140px"
             @img-click="handleImageClick(item)"
             @trigger-collect="collect_save(JSON.stringify(item))"
           ></GhsItem>
@@ -35,7 +35,7 @@
     </template>
     <template #slide>
       <div h-full w-full flex flex-col justify-between>
-        <div>
+        <div h-50vh of-auto>
           <GhsTag
             v-for="(item, index) in tags"
             :key="index"
@@ -46,7 +46,7 @@
           ></GhsTag>
         </div>
         <GhsCollect
-          max-height="45vh"
+          max-height="30vh"
           :img-click="imgClick"
           :collect="cCollect"
           :collect-click="collect_click"
@@ -109,8 +109,7 @@
     resolveSearch: (value: string) => {
       // TODO
       searchHistorySave(value);
-      const searchVal = value.replaceAll(' ', '+');
-      return `https://thehentaiworld.com/?s=${searchVal}`;
+      return `https://www.pornlulu.com/?q=${value}&category_id=263`;
     },
     resolveImgClick: imgClick,
   });
