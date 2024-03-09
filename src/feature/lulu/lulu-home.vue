@@ -56,12 +56,11 @@
     </template>
   </ViewLayout>
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
-  <ImgViewer ref="imgViewRef"></ImgViewer>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
 
-  import { f_request_html_get } from '@/utils/functions';
+  import { f_request_html_get, f_win_open_any } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -69,21 +68,20 @@
   import useMainPageHook from '@/feature/hook/useMainPageHook';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import type { GhsPlayerExpose } from '@/components/player/types';
-  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
-  import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsTag from '@/components/tag/ghs-tag.vue';
 
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
-  import { lulu_f_getPageInfo } from '@/feature/lulu/apis/LuLuApi';
+  import { lulu_f_getPageInfo, lulu_f_getVideoUrl } from '@/feature/lulu/apis/LuLuApi';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
-  const imgViewRef = ref<ImgViewerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('lulu');
   const imgClick = async (item) => {
-    const { flatTags, jumpUrl } = item;
-    // TODO
+    const html = await f_request_html_get(item.jumpUrl);
+    const url = await lulu_f_getVideoUrl(html);
+    f_win_open_any(item.jumpUrl);
+    ghsPlayerRef.value.show(url, item.title, 'm3u8');
   };
   const {
     load,

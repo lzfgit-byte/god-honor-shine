@@ -40,7 +40,7 @@ const lulu_getItems = ($: CheerioAPI): PageItemType[] => {
     const title = helpElAttr($img, ElementAttr.alt);
     const coverImg = helpElAttr($img, ElementAttr.dataSrc);
     const author = '';
-    const jumpUrl = helpElAttr($a, ElementAttr.href);
+    const jumpUrl = `https://www.pornlulu.com${helpElAttr($a, ElementAttr.href)}`;
     const tags = [];
     const flatTags: PageTags[] = [];
     res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
@@ -71,4 +71,18 @@ export const lulu_getPageInfo = (html: string): MainPage => {
     items: lulu_getItems($),
     tags: lulu_getTags($),
   };
+};
+export const lulu_getVideoUrl = (html: string): string => {
+  const hs = html.split('\n');
+  let res = '';
+  hs.forEach((item, index) => {
+    if (item.includes('window.location = "https://www.m3u8hls')) {
+      const ss = item.split('#');
+      if (ss.length === 2) {
+        let url = ss[1];
+        res = url.replace(`";`, '');
+      }
+    }
+  });
+  return res;
 };
