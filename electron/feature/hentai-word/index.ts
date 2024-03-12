@@ -12,7 +12,7 @@ import type { CheerioAPI } from 'cheerio';
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
-import { request_html_get } from '../../controller';
+import { win_html_get } from '../../controller';
 import { processMessage } from '../../utils/message';
 
 const hw_getPagination = ($: CheerioAPI): PaginationType[] => {
@@ -77,7 +77,7 @@ export const hw_getPageInfo = (html: string): MainPage => {
   };
 };
 export const hw_getVideoInfo = async (url: string): Promise<HWVideoInfo> => {
-  const html = await request_html_get(url);
+  const html = await win_html_get(url);
   const $: CheerioAPI = cheerio.load(html);
   const $img = $('#image');
   const $video = $img.find('#video');
@@ -97,7 +97,7 @@ const getHWImgInfo = ($: CheerioAPI): HWImgInfo => {
   return { fullUrl, minUrl, title };
 };
 export const hw_getImgInfo = async (url: string): Promise<HWImgInfo[]> => {
-  const html = await request_html_get(url);
+  const html = await win_html_get(url);
   const $: CheerioAPI = cheerio.load(html);
   const thumbs = $('#miniThumbContainer .minithumb');
   const res: HWImgInfo[] = [];
@@ -118,7 +118,7 @@ export const hw_getImgInfo = async (url: string): Promise<HWImgInfo[]> => {
       global: true,
       down: i + 1 === urls.length,
     });
-    const html = await request_html_get(url_);
+    const html = await win_html_get(url_);
     const $: CheerioAPI = cheerio.load(html);
     res.push(getHWImgInfo($));
   }
