@@ -107,7 +107,7 @@
     resolveSearch: (value: string) => {
       // TODO
       searchHistorySave(value);
-      return `https://www.pornlulu.com/?q=${value}&category_id=263`;
+      return `https://www.pornlulu.com/?q=${value}`;
     },
     resolveImgClick: imgClick,
   });
