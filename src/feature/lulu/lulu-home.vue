@@ -27,6 +27,7 @@
             :flat-tags="item.flatTags"
             width="223px"
             height="140px"
+            max-height="80%"
             @img-click="handleImageClick(item)"
             @trigger-collect="collect_save(JSON.stringify(item))"
           ></GhsItem>
@@ -51,6 +52,7 @@
           :collect="cCollect"
           :collect-click="collect_click"
           :collect-delete="collect_delete"
+          max-img-height="80%"
         ></GhsCollect>
       </div>
     </template>

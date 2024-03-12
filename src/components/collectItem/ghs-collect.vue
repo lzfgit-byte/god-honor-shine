@@ -37,6 +37,8 @@
               :width="width"
               :height="height"
               :hide-tag="true"
+              :max-height="maxImgHeight"
+              :max-width="maxImgWidth"
               @img-click="collectClick(item, imgClick)"
               @close-click="collectDelete(JSON.stringify(item))"
             ></GhsItem>
@@ -68,6 +70,8 @@
     force: Boolean,
     width: { type: String, default: '30.5%' },
     height: { type: String, default: '80px' },
+    maxImgHeight: String,
+    maxImgWidth: String,
   });
   const layout = ref<'grid' | 'list'>('grid');
   const cCollect = computed(() => props.collect.map((item) => item));
