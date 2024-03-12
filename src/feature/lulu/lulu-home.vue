@@ -80,7 +80,7 @@
   const imgClick = async (item) => {
     const html = await f_request_html_get(item.jumpUrl);
     const url = await lulu_f_getVideoUrl(html);
-    f_win_open_any(item.jumpUrl);
+    // f_win_open_any(item.jumpUrl);
     ghsPlayerRef.value.show(url, item.title, 'm3u8');
   };
   const {
