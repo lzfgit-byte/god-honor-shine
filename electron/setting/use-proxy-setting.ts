@@ -1,16 +1,8 @@
 import type { BrowserWindow } from 'electron';
 import { sendMessage } from '../utils/message';
 import useSystemSetting from './use-system-setting';
-
-function FindProxyForURL(url, host) {
-  let ignore = ['bobolj.com'];
-  for (let i = 0; i < ignore.length; i++) {
-    if (url.indexOf(ignore[i]) > -1) {
-      return 'DIRECT';
-    }
-  }
-  return `PROXY $proxyHttp`;
-}
+// @ts-ignore
+import pac from './pac?url';
 const pacScript = (proxyHttp: string) =>
   `data:text/plain;base64,${Buffer.from(
     FindProxyForURL.toString()?.replace('$proxyHttp', proxyHttp),
@@ -22,7 +14,7 @@ const doJob = async (win: BrowserWindow) => {
   sendMessage(`FindProxyForURL ${FindProxyForURL.toString()?.replace('$proxyHttp', proxyHttp)}`);
   if (needProxy && proxy) {
     await win.webContents.session.setProxy({
-      pacScript: pacScript(proxyHttp),
+      pacScript: pac,
     });
   }
 };
