@@ -4,6 +4,7 @@ import { TableBuilder, currentVersion } from '../database/init-db';
 const initData: T_config[] = [
   { name: 'proxy', value: 'socks5://127.0.0.1:10808', flag: '1' },
   { name: 'proxyHttp', value: '127.0.0.1:10809', flag: '1' },
+  { name: 'proxyWhitelist', value: '"bobolj.com"', flag: '1' },
   { name: 'needProxy', value: 'true', flag: '1' },
   { name: 'imgWinMin', value: '5', flag: '1' },
   { name: 'imgWinMax', value: '10', flag: '1' },
