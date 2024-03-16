@@ -1,4 +1,5 @@
 import type { BrowserWindow } from 'electron';
+import { sendMessage } from '../utils/message';
 import useSystemSetting from './use-system-setting';
 function FindProxyForURL(url, host) {
   let ignore = ['bobolj.com'];
@@ -17,6 +18,8 @@ const pacScript = (proxyHttp: string) =>
   ).toString('base64')}`;
 const doJob = async (win: BrowserWindow) => {
   const { proxy, needProxy, proxyHttp } = await useSystemSetting();
+  sendMessage(`proxyHttp ${proxyHttp}`);
+  sendMessage(`FindProxyForURL ${FindProxyForURL.toString()?.replace('$proxyHttp', proxyHttp)}`);
   if (needProxy && proxy) {
     await win.webContents.session.setProxy({
       pacScript: pacScript(proxyHttp),
