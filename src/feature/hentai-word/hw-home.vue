@@ -66,7 +66,7 @@
     hw_f_getPageInfo,
     hw_f_getVideoInfo,
   } from '@/feature/hentai-word/apis/HwApis';
-  import { f_request_html_get, f_win_html_get } from '@/utils/functions';
+  import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -114,7 +114,7 @@
       f_request_html_get(url);
     },
     resolveMainPage: async (url: string) => {
-      const html = await f_win_html_get(url);
+      const html = await f_request_html_get(url);
       return await hw_f_getPageInfo(html);
     },
     resolveSearch: (value: string) => {

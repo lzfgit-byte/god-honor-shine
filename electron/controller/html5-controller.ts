@@ -6,6 +6,7 @@ import {
   win_get_data,
   win_open,
 } from '../http';
+import { sendMessage } from '../utils/message';
 
 /**
  * 默认使用electron的request
@@ -25,6 +26,7 @@ export const request_img_get = async (url: string): Promise<string> => {
 export const request_html_get = async (url: string): Promise<string> => {
   let html = (await requestHtml(url)) as any;
   if (html.indexOf('Just a moment...') > 0) {
+    sendMessage('request 失败，使用win');
     html = await win_html_get(url);
   }
   return html;
