@@ -10,8 +10,6 @@ const pacScript = (proxyHttp: string) =>
   ).toString('base64')}`;
 const doJob = async (win: BrowserWindow) => {
   const { proxy, needProxy, proxyHttp } = await useSystemSetting();
-  sendMessage(`proxyHttp ${proxyHttp}`);
-  sendMessage(`FindProxyForURL ${FindProxyForURL.toString()?.replace('$proxyHttp', proxyHttp)}`);
   if (needProxy && proxy) {
     await win.webContents.session.setProxy({
       pacScript: pac,
