@@ -18,8 +18,12 @@ export const request_img_get = (url: string): Promise<string> => {
  * 获取html
  * @param url
  */
-export const request_html_get = (url: string): Promise<string> => {
-  return requestHtml(url) as any;
+export const request_html_get = async (url: string): Promise<string> => {
+  let html = (await requestHtml(url)) as any;
+  if (html.indexOf('Just a moment...') > 0) {
+    html = await win_html_get(url);
+  }
+  return html;
 };
 /**
  * 使用新窗口获取图片
