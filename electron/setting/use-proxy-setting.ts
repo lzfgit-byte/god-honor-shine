@@ -1,12 +1,13 @@
 import type { BrowserWindow } from 'electron';
 import useSystemSetting from './use-system-setting';
-function dnsDomainIs(host, com: string) {
-  return false;
-}
 function FindProxyForURL(url, host) {
-  if (dnsDomainIs(host, 'baidu.com')) {
-    return 'DIRECT';
+  let ignore = ['bobolj.com'];
+  for (let i = 0; i < ignore.length; i++) {
+    if (url.indexOf(ignore[i]) > -1) {
+      return 'DIRECT';
+    }
   }
+
   return `PROXY $proxyHttp`;
 }
 const pacScript = (proxyHttp: string) =>

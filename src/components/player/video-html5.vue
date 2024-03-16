@@ -14,6 +14,7 @@
   import MuiPlayerDesktopPlugin from 'mui-player-desktop-plugin';
   import type { PropType } from 'vue-demi';
   import type { VideoType } from '@/components/player/types';
+  import { GHSClassLog } from '@/components/log';
 
   const props = defineProps({
     src: String,
@@ -45,6 +46,9 @@
       custom: { footerControls: [] },
       plugins: [new MuiPlayerDesktopPlugin({})],
       parse,
+    });
+    mp.on('error', function (event) {
+      GHSClassLog.log(`【视频错误】 ${props.src}`);
     });
   });
   onUnmounted(() => {
