@@ -71,9 +71,11 @@ export const requestImage = async (url: string) => {
   if (isFalsity(url)) {
     return;
   }
-  return requestFunc(
-    url,
-    CacheFileType.img,
-    (blob) => `data:image/png;base64,${Buffer.from(blob).toString('base64')}`
-  );
+  return requestFunc(url, CacheFileType.img, (blob) => {
+    if (blob) {
+      return `data:image/png;base64,${Buffer.from(blob).toString('base64')}`;
+    } else {
+      return '';
+    }
+  });
 };

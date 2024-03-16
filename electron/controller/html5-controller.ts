@@ -11,8 +11,12 @@ import {
  * 默认使用electron的request
  * @param url
  */
-export const request_img_get = (url: string): Promise<string> => {
-  return requestImage(url) as any;
+export const request_img_get = async (url: string): Promise<string> => {
+  let str = (await requestImage(url)) as any;
+  if (str.indexOf('Just a moment...') > 0 || str === '') {
+    str = await win_img_get(url);
+  }
+  return str;
 };
 /**
  * 获取html
