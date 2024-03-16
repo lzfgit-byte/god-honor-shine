@@ -10,20 +10,20 @@ function FindProxyForURL(url, host) {
       return 'DIRECT';
     }
   }
-  return `PROXY $proxyHttp`;
+  return `PROXY 127.0.0.1:10809`;
 }
-
-const pacScript = (proxyHttp: string) =>
-  `data:video/mp2t;base64,${Buffer.from(
-    FindProxyForURL.toString()?.replace('$proxyHttp', proxyHttp),
-    'utf8'
-  ).toString('base64')}`;
 
 const doJob = async (win: BrowserWindow) => {
   const { proxy, needProxy, proxyHttp } = await useSystemSetting();
+  const pacUrl = `data:video/mp2t;base64,${Buffer.from(FindProxyForURL.toString(), 'utf8').toString(
+    'base64'
+  )}`;
+  console.log(FindProxyForURL.toString()?.replace('$proxyHttp', proxyHttp));
+  console.log(pacUrl);
+  console.log(pac);
   if (needProxy && proxy) {
     await win.webContents.session.setProxy({
-      pacScript: pacScript(proxyHttp),
+      pacScript: pac,
     });
   }
 };
