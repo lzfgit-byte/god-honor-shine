@@ -36,12 +36,26 @@
     </template>
     <template #slide>
       <div h-full w-full flex flex-col justify-between>
+        <div>
+          <GhsTag
+            v-for="(item, index) in sorts"
+            :key="item.value + index"
+            type="info"
+            :show-gap="true"
+            @click="currentSort = item.value"
+          >
+            {{ item.name }}
+          </GhsTag>
+        </div>
+        <div>
+          <GhsTag type="info">当前排序规则【{{ showSort }}】</GhsTag>
+        </div>
         <div h-50vh of-auto>
           <GhsTag
             v-for="(item, index) in tags"
             :key="index"
             :info="item"
-            type="waring"
+            :type="judgeCurrent(item.url, currentUrl) ? 'success' : 'waring'"
             :show-gap="true"
             @click="handleTagClick"
           ></GhsTag>
@@ -60,8 +74,9 @@
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue-demi';
+  import { onMounted, ref, watch } from 'vue-demi';
 
+  import { computed } from 'vue';
   import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
@@ -77,13 +92,24 @@
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   import { lulu_f_getPageInfo, lulu_f_getVideoUrl } from '@/feature/lulu/apis/LuLuApi';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
+  const sorts = [
+    { value: 'id', name: '最新' },
+    { value: 'hits', name: '最多' },
+    { value: 'score', name: '推荐' },
+    { value: 'likes', name: '最好' },
+  ];
+  const currentSort = ref('score');
+  const showSort = computed(() => sorts.filter((item) => item.value === currentSort.value)[0].name);
+  const judgeCurrent = (url1, url2) => {
+    const $u1 = new URL(url1);
+    const $u2 = new URL(url2);
+    return $u1.host === $u2.host && $u1.pathname === $u2.pathname;
+  };
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('lulu');
   const imgClick = async (item) => {
     const html = await f_request_html_get(item.jumpUrl);
     const url = await lulu_f_getVideoUrl(html);
-    // f_win_open_any(item.jumpUrl);
-    console.log(url);
     ghsPlayerRef.value.show(url, item.title, 'm3u8');
   };
   const {
@@ -98,6 +124,7 @@
     loading,
     handleTagClick,
     bodyRef,
+    currentUrl,
     reset,
   } = useMainPageHook({
     resolveCacheHtml: (url: string) => {
@@ -112,6 +139,11 @@
       return `https://www.pornlulu.com/?q=${value}`;
     },
     resolveImgClick: imgClick,
+    resolvePageUrl: (url: string) => {
+      const $url = new URL(url);
+      $url.searchParams.set('sort', currentSort.value);
+      return $url.toString();
+    },
   });
   const { collect_save, collect_delete, collect_click, cCollect, collect_list } =
     useCollect('lulu');
@@ -119,6 +151,9 @@
     await load('https://www.pornlulu.com/cat/263');
     await loadHistoryData();
     await collect_list();
+  });
+  watch(currentSort, () => {
+    load(currentUrl.value);
   });
 </script>
 
