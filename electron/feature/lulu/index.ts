@@ -38,7 +38,7 @@ const lulu_getItems = ($: CheerioAPI): PageItemType[] => {
     const $img = $a.find(ElementTypes.img);
 
     const title = helpElAttr($img, ElementAttr.alt);
-    const coverImg = helpElAttr($img, ElementAttr.dataSrc);
+    const coverImg = helpElAttr($img, ElementAttr.dataSrc) || helpElAttr($img, ElementAttr.src);
     const author = '';
     const jumpUrl = `https://www.pornlulu.com${helpElAttr($a, ElementAttr.href)}`;
     const tags = [];

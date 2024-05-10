@@ -62,7 +62,7 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue-demi';
 
-  import { f_request_html_get, f_win_open_any } from '@/utils/functions';
+  import { f_request_html_get } from '@/utils/functions';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsItem from '@/components/item/ghs-item.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
@@ -108,7 +108,6 @@
       return await lulu_f_getPageInfo(html);
     },
     resolveSearch: (value: string) => {
-      // TODO
       searchHistorySave(value);
       return `https://www.pornlulu.com/?q=${value}`;
     },
