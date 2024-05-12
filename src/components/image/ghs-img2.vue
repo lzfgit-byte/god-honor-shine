@@ -1,5 +1,5 @@
 <template>
-  <img :src="imgSrc" :alt="imgSrc" :title="imgSrc" />
+  <img :src="imgSrc" :alt="imgSrc" />
 </template>
 <script setup lang="ts">
   import useImg from '@/components/image/hooks/useImg';
