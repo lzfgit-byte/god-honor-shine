@@ -11,17 +11,18 @@ export default (props: any) => {
   const imgSrc = ref();
   const percentageRef = ref(0);
   let timer: any = null;
+
   const init = async () => {
     if (!props.url) {
       return;
     }
     let notify: NotifyShow = null;
     const msgs: ProcessMsgType[] = [];
-    bus.on(props.url, async (args: ProcessMsgType) => {
+    const handleBus = async (args: ProcessMsgType) => {
       const { percentage, down } = args;
       msgs.push(args);
       percentageRef.value = down ? 100 : percentage;
-      if (timer === null) {
+      if (timer === null && props.global) {
         timer = setInterval(async () => {
           if (msgs.length > 0) {
             const { percentage, down, info, title } = msgs.shift();
@@ -38,7 +39,8 @@ export default (props: any) => {
           }
         }, 10);
       }
-    });
+    };
+    bus.on(props.url, handleBus);
     if (props.force) {
       imgSrc.value = await f_win_img_get(props.url);
     } else {

@@ -1,9 +1,9 @@
 <template>
-  <img :src="imgSrc" alt="" />
+  <img :src="imgSrc" :alt="imgSrc" :title="imgSrc" />
 </template>
 <script setup lang="ts">
   import useImg from '@/components/image/hooks/useImg';
-  const props = defineProps({ url: String, force: Boolean });
+  const props = defineProps({ url: String, force: Boolean, global: Boolean });
   const { init, imgSrc } = useImg(props);
   init();
 </script>

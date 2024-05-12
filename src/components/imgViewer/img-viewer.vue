@@ -75,6 +75,7 @@
                 :url="imgUrl"
                 :force="force"
                 v-bind="imgAttrs"
+                :global="true"
                 @contextmenu.stop="nextImg"
               ></Component>
             </transition>
