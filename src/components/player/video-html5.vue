@@ -15,6 +15,7 @@
   import type { PropType } from 'vue-demi';
   import type { VideoType } from '@/components/player/types';
   import { GHSClassLog } from '@/components/log';
+  import { GHSNotify } from '@/components/message';
 
   const props = defineProps({
     src: String,
@@ -48,7 +49,7 @@
       parse,
     });
     mp.on('error', function (event) {
-      GHSClassLog.log(`【视频错误】 ${props.src}`);
+      GHSNotify.show({ title: '视频播放错误', info: props.src });
     });
   });
   onUnmounted(() => {

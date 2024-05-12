@@ -2,25 +2,9 @@
   <img :src="imgSrc" alt="" />
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import src from './loading.gif?url';
-  import { f_request_img_get, f_win_img_get } from '@/utils/functions';
-
+  import useImg from '@/components/image/hooks/useImg';
   const props = defineProps({ url: String, force: Boolean });
-  const imgSrc = ref(src);
-  const init = async () => {
-    if (!props.url) {
-      return;
-    }
-    if (props.force) {
-      imgSrc.value = await f_win_img_get(props.url);
-    } else {
-      imgSrc.value = await f_request_img_get(props.url);
-    }
-    if (imgSrc.value === 'data:image/png;base64,') {
-      imgSrc.value = src;
-    }
-  };
+  const { init, imgSrc } = useImg(props);
   init();
 </script>
 

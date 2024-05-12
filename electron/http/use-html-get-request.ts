@@ -9,7 +9,7 @@ const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) =>
       title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
       percentage: +((blob.length / fileSize) * 100).toFixed(0),
       key: url,
-      global: true,
+      global: false,
     });
   } else {
     sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);

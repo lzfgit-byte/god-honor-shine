@@ -1,7 +1,4 @@
-import { existsSync, statSync } from 'node:fs';
 import type { CacheFileType, T_logger } from '@ghs/share';
-import { cache_dir_db } from '../../electron/utils';
-import { app_set_config_dir } from '../../electron/const/app-paths';
 import { executeFunction } from '@/utils/ipc';
 
 /**
