@@ -1,12 +1,11 @@
 import * as cheerio from 'cheerio';
-import type { HWVideoInfo, MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
+import type { MainPage, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { AnyNode, CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
-import { request_html_get } from '../../controller';
 
 const r34_getPagination = ($: CheerioAPI): PaginationType[] => {
   const ids = [
