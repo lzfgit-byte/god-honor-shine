@@ -25,8 +25,8 @@
             :jump-url="item.jumpUrl"
             :tags="item.tags"
             :flat-tags="item.flatTags"
-            width="220px"
-            height="147px"
+            width="225px"
+            height="133px"
             @img-click="handleImageClick(item)"
             @trigger-collect="collect_save(JSON.stringify(item))"
           ></GhsItem>
@@ -116,9 +116,9 @@
     resolveImgClick: imgClick,
   });
   const { collect_save, collect_delete, collect_click, cCollect, collect_list } =
-    useCollect('hentaiWord');
+    useCollect('xvideos');
   onMounted(async () => {
-    await load('https://thehentaiworld.com/?new');
+    await load('https://www.xvideos.com');
     await loadHistoryData();
     await collect_list();
   });

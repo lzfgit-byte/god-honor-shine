@@ -4,4 +4,10 @@ export interface T_OptType {
   orderBy?: string;
 }
 
-export type SearchHistoryType = 'hentaiWord' | '18Comic' | 'rule34' | 'bedNews' | 'lulu';
+export type SearchHistoryType =
+  | 'hentaiWord'
+  | '18Comic'
+  | 'rule34'
+  | 'bedNews'
+  | 'lulu'
+  | 'xvideos';

@@ -57,6 +57,14 @@ export const routes: RouterType[] = [
     component: () => import('@/feature/lulu/lulu-home.vue'),
   },
   {
+    path: '/xvideos',
+    name: 'xvideos',
+    aliasZH: 'xvideos',
+    icon: 'https://www.xvideos.com/favicon.ico',
+    showInMenu: true,
+    component: () => import('@/feature/xvideos/xv-home.vue'),
+  },
+  {
     path: '/18-comic-reader',
     name: '18-comic-reader',
     aliasZH: '18C',

@@ -29,18 +29,30 @@ const xv_getPagination = ($: CheerioAPI): PaginationType[] => {
 };
 const xv_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
-  $('#thumbContainer .thumb').each((i, el) => {
-    const $el = $(el);
+  $(`#content > div > div:not(.clearfix)`).each((i, el) => {
+    const $ele = $(el);
+    const $el = $ele.find('.thumb-inside .thumb');
     const $a = $el.find(ElementTypes.a);
-    const $h4 = $a.find(ElementTypes.h4);
     const $img = $a.find(ElementTypes.img);
-    const $span = $a.find('span');
-    const title = helpElAttr($a, ElementAttr.title);
-    const coverImg = helpElAttr($img, ElementAttr.src);
+    const $HDSpan = $el.find('.video-hd-mark');
+
+    const $title = $ele.find('.thumb-under .title > a');
+    const $meta = $ele.find('.thumb-under .metadata');
+    const $duration = $meta.find('.duration');
+    const $nums = $meta.find('.bg > span:eq(1)');
+    const txt = helpElText($nums);
+    let sps: any = txt.split('-');
+    sps = sps[1]?.replace('观看次数', '');
+
+    const title = helpElAttr($title, ElementAttr.title);
+    const coverImg = helpElAttr($img, ElementAttr.dataSrc) || helpElAttr($img, ElementAttr.src);
     const author = '';
     const jumpUrl = helpElAttr($a, ElementAttr.href);
     const tags = [];
-    const flatTags: PageTags[] = [{ title: helpElText($h4) }, { title: helpElText($span) }];
+    const flatTags: PageTags[] = [{ title: helpElText($HDSpan) }, { title: helpElText($duration) }];
+    if (sps) {
+      flatTags.push({ title: sps });
+    }
     res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
   });
   return res;
