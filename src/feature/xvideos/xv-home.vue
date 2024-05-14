@@ -80,7 +80,7 @@
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const imgViewRef = ref<ImgViewerExpose>();
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
-    useSearchHistory('hentaiWord');
+    useSearchHistory('xvideos');
   const imgClick = async (item) => {
     const { jumpUrl } = item;
     const xvVideoInfo = await xv_f_getVideoInfo(jumpUrl);
@@ -109,8 +109,7 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
-      const searchVal = value.replaceAll(' ', '+');
-      return `https://thehentaiworld.com/?s=${searchVal}`;
+      return `https://www.xvideos.com/?k=${value}`;
     },
     resolveImgClick: imgClick,
   });

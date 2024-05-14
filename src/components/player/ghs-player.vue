@@ -6,7 +6,7 @@
     top="5%"
     :mask-closed="true"
   >
-    <div min-h-60vh>
+    <div min-h-80vh>
       <VideoHtml5
         v-if="videoVisible && visible"
         :key="srcComp"
@@ -15,7 +15,7 @@
         :type="typeComp"
       ></VideoHtml5>
     </div>
-    <template #footer>
+    <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
         v-for="(item, index) in urlsRef"
         :key="item.url + index"
@@ -60,6 +60,10 @@
       titleComp.value = title;
       typeComp.value = type;
       visible.value = true;
+      // 默认播放最高的清晰度
+      const c = urls.map((i) => parseInt(i.hd)).reduce((c, n) => (c > n ? c : n), 0);
+      srcComp.value = urls.find((i) => parseInt(i.hd) === c)?.url;
+      videoVisible.value = true;
     },
   });
 </script>

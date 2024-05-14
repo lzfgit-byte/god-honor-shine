@@ -25,13 +25,16 @@ const xv_getPagination = ($: CheerioAPI): PaginationType[] => {
     const title = helpElText($a);
     const url = helpElAttr($a, ElementAttr.href);
     const isCurrent = $a.hasClass('active');
-    res.push({ title, isCurrent, url: `${base_url}${url}` });
+    res.push({ title, isCurrent, url: url.length > 0 ? `${base_url}${url}` : '' });
   });
-  res.unshift({
-    title: '1',
-    isCurrent: !res.some((item) => item.isCurrent),
-    url: base_url,
-  });
+  if (res.every((i) => i.title !== '1')) {
+    res.unshift({
+      title: '1',
+      isCurrent: !res.some((item) => item.isCurrent),
+      url: base_url,
+    });
+  }
+
   return res;
 };
 const xv_getItems = ($: CheerioAPI): PageItemType[] => {
