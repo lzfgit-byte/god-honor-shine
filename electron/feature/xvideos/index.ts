@@ -63,7 +63,14 @@ const xv_getItems = ($: CheerioAPI): PageItemType[] => {
     if (sps) {
       flatTags.push({ title: sps });
     }
-    res.push({ title, coverImg, author, tags, flatTags, jumpUrl: `${base_url}${jumpUrl}` });
+    res.push({
+      title,
+      coverImg: coverImg.replace('THUMBNUM', '3'),
+      author,
+      tags,
+      flatTags,
+      jumpUrl: `${base_url}${jumpUrl}`,
+    });
   });
   return res;
 };

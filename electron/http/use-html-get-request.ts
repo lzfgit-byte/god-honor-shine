@@ -73,8 +73,12 @@ export const requestImage = async (url: string) => {
   }
   return requestFunc(url, CacheFileType.img, (blob) => {
     if (blob) {
+      if (blob?.length < 100) {
+        sendMessage(`【img】 获取图片长度不足100 ${url} `);
+      }
       return `data:image/png;base64,${Buffer.from(blob).toString('base64')}`;
     } else {
+      sendMessage(`【img】获取图片失败 ${url} `);
       return '';
     }
   });

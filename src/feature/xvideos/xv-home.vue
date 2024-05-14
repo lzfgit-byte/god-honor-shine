@@ -35,6 +35,28 @@
     </template>
     <template #slide>
       <div h-full w-full flex flex-col justify-between>
+        <div>
+          <GhsTag
+            v-for="(item, index) in sorts"
+            :key="item.value + index"
+            :show-gap="true"
+            :type="currentSorts === item.value ? 'success' : 'info'"
+            @click="currentSorts = item.value"
+          >
+            {{ item.name }}
+          </GhsTag>
+        </div>
+        <div>
+          <GhsTag
+            v-for="(item, index) in videoLength"
+            :key="item.value + index"
+            :show-gap="true"
+            :type="currentVideoLength === item.value ? 'success' : 'info'"
+            @click="currentVideoLength = item.value"
+          >
+            {{ item.name }}
+          </GhsTag>
+        </div>
         <div overflow-auto max-h-30vh>
           <GhsTag
             v-for="(item, index) in tags"
@@ -56,10 +78,9 @@
     </template>
   </ViewLayout>
   <GhsPlayer ref="ghsPlayerRef"></GhsPlayer>
-  <ImgViewer ref="imgViewRef"></ImgViewer>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue-demi';
+  import { onMounted, ref, watch } from 'vue-demi';
 
   import { xv_f_getPageInfo, xv_f_getVideoInfo } from '@/feature/xvideos/apis/XvApis';
   import { f_request_html_get } from '@/utils/functions';
@@ -70,15 +91,30 @@
   import useMainPageHook from '@/feature/hook/useMainPageHook';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import type { GhsPlayerExpose } from '@/components/player/types';
-  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
-  import type { ImgViewerExpose } from '@/components/imgViewer/type';
   import GhsTag from '@/components/tag/ghs-tag.vue';
 
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
-  const imgViewRef = ref<ImgViewerExpose>();
+  const sorts = ref([
+    { value: 'relevance', name: '关联' },
+    { value: 'uploaddate', name: '上传日期' },
+    { value: 'rating', name: '评级' },
+    { value: 'length', name: '长度' },
+    { value: 'views', name: '观看次数' },
+    { value: 'random', name: '随机' },
+  ]);
+  const currentSorts = ref('relevance');
+  const videoLength = ref([
+    { value: '', name: '全部' },
+    { value: '1-3min', name: '1-3分钟' },
+    { value: '3-10min', name: '3-10分钟' },
+    { value: '10min_more', name: '大于10分钟' },
+    { value: '10-20min', name: '10-20分钟' },
+    { value: '20min_more', name: '大于20分钟' },
+  ]);
+  const currentVideoLength = ref('');
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('xvideos');
   const imgClick = async (item) => {
@@ -99,6 +135,7 @@
     handleTagClick,
     bodyRef,
     reset,
+    currentUrl,
   } = useMainPageHook({
     resolveCacheHtml: (url: string) => {
       f_request_html_get(url);
@@ -112,6 +149,12 @@
       return `https://www.xvideos.com/?k=${value}`;
     },
     resolveImgClick: imgClick,
+    resolvePageUrl: (url) => {
+      const $url = new URL(url);
+      $url.searchParams.set('sort', currentSorts.value);
+      $url.searchParams.set('durf', currentVideoLength.value);
+      return $url.toString();
+    },
   });
   const { collect_save, collect_delete, collect_click, cCollect, collect_list } =
     useCollect('xvideos');
@@ -119,6 +162,12 @@
     await load('https://www.xvideos.com');
     await loadHistoryData();
     await collect_list();
+  });
+  watch(currentSorts, () => {
+    load(currentUrl.value);
+  });
+  watch(currentVideoLength, () => {
+    load(currentUrl.value);
   });
 </script>
 
