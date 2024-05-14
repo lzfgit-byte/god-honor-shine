@@ -69,12 +69,15 @@ const xv_getItems = ($: CheerioAPI): PageItemType[] => {
 };
 const xv_getTags = ($: CheerioAPI): PageTags[] => {
   const res: PageTags[] = [];
-  $('#tags > li').each((i, el) => {
+  $('#main-cats-sub-list > li').each((i, el) => {
     const $el = $(el);
     const $a = $el.find('a');
-    const $span = $el.find('span');
-    const title = `${helpElText($a)} ${helpElText($span)}`;
-    const url = `https:${helpElAttr($a, ElementAttr.href)}`;
+    const title = `${helpElText($a)}`;
+    const href = helpElAttr($a, ElementAttr.href);
+    if (href === '/tags') {
+      return;
+    }
+    const url = `${base_url}${href}`;
     res.push({ title, url });
   });
   return res;

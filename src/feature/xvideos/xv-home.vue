@@ -35,7 +35,7 @@
     </template>
     <template #slide>
       <div h-full w-full flex flex-col justify-between>
-        <div>
+        <div overflow-auto max-h-30vh>
           <GhsTag
             v-for="(item, index) in tags"
             :key="index"
@@ -46,7 +46,7 @@
           ></GhsTag>
         </div>
         <GhsCollect
-          max-height="45vh"
+          max-height="50vh"
           :img-click="imgClick"
           :collect="cCollect"
           :collect-click="collect_click"
