@@ -49,3 +49,8 @@ export interface MainPage {
 }
 
 export interface ComicContent {}
+
+export interface UrlInfoType {
+  url?: string;
+  hd?: string;
+}

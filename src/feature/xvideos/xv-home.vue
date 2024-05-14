@@ -84,8 +84,7 @@
   const imgClick = async (item) => {
     const { jumpUrl } = item;
     const xvVideoInfo = await xv_f_getVideoInfo(jumpUrl);
-    console.log(xvVideoInfo);
-    // ghsPlayerRef.value.show(xvVideoInfo.url, xvVideoInfo.title, 'm3u8');
+    ghsPlayerRef.value.showWithTag(xvVideoInfo.urls, xvVideoInfo.title, 'm3u8');
   };
   const {
     load,
