@@ -59,7 +59,7 @@ export const routes: RouterType[] = [
   {
     path: '/xvideos',
     name: 'xvideos',
-    aliasZH: 'xvideos',
+    aliasZH: 'XV',
     icon: 'https://www.xvideos.com/favicon.ico',
     showInMenu: true,
     component: () => import('@/feature/xvideos/xv-home.vue'),

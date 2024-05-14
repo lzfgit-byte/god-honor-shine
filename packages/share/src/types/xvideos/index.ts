@@ -1,4 +1,4 @@
 export interface XVVideoInfo {
   title?: string;
-  url?: string;
+  urls?: { hd: string; url: string }[];
 }

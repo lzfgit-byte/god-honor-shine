@@ -6,10 +6,10 @@ import { ElementAttr, ElementTypes } from '@ghs/share';
 
 import { helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
-import { processMessage } from '../../utils/message';
-
+import { request_string_get } from '../../http/use-get-blob-request';
+let base_url = 'https://www.xvideos.com';
 const xv_getPagination = ($: CheerioAPI): PaginationType[] => {
-  let $more = $('#more-hentai li');
+  let $more = $('.pagination:eq(0) li');
   if ($more.length === 0) {
     return [];
   }
@@ -17,13 +17,20 @@ const xv_getPagination = ($: CheerioAPI): PaginationType[] => {
   $more.each((i, el) => {
     // li标签
     const $el = $(el);
-    const $span = $el.find('span');
     const $a = $el.find('a');
+    if ($a.hasClass('prev-page') || $a.hasClass('no-page')) {
+      return;
+    }
     //
-    const title = helpElText($span) || helpElText($a);
-    const url = helpElAttr($a, 'href');
-    const isCurrent = $span.hasClass('current');
-    res.push({ title, isCurrent, url });
+    const title = helpElText($a);
+    const url = helpElAttr($a, ElementAttr.href);
+    const isCurrent = $a.hasClass('active');
+    res.push({ title, isCurrent, url: `${base_url}${url}` });
+  });
+  res.unshift({
+    title: '1',
+    isCurrent: !res.some((item) => item.isCurrent),
+    url: base_url,
   });
   return res;
 };
@@ -53,7 +60,7 @@ const xv_getItems = ($: CheerioAPI): PageItemType[] => {
     if (sps) {
       flatTags.push({ title: sps });
     }
-    res.push({ title, coverImg, author, tags, flatTags, jumpUrl });
+    res.push({ title, coverImg, author, tags, flatTags, jumpUrl: `${base_url}${jumpUrl}` });
   });
   return res;
 };
@@ -84,9 +91,25 @@ export const xv_getPageInfo = (html: string): MainPage => {
 export const xv_getVideoInfo = async (url: string): Promise<XVVideoInfo> => {
   let html = await request_html_get(url);
   const $: CheerioAPI = cheerio.load(html);
-  const $img = $('#image');
-  const $video = $img.find('#video');
-  const $source = $video.find(ElementTypes.source);
-  const $span = $img.find(`span[itemprop="name"]`);
-  return { url: helpElAttr($source, ElementAttr.src), title: helpElText($span) };
+  const $title = $('#main .page-title');
+  let htmls = html.split('\n');
+  if (htmls.length === 0) {
+    htmls = html.split('\r');
+  }
+  let urlRes = '';
+  htmls.forEach((item: string) => {
+    if (item.includes('html5player.setVideoHLS')) {
+      urlRes = item.substring(item.indexOf('(') + 2, item.indexOf(')') - 1);
+    }
+  });
+  const m3u8s: string = await request_string_get(urlRes);
+  const baseM3u8 = urlRes.replace('hls.m3u8', '');
+  const urls = [];
+  m3u8s.split('\n').forEach((item) => {
+    if (item.includes('.m3u8')) {
+      const spilts = item.split('-');
+      urls.push({ hd: spilts[1], url: `${baseM3u8}${item}` });
+    }
+  });
+  return { urls, title: helpElText($title) };
 };

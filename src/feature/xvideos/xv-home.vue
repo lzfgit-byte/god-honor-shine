@@ -82,10 +82,10 @@
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('hentaiWord');
   const imgClick = async (item) => {
-    debugger;
-    const { flatTags, jumpUrl } = item;
-    const hwVideoInfo = await xv_f_getVideoInfo(jumpUrl);
-    ghsPlayerRef.value.show(hwVideoInfo.url, hwVideoInfo.title, 'mp4');
+    const { jumpUrl } = item;
+    const xvVideoInfo = await xv_f_getVideoInfo(jumpUrl);
+    console.log(xvVideoInfo);
+    // ghsPlayerRef.value.show(xvVideoInfo.url, xvVideoInfo.title, 'm3u8');
   };
   const {
     load,
