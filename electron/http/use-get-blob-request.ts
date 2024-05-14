@@ -16,7 +16,6 @@ export const request_string_get = (url: string, suffix = CacheFileType.blob): Pr
     let blob: any = Buffer.alloc(0);
     request.on('response', (response) => {
       const header = response.headers;
-      console.log(response);
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
       });

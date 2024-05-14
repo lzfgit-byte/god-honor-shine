@@ -57,7 +57,18 @@
             {{ item.name }}
           </GhsTag>
         </div>
-        <div overflow-auto max-h-30vh>
+        <div>
+          <GhsTag
+            v-for="(item, index) in quality"
+            :key="item.value + index"
+            :show-gap="true"
+            :type="currentQuality === item.value ? 'success' : 'info'"
+            @click="currentQuality = item.value"
+          >
+            {{ item.name }}
+          </GhsTag>
+        </div>
+        <div overflow-auto max-h-22vh>
           <GhsTag
             v-for="(item, index) in tags"
             :key="index"
@@ -108,13 +119,19 @@
   const currentSorts = ref('relevance');
   const videoLength = ref([
     { value: '', name: '全部' },
-    { value: '1-3min', name: '1-3分钟' },
-    { value: '3-10min', name: '3-10分钟' },
-    { value: '10min_more', name: '大于10分钟' },
-    { value: '10-20min', name: '10-20分钟' },
-    { value: '20min_more', name: '大于20分钟' },
+    { value: '1-3min', name: '1-3m' },
+    { value: '3-10min', name: '3-10m' },
+    { value: '10min_more', name: '>10m' },
+    { value: '10-20min', name: '10-20m' },
+    { value: '20min_more', name: '>20m' },
   ]);
   const currentVideoLength = ref('');
+  const quality = ref([
+    { value: '', name: '全部' },
+    { value: 'hd', name: '720p+' },
+    { value: '1080P', name: '1080P+' },
+  ]);
+  const currentQuality = ref('');
   const { loadHistoryData, handleDelete, historyData, searchHistorySave } =
     useSearchHistory('xvideos');
   const imgClick = async (item) => {
@@ -153,6 +170,7 @@
       const $url = new URL(url);
       $url.searchParams.set('sort', currentSorts.value);
       $url.searchParams.set('durf', currentVideoLength.value);
+      $url.searchParams.set('quality', currentQuality.value);
       return $url.toString();
     },
   });
@@ -167,6 +185,9 @@
     load(currentUrl.value);
   });
   watch(currentVideoLength, () => {
+    load(currentUrl.value);
+  });
+  watch(currentQuality, () => {
     load(currentUrl.value);
   });
 </script>
