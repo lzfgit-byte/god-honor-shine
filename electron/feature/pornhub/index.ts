@@ -67,7 +67,7 @@ const ph_getItems = ($: CheerioAPI): PageItemType[] => {
     );
     const $rating = getCurrentItems(
       () => $info.find('.videoDetailBlock > .rating-container > .value'),
-      () => $info.find('.videoDetailsBlock > .rating-container > .value')
+      () => $info.find('.videoDetailsBlock .rating-container .value')
     );
     const $duration = $el.find('.duration');
 
@@ -76,7 +76,7 @@ const ph_getItems = ($: CheerioAPI): PageItemType[] => {
     const tags = [];
     const flatTags: PageTags[] = [
       { title: helpElText($views) },
-      { title: helpElText($add) },
+      { title: helpElText($add) === '54年前' ? '' : helpElText($add) },
       { title: helpElText($rating) },
       { title: helpElText($duration) },
     ];
@@ -96,6 +96,13 @@ const ph_getTags = ($: CheerioAPI): PageTags[] => {
   $('.trendingNowWrapper > li').each((i, el) => {
     const $el = $(el);
     const $a = $el.find('a');
+    const title = `${helpElText($a)}`;
+    const href = helpElAttr($a, ElementAttr.href);
+    const url = `${base_url}${href}`;
+    res.push({ title, url });
+  });
+  $('.relatedSearchTermsBottom > a').each((i, el) => {
+    const $a = $(el);
     const title = `${helpElText($a)}`;
     const href = helpElAttr($a, ElementAttr.href);
     const url = `${base_url}${href}`;
