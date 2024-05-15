@@ -4,15 +4,16 @@ import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 import { formatSize, isFalsity } from '../utils/KitUtil';
 const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
-  if (fileSize && fileSize > SHOW_FILE_SIZE) {
+  if (suffix === CacheFileType.html || (fileSize && fileSize > SHOW_FILE_SIZE)) {
+    if (isNaN(fileSize)) {
+      fileSize = blob.length + 10;
+    }
     processMessage({
       title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
       percentage: +((blob.length / fileSize) * 100).toFixed(0),
       key: url,
-      global: false,
+      global: suffix === CacheFileType.html,
     });
-  } else {
-    sendMessage(`【${suffix}】数据请求${url} ${formatSize(blob.length)}`);
   }
 };
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
@@ -38,7 +39,7 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));
-        sendMsg(fileSize, suffix, blob, url);
+        sendMsg(blob.length, suffix, blob, url);
         blob = null;
       });
       response.on('error', () => {

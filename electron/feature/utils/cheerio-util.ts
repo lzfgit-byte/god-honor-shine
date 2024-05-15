@@ -8,7 +8,14 @@ export const helpElText = ($el: Cheerio<Element>) => {
   return $el?.text() || '';
 };
 export const getCurrentItems = (...items: (() => Cheerio<Element>)[]): Cheerio<Element> => {
-  let element = items.find((item) => item().length > 0);
-
-  return (element && element()) || items[0]();
+  let res = null;
+  items.forEach((func) => {
+    if (res === null) {
+      const foo = func();
+      if (foo.length > 0) {
+        res = foo;
+      }
+    }
+  });
+  return res || items[0]();
 };

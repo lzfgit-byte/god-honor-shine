@@ -2,11 +2,12 @@ import * as cheerio from 'cheerio';
 import type { MainPage, PHVideoInfo, PageItemType, PageTags, PaginationType } from '@ghs/share';
 import type { CheerioAPI } from 'cheerio';
 
-import { ElementAttr, ElementTypes } from '@ghs/share';
+import { ElementAttr } from '@ghs/share';
 
+import type { UrlInfoType } from '@ghs/share/src';
 import { getCurrentItems, helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
-import { request_string_get } from '../../http/use-get-blob-request';
+import { processMessage } from '../../utils/message';
 let base_url = 'https://www.pornhub.com';
 const ph_getPagination = ($: CheerioAPI): PaginationType[] => {
   let $more = $('.paginationGated li');
@@ -30,6 +31,10 @@ const ph_getPagination = ($: CheerioAPI): PaginationType[] => {
 
     res.push({ title, isCurrent, url: url.length > 0 ? `${base_url}${url}` : '' });
   });
+  const all = $('.showingCounter:eq(0)');
+  if (all.length > 0) {
+    res.push({ title: `${helpElText(all)}`, isCurrent: false, url: '' });
+  }
 
   return res;
 };
@@ -88,14 +93,20 @@ const ph_getItems = ($: CheerioAPI): PageItemType[] => {
 };
 const ph_getTags = ($: CheerioAPI): PageTags[] => {
   const res: PageTags[] = [];
-  $('#main-cats-sub-list > li').each((i, el) => {
+  $('.trendingNowWrapper > li').each((i, el) => {
     const $el = $(el);
     const $a = $el.find('a');
     const title = `${helpElText($a)}`;
     const href = helpElAttr($a, ElementAttr.href);
-    if (href === '/tags') {
-      return;
-    }
+    const url = `${base_url}${href}`;
+    res.push({ title, url });
+  });
+  $('.catHeaderSubMenu > li').each((i, el) => {
+    const $el = $(el);
+    const $a = $el.find('a');
+    const $var = $a.find('var');
+    const title = `${helpElAttr($a, ElementAttr.alt)}-${helpElText($var)}`;
+    const href = helpElAttr($a, ElementAttr.href);
     const url = `${base_url}${href}`;
     res.push({ title, url });
   });
@@ -116,25 +127,21 @@ export const ph_getPageInfo = (html: string): MainPage => {
 export const ph_getVideoInfo = async (url: string): Promise<PHVideoInfo> => {
   let html = await request_html_get(url);
   const $: CheerioAPI = cheerio.load(html);
-  const $title = $('#main .page-title');
-  let htmls = html.split('\n');
-  if (htmls.length === 0) {
-    htmls = html.split('\r');
+  const $title = $('title');
+  const urls: UrlInfoType[] = [];
+  const jScript = helpElText($('#player script'));
+  const jsonJS = jScript.substring(jScript.indexOf('{'), jScript.indexOf('};') + 1);
+  try {
+    const objs: { mediaDefinitions: { format: string; videoUrl: string; quality: string }[] } =
+      JSON.parse(jsonJS);
+    objs.mediaDefinitions.forEach((item) => {
+      if (typeof item.quality === 'string') {
+        urls.push({ url: item.videoUrl, hd: item.quality });
+      }
+    });
+  } catch (e) {
+    processMessage({ title: '解析错误', global: true, info: '解析错误' });
   }
-  let urlRes = '';
-  htmls.forEach((item: string) => {
-    if (item.includes('html5player.setVideoHLS')) {
-      urlRes = item.substring(item.indexOf('(') + 2, item.indexOf(')') - 1);
-    }
-  });
-  const m3u8s: string = await request_string_get(urlRes);
-  const baseM3u8 = urlRes.replace('hls.m3u8', '');
-  const urls = [];
-  m3u8s.split('\n').forEach((item) => {
-    if (item.includes('.m3u8')) {
-      const spilts = item.split('-');
-      urls.push({ hd: spilts[1], url: `${baseM3u8}${item}` });
-    }
-  });
+
   return { urls, title: helpElText($title) };
 };

@@ -67,19 +67,19 @@
           >
             {{ item.name }}
           </GhsTag>
+          <GhsDivision>
+            <GhsTag
+              v-for="(item, index) in produce"
+              :key="item.value + index"
+              :show-gap="true"
+              :type="currentProduce === item.value ? 'success' : 'info'"
+              @click="currentProduce = item.value"
+            >
+              {{ item.name }}
+            </GhsTag>
+          </GhsDivision>
         </div>
-        <div>
-          <GhsTag
-            v-for="(item, index) in produce"
-            :key="item.value + index"
-            :show-gap="true"
-            :type="currentProduce === item.value ? 'success' : 'info'"
-            @click="currentProduce = item.value"
-          >
-            {{ item.name }}
-          </GhsTag>
-        </div>
-        <div overflow-auto max-h-19vh>
+        <div overflow-auto max-h-21vh>
           <GhsTag
             v-for="(item, index) in tags"
             :key="index"
@@ -118,9 +118,10 @@
   import useSearchHistory from '@/feature/hook/useSearchHistory';
   import useCollect from '@/feature/hook/useCollect';
   import GhsCollect from '@/components/collectItem/ghs-collect.vue';
+  import GhsDivision from '@/components/division/ghs-division.vue';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const sorts = ref([
-    { value: '', name: '全部' },
+    { value: '', name: '最相关' },
     { value: 'o=mv,cc=us', name: '最多观看' },
     { value: 'o=tr', name: '最高分' },
     { value: 'o=ht,cc=us', name: '最热门' },
@@ -129,14 +130,14 @@
   ]);
   const currentSorts = ref('');
   const videoLength = ref([
-    { value: '', name: '全部' },
+    { value: '', name: '不限' },
     { value: '10', name: '<10' },
     { value: '20', name: '<20' },
     { value: '30', name: '<30' },
   ]);
   const currentVideoLength = ref('');
   const quality = ref([
-    { value: '', name: '全部' },
+    { value: '', name: '不限' },
     { value: '1', name: '高清' },
   ]);
   const currentQuality = ref('');
@@ -150,8 +151,8 @@
     useSearchHistory('pornhub');
   const imgClick = async (item) => {
     const { jumpUrl } = item;
-    const xvVideoInfo = await ph_f_getVideoInfo(jumpUrl);
-    ghsPlayerRef.value.showWithTag(xvVideoInfo.urls, xvVideoInfo.title, 'm3u8');
+    const phVideoInfo = await ph_f_getVideoInfo(jumpUrl);
+    ghsPlayerRef.value.showWithTag(phVideoInfo.urls, phVideoInfo.title, 'm3u8');
   };
   const base_url = 'https://www.pornhub.com';
   const {
