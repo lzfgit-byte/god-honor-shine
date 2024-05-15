@@ -179,6 +179,7 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
+      value = value.replace(' ', '+');
       return `${base_url}/video/search?search=${value}`;
     },
     resolveImgClick: imgClick,

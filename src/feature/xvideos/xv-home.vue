@@ -163,6 +163,7 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
+      value = value.replace(' ', '+');
       return `https://www.xvideos.com/?k=${value}`;
     },
     resolveImgClick: imgClick,
