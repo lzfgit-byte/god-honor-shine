@@ -28,8 +28,9 @@ const ph_getPagination = ($: CheerioAPI): PaginationType[] => {
     const title = prev ? '<' : helpElText($a) || helpElText($span);
     const url = prev ? '' : helpElAttr($a, ElementAttr.href);
     const isCurrent = $el.hasClass('page_current');
-
-    res.push({ title, isCurrent, url: url.length > 0 ? `${base_url}${url}` : '' });
+    if (title) {
+      res.push({ title, isCurrent, url: url.length > 0 ? `${base_url}${url}` : '' });
+    }
   });
   const all = $('.showingCounter:eq(0)');
   if (all.length > 0) {
