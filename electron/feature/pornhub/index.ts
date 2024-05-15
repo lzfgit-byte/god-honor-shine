@@ -26,7 +26,7 @@ const ph_getPagination = ($: CheerioAPI): PaginationType[] => {
     //
     const prev = $el.hasClass('page_previous');
     const title = prev ? '<' : helpElText($a) || helpElText($span);
-    const url = prev ? '' : helpElAttr($a, ElementAttr.href);
+    const url = helpElAttr($a, ElementAttr.href);
     const isCurrent = $el.hasClass('page_current');
     if (title) {
       res.push({ title, isCurrent, url: url.length > 0 ? `${base_url}${url}` : '' });
