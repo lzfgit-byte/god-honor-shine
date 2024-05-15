@@ -124,9 +124,8 @@
     { value: 'o=mv,cc=us', name: '最多观看' },
     { value: 'o=tr', name: '最高分' },
     { value: 'o=ht,cc=us', name: '最热门' },
-    { value: 'length', name: '长度' },
     { value: 'o=lg', name: '最长' },
-    { value: 'o=cm', name: '最新' },
+    { value: 'o=mr', name: '最新' },
   ]);
   const currentSorts = ref('');
   const videoLength = ref([
@@ -154,6 +153,7 @@
     const xvVideoInfo = await ph_f_getVideoInfo(jumpUrl);
     ghsPlayerRef.value.showWithTag(xvVideoInfo.urls, xvVideoInfo.title, 'm3u8');
   };
+  const base_url = 'https://www.pornhub.com';
   const {
     load,
     handleSearch,
@@ -178,7 +178,7 @@
     },
     resolveSearch: (value: string) => {
       searchHistorySave(value);
-      return `https://www.pornhub.com/video/search?search=${value}`;
+      return `${base_url}/video/search?search=${value}`;
     },
     resolveImgClick: imgClick,
     resolvePageUrl: (url) => {
@@ -191,15 +191,24 @@
             $url.searchParams.set(as[0], as[1]);
           }
         });
+      } else {
+        $url.searchParams.delete('o');
+        $url.searchParams.delete('cc');
       }
       if (currentVideoLength.value) {
         $url.searchParams.set('max_duration', currentVideoLength.value);
+      } else {
+        $url.searchParams.delete('max_duration');
       }
       if (currentQuality.value) {
         $url.searchParams.set('hd', currentQuality.value);
+      } else {
+        $url.searchParams.delete('hd');
       }
       if (currentProduce.value) {
         $url.searchParams.set('p', currentProduce.value);
+      } else {
+        $url.searchParams.delete('p');
       }
 
       return $url.toString();
@@ -208,7 +217,7 @@
   const { collect_save, collect_delete, collect_click, cCollect, collect_list } =
     useCollect('pornhub');
   onMounted(async () => {
-    await load('https://www.pornhub.com');
+    await load(base_url);
     await loadHistoryData();
     await collect_list();
   });

@@ -4,12 +4,12 @@ import type { CheerioAPI } from 'cheerio';
 
 import { ElementAttr, ElementTypes } from '@ghs/share';
 
-import { helpElAttr, helpElText } from '../utils/cheerio-util';
+import { getCurrentItems, helpElAttr, helpElText } from '../utils/cheerio-util';
 import { request_html_get } from '../../controller';
 import { request_string_get } from '../../http/use-get-blob-request';
-let base_url = 'https://pornhub.com';
+let base_url = 'https://www.pornhub.com';
 const ph_getPagination = ($: CheerioAPI): PaginationType[] => {
-  let $more = $('.pagination:eq(0) li');
+  let $more = $('.paginationGated li');
   if ($more.length === 0) {
     return [];
   }
@@ -18,31 +18,28 @@ const ph_getPagination = ($: CheerioAPI): PaginationType[] => {
     // li标签
     const $el = $(el);
     const $a = $el.find('a');
+    const $span = $el.find('span');
     if ($a.hasClass('prev-page') || $a.hasClass('no-page')) {
       return;
     }
     //
-    const title = helpElText($a);
-    const url = helpElAttr($a, ElementAttr.href);
-    const isCurrent = $a.hasClass('active');
+    const prev = $el.hasClass('page_previous');
+    const title = prev ? '<' : helpElText($a) || helpElText($span);
+    const url = prev ? '' : helpElAttr($a, ElementAttr.href);
+    const isCurrent = $el.hasClass('page_current');
+
     res.push({ title, isCurrent, url: url.length > 0 ? `${base_url}${url}` : '' });
   });
-  if (res.every((i) => i.title !== '1')) {
-    res.unshift({
-      title: '1',
-      isCurrent: !res.some((item) => item.isCurrent),
-      url: base_url,
-    });
-  }
 
   return res;
 };
 const ph_getItems = ($: CheerioAPI): PageItemType[] => {
   const res: PageItemType[] = [];
-  let items = $(`#singleFeedSection .pcVideoListItem`);
-  if (items.length === 0) {
-    items = $(`#videoSearchResult .pcVideoListItem`);
-  }
+  let items = getCurrentItems(
+    () => $(`#singleFeedSection .pcVideoListItem`),
+    () => $(`#videoSearchResult .pcVideoListItem`),
+    () => $(`#videoCategory .pcVideoListItem`)
+  );
   items.each((i, el) => {
     const $el = $(el);
     const $a = $el.find('.phimage a');
@@ -55,9 +52,19 @@ const ph_getItems = ($: CheerioAPI): PageItemType[] => {
 
     const $info = $el.find('.thumbnail-info-wrapper');
     const $author = $info.find('.usernameWrap a');
-    const $views = $info.find('.videoDetailBlock > .views > var');
-    const $add = $info.find('.videoDetailBlock > .added');
-    const $rating = $info.find('.videoDetailBlock > .rating-container > .value');
+    let $views = getCurrentItems(
+      () => $info.find('.videoDetailBlock .views > var'),
+      () => $info.find('.videoDetailsBlock  .views > var')
+    );
+    let $add = getCurrentItems(
+      () => $info.find('.videoDetailBlock  .added'),
+      () => $el.find('.videoDetailsBlock  .added')
+    );
+    const $rating = getCurrentItems(
+      () => $info.find('.videoDetailBlock > .rating-container > .value'),
+      () => $info.find('.videoDetailsBlock > .rating-container > .value')
+    );
+    const $duration = $el.find('.duration');
 
     author = helpElText($author);
 
@@ -66,6 +73,7 @@ const ph_getItems = ($: CheerioAPI): PageItemType[] => {
       { title: helpElText($views) },
       { title: helpElText($add) },
       { title: helpElText($rating) },
+      { title: helpElText($duration) },
     ];
     res.push({
       title,
