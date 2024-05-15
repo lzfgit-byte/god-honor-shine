@@ -10,4 +10,5 @@ export type SearchHistoryType =
   | 'rule34'
   | 'bedNews'
   | 'lulu'
-  | 'xvideos';
+  | 'xvideos'
+  | 'pornhub';

@@ -65,6 +65,14 @@ export const routes: RouterType[] = [
     component: () => import('@/feature/xvideos/xv-home.vue'),
   },
   {
+    path: '/pornhub',
+    name: 'pornhub',
+    aliasZH: 'PH',
+    icon: 'https://www.pornhub.com/favicon.ico',
+    showInMenu: true,
+    component: () => import('@/feature/pornhub/ph-home.vue'),
+  },
+  {
     path: '/18-comic-reader',
     name: '18-comic-reader',
     aliasZH: '18C',
