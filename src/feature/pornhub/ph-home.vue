@@ -122,9 +122,10 @@
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const sorts = ref([
     { value: '', name: '最相关' },
-    { value: 'o=mv,cc=us', name: '最多观看' },
+    // { value: 'o=mv,cc=us', name: '最多观看' },
+    { value: 'o=mv', name: '最多观看' },
     { value: 'o=tr', name: '最高分' },
-    { value: 'o=ht,cc=us', name: '最热门' },
+    // { value: 'o=ht,cc=us', name: '最热门' },
     { value: 'o=lg', name: '最长' },
     { value: 'o=mr', name: '最新' },
   ]);
