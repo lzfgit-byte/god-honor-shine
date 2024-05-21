@@ -1,4 +1,5 @@
 import type { CacheFileType, T_logger } from '@ghs/share';
+import { request_string_get_data } from '../../electron/controller';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -13,6 +14,12 @@ export const f_request_img_get = async (url: string): Promise<string> =>
  */
 export const f_request_html_get = async (url: string): Promise<string> =>
   executeFunction('request_html_get', url);
+/**
+ * 请求 String
+ * request_string_get_data
+ */
+export const f_request_string_get_data = async (url: string): Promise<string> =>
+  executeFunction('request_string_get_data', url);
 /**
  * 获取图片的base64
  * @param url

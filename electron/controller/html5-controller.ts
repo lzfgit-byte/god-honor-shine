@@ -3,6 +3,7 @@ import {
   requestHtml,
   requestHtmlByWin,
   requestImage,
+  request_string_get,
   win_get_data,
   win_open,
 } from '../http';
@@ -57,4 +58,10 @@ export const win_get_data_code = (code: string, url: string): Promise<any> => {
  */
 export const win_open_any = (url: string, code: string, width: number, height: number) => {
   win_open(url, code, width, height);
+};
+/**
+ * 获取String blob
+ */
+export const request_string_get_data = (url: string) => {
+  return request_string_get(url);
 };
