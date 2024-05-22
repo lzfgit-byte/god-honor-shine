@@ -9,11 +9,14 @@
     <div w-full h-80vh relative>
       <div w-full h-30px flex items-center>
         <GhsInput v-model:value="playUrl"></GhsInput>
-        <div w-350px m-l-4>
+        <div w-350px m-l-4 min-w-350px>
           <GhsButton m-r-2 @click="playMp4">播放mp4</GhsButton>
           <GhsButton m-r-2 @click="playM3u8">播放m3u8</GhsButton>
           <GhsButton m-r-2 @click="requestNetwork">网络请求MP4</GhsButton>
         </div>
+      </div>
+      <div w-full>
+        <video :key="playUrl" :src="playUrl"></video>
       </div>
     </div>
   </GhsDialog>
@@ -50,7 +53,9 @@
   const requestNetwork = async () => {
     if (playUrl.value) {
       const res = await f_request_mp4_data_get(playUrl.value);
-      ghsPlayerRef.value?.show(res, 'mp4', 'mp4');
+      if (res) {
+        ghsPlayerRef.value?.show(res, 'mp4', 'mp4');
+      }
     } else {
       await GHSMessage.info('空地址');
     }
