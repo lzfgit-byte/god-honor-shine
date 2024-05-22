@@ -12,7 +12,7 @@
         <div w-350px m-l-4>
           <GhsButton m-r-2 @click="playMp4">播放mp4</GhsButton>
           <GhsButton m-r-2 @click="playM3u8">播放m3u8</GhsButton>
-          <GhsButton m-r-2 @click="requestNetwork">网络请求</GhsButton>
+          <GhsButton m-r-2 @click="requestNetwork">网络请求MP4</GhsButton>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
   import GhsInput from '@/components/input/ghs-input.vue';
   import GhsButton from '@/components/button/ghs-button.vue';
   import { GHSMessage } from '@/components/message';
-  import { f_request_string_get_data } from '@/utils/functions';
+  import { f_request_mp4_data_get, f_request_string_get_data } from '@/utils/functions';
   const ghsPlayerRef = ref<GhsPlayerExpose>();
   const visible = ref(false);
 
@@ -49,8 +49,8 @@
   };
   const requestNetwork = async () => {
     if (playUrl.value) {
-      const res = await f_request_string_get_data(playUrl.value);
-      await GHSMessage.info(res);
+      const res = await f_request_mp4_data_get(playUrl.value);
+      ghsPlayerRef.value?.show(res, 'mp4', 'mp4');
     } else {
       await GHSMessage.info('空地址');
     }

@@ -1,7 +1,8 @@
 import { net } from 'electron';
 import { CacheFileType } from '@ghs/share';
 import { cache_exist, cache_get, cache_save } from '../utils';
-import { sendMessage } from '../utils/message';
+import { processMessage, sendMessage } from '../utils/message';
+import { formatSize } from '../utils/KitUtil';
 
 export const request_string_get = (url: string, suffix = CacheFileType.blob): Promise<string> => {
   return new Promise((resolve) => {
@@ -21,6 +22,46 @@ export const request_string_get = (url: string, suffix = CacheFileType.blob): Pr
       });
       response.on('end', () => {
         resolve(cache_save(url, String(blob), suffix));
+        blob = null;
+      });
+      response.on('error', () => {
+        sendMessage(`请求失败远程${url}`);
+      });
+    });
+    request.on('error', () => {
+      sendMessage(`请求失败远程${url}`);
+    });
+    request.end();
+  });
+};
+
+export const request_mp4_data = (url: string, suffix = CacheFileType.blob): Promise<any> => {
+  return new Promise((resolve) => {
+    const request = net.request(url);
+    let blob: any = Buffer.alloc(0);
+    request.on('response', (response) => {
+      const header: any = response.headers;
+      const length = header['content-length'];
+      const filename = header.filename;
+      sendMessage(`header${JSON.stringify(header)}`, 'info');
+      response.on('data', (chunk) => {
+        blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
+        processMessage({
+          title: `${formatSize(blob.length)}/${formatSize(length)}`,
+          global: true,
+          percentage: parseInt(((blob.length / length) * 100).toFixed(0)),
+          key: url,
+        });
+      });
+      response.on('end', () => {
+        resolve(`data:video/mp4;base64,${Buffer.from(blob).toString('base64')}`);
+        processMessage({
+          title: filename,
+          global: true,
+          percentage: parseInt(((blob.length / length) * 100).toFixed(0)),
+          key: url,
+          down: true,
+        });
         blob = null;
       });
       response.on('error', () => {

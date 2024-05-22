@@ -3,6 +3,7 @@ import {
   requestHtml,
   requestHtmlByWin,
   requestImage,
+  request_mp4_data,
   request_string_get,
   win_get_data,
   win_open,
@@ -64,4 +65,10 @@ export const win_open_any = (url: string, code: string, width: number, height: n
  */
 export const request_string_get_data = (url: string) => {
   return request_string_get(url);
+};
+/**
+ * 获取mp4 base64
+ */
+export const request_mp4_data_get = (url: string) => {
+  return request_mp4_data(url);
 };
