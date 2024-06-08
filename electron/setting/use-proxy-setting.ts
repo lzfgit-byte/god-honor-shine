@@ -1,5 +1,4 @@
 import type { BrowserWindow } from 'electron';
-import useSystemSetting from './use-system-setting';
 let func = `function FindProxyForURL(url, host) {
   let ignore = [$proxyWhitelist];
   for (let i = 0; i < ignore.length; i++) {
@@ -11,7 +10,12 @@ let func = `function FindProxyForURL(url, host) {
 }`;
 
 const doJob = async (win: BrowserWindow) => {
-  const { proxy, needProxy, proxyHttp, proxyWhitelist } = await useSystemSetting();
+  const { proxy, needProxy, proxyHttp, proxyWhitelist } = {
+    proxy: '',
+    needProxy: '',
+    proxyHttp: '',
+    proxyWhitelist: '',
+  };
   const pacUrl = `data:video/mp2t;base64,${Buffer.from(
     func.replace('$proxyHttp', proxyHttp).replace('$proxyWhitelist', proxyWhitelist),
     'utf8'

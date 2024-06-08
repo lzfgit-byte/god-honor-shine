@@ -5,7 +5,7 @@
   "types": "dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "share:build": "vite build"
+    "types:build": "vite build"
   },
   "dependencies": {
 

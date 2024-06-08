@@ -10,7 +10,6 @@ import {
   readdirSync,
   writeFileSync,
 } from 'fs-extra';
-import type { CacheFileType } from '@ghs/share';
 import { APP_PATHS } from '../const/app-paths';
 import { formatSize, isFalsity } from './KitUtil';
 import { sendMessage } from './message';
@@ -89,7 +88,7 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
  * 根据特定后缀去删除文件
  * @param fileSuffix
  */
-export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
+export const cache_suffix_clean = (fileSuffix: any) => {
   if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
     sendMessage('清除了所有缓存');
