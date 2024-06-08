@@ -21,5 +21,5 @@ const data: T_collect = {
 export const T_collect_init: T_OptType = {
   data,
   tableName: name,
-  orderBy: ' ORDER BY count desc,time desc ',
+  orderBy: ` ORDER BY cast(count as '9999') desc,time desc `,
 };

@@ -19,15 +19,21 @@ ipcRenderer.on(SYS_GLOB_KEY.SEND_MESSAGE, msg);
 // 播放进度信息
 const cacheNotify: Record<string, NotifyShow> = {};
 const func = debounce(async (_event, args: ProcessMsgType) => {
-  const { percentage, global, down, title, key, info } = args;
-  if (global) {
-    cacheNotify[key] = cacheNotify[key] || (await GHSNotify.show({ percentage, title, info }));
-    cacheNotify[key].update({ percentage, title, info });
-  }
+  const { percentage, down, title, key, info } = args;
+  cacheNotify[key] = cacheNotify[key] || (await GHSNotify.show({ percentage, title, info }));
+  cacheNotify[key].update({ percentage, title, info });
   if (down || percentage === 100) {
     await waitTime(600);
     cacheNotify[key]?.destroy();
     delete cacheNotify[key];
   }
 }, 10);
-ipcRenderer.on(SYS_GLOB_KEY.SEND_PROCESS, func);
+ipcRenderer.on(SYS_GLOB_KEY.SEND_PROCESS, (_event, args: ProcessMsgType) => {
+  const { percentage, global, down, title, key, info } = args;
+  if (global) {
+    func(_event, args)?.then();
+    return;
+  }
+  console.log('emit', key, args);
+  bus.emit(key, args);
+});

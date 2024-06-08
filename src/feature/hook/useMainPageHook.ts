@@ -93,5 +93,6 @@ export default (opts: OptType) => {
     handleTagClick,
     bodyRef,
     reset,
+    currentUrl,
   };
 };

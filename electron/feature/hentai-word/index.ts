@@ -77,7 +77,7 @@ export const hw_getPageInfo = (html: string): MainPage => {
   };
 };
 export const hw_getVideoInfo = async (url: string): Promise<HWVideoInfo> => {
-  const html = await request_html_get(url);
+  let html = await request_html_get(url);
   const $: CheerioAPI = cheerio.load(html);
   const $img = $('#image');
   const $video = $img.find('#video');

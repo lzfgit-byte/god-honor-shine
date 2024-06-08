@@ -10,6 +10,7 @@ export enum ElementAttr {
   dataSource = 'data-source',
   dataType = 'data-type',
   dataEcho = 'data-echo',
+  dataError = 'data-error',
   alt = 'alt',
 }
 export enum ElementTypes {
@@ -48,3 +49,8 @@ export interface MainPage {
 }
 
 export interface ComicContent {}
+
+export interface UrlInfoType {
+  url?: string;
+  hd?: string;
+}

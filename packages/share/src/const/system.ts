@@ -3,6 +3,8 @@
  */
 export const SYSTEM_SET_KEY = {
   proxy: 'proxy',
+  proxyHttp: 'proxyHttp',
+  proxyWhitelist: 'proxyWhitelist',
   needProxy: 'needProxy',
   imgWinMin: 'imgWinMin',
   imgWinMax: 'imgWinMax',

@@ -32,6 +32,9 @@
           <GhsButton m-r-2 @click="cacheClean">清除缓存</GhsButton>
           <GhsButton m-r-2 @click="cleanHtml">清除页面缓存</GhsButton>
           <GhsButton m-r-2 @click="checkLog">查看日志</GhsButton>
+          <GhsIcon>
+            <SettingsOutline @click="handleSettingClick"></SettingsOutline>
+          </GhsIcon>
         </div>
         <GhsIcon color="black" @click="slideShow = false">
           <Close></Close>
@@ -48,10 +51,11 @@
       </div>
     </div>
   </div>
+  <GhsSettings ref="settingsRef"></GhsSettings>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { Close } from '@vicons/ionicons5';
+  import { Close, SettingsOutline } from '@vicons/ionicons5';
   import { CacheFileType, executeFunc } from '@ghs/share';
   import { useVModel } from '@vueuse/core';
   import { onMounted } from 'vue-demi';
@@ -67,6 +71,7 @@
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import { GHSClassLog } from '@/components/log';
   import GhsLoading from '@/components/loading/ghs-loading.vue';
+  import GhsSettings from '@/views/settings/ghs-settings.vue';
 
   const props = defineProps({ reload: Function, loading: Boolean, initSlideShow: Boolean });
   const emits = defineEmits(['update:loading']);
@@ -108,6 +113,10 @@
       f_app_set_db_dir(path);
     });
     fileInput.click();
+  };
+  const settingsRef = ref();
+  const handleSettingClick = () => {
+    settingsRef.value.show();
   };
 
   onMounted(() => {

@@ -13,7 +13,10 @@
   // @ts-ignore
   import MuiPlayerDesktopPlugin from 'mui-player-desktop-plugin';
   import type { PropType } from 'vue-demi';
+  import { debounce } from 'lodash';
   import type { VideoType } from '@/components/player/types';
+  import { GHSClassLog } from '@/components/log';
+  import { GHSNotify } from '@/components/message';
 
   const props = defineProps({
     src: String,
@@ -46,6 +49,10 @@
       plugins: [new MuiPlayerDesktopPlugin({})],
       parse,
     });
+    const errFunc = debounce(() => {
+      GHSNotify.show({ title: '视频播放错误', info: props.src });
+    }, 10);
+    mp.on('error', errFunc);
   });
   onUnmounted(() => {
     mp.destroy();

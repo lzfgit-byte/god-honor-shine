@@ -4,7 +4,14 @@
       <GhsIcon width="20px" height="20px" color="#9f9898"><CloseCircleOutline /></GhsIcon>
     </div>
     <div class="ghs-item-coverImg" w-full relative>
-      <GhsImg cursor-pointer :url="coverImg" :force="force" @click="handleImgClick" />
+      <GhsImg
+        cursor-pointer
+        :max-height="maxHeight"
+        :max-width="maxWidth"
+        :url="coverImg"
+        :force="force"
+        @click="handleImgClick"
+      />
       <div v-if="!hideTag" absolute top-2 right-1 flex justify-end items-center gap-1>
         <GhsTag v-for="(item, index) in flatTags" :key="index" :info="item"></GhsTag>
       </div>
@@ -47,6 +54,8 @@
     onTriggerCollect: Function,
     onCloseClick: Function,
     hideTag: Boolean,
+    maxHeight: String,
+    maxWidth: String,
   });
   const emits = defineEmits(['imgClick', 'triggerCollect', 'closeClick']);
   const c_width = computed(() => props.width || '250px');

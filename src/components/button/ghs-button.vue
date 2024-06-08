@@ -23,6 +23,7 @@
 <style scoped lang="less">
   .ghs-button {
     color: #737478;
+    background-color: white;
     border-radius: 4px;
     line-height: 16px;
     &:hover {

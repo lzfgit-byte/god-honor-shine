@@ -4,7 +4,7 @@ import type { T_OptType } from '@ghs/share';
 
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils/logger';
-export const currentVersion = 1;
+export const currentVersion = 3;
 const db_path = APP_PATHS.db_path;
 const db: any = new Database(db_path, { verbose: logger.log });
 // 创建表操作类
