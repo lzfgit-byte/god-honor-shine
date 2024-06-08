@@ -1,13 +1,7 @@
 <template>
-  <MainLayout>
-    <router-view></router-view>
-  </MainLayout>
-  <GhsMenu></GhsMenu>
+  <h1>Hello word</h1>
 </template>
-<script setup lang="ts">
-  import MainLayout from '@/components/layout/main-layout.vue';
-  import GhsMenu from '@/components/menu/ghs-menu.vue';
-</script>
+<script setup lang="ts"></script>
 
 <style lang="less">
   @import '@/styles/style';
