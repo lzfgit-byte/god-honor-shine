@@ -6,8 +6,9 @@ import vue from '@vitejs/plugin-vue';
 // eslint-disable-next-line import/default
 import electron from 'vite-plugin-electron';
 import renderer from 'vite-plugin-electron-renderer';
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import pkg from './package.json';
-
 export default defineConfig(({ command }) => {
   rmSync('dist-electron', { recursive: true, force: true });
 
@@ -19,6 +20,13 @@ export default defineConfig(({ command }) => {
     plugins: [
       vue(),
       UnoCSS(),
+      Components({
+        resolvers: [
+          AntDesignVueResolver({
+            importStyle: false, // css in js
+          }),
+        ],
+      }),
       electron([
         {
           // Main-Process entry file of the Electron App.
