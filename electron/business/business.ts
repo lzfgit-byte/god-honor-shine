@@ -10,6 +10,7 @@ import { AdapterFunc } from './adapter-func';
 export abstract class BaseBusiness extends AdapterFunc {
   private key: string;
   $: CheerioAPI;
+  currentFunc: any;
   protected constructor(key: string) {
     super();
     this.key = key;
