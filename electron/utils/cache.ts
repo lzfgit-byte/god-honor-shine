@@ -16,7 +16,7 @@ import { sendMessage } from './message';
 const CACHE_PATH = APP_PATHS.cache_path;
 
 export const buildCacheFilePath = (fileName: string, suffix = 'temp') => {
-  return `${CACHE_PATH}/${suffix}/${hashString(fileName)}`;
+  return `${CACHE_PATH}\\${suffix}\\${hashString(fileName)}`;
 };
 /**
  *判断是否缓存是否存在
@@ -90,16 +90,11 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
 export const cache_suffix_clean = (fileSuffix: any) => {
   if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
-    sendMessage('清除了所有缓存');
+    sendMessage({ msg: '清除了全部缓存' });
     return;
   }
-  const filePaths = readdirSync(CACHE_PATH);
-  const needRemoves = filePaths?.filter((file) => file.endsWith(fileSuffix));
-  needRemoves.forEach((file) => {
-    const filePath = path.join(CACHE_PATH, file);
-    unlinkSync(filePath);
-  });
-  sendMessage(`清除了缓存--${fileSuffix}`);
+  emptyDirSync(`${CACHE_PATH}\\${fileSuffix}`);
+  sendMessage({ msg: `清除了缓存--${fileSuffix}` });
 };
 export const cache_dir_size = () => {
   const files = readdirSync(CACHE_PATH);

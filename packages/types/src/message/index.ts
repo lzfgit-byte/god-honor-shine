@@ -1,5 +1,5 @@
 export interface MessageInfo {
-  key: string;
+  key?: string;
   msg?: string;
   percentage?: number;
   title?: string;

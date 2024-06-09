@@ -5,7 +5,7 @@ import { app } from 'electron';
 let config_json = null;
 const PATH_KEY = 'ghs4.0';
 let temp_dir = `${process.env.LOCALAPPDATA}\\${PATH_KEY}`; // aka C:\Users\用户名\AppData\Local\ghs4.0
-const cache_path = path.join(process.cwd(), '\\ghs-cache\\');
+const cache_path = path.join(process.cwd(), '\\ghs-cache');
 const config_path = path.join(temp_dir, '\\config.json');
 
 const loadConfigFile = () => {
