@@ -1,7 +1,7 @@
 import type { LogLevel, LogMessage, QueryRunner } from 'typeorm';
 import { DataSource, FileLogger } from 'typeorm';
 import type { FileLoggerOptions, LoggerOptions } from 'typeorm/logger/LoggerOptions';
-import { ConfigEntity, LogEntity } from '@ghs/constant';
+import { Tables } from '@ghs/constant';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils';
 
@@ -27,7 +27,7 @@ class MyFileLogger extends FileLogger {
 const AppDataSource = new DataSource({
   type: 'sqlite',
   database: APP_PATHS.db_path,
-  entities: [ConfigEntity, LogEntity],
+  entities: Tables,
   synchronize: true,
   logging: true,
   logger: new MyFileLogger(),
