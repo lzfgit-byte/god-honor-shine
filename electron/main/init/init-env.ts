@@ -1,7 +1,6 @@
 import { join } from 'node:path';
 import { release } from 'node:os';
 import { Menu, app } from 'electron';
-import 'reflect-metadata';
 
 process.env.DIST_ELECTRON = join(__dirname, '..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');

@@ -7,7 +7,7 @@ import { logger } from './logger';
  * @param msg
  * @param type
  */
-export const sendMessage = (msg: string) => {
+export const sendMessage = (msg: MessageInfo) => {
   webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_MESSAGE, msg);
 };
 /**

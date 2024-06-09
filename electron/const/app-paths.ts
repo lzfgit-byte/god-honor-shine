@@ -35,7 +35,7 @@ export class APP_PATHS {
 
   static get db_path() {
     loadConfigFile();
-    // aka C:\Users\用户名\AppData\Local\ghs3.0
+    // aka C:\Users\用户名\AppData\Local\ghs4.0
     return config_json.db_path;
   }
 

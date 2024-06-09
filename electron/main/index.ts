@@ -4,17 +4,18 @@ import useIpcMain from '../hooks/use-ipc-main';
 import useCookie from '../hooks/use-cookie';
 import useGlobalShortcut from '../hooks/use-global-shortcut';
 import './init/init-env';
+import 'reflect-metadata';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useHtmlGetWin from '../http/use-html-get-win';
 import useProxySetting from '../setting/use-proxy-setting';
 import useImgGetWin from '../http/use-img-get-win';
+import useAppDataSource from '../database/use-app-data-source';
 import useHandleMainEvent from './event/use-handle-main-event';
 // 启动服务
 let win: BrowserWindow | null = null;
-
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
-let execFuncOnClose = [];
+let execFuncOnClose = [useAppDataSource()];
 async function createWindow() {
   win = new BrowserWindow({
     title: 'ghs',
