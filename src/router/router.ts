@@ -35,6 +35,12 @@ export const registerRouter = async (app: App) => {
       name: item.name,
       component: () => import('@/view/comic-reader.vue'),
     });
+    routes.value.push({
+      path: `/${item.key}`,
+      name: item.name,
+      aliasZH: item.name,
+      icon: item.favicon,
+    });
   });
 
   app.use(router);

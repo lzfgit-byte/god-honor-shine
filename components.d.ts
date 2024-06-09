@@ -8,6 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
+    ComicReader: typeof import('./src/components/comic-reader.vue')['default']
+    GhsImg: typeof import('./src/components/image/ghs-img.vue')['default']
+    GhsImg2: typeof import('./src/components/image/ghs-img2.vue')['default']
+    GhsMenu: typeof import('./src/components/menu/ghs-menu.vue')['default']
+    ImgPercentage: typeof import('./src/components/image/component/ImgPercentage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

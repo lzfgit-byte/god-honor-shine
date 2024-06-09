@@ -4,11 +4,13 @@
     {{ item.name }}
   </a-button>
   {{ info }}
+  <GhsMenu></GhsMenu>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import type { BaseConfig } from '@ghs/types';
   import { f_getMainPage, f_listAllWebConfigs } from '@/utils/business';
+  import GhsMenu from '@/components/menu/ghs-menu.vue';
 
   const configs = ref<BaseConfig[]>([]);
   const info = ref();
