@@ -1,18 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { MyBaseEntity } from './MyBaseEntity';
+import { Column, Entity } from 'typeorm';
+import { MyBaseEntity } from '@/table/MyBaseEntity';
 
-// @ts-ignore
-@Entity('config')
-export class ConfigEntity extends MyBaseEntity {
-  // @ts-ignore
-  @Column('varchar')
-  name: string;
-
-  // @ts-ignore
-  @Column('varchar')
-  value: string;
-}
-
+/**
+ *日志表
+ */
 // @ts-ignore
 @Entity('log')
 export class LogEntity extends MyBaseEntity {
@@ -26,10 +17,10 @@ export class LogEntity extends MyBaseEntity {
   }
 
   // @ts-ignore
-  @Column('varchar')
+  @Column('varchar', { comment: '日志内容' })
   info: string;
 
   // @ts-ignore
-  @Column('varchar')
+  @Column('varchar', { comment: '日志分类' })
   type: 'info' | 'error';
 }

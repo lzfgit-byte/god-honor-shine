@@ -1,7 +1,7 @@
 import * as os from 'node:os';
 import { ensureFileSync, writeFileSync } from 'fs-extra';
+import { LogEntity } from '@ghs/constant';
 import { APP_PATHS } from '../const/app-paths';
-import { LogEntity } from '../database/log-table';
 import { getCurrentDate } from './KitUtil';
 
 const LOG_FILE_PATH = `${APP_PATHS.db_dir}/log.txt`;

@@ -1,6 +1,6 @@
 import type { SystemSetting } from '@ghs/types';
 import { keys } from 'lodash';
-import { ConfigEntity } from '../database/config-table';
+import { ConfigEntity } from '@ghs/constant';
 const defaultSetting: SystemSetting = {
   proxyHttp: '127.0.0.1:10809',
   proxySocks5: 'socks5://127.0.0.1:10808',

@@ -1,9 +1,9 @@
 import type { LogLevel, LogMessage, QueryRunner } from 'typeorm';
 import { DataSource, FileLogger } from 'typeorm';
 import type { FileLoggerOptions, LoggerOptions } from 'typeorm/logger/LoggerOptions';
+import { ConfigEntity, LogEntity } from '@ghs/constant';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils';
-import { ConfigEntity, LogEntity } from './tables';
 
 class MyFileLogger extends FileLogger {
   constructor() {
