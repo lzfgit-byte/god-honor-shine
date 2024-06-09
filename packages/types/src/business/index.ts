@@ -52,7 +52,7 @@ export interface DetailInfo {
 /**
  * 每一页的类型
  */
-export interface Page {
+export interface MainPage {
   pagination: Pagination[]; // 分页
   tags: Tag[];
   items: Item[];
