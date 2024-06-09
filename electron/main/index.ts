@@ -1,6 +1,5 @@
 import { join } from 'node:path';
 import { BrowserWindow, app } from 'electron';
-import useDbConnect from '../database/use-db-connect';
 import useIpcMain from '../hooks/use-ipc-main';
 import useCookie from '../hooks/use-cookie';
 import useGlobalShortcut from '../hooks/use-global-shortcut';
@@ -16,7 +15,6 @@ let win: BrowserWindow | null = null;
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 let execFuncOnClose = [];
-execFuncOnClose.push(useDbConnect());
 async function createWindow() {
   win = new BrowserWindow({
     title: 'ghs',
