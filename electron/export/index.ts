@@ -1,3 +1,4 @@
+import type { WebConfig } from '@ghs/types';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -8,6 +9,7 @@ import {
   win_open,
 } from '../http';
 import { MessageUtil } from '../utils/message';
+import { getWebConfigAry } from '../business/use-init-web-config';
 
 /**
  * 获取html
@@ -37,23 +39,25 @@ export const getImage = async (url: string) => {
  * 使用新窗口获取数据
  * @param url
  */
-export const win_get_data_code = (code: string, url: string): Promise<any> => {
+export const winGetDataCode = async (code: string, url: string): Promise<any> => {
   return win_get_data(code, url);
 };
 /**
  * 使用新窗口打开
  */
-export const win_open_any = (url: string, code: string, width: number, height: number) => {
+export const winOpenAny = async (url: string, code: string, width: number, height: number) => {
   win_open(url, code, width, height);
 };
 
 /**
  *获取远程data的string格式
  */
-export const getDataString = (url: string): Promise<string> => {
+export const getDataString = async (url: string): Promise<string> => {
   return request_string_get(url);
 };
 /**
  * 前端控制器
  */
-const webConfigs: Record<string, any> = {};
+export const listAllWebConfigs = async (): Promise<WebConfig[]> => {
+  return getWebConfigAry();
+};
