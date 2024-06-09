@@ -36,6 +36,15 @@ export interface Item {
   renderType: RenderType; // 渲染类型,强制渲染,正常渲染
   tags: Tag[];
 }
+export interface UrlAppend {
+  value: string;
+  param: string;
+  title: string; // 展示的名字
+}
+export interface UrlReplace {
+  schema: string; // 分组
+  urlAppend: UrlAppend[];
+}
 export interface Comment {
   datetime: string;
   comment: string;
@@ -57,4 +66,5 @@ export interface MainPage {
   pagination: Pagination[]; // 分页
   tags: Tag[];
   items: Item[];
+  urlReplace?: UrlReplace[];
 }

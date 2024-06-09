@@ -40,6 +40,7 @@ export abstract class BaseBusiness extends AdapterFunc {
       items: this.getItems(),
       pagination: this.getPagination(),
       tags: this.getTags(),
+      urlReplace: this.getUrlReplace(),
     };
   }
 

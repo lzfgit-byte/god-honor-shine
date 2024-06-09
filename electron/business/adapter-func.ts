@@ -1,9 +1,12 @@
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import type { DetailInfo, Item, Pagination } from '@ghs/types';
+import type { UrlReplace } from '@ghs/types/src';
 import { NormalFunc } from './common-func';
 
 export abstract class AdapterFunc extends NormalFunc {
+  abstract getUrlReplace(): UrlReplace[];
+
   abstract getCurrentItems(): Cheerio<Element>;
   abstract getItemByEl(el: Element): Item;
 
