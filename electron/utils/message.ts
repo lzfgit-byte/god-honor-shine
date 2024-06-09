@@ -90,6 +90,10 @@ export class ProgressMsgUtil {
     this.sendMsg(msg);
   }
 
+  static sendProgress(percentage: number, key: string) {
+    this.sendMsg({ percentage: 100, key });
+  }
+
   static close(key: string) {
     this.sendMsg({ percentage: 100, close: true, key });
   }

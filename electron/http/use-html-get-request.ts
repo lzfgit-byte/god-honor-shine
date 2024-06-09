@@ -1,9 +1,10 @@
 import { net } from 'electron';
-import { isFalsity } from '@ilzf/utils';
+import { calcProcess, hashString, isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
-import { MessageUtil } from '../utils/message';
+import { MessageUtil, ProgressMsgUtil } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils';
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
+  const progressKey = hashString(url);
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
       const cache = cache_get(url, suffix);
@@ -14,14 +15,17 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
     const request = net.request(url);
 
     let blob: any = Buffer.alloc(0);
+    ProgressMsgUtil.sendProgress(0, progressKey);
     request.on('response', (response) => {
       const header = response.headers;
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
+        ProgressMsgUtil.sendProgress(calcProcess(blob.length, fileSize), progressKey);
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));
+        ProgressMsgUtil.close(progressKey);
         blob = null;
       });
       response.on('error', () => {

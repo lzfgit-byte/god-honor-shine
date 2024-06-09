@@ -29,7 +29,7 @@
     "app:preview": "vite preview"
   },
   "dependencies": {
-    "@ilzf/utils": "^0.0.9",
+    "@ilzf/utils": "^0.0.10",
     "@vicons/ionicons5": "^0.12.0",
     "@vueuse/core": "^10.10.0",
     "animate.css": "^4.1.1",

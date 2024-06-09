@@ -81,7 +81,7 @@ const timer = setInterval(async () => {
  *根据传入的url 获取其中图片的base64代码
  * @param url
  */
-export const getImgBase64 = async (url: string): Promise<string> => {
+export const getImgBase64ByWin = async (url: string): Promise<string> => {
   if (isFalsity(url)) {
     return;
   }
