@@ -1,19 +1,20 @@
-import type { Item, MainPage, Pagination, Tag } from '@ghs/types';
+import type { DetailInfo, Item, MainPage, Pagination, Tag, WebConfig } from '@ghs/types';
 import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
-import type { DetailInfo } from '@ghs/types/src';
+import { JSONParse } from '@ilzf/utils';
 import { getHtml } from '../export';
-import { AdapterFunc } from './adapter-func';
+import { NormalFunc } from './common-func';
 
-export abstract class BaseBusiness extends AdapterFunc {
+export abstract class BaseBusiness extends NormalFunc {
   private key: string;
   $: CheerioAPI;
-  currentFunc: any;
-  protected constructor(key: string) {
+  webConfig: WebConfig;
+  protected constructor(key: string, code: string) {
     super();
     this.key = key;
+    this.webConfig = JSONParse(code);
   }
 
   getMainPageRes<T>(
@@ -30,17 +31,20 @@ export abstract class BaseBusiness extends AdapterFunc {
 
   // 获取页面的元素数据
   private getItems(): Item[] {
-    return this.getMainPageRes(this.getCurrentItems, this.getItemByEl);
+    return this.getMainPageRes(this.webConfig.getCurrentItems, this.webConfig.getItemByEl);
   }
 
   // 获取页面的分页数据;
   private getPagination(): Pagination[] {
-    return this.getMainPageRes(this.getCurrentPagination, this.getPaginationByEl);
+    return this.getMainPageRes(
+      this.webConfig.getCurrentPagination,
+      this.webConfig.getPaginationByEl
+    );
   }
 
   // 获取首页的标签数据
   private getTags(): Tag[] {
-    return this.getMainPageRes(this.getCurrentTags, this.getTagByEl);
+    return this.getMainPageRes(this.webConfig.getCurrentTags, this.webConfig.getTagByEl);
   }
 
   /**
@@ -53,7 +57,7 @@ export abstract class BaseBusiness extends AdapterFunc {
       items: this.getItems(),
       pagination: this.getPagination(),
       tags: this.getTags(),
-      urlReplace: this.getUrlReplace(this.$),
+      urlReplace: this.webConfig.getUrlReplace(this.$),
     };
   }
 
@@ -61,6 +65,6 @@ export abstract class BaseBusiness extends AdapterFunc {
    *item 点击后，获取详细信息
    */
   public async getDetailPage(item: Item): Promise<DetailInfo> {
-    return this.getDetailInfo(item, cheerio);
+    return this.webConfig.getDetailInfo(item, cheerio);
   }
 }

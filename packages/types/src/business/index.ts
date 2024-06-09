@@ -68,3 +68,5 @@ export interface MainPage {
   items: Item[];
   urlReplace?: UrlReplace[];
 }
+
+export * from './web-config';
