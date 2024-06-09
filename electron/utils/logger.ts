@@ -1,5 +1,5 @@
 import * as os from 'node:os';
-import { ensureFileSync, readFileSync, writeFileSync } from 'fs-extra';
+import { ensureFileSync, writeFileSync } from 'fs-extra';
 import { APP_PATHS } from '../const/app-paths';
 import { LogEntity } from '../database/log-table';
 import { getCurrentDate } from './KitUtil';
@@ -34,7 +34,9 @@ export const logger = {
     logger.enable && console.log(...args);
   },
   db_log: (...args: any[]) => {
-    LogEntity.save({ info: '' }).then(() => 1);
+    LogEntity.log(args.join(' '), 'info');
   },
-  db_error: (...args: any[]) => {},
+  db_error: (...args: any[]) => {
+    LogEntity.log(args.join(' '), 'error');
+  },
 };

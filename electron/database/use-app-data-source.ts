@@ -3,8 +3,7 @@ import { DataSource, FileLogger } from 'typeorm';
 import type { FileLoggerOptions, LoggerOptions } from 'typeorm/logger/LoggerOptions';
 import { APP_PATHS } from '../const/app-paths';
 import { logger } from '../utils';
-import { ConfigEntity } from './config-table';
-import { LogEntity } from './log-table';
+import { ConfigEntity, LogEntity } from './tables';
 
 class MyFileLogger extends FileLogger {
   constructor() {
