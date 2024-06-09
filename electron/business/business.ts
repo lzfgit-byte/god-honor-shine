@@ -3,6 +3,8 @@ import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import type { DetailInfo } from '@ghs/types/src';
+import { getHtml } from '../export';
 import { AdapterFunc } from './adapter-func';
 
 export abstract class BaseBusiness extends AdapterFunc {
@@ -30,10 +32,10 @@ export abstract class BaseBusiness extends AdapterFunc {
 
   /**
    * 获取页面数据，包含首页，搜索页
-   * @param html
    */
   public async getMainPage(url: string): Promise<MainPage> {
-    this.$ = cheerio.load(url);
+    const html = await getHtml(url);
+    this.$ = cheerio.load(html);
     return {
       items: this.getItems(),
       pagination: this.getPagination(),
@@ -41,5 +43,10 @@ export abstract class BaseBusiness extends AdapterFunc {
     };
   }
 
-  public getDetailPage(url: string) {}
+  /**
+   *item 点击后，获取详细信息
+   */
+  public async getDetailPage(item: Item): Promise<DetailInfo> {
+    return this.getDetailInfo(item);
+  }
 }

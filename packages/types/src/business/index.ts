@@ -23,6 +23,7 @@ export enum RenderType {
   normal = 'normal',
 }
 export interface Detail {
+  type: ItemType;
   url: string;
   quality?: string;
   comments: Comment[];

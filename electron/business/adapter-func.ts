@@ -1,6 +1,6 @@
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
-import type { Item, Pagination } from '@ghs/types';
+import type { DetailInfo, Item, Pagination } from '@ghs/types';
 import { NormalFunc } from './common-func';
 
 export abstract class AdapterFunc extends NormalFunc {
@@ -12,4 +12,6 @@ export abstract class AdapterFunc extends NormalFunc {
 
   abstract getCurrentTags(): Cheerio<Element>;
   abstract getTagByEl(el: Element): Pagination;
+
+  abstract getDetailInfo(item: Item): DetailInfo;
 }
