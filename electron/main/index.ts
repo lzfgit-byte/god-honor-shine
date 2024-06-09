@@ -10,6 +10,7 @@ import useHtmlGetWin from '../http/use-html-get-win';
 import useProxySetting from '../setting/use-proxy-setting';
 import useImgGetWin from '../http/use-img-get-win';
 import useAppDataSource from '../database/use-app-data-source';
+import { useGlobalMessage } from '../utils/message';
 import useHandleMainEvent from './event/use-handle-main-event';
 // 启动服务
 let win: BrowserWindow | null = null;
@@ -34,6 +35,7 @@ async function createWindow() {
   useGlobalShortcut(win);
   useHtmlGetWin(win);
   useImgGetWin(win);
+  useGlobalMessage();
   if (process.env.VITE_DEV_SERVER_URL) {
     await win.loadURL(url);
     win.webContents.openDevTools();

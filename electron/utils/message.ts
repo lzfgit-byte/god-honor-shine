@@ -1,6 +1,7 @@
 import { webContents } from 'electron';
 import { MESSAGE_EVENT_KEY } from '@ghs/constant';
 import type { MessageInfo } from '@ghs/types';
+import { eventEmitter } from './KitUtil';
 
 /**
  * 发送及时的消息
@@ -93,3 +94,9 @@ export class ProgressMsgUtil {
     this.sendMsg({ percentage: 100, close: true, key });
   }
 }
+
+export const useGlobalMessage = () => {
+  eventEmitter.on(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, (msg) => {
+    LogMsgUtil.sendLogMsg(msg);
+  });
+};

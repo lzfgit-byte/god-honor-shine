@@ -3,7 +3,7 @@ import { DataSource, FileLogger } from 'typeorm';
 import type { FileLoggerOptions, LoggerOptions } from 'typeorm/logger/LoggerOptions';
 import { Tables } from '@ghs/constant';
 import { APP_PATHS } from '../const/app-paths';
-import { logger } from '../utils';
+import { logger } from '../utils/logger';
 
 class MyFileLogger extends FileLogger {
   constructor() {
