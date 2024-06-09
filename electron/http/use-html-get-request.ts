@@ -1,7 +1,7 @@
 import { net } from 'electron';
 import { formatSize, isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
-import { processMessage, sendMessage } from '../utils/message';
+import { MessageUtil, processMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
 const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
   if (suffix === FileType.HTML) {
@@ -43,11 +43,11 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
         blob = null;
       });
       response.on('error', () => {
-        sendMessage(`请求失败远程${url}`);
+        MessageUtil.error(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage(`请求失败远程${url}`);
+      MessageUtil.error(`请求失败远程${url}`);
     });
     request.end();
   });
@@ -75,11 +75,11 @@ export const requestImage = async (url: string) => {
   return requestFunc(url, FileType.IMAGE, (blob) => {
     if (blob) {
       if (blob?.length < 100) {
-        sendMessage(`【img】 获取图片长度不足100 ${url} `);
+        MessageUtil.warning(`【img】 获取图片长度不足100 ${url} `);
       }
       return `data:image/png;base64,${Buffer.from(blob).toString('base64')}`;
     } else {
-      sendMessage(`【img】获取图片失败 ${url} `);
+      MessageUtil.warning(`【img】获取图片失败 ${url} `);
       return '';
     }
   });

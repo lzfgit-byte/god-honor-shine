@@ -3,5 +3,5 @@ export interface MessageInfo {
   msg?: string;
   percentage?: number;
   title?: string;
-  type?: 'error' | 'info' | 'success';
+  type?: 'error' | 'info' | 'success' | 'warning';
 }
