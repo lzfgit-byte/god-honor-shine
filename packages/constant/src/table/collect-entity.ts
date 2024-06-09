@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { MyBaseEntity } from '@/table/MyBaseEntity';
+import { MyBaseEntity } from '@/table/my-base-entity';
 
 // @ts-ignore
 @Entity('collect', { comment: '收藏表' })

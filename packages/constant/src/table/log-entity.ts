@@ -1,11 +1,11 @@
 import { Column, Entity } from 'typeorm';
-import { MyBaseEntity } from '@/table/MyBaseEntity';
+import { MyBaseEntity } from '@/table/my-base-entity';
 
 /**
  *日志表
  */
 // @ts-ignore
-@Entity('log')
+@Entity('log', { comment: '日志表' })
 export class LogEntity extends MyBaseEntity {
   static log(info_: string, type_: 'info' | 'error' = 'info') {
     const info = info_ || '';
