@@ -5,6 +5,7 @@ import type { DetailInfo, Item, Pagination, Tag, UrlReplace } from '@/business/i
 
 export interface WebConfig {
   key: string;
+  favicon: string;
   homeUrl: string;
   name: string;
   searchUrl: string;

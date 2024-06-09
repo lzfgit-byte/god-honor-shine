@@ -3,7 +3,6 @@ import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
-import { JSONParse } from '@ilzf/utils';
 import { getHtml } from '../export';
 import { NormalFunc } from './common-func';
 
@@ -11,10 +10,10 @@ export abstract class BaseBusiness extends NormalFunc {
   private key: string;
   $: CheerioAPI;
   webConfig: WebConfig;
-  protected constructor(key: string, code: string) {
+  protected constructor(key: string, code: WebConfig) {
     super();
     this.key = key;
-    this.webConfig = JSONParse(code);
+    this.webConfig = code;
   }
 
   getMainPageRes<T>(

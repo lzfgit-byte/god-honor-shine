@@ -53,3 +53,7 @@ export const win_open_any = (url: string, code: string, width: number, height: n
 export const getDataString = (url: string): Promise<string> => {
   return request_string_get(url);
 };
+/**
+ * 前端控制器
+ */
+const webConfigs: Record<string, any> = {};
