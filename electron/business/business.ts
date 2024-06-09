@@ -15,6 +15,18 @@ export abstract class BaseBusiness extends AdapterFunc {
     this.key = key;
   }
 
+  getMainPageRes<T>(
+    list: ($: CheerioAPI) => Cheerio<Element>,
+    detail: (el: Element, $: CheerioAPI) => T
+  ) {
+    const res: T[] = [];
+    const items: Cheerio<Element> = list(this.$);
+    items.each((i, el) => {
+      res.push(detail(el, this.$));
+    });
+    return res;
+  }
+
   // 获取页面的元素数据
   private getItems(): Item[] {
     return this.getMainPageRes(this.getCurrentItems, this.getItemByEl);
@@ -40,7 +52,7 @@ export abstract class BaseBusiness extends AdapterFunc {
       items: this.getItems(),
       pagination: this.getPagination(),
       tags: this.getTags(),
-      urlReplace: this.getUrlReplace(),
+      urlReplace: this.getUrlReplace(this.$),
     };
   }
 
@@ -48,6 +60,6 @@ export abstract class BaseBusiness extends AdapterFunc {
    *item 点击后，获取详细信息
    */
   public async getDetailPage(item: Item): Promise<DetailInfo> {
-    return this.getDetailInfo(item);
+    return this.getDetailInfo(item, cheerio);
   }
 }

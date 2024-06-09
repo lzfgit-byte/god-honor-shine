@@ -22,13 +22,4 @@ export class NormalFunc {
     });
     return res || items[0]();
   }
-
-  getMainPageRes<T>(list: () => Cheerio<Element>, detail: (el: Element) => T) {
-    const res: T[] = [];
-    const items: Cheerio<Element> = list();
-    items.each((i, el) => {
-      res.push(detail(el));
-    });
-    return res;
-  }
 }

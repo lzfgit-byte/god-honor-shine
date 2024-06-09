@@ -2,19 +2,20 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import type { DetailInfo, Item, Pagination } from '@ghs/types';
 import type { UrlReplace } from '@ghs/types/src';
+import type { CheerioAPI } from 'cheerio';
 import { NormalFunc } from './common-func';
 
 export abstract class AdapterFunc extends NormalFunc {
-  abstract getUrlReplace(): UrlReplace[];
+  abstract getUrlReplace($: CheerioAPI): UrlReplace[];
 
-  abstract getCurrentItems(): Cheerio<Element>;
-  abstract getItemByEl(el: Element): Item;
+  abstract getCurrentItems($: CheerioAPI): Cheerio<Element>;
+  abstract getItemByEl(el: Element, $: CheerioAPI): Item;
 
-  abstract getCurrentPagination(): Cheerio<Element>;
-  abstract getPaginationByEl(el: Element): Pagination;
+  abstract getCurrentPagination($: CheerioAPI): Cheerio<Element>;
+  abstract getPaginationByEl(el: Element, $: CheerioAPI): Pagination;
 
-  abstract getCurrentTags(): Cheerio<Element>;
-  abstract getTagByEl(el: Element): Pagination;
+  abstract getCurrentTags($: CheerioAPI): Cheerio<Element>;
+  abstract getTagByEl(el: Element, $: CheerioAPI): Pagination;
 
-  abstract getDetailInfo(item: Item): DetailInfo;
+  abstract getDetailInfo(item: Item, cheerio: any): DetailInfo;
 }
