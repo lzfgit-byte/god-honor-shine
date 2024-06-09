@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { statSync, unlinkSync } from 'node:fs';
 
-import { Md5 } from 'ts-md5';
 import {
   emptyDirSync,
   ensureFileSync,
@@ -10,14 +9,14 @@ import {
   readdirSync,
   writeFileSync,
 } from 'fs-extra';
+import { formatSize, hashString, isFalsity } from '@ilzf/utils';
 import { APP_PATHS } from '../const/app-paths';
-import { formatSize, isFalsity } from './KitUtil';
 import { sendMessage } from './message';
 
 const CACHE_PATH = APP_PATHS.cache_path;
 
-export const buildCacheFilePath = (fileName: string, suffix = '') => {
-  return CACHE_PATH + Md5.hashStr(fileName) + suffix;
+export const buildCacheFilePath = (fileName: string, suffix = 'temp') => {
+  return `${CACHE_PATH}/${suffix}/${hashString(fileName)}`;
 };
 /**
  *判断是否缓存是否存在

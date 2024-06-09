@@ -1,11 +1,9 @@
 import { BrowserWindow } from 'electron';
-import { CacheFileType } from '@ghs/share';
-import { logger } from '../utils/logger';
-
+import { isFalsity } from '@ilzf/utils';
+import { FileType } from '@ghs/types';
+import { cache_exist, cache_get, cache_save, logger } from '../utils';
 import useProxySetting from '../setting/use-proxy-setting';
 import useSystemSetting from '../setting/use-system-setting';
-import { cache_exist, cache_get, cache_save } from '../utils/cache';
-import { isFalsity } from '../utils/KitUtil';
 // @ts-ignore
 import code from './img-windows-code?raw';
 let parentWin: BrowserWindow;
@@ -86,8 +84,8 @@ export const getImgBase64 = async (url: string): Promise<string> => {
   if (isFalsity(url)) {
     return;
   }
-  if (cache_exist(url, CacheFileType.img)) {
-    return Promise.resolve(cache_get(url, CacheFileType.img) || '');
+  if (cache_exist(url, FileType.IMAGE)) {
+    return Promise.resolve(cache_get(url, FileType.IMAGE) || '');
   }
   const win = await getAFreeWin();
   const webContents = win.webContents;
@@ -100,7 +98,7 @@ export const getImgBase64 = async (url: string): Promise<string> => {
             resolve(res);
             return;
           }
-          cache_save(url, CacheFileType.img);
+          cache_save(url, FileType.IMAGE);
           resolve(res);
         })
         .catch((reason) => {

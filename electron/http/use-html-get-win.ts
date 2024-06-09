@@ -1,6 +1,8 @@
 import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
-import { CacheFileType, HTML_WIN_EVENT, SYSTEM_SHORT_CUT, SYS_GLOB_KEY } from '@ghs/share';
-import { isFalsity, resolvePreload, resolvePublic } from '../utils/KitUtil';
+import { isFalsity } from '@ilzf/utils';
+import { FileType } from '@ghs/types';
+import { MESSAGE_EVENT_KEY, SHORTCUTS, USE_CHILD_WIN_EVENT } from '@ghs/constant';
+import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import { sendMessage } from '../utils/message';
 import useProxySetting from '../setting/use-proxy-setting';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
@@ -13,17 +15,17 @@ export const requestHtmlByWin = async (url: string) => {
     return;
   }
   return new Promise((resolve) => {
-    if (cache_exist(url, CacheFileType.html)) {
-      resolve(cache_get(url, CacheFileType.html));
+    if (cache_exist(url, FileType.HTML)) {
+      resolve(cache_get(url, FileType.HTML));
       return;
     }
     const func = (se: any, html: string) => {
       htmlGetWin.hide();
-      cache_save(url, html, CacheFileType.html);
+      cache_save(url, html, FileType.HTML);
       resolve(html);
     };
-    ipcMain.removeHandler(HTML_WIN_EVENT.SEND_HTML);
-    ipcMain.handle(HTML_WIN_EVENT.SEND_HTML, func);
+    ipcMain.removeHandler(USE_CHILD_WIN_EVENT.SEND_HTML);
+    ipcMain.handle(USE_CHILD_WIN_EVENT.SEND_HTML, func);
     htmlGetWin.loadURL(url);
   });
 };
@@ -41,19 +43,21 @@ export default (win: BrowserWindow) => {
   });
   htmlGetWin.hide();
   useProxySetting(htmlGetWin);
-  globalShortcut.register(SYSTEM_SHORT_CUT.showHtmlGetWin, function () {
+  // 注册打开html窗口快捷键
+  globalShortcut.register(SHORTCUTS.SHOW_HTML_WIN, function () {
     htmlGetWin?.show();
   });
-  globalShortcut.register(SYSTEM_SHORT_CUT.hideHtmlGetWin, function () {
+  // 注册关闭html窗口快捷键
+  globalShortcut.register(SHORTCUTS.HIDE_HTML_WIN, function () {
     htmlGetWin?.hide();
   });
-  ipcMain.handle(HTML_WIN_EVENT.SHOW_HTML_GET_WIN, () => {
+  ipcMain.handle(USE_CHILD_WIN_EVENT.SHOW_WIN, () => {
     htmlGetWin.show();
   });
-  ipcMain.handle(HTML_WIN_EVENT.HIDE_HTML_GET_WIN, () => {
+  ipcMain.handle(USE_CHILD_WIN_EVENT.HIDE_WIN, () => {
     htmlGetWin.hide();
   });
-  ipcMain.handle(SYS_GLOB_KEY.SEND_MESSAGE, (s, a) => {
+  ipcMain.handle(MESSAGE_EVENT_KEY.SEND_MESSAGE, (s, a) => {
     sendMessage(a);
   });
   return () => htmlGetWin.destroy();

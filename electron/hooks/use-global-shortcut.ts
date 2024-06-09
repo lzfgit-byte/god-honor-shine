@@ -1,11 +1,11 @@
-import { BrowserWindow, globalShortcut } from 'electron';
-import { SYSTEM_SHORT_CUT } from '@ghs/share';
+import type { BrowserWindow } from 'electron';
+import { globalShortcut } from 'electron';
 
 export default (win: BrowserWindow) => {
-  globalShortcut.register(SYSTEM_SHORT_CUT.openDevTools, function () {
-    let win = BrowserWindow.getFocusedWindow();
-    if (win) {
-      win.webContents.openDevTools();
-    }
-  });
+  // globalShortcut.register(SYSTEM_SHORT_CUT.openDevTools, function () {
+  //   let win = BrowserWindow.getFocusedWindow();
+  //   if (win) {
+  //     win.webContents.openDevTools();
+  //   }
+  // });
 };

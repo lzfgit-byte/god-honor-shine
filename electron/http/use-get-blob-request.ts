@@ -1,10 +1,9 @@
 import { net } from 'electron';
-import { CacheFileType } from '@ghs/share';
+import { formatSize } from '@ilzf/utils';
 import { cache_exist, cache_get, cache_save } from '../utils';
 import { processMessage, sendMessage } from '../utils/message';
-import { formatSize } from '../utils/KitUtil';
 
-export const request_string_get = (url: string, suffix = CacheFileType.blob): Promise<string> => {
+export const request_string_get = (url: string, suffix = ''): Promise<string> => {
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
       const cache = cache_get(url, suffix);
@@ -35,7 +34,7 @@ export const request_string_get = (url: string, suffix = CacheFileType.blob): Pr
   });
 };
 
-export const request_mp4_data = (url: string, suffix = CacheFileType.blob): Promise<any> => {
+export const request_mp4_data = (url: string, suffix = ''): Promise<any> => {
   return new Promise((resolve) => {
     const request = net.request(url);
     let blob: any = Buffer.alloc(0);
@@ -43,7 +42,6 @@ export const request_mp4_data = (url: string, suffix = CacheFileType.blob): Prom
       const header: any = response.headers;
       const length = header['content-length'];
       const filename = header.filename;
-      sendMessage(`header${JSON.stringify(header)}`, 'info');
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
         processMessage({

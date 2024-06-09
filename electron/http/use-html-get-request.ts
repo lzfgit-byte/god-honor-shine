@@ -1,10 +1,10 @@
 import { net } from 'electron';
-import { CacheFileType, SHOW_FILE_SIZE } from '@ghs/share';
+import { formatSize, isFalsity } from '@ilzf/utils';
+import { FileType } from '@ghs/types';
 import { processMessage, sendMessage } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
-import { formatSize, isFalsity } from '../utils/KitUtil';
 const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
-  if (suffix === CacheFileType.html || (fileSize && fileSize > SHOW_FILE_SIZE)) {
+  if (suffix === FileType.HTML) {
     if (isNaN(fileSize)) {
       fileSize = blob.length + 10;
     }
@@ -12,7 +12,7 @@ const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) =>
       title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
       percentage: +((blob.length / fileSize) * 100).toFixed(0),
       key: url,
-      global: suffix === CacheFileType.html,
+      global: suffix === FileType.HTML,
     });
   }
 };
@@ -24,9 +24,9 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       return;
     }
 
-    if (suffix === CacheFileType.html) {
-      sendMessage(`${CacheFileType.html}请求开始->${url}`);
-    }
+    // if (suffix === CacheFileType.html) {
+    //   sendMessage(`${CacheFileType.html}请求开始->${url}`);
+    // }
     const request = net.request(url);
 
     let blob: any = Buffer.alloc(0);
@@ -61,7 +61,7 @@ export const requestHtml = (url: string) => {
   if (isFalsity(url)) {
     return;
   }
-  return requestFunc(url, CacheFileType.html, (blob) => String(blob));
+  return requestFunc(url, FileType.HTML, (blob) => String(blob));
 };
 
 /**
@@ -72,7 +72,7 @@ export const requestImage = async (url: string) => {
   if (isFalsity(url)) {
     return;
   }
-  return requestFunc(url, CacheFileType.img, (blob) => {
+  return requestFunc(url, FileType.IMAGE, (blob) => {
     if (blob) {
       if (blob?.length < 100) {
         sendMessage(`【img】 获取图片长度不足100 ${url} `);

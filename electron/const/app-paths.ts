@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import { ensureFileSync, writeFileSync } from 'fs-extra';
 import { app } from 'electron';
 let config_json = null;
-let db_dir = `${process.env.LOCALAPPDATA}\\ghs3.0`;
+const PATH_KEY = 'ghs4.0';
+let db_dir = `${process.env.LOCALAPPDATA}\\${PATH_KEY}`; // aka C:\Users\用户名\AppData\Local\ghs4.0
 const cache_path = path.join(process.cwd(), '\\ghs-cache\\');
 const config_path = path.join(db_dir, '\\config.json');
 
@@ -11,7 +12,7 @@ const loadConfigFile = () => {
   if (config_json) {
     return;
   }
-  const default_config = { db_path: `${process.env.LOCALAPPDATA}\\ghs3.0\\sqlite.db` };
+  const default_config = { db_path: `${process.env.LOCALAPPDATA}\\${PATH_KEY}\\sqlite.db` };
   ensureFileSync(config_path);
   const setJson = readFileSync(config_path, { encoding: 'utf-8' });
   if (setJson === '') {
