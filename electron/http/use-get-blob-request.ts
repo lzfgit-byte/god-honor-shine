@@ -1,5 +1,6 @@
 import { net } from 'electron';
 import { formatSize, hashString } from '@ilzf/utils';
+import { FileType } from '@ghs/types';
 import { cache_exist, cache_get, cache_save } from '../utils';
 import { MessageUtil, ProgressMsgUtil } from '../utils/message';
 
@@ -8,7 +9,7 @@ import { MessageUtil, ProgressMsgUtil } from '../utils/message';
  * @param url
  * @param suffix
  */
-export const request_string_get = (url: string, suffix = ''): Promise<string> => {
+export const request_string_get = (url: string, suffix = FileType.TEXT): Promise<string> => {
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
       const cache = cache_get(url, suffix);
@@ -39,7 +40,7 @@ export const request_string_get = (url: string, suffix = ''): Promise<string> =>
   });
 };
 
-export const request_mp4_data = (url: string, suffix = ''): Promise<any> => {
+export const request_mp4_data = (url: string, suffix = FileType.VIDEO): Promise<any> => {
   return new Promise((resolve) => {
     const request = net.request(url);
     let blob: any = Buffer.alloc(0);

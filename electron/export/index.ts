@@ -48,7 +48,7 @@ export const win_open_any = (url: string, code: string, width: number, height: n
 };
 
 /**
- *
+ *获取远程data的string格式
  */
 export const getDataString = (url: string): Promise<string> => {
   return request_string_get(url);
