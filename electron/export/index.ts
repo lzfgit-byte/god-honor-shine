@@ -1,4 +1,4 @@
-import type { WebConfig } from '@ghs/types';
+import type { MainPage, WebConfig } from '@ghs/types';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -10,6 +10,7 @@ import {
 } from '../http';
 import { MessageUtil } from '../utils/message';
 import { getWebConfigAry } from '../business/use-init-web-config';
+import { getCurrentBusiness } from '../business/business';
 
 /**
  * 获取html
@@ -55,9 +56,25 @@ export const winOpenAny = async (url: string, code: string, width: number, heigh
 export const getDataString = async (url: string): Promise<string> => {
   return request_string_get(url);
 };
+// 后边是前端前端控制器
+
 /**
- * 前端控制器
+ *获取所有的配置项
  */
 export const listAllWebConfigs = async (): Promise<WebConfig[]> => {
   return getWebConfigAry();
+};
+/**
+ *获取当前的key
+ */
+export const getCurrentKey = async (): Promise<string> => {
+  return getCurrentKey();
+};
+/**
+ * 获取主页基本信息
+ * @param key
+ */
+export const getMainPage = async (key: string): Promise<MainPage> => {
+  const business = getCurrentBusiness(key);
+  return business.getMainPage();
 };

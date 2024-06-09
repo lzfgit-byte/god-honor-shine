@@ -6,7 +6,12 @@ import { isFunction } from '@ilzf/utils';
 // @ts-ignore
 import demoWebCode from './hentai-code-webconfig?raw';
 
-export let currentKey = '';
+let currentKey = '';
+export const setCurrentKey = (key: string) => {
+  currentKey = key;
+};
+export const getCurrentKey = () => currentKey;
+
 const cache: Record<string, WebConfig> = {};
 const breakStr = '/* break */';
 const wrapperCode = (code: string) => {
@@ -45,7 +50,7 @@ export const loadWebConfig = () => {
   }
   const config: WebConfig = eval(wrapperCode(demoWebCode))(helpElAttr, helpElText);
   cache[config.key] = config;
-  currentKey = config.key;
+  setCurrentKey(config.key);
 };
 
 export default () => {

@@ -1,4 +1,4 @@
-import type { WebConfig } from '@ghs/types';
+import type { MainPage, WebConfig } from '@ghs/types';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -43,9 +43,24 @@ export const f_getDataString = async (url: string): Promise<string> => {
   return executeFunction('getDataString', url);
 };
 
+// 后边是前端前端控制器
 /**
- * 前端控制器
+ *获取所有的配置项
  */
 export const f_listAllWebConfigs = async (): Promise<WebConfig[]> => {
   return executeFunction('listAllWebConfigs');
+};
+/**
+ * 获取当前的key的封装
+ */
+export const f_getCurrentKey = async (): Promise<string> => {
+  return executeFunction('getCurrentKey');
+};
+
+/**
+ * 获取主页基本信息的封装
+ * @param key
+ */
+export const f_getMainPage = async (key: string): Promise<MainPage> => {
+  return executeFunction('getMainPage', key);
 };

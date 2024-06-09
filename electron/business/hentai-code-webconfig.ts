@@ -3,9 +3,9 @@ import type { WebConfig } from '@ghs/types';
 const webConfig: WebConfig = /* break */ {
   key: 'hw',
   name: 'HW',
-  favicon: '',
-  homeUrl: '',
-  searchUrl: '',
+  favicon: 'https://thehentaiworld.com/favicon.ico',
+  homeUrl: 'https://thehentaiworld.com/?new',
+  searchUrl: 'https://thehentaiworld.com/?s=$key',
 
   getUrlReplace($) {
     console.log('getUrlReplace');

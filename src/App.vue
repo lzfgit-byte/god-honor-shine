@@ -1,13 +1,24 @@
 <template>
   <h1>Hello word</h1>
+  <a-button v-for="(item, index) in configs" :key="item.key + index" @click="handleClick(item)">
+    {{ item.name }}
+  </a-button>
+  {{ info }}
 </template>
 <script setup lang="ts">
-  import { onMounted } from 'vue';
-  import { f_listAllWebConfigs } from '@/utils/business';
+  import { onMounted, ref } from 'vue';
+  import type { BaseConfig } from '@ghs/types';
+  import { f_getMainPage, f_listAllWebConfigs } from '@/utils/business';
+
+  const configs = ref<BaseConfig[]>([]);
+  const info = ref();
+
+  const handleClick = async (item: BaseConfig) => {
+    info.value = await f_getMainPage(item.key);
+  };
 
   onMounted(async () => {
-    const webConfig = await f_listAllWebConfigs();
-    console.log(webConfig);
+    configs.value = await f_listAllWebConfigs();
   });
 </script>
 

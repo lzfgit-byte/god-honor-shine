@@ -3,14 +3,16 @@ import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import { isFalsity } from '@ilzf/utils';
 import { getHtml } from '../export';
 import { NormalFunc } from './common-func';
+import { getWebConfigByKey } from './use-init-web-config';
 
-export abstract class BaseBusiness extends NormalFunc {
+class BaseBusiness extends NormalFunc {
   private key: string;
   $: CheerioAPI;
   webConfig: WebConfig;
-  protected constructor(key: string, code: WebConfig) {
+  public constructor(key: string, code: WebConfig) {
     super();
     this.key = key;
     this.webConfig = code;
@@ -49,8 +51,8 @@ export abstract class BaseBusiness extends NormalFunc {
   /**
    * 获取页面数据，包含首页，搜索页
    */
-  public async getMainPage(url: string): Promise<MainPage> {
-    const html = await getHtml(url);
+  public async getMainPage(): Promise<MainPage> {
+    const html = await getHtml(this.webConfig.homeUrl);
     this.$ = cheerio.load(html);
     return {
       items: this.getItems(),
@@ -67,3 +69,11 @@ export abstract class BaseBusiness extends NormalFunc {
     return this.webConfig.getDetailInfo(item, cheerio);
   }
 }
+const cache: Record<string, BaseBusiness> = {};
+export const getCurrentBusiness = (key: string) => {
+  let res: BaseBusiness = cache[key];
+  if (isFalsity(res)) {
+    res = new BaseBusiness(key, getWebConfigByKey(key));
+  }
+  return res;
+};
