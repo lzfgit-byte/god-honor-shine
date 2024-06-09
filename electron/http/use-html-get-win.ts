@@ -25,14 +25,9 @@ export const requestHtmlByWin = async (url: string) => {
       cache_save(url, html, FileType.HTML);
       resolve(html);
     };
-    const stepMsg = (se: any, msg: string) => {
-      LogMsgUtil.sendLogMsg(msg, key);
-    };
     ipcMain.removeHandler(USE_CHILD_WIN_EVENT.SEND_HTML);
     ipcMain.handle(USE_CHILD_WIN_EVENT.SEND_HTML, func);
-    // 监听页面的进度信息
-    ipcMain.removeHandler(USE_CHILD_WIN_EVENT.STEP_MESSAGE);
-    ipcMain.handle(USE_CHILD_WIN_EVENT.STEP_MESSAGE, stepMsg);
+
     htmlGetWin.loadURL(url);
   });
 };
@@ -64,5 +59,10 @@ export default (win: BrowserWindow) => {
   ipcMain.handle(USE_CHILD_WIN_EVENT.HIDE_WIN, () => {
     htmlGetWin.hide();
   });
+  // 监听页面的进度信息
+  const stepMsg = (se: any, msg: string) => {
+    LogMsgUtil.sendLogMsg(msg);
+  };
+  ipcMain.handle(USE_CHILD_WIN_EVENT.STEP_MESSAGE, stepMsg);
   return () => htmlGetWin.destroy();
 };

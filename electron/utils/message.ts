@@ -68,8 +68,8 @@ export class LogMsgUtil {
     webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, msg);
   }
 
-  static sendLogMsg(msg: string, key: string) {
-    this.sendMsg({ msg, key });
+  static sendLogMsg(msg: string) {
+    this.sendMsg({ msg });
   }
 
   static close() {
