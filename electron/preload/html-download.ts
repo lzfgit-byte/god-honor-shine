@@ -2,11 +2,11 @@
  * 通过窗口获取页面html的preload
  */
 import { ipcRenderer } from 'electron';
-import { MESSAGE_EVENT_KEY, USE_CHILD_WIN_EVENT } from '@ghs/constant';
+import { USE_CHILD_WIN_EVENT } from '@ghs/constant';
 
 const sendMessage = (msg: string) => {
   ipcRenderer
-    .invoke(MESSAGE_EVENT_KEY.SEND_MESSAGE, `${msg} f 【${window.location.href}】`)
+    .invoke(USE_CHILD_WIN_EVENT.STEP_MESSAGE, `${msg} f 【${window.location.href}】`)
     .then(() => 1);
 };
 const sendHtml = (html: string) => {

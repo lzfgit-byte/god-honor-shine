@@ -1,21 +1,8 @@
 import { net } from 'electron';
-import { formatSize, isFalsity } from '@ilzf/utils';
+import { isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
-import { MessageUtil, processMessage } from '../utils/message';
+import { MessageUtil } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils';
-const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
-  if (suffix === FileType.HTML) {
-    if (isNaN(fileSize)) {
-      fileSize = blob.length + 10;
-    }
-    processMessage({
-      title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
-      percentage: +((blob.length / fileSize) * 100).toFixed(0),
-      key: url,
-      global: suffix === FileType.HTML,
-    });
-  }
-};
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
@@ -24,9 +11,6 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       return;
     }
 
-    // if (suffix === CacheFileType.html) {
-    //   sendMessage(`${CacheFileType.html}请求开始->${url}`);
-    // }
     const request = net.request(url);
 
     let blob: any = Buffer.alloc(0);
@@ -35,11 +19,9 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        sendMsg(fileSize, suffix, blob, url);
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));
-        sendMsg(blob.length, suffix, blob, url);
         blob = null;
       });
       response.on('error', () => {
