@@ -1,5 +1,4 @@
-import type { Item, WebConfig } from '@ghs/types';
-import { ItemType } from '@ghs/types';
+import type { WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 
@@ -42,7 +41,6 @@ const webConfig: WebConfig = /* break */ {
   searchUrl: 'https://thehentaiworld.com/?s=$key',
 
   getUrlReplace($) {
-    console.log('getUrlReplace');
     return [];
   },
   getCurrentItems($) {
@@ -68,21 +66,31 @@ const webConfig: WebConfig = /* break */ {
       tags: flatTags.filter((item) => item.title),
     };
   },
+
   getCurrentPagination($) {
-    console.log('getCurrentPagination');
-    return null;
+    return $('#more-hentai li');
   },
   getPaginationByEl(el, $) {
-    console.log('getPaginationByEl');
-    return null;
+    // li标签
+    const $el = $(el);
+    const $span = $el.find('span');
+    const $a = $el.find('a');
+    //
+    const title = helpElText($span) || helpElText($a);
+    const url = helpElAttr($a, 'href');
+    const isCurrent = $span.hasClass('current');
+    return { title, isCurrent, url };
   },
   getCurrentTags($) {
-    console.log('getCurrentTags');
-    return null;
+    return $('#tags > li');
   },
   getTagByEl(el, $) {
-    console.log('getTagByEl');
-    return null;
+    const $el = $(el);
+    const $a = $el.find('a');
+    const $span = $el.find('span');
+    const title = `${helpElText($a)} ${helpElText($span)}`;
+    const url = `https:${helpElAttr($a, ElementAttr.href)}`;
+    return { title, url };
   },
   getDetailInfo(item, chee) {
     console.log('getDetailInfo');

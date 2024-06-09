@@ -15,6 +15,7 @@
 
   const handleClick = async (item: BaseConfig) => {
     info.value = await f_getMainPage(item.key);
+    console.log(info.value);
   };
 
   onMounted(async () => {
