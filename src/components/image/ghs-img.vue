@@ -11,7 +11,7 @@
         class="progress-img"
       >
         <div relative w-full box-border p-l-2 p-r-2 class="progress">
-          <GhsProgress v-model:percentage="percentageRef"></GhsProgress>
+          <!--          <GhsProgress v-model:percentage="percentageRef"></GhsProgress> -->
         </div>
       </div>
     </transition>
@@ -21,7 +21,6 @@
   import { computed } from 'vue';
   import src from './loading.gif?url';
   import useImg from '@/components/image/hooks/useImg';
-  import GhsProgress from '@/components/progress/ghs-progress.vue';
 
   const props = defineProps({
     url: String,
