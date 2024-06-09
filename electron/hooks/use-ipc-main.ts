@@ -3,8 +3,9 @@
  */
 import { ipcMain } from 'electron';
 import * as utils from '../utils';
+import * as business from '../business';
 
-const funS = { ...utils };
+const funS = { ...utils, ...business };
 
 export default () => {
   Object.keys(funS).forEach((key) => {
