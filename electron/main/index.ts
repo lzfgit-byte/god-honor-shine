@@ -15,8 +15,9 @@ import useHandleMainEvent from './event/use-handle-main-event';
 let win: BrowserWindow | null = null;
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
-let execFuncOnClose = [useAppDataSource()];
+let execFuncOnClose = [];
 async function createWindow() {
+  execFuncOnClose.push(await useAppDataSource());
   win = new BrowserWindow({
     title: 'ghs',
     width: 1450,

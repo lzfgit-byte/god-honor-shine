@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+// @ts-ignore
 @Entity('config')
-export class Config {
+export class ConfigEntity extends BaseEntity {
   // @ts-ignore
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,10 +11,11 @@ export class Config {
   @Column('varchar')
   name: string;
 
+  // @ts-ignore
   @Column('varchar')
   value: string;
 
   // @ts-ignore
   @Column('datetime')
-  createTime: boolean;
+  createTime: any;
 }
