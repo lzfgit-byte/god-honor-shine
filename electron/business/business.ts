@@ -3,37 +3,37 @@ import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import { AdapterFunc } from './adapter-func';
 
-export abstract class BaseBusiness {
+export abstract class BaseBusiness extends AdapterFunc {
   private key: string;
-  private $: CheerioAPI;
+  $: CheerioAPI;
   protected constructor(key: string) {
+    super();
     this.key = key;
   }
 
-  private helpElAttr($el: Cheerio<Element>, attr: string): string {
-    return $el?.attr(attr) || '';
+  // 获取页面的元素数据
+  private getItems(): Item[] {
+    return this.getMainPageRes(this.getCurrentItems, this.getItemByEl);
   }
 
-  private helpElText($el: Cheerio<Element>): string {
-    return $el?.text() || '';
+  // 获取页面的分页数据;
+  private getPagination(): Pagination[] {
+    return this.getMainPageRes(this.getCurrentPagination, this.getPaginationByEl);
   }
 
-  private getCurrentItems(...items: (() => Cheerio<Element>)[]): Cheerio<Element> {
-    let res = null;
-    items.forEach((func) => {
-      if (res === null) {
-        const foo = func();
-        if (foo.length > 0) {
-          res = foo;
-        }
-      }
-    });
-    return res || items[0]();
+  // 获取首页的标签数据
+  private getTags(): Tag[] {
+    return this.getMainPageRes(this.getCurrentTags, this.getTagByEl);
   }
 
-  async getMainPage(html: string): Promise<MainPage> {
-    this.$ = cheerio.load(html);
+  /**
+   * 获取页面数据，包含首页，搜索页
+   * @param html
+   */
+  public async getMainPage(url: string): Promise<MainPage> {
+    this.$ = cheerio.load(url);
     return {
       items: this.getItems(),
       pagination: this.getPagination(),
@@ -41,16 +41,5 @@ export abstract class BaseBusiness {
     };
   }
 
-  getItems(): Item[] {
-    const items: Item[] = [];
-    return items;
-  }
-
-  getPagination(): Pagination[] {
-    return null;
-  }
-
-  getTags(): Tag[] {
-    return null;
-  }
+  public getDetailPage(url: string) {}
 }
