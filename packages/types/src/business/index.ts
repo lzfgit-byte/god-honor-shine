@@ -4,8 +4,8 @@ export interface Pagination {
   isCurrent: boolean;
 }
 export interface Tag {
-  title: string;
-  url: string;
+  title?: string;
+  url?: string;
 }
 export enum ItemType {
   video = 'video',
@@ -13,17 +13,23 @@ export enum ItemType {
   text = 'text',
   comic = 'comic',
 }
+// 将上边枚举转换为联合类型
+export type ItemTypeUnion = keyof typeof ItemType;
 export enum ItemDetailType {
   mp4 = 'mp4',
   m3u8 = 'm3u8',
   image = 'image',
 }
+// 将上边枚举转换为联合类型
+export type ItemDetailTypeUnion = keyof typeof ItemDetailType;
 export enum RenderType {
   force = 'force',
   normal = 'normal',
 }
+// 将上边枚举转换为联合类型
+export type RenderTypeUnion = keyof typeof RenderType;
 export interface Detail {
-  type: ItemType;
+  type: ItemTypeUnion;
   url: string;
   quality?: string;
   comments: Comment[];
@@ -31,9 +37,9 @@ export interface Detail {
 export interface Item {
   coverImg: string;
   title: string;
-  type: ItemType;
+  type: ItemTypeUnion;
   jumpUrl: string;
-  renderType: RenderType; // 渲染类型,强制渲染,正常渲染
+  renderType: RenderTypeUnion; // 渲染类型,强制渲染,正常渲染
   tags: Tag[];
 }
 export interface UrlAppend {
@@ -53,8 +59,8 @@ export interface Comment {
  *点击Item,后获取详细信息
  */
 export interface DetailInfo {
-  detailType: ItemDetailType;
-  renderType: RenderType; // 渲染类型,强制渲染,正常渲染
+  detailType: ItemDetailTypeUnion;
+  renderType: RenderTypeUnion; // 渲染类型,强制渲染,正常渲染
   details: Detail[];
   relations: Item[];
 }

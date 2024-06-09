@@ -24,7 +24,7 @@ class BaseBusiness extends NormalFunc {
   ) {
     const res: T[] = [];
     const items: Cheerio<Element> = list(this.$);
-    items.each((i, el) => {
+    items?.each((i, el) => {
       res.push(detail(el, this.$));
     });
     return res;

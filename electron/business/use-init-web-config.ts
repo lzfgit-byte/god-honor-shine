@@ -48,7 +48,36 @@ export const loadWebConfig = () => {
   function helpElText($el: Cheerio<Element>): string {
     return $el?.text() || '';
   }
-  const config: WebConfig = eval(wrapperCode(demoWebCode))(helpElAttr, helpElText);
+  const ElementAttr = {
+    src: 'src',
+    title: 'title',
+    href: 'href',
+    class: 'class',
+    dataWebp: 'data-webp',
+    dataSrc: 'data-src',
+    dataOriginal: 'data-original',
+    poster: 'poster',
+    dataSource: 'data-source',
+    dataType: 'data-type',
+    dataEcho: 'data-echo',
+    dataError: 'data-error',
+    alt: 'alt',
+  };
+  const ElementTypes = {
+    a: 'a',
+    img: 'img',
+    h4: 'h4',
+    h1: 'h1',
+    video: 'video',
+    source: 'source',
+    p: 'p',
+  };
+  const config: WebConfig = eval(wrapperCode(demoWebCode))(
+    helpElAttr,
+    helpElText,
+    ElementAttr,
+    ElementTypes
+  );
   cache[config.key] = config;
   setCurrentKey(config.key);
 };
