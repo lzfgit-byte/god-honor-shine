@@ -4,9 +4,9 @@ import { ensureFileSync, writeFileSync } from 'fs-extra';
 import { app } from 'electron';
 let config_json = null;
 const PATH_KEY = 'ghs4.0';
-let db_dir = `${process.env.LOCALAPPDATA}\\${PATH_KEY}`; // aka C:\Users\用户名\AppData\Local\ghs4.0
+let temp_dir = `${process.env.LOCALAPPDATA}\\${PATH_KEY}`; // aka C:\Users\用户名\AppData\Local\ghs4.0
 const cache_path = path.join(process.cwd(), '\\ghs-cache\\');
-const config_path = path.join(db_dir, '\\config.json');
+const config_path = path.join(temp_dir, '\\config.json');
 
 const loadConfigFile = () => {
   if (config_json) {
@@ -30,7 +30,7 @@ export const app_set_config_dir = (dir: string) => {
 };
 export class APP_PATHS {
   static get db_dir() {
-    return db_dir;
+    return temp_dir;
   }
 
   static get db_path() {

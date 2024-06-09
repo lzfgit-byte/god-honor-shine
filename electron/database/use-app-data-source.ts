@@ -1,13 +1,37 @@
-import { DataSource } from 'typeorm';
+import type { LogLevel, LogMessage, QueryRunner } from 'typeorm';
+import { DataSource, FileLogger } from 'typeorm';
+import type { FileLoggerOptions, LoggerOptions } from 'typeorm/logger/LoggerOptions';
 import { APP_PATHS } from '../const/app-paths';
+import { logger } from '../utils';
 import { ConfigEntity } from './config-table';
+import { LogEntity } from './log-table';
 
+class MyFileLogger extends FileLogger {
+  constructor() {
+    const options: LoggerOptions = 'all';
+    const fileLoggerOptions: FileLoggerOptions = { logPath: '' };
+    super(options, fileLoggerOptions);
+  }
+
+  protected writeLog(
+    level: LogLevel,
+    logMessage: LogMessage | LogMessage[],
+    queryRunner?: QueryRunner
+  ) {
+    super.writeLog(level, logMessage, queryRunner);
+  }
+
+  protected write(strings: string | string[]) {
+    logger.log(strings);
+  }
+}
 const AppDataSource = new DataSource({
   type: 'sqlite',
   database: APP_PATHS.db_path,
-  entities: [ConfigEntity],
+  entities: [ConfigEntity, LogEntity],
   synchronize: true,
-  logging: false,
+  logging: true,
+  logger: new MyFileLogger(),
 });
 
 export default async () => {
