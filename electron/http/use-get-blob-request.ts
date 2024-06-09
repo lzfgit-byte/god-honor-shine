@@ -1,8 +1,13 @@
 import { net } from 'electron';
-import { formatSize } from '@ilzf/utils';
+import { formatSize, hashString } from '@ilzf/utils';
 import { cache_exist, cache_get, cache_save } from '../utils';
-import { processMessage, sendMessage } from '../utils/message';
+import { MessageUtil, ProgressMsgUtil } from '../utils/message';
 
+/**
+ * 测试用
+ * @param url
+ * @param suffix
+ */
 export const request_string_get = (url: string, suffix = ''): Promise<string> => {
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
@@ -24,11 +29,11 @@ export const request_string_get = (url: string, suffix = ''): Promise<string> =>
         blob = null;
       });
       response.on('error', () => {
-        sendMessage(`请求失败远程${url}`);
+        MessageUtil.error(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage(`请求失败远程${url}`);
+      MessageUtil.error(`请求失败远程${url}`);
     });
     request.end();
   });
@@ -44,30 +49,23 @@ export const request_mp4_data = (url: string, suffix = ''): Promise<any> => {
       const filename = header.filename;
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        processMessage({
+        ProgressMsgUtil.sendProgressMsg({
           title: `${formatSize(blob.length)}/${formatSize(length)}`,
-          global: true,
           percentage: parseInt(((blob.length / length) * 100).toFixed(0)),
-          key: url,
+          key: hashString(url),
         });
       });
       response.on('end', () => {
         resolve(`data:video/mp4;base64,${Buffer.from(blob).toString('base64')}`);
-        processMessage({
-          title: filename,
-          global: true,
-          percentage: parseInt(((blob.length / length) * 100).toFixed(0)),
-          key: url,
-          down: true,
-        });
+        ProgressMsgUtil.close(hashString(url));
         blob = null;
       });
       response.on('error', () => {
-        sendMessage(`请求失败远程${url}`);
+        MessageUtil.error(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage(`请求失败远程${url}`);
+      MessageUtil.error(`请求失败远程${url}`);
     });
     request.end();
   });

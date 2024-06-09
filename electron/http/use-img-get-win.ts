@@ -1,9 +1,10 @@
 import { BrowserWindow } from 'electron';
 import { isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
-import { cache_exist, cache_get, cache_save, logger } from '../utils';
+import { cache_exist, cache_get, cache_save } from '../utils';
 import useProxySetting from '../setting/use-proxy-setting';
 import useSystemSetting from '../setting/use-system-setting';
+import { logger } from '../utils/logger';
 // @ts-ignore
 import code from './img-windows-code?raw';
 let parentWin: BrowserWindow;

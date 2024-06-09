@@ -2,7 +2,7 @@ import { net } from 'electron';
 import { formatSize, isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
 import { MessageUtil, processMessage } from '../utils/message';
-import { cache_exist, cache_get, cache_save } from '../utils/cache';
+import { cache_exist, cache_get, cache_save } from '../utils';
 const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
   if (suffix === FileType.HTML) {
     if (isNaN(fileSize)) {

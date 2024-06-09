@@ -1,13 +1,15 @@
 import { BrowserWindow } from 'electron';
-import { logger } from '../utils';
 import useProxySetting from '../setting/use-proxy-setting';
-import { sendMessage } from '../utils/message';
 
+/**
+ * 使用新窗口获取数据，执行外部传入code，执行完毕后关闭
+ * @param code
+ * @param url
+ */
 export const win_get_data = (code: string, url: string) => {
   if (!code || !url) {
     return;
   }
-  sendMessage(`使用新窗口获取数据-->${url}`);
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -26,11 +28,8 @@ export const win_get_data = (code: string, url: string) => {
         .executeJavaScript(code)
         .then((res: string) => {
           resolve(res);
-          sendMessage(`新窗口获取数据结束,数据长度-->${res?.length}`);
         })
-        .catch((reason) => {
-          logger.db_error('失败', reason);
-        })
+        .catch((reason) => {})
         .finally(() => {
           webContents.off('did-finish-load', listener);
           win?.destroy();
@@ -41,6 +40,10 @@ export const win_get_data = (code: string, url: string) => {
   });
 };
 
+/**
+ * 打开新窗口，并执行相应的代码。不会关闭
+ */
+
 export const win_open = (url: string, code = '', width = 800, height = 800) => {
   if (!url) {
     return;
@@ -49,7 +52,7 @@ export const win_open = (url: string, code = '', width = 800, height = 800) => {
     width,
     height,
     show: true,
-    title: 'picWindow',
+    title: 'newWindow',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

@@ -1,11 +1,11 @@
 import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
-import { isFalsity } from '@ilzf/utils';
+import { hashString, isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
-import { MESSAGE_EVENT_KEY, SHORTCUTS, USE_CHILD_WIN_EVENT } from '@ghs/constant';
+import { SHORTCUTS, USE_CHILD_WIN_EVENT } from '@ghs/constant';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
-import { sendMessage } from '../utils/message';
 import useProxySetting from '../setting/use-proxy-setting';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
+import { LogMsgUtil, MessageUtil } from '../utils/message';
 
 const preHtmlDownload = resolvePreload('html-download');
 let htmlGetWin: BrowserWindow;
@@ -14,6 +14,7 @@ export const requestHtmlByWin = async (url: string) => {
   if (isFalsity(url)) {
     return;
   }
+  const key = hashString(url);
   return new Promise((resolve) => {
     if (cache_exist(url, FileType.HTML)) {
       resolve(cache_get(url, FileType.HTML));
@@ -24,8 +25,14 @@ export const requestHtmlByWin = async (url: string) => {
       cache_save(url, html, FileType.HTML);
       resolve(html);
     };
+    const stepMsg = (se: any, msg: string) => {
+      LogMsgUtil.sendLogMsg(msg, key);
+    };
     ipcMain.removeHandler(USE_CHILD_WIN_EVENT.SEND_HTML);
     ipcMain.handle(USE_CHILD_WIN_EVENT.SEND_HTML, func);
+    // 监听页面的进度信息
+    ipcMain.removeHandler(USE_CHILD_WIN_EVENT.STEP_MESSAGE);
+    ipcMain.handle(USE_CHILD_WIN_EVENT.STEP_MESSAGE, stepMsg);
     htmlGetWin.loadURL(url);
   });
 };
@@ -56,9 +63,6 @@ export default (win: BrowserWindow) => {
   });
   ipcMain.handle(USE_CHILD_WIN_EVENT.HIDE_WIN, () => {
     htmlGetWin.hide();
-  });
-  ipcMain.handle(MESSAGE_EVENT_KEY.SEND_MESSAGE, (s, a) => {
-    sendMessage(a);
   });
   return () => htmlGetWin.destroy();
 };

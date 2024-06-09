@@ -11,7 +11,7 @@ import {
 } from 'fs-extra';
 import { formatSize, hashString, isFalsity } from '@ilzf/utils';
 import { APP_PATHS } from '../const/app-paths';
-import { sendMessage } from './message';
+import { MessageUtil } from './message';
 
 const CACHE_PATH = APP_PATHS.cache_path;
 
@@ -90,11 +90,11 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
 export const cache_suffix_clean = (fileSuffix: any) => {
   if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
-    sendMessage({ msg: '清除了全部缓存' });
+    MessageUtil.success('清除了全部缓存');
     return;
   }
   emptyDirSync(`${CACHE_PATH}\\${fileSuffix}`);
-  sendMessage({ msg: `清除了缓存--${fileSuffix}` });
+  MessageUtil.success(`清除了缓存-->${fileSuffix}`);
 };
 export const cache_dir_size = () => {
   const files = readdirSync(CACHE_PATH);
