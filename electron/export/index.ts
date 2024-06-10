@@ -1,4 +1,4 @@
-import type { Item, Page, WebConfig } from '@ghs/types';
+import type { BaseConfig, Item, Page, WebConfig } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 import { CollectEntity } from '@ghs/constant';
 import {
@@ -11,7 +11,13 @@ import {
   win_open,
 } from '../http';
 import { LogMsgUtil, MessageUtil } from '../utils/message';
-import { getCurrentKey, getWebConfigAry, setCurrentKey } from '../business/use-init-web-config';
+import {
+  getBaseConfigByKey,
+  getCurrentKey,
+  getWebConfigAry,
+  getWebConfigByKey,
+  setCurrentKey,
+} from '../business/use-init-web-config';
 import { getCurrentBusiness } from '../business/business';
 
 /**
@@ -71,6 +77,12 @@ export const listAllWebConfigs = async (): Promise<WebConfig[]> => {
  */
 export const getCurrentKeyExp = async (): Promise<string> => {
   return getCurrentKey();
+};
+/**
+ * 获取当前的config
+ */
+export const getCurrentWebConfig = async (key: string): Promise<BaseConfig> => {
+  return getBaseConfigByKey(key);
 };
 /**
  * 获取主页基本信息

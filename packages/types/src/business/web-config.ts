@@ -10,6 +10,9 @@ export interface BaseConfig {
   name: string;
   searchUrl: string;
   searchKey: string;
+
+  imgWidth: string;
+  imgHeight: string;
 }
 
 export interface WebConfig extends BaseConfig {

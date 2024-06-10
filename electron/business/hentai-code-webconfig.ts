@@ -40,6 +40,8 @@ const webConfig: WebConfig = /* break */ {
   homeUrl: 'https://thehentaiworld.com/?new',
   searchUrl: 'https://thehentaiworld.com/?s=',
   searchKey: '$key',
+  imgWidth: '220px',
+  imgHeight: '147px',
 
   getUrlReplace($) {
     return [];

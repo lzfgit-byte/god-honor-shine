@@ -20,10 +20,9 @@
             v-for="(item, index) in items"
             :key="index"
             :item="item"
-            width="220px"
-            height="147px"
-            @img-click="handleImageClick(item)"
-            @trigger-collect="collect_save(item)"
+            :width="webConfig.imgWidth"
+            :height="webConfig.imgHeight"
+            @img-click="showDetail(item)"
           ></GhsItem>
         </transition-group>
       </div>
@@ -37,10 +36,12 @@
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/usePageState';
   import Search from '@/components/search/search.vue';
+  import useFeature from '@/view/hook/useFeature';
   const route = useRoute();
   const webKey = route.query.key as string;
 
-  const { pagination, handlePageClick, items } = usePageState(webKey);
+  const { pagination, handlePageClick, items, webConfig } = usePageState(webKey);
+  const { showDetail } = useFeature();
 
   onMounted(() => {
     console.log(webKey);

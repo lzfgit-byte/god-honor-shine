@@ -1,4 +1,4 @@
-import type { WebConfig } from '@ghs/types';
+import type { BaseConfig, WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { keys } from 'lodash';
@@ -25,6 +25,16 @@ const wrapperCode = (code: string) => {
 };
 export const getWebConfigByKey = (key: string) => {
   return cache[key];
+};
+export const getBaseConfigByKey = (key: string): BaseConfig => {
+  const wc = cache[key];
+  const foo: WebConfig = {} as any;
+  keys(wc).forEach((cKey) => {
+    if (!isFunction(wc[cKey])) {
+      foo[cKey] = wc[cKey];
+    }
+  });
+  return foo;
 };
 export const getWebConfigAry = (): WebConfig[] => {
   const res: WebConfig[] = [];

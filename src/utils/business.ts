@@ -1,4 +1,4 @@
-import type { Item, Page, WebConfig } from '@ghs/types';
+import type { BaseConfig, Item, Page, WebConfig } from '@ghs/types';
 import type { CollectEntity } from '@ghs/constant';
 import { executeFunction } from '@/utils/ipc';
 
@@ -57,7 +57,12 @@ export const f_listAllWebConfigs = async (): Promise<WebConfig[]> => {
 export const f_getCurrentKey = async (): Promise<string> => {
   return executeFunction('getCurrentKeyExp');
 };
-
+/**
+ * 获取当前的config
+ */
+export const f_getCurrentWebConfig = async (key: string): Promise<BaseConfig> => {
+  return executeFunction('getCurrentWebConfig', key);
+};
 /**
  * 获取主页基本信息的封装
  * @param key
