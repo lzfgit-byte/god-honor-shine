@@ -3,6 +3,7 @@ import type { BaseConfig, Item, Pagination, Tag, UrlReplace } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 import {
   f_cacheDirDb,
+  f_cacheSuffixClean,
   f_getCurrentWebConfig,
   f_getPage,
   f_loadPage,
@@ -16,12 +17,14 @@ export default (key: string) => {
   const tags = ref<Tag[]>();
   const urlReplace = ref<UrlReplace[]>();
   const dbPath = ref();
+  const currentUrl = ref();
 
   const load = async (url: string = null) => {
     pagination.value = [];
     items.value = [];
     tags.value = [];
     urlReplace.value = [];
+    currentUrl.value = url;
 
     const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
     pagination.value = page.pagination;
@@ -44,11 +47,28 @@ export default (key: string) => {
   const loadDbPath = async () => {
     dbPath.value = await f_cacheDirDb();
   };
+  const refresh = async () => {
+    await load(currentUrl.value);
+  };
+  const clearCache = async () => {
+    await f_cacheSuffixClean();
+    await refresh();
+  };
 
   onMounted(async () => {
     await init();
     await load();
     await loadDbPath();
   });
-  return { pagination, handlePageClick, items, tags, urlReplace, webConfig, handleSearch, dbPath };
+  return {
+    pagination,
+    handlePageClick,
+    items,
+    tags,
+    urlReplace,
+    webConfig,
+    handleSearch,
+    dbPath,
+    clearCache,
+  };
 };

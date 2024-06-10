@@ -1,6 +1,6 @@
 <template>
   <a-float-button
-    description="打开侧边栏"
+    tooltip="打开侧边栏"
     type="default"
     :style="{ right: '15px', top: '60px' }"
     @click="handleDrawOpen"
