@@ -5,7 +5,7 @@ import { SHORTCUTS, USE_CHILD_WIN_EVENT } from '@ghs/constant';
 import { resolvePreload, resolvePublic } from '../utils/KitUtil';
 import useProxySetting from '../setting/use-proxy-setting';
 import { cache_exist, cache_get, cache_save } from '../utils/cache';
-import { LogMsgUtil, MessageUtil } from '../utils/message';
+import { LogMsgUtil } from '../utils/message';
 
 const preHtmlDownload = resolvePreload('html-download');
 let htmlGetWin: BrowserWindow;
@@ -14,7 +14,6 @@ export const requestHtmlByWin = async (url: string) => {
   if (isFalsity(url)) {
     return;
   }
-  const key = hashString(url);
   return new Promise((resolve) => {
     if (cache_exist(url, FileType.HTML)) {
       resolve(cache_get(url, FileType.HTML));

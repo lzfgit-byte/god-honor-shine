@@ -170,7 +170,6 @@
       scale.value = 100;
       choseUrl.value = 'minUrl';
       images.value = ims.map((item) => ({ ...item, minUrl: item.url }));
-      console.log(images.value);
       visible.value = true;
     },
     close: () => {

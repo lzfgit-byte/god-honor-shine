@@ -1,5 +1,5 @@
 import { net } from 'electron';
-import { calcProcess, hashString, isFalsity } from '@ilzf/utils';
+import { calcProcess, formatSize, hashString, isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
 import { MessageUtil, ProgressMsgUtil } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils';
@@ -21,7 +21,11 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        ProgressMsgUtil.sendProgress(calcProcess(blob.length, fileSize), progressKey);
+        ProgressMsgUtil.sendProgress(
+          calcProcess(blob.length, fileSize),
+          progressKey,
+          `${formatSize(blob.length)}/${formatSize(fileSize)}`
+        );
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));

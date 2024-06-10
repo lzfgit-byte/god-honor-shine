@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
-    "@ilzf/utils": "^0.0.14",
+    "@ilzf/utils": "^0.0.15",
     "@vueuse/core": "^10.10.0",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^4.2.2",
