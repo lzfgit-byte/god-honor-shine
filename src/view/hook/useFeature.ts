@@ -1,8 +1,11 @@
 import type { Item } from '@ghs/types';
+import { ref } from 'vue';
 import { f_getDetailPage } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 
 export default () => {
+  const drawerOpen = ref(false);
+
   const showDetail = async (item: Item) => {
     const detail = await f_getDetailPage(item);
     if (detail.detailType === 'mp4') {
@@ -13,5 +16,12 @@ export default () => {
     }
   };
 
-  return { showDetail };
+  const handleDrawOpen = () => {
+    drawerOpen.value = true;
+  };
+
+  const segmentedValue = ref('收藏');
+  const segmentedData = ref(['收藏', '历史', '设置', '全局配置']);
+
+  return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData };
 };

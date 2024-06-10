@@ -8,10 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
+    ADrawer: typeof import('ant-design-vue/es')['Drawer']
     AFlex: typeof import('ant-design-vue/es')['Flex']
+    AFloatButton: typeof import('ant-design-vue/es')['FloatButton']
     AInput: typeof import('ant-design-vue/es')['Input']
     AModal: typeof import('ant-design-vue/es')['Modal']
     AProgress: typeof import('ant-design-vue/es')['Progress']
+    ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ATag: typeof import('ant-design-vue/es')['Tag']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']

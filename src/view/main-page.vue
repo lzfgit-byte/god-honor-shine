@@ -28,9 +28,23 @@
       </div>
     </template>
   </ViewLayout>
+  <a-drawer
+    v-model:open="drawerOpen"
+    placement="right"
+    width="90vw"
+    :header-style="{ display: 'none' }"
+  >
+    <a-segmented v-model:value="segmentedValue" :options="segmentedData" />
+  </a-drawer>
+  <a-float-button type="default" :style="{ right: '15px', top: '60px' }" @click="handleDrawOpen">
+    <template #icon>
+      <CarOutlined />
+    </template>
+  </a-float-button>
 </template>
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
+  import { CarOutlined } from '@ant-design/icons-vue';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/usePageState';
@@ -41,7 +55,7 @@
   const webKey = route.query.key as string;
 
   const { pagination, handlePageClick, items, webConfig, handleSearch } = usePageState(webKey);
-  const { showDetail } = useFeature();
+  const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
 </script>
 
 <style scoped lang="less"></style>
