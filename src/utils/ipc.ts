@@ -1,11 +1,19 @@
 import { ipcRenderer } from 'electron';
-import { MESSAGE_EVENT_KEY } from '@ghs/constant';
+import { MESSAGE_EVENT_KEY, TRANS_OBJ } from '@ghs/constant';
 import type { MessageInfo } from '@ghs/types/src';
 import { message } from 'ant-design-vue';
+import { isObject } from '@ilzf/utils';
+
 import bus from '@/utils/bus';
 import { notify } from '@/utils/kit-utils';
 // 执行后台的方法
 export const executeFunction = async (funcName: string, ...args: any[]) => {
+  args = args.map((item) => {
+    if (isObject(item)) {
+      return `${TRANS_OBJ}${JSON.stringify(item)}`;
+    }
+    return item;
+  });
   return await ipcRenderer.invoke(funcName, ...args);
 };
 // 获取后台的消息

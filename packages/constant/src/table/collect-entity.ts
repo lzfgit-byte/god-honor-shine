@@ -9,10 +9,14 @@ export class CollectEntity extends MyBaseEntity {
   type: string;
 
   // @ts-ignore
+  @Column('varchar', { comment: '收藏的url' })
+  url: string;
+
+  // @ts-ignore
   @Column('varchar', { comment: '收藏的内容' })
   value: string;
 
   // @ts-ignore
   @Column('integer', { comment: '观看次数' })
-  count: string;
+  count: number;
 }

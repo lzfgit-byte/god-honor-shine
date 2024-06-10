@@ -1,4 +1,5 @@
-import type { Page, WebConfig } from '@ghs/types';
+import type { Item, Page, WebConfig } from '@ghs/types';
+import type { CollectEntity } from '@ghs/constant';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -77,4 +78,28 @@ export const f_loadPage = async (url: string): Promise<Page> => {
  */
 export const f_search = async (search: string): Promise<Page> => {
   return executeFunction('search', search);
+};
+/**
+ * 收藏操作在这里 列出收藏
+ */
+export const f_listCollect = async (key: string = null): Promise<CollectEntity[]> => {
+  return executeFunction('f_listCollect', key);
+};
+/**
+ * 判断是否已经收藏
+ */
+export const f_isCollect = async (item: Item): Promise<boolean> => {
+  return executeFunction('isCollect', item);
+};
+/**
+ * 保存或是更新收藏
+ */
+export const f_saveCollect = async (item: Item) => {
+  return executeFunction('saveCollect', item);
+};
+/**
+ * 取消收藏 cancelCollect
+ */
+export const f_cancelCollect = async (item: Item) => {
+  return executeFunction('cancelCollect', item);
 };

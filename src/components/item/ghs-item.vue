@@ -17,19 +17,20 @@
     </div>
     <div v-if="item.title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="item.title" />
-      <StarOutlined />
+      <StarOutlined v-if="!isCollect" @click="toggleCollect" />
+      <StarFilled v-if="isCollect" @click="toggleCollect" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
-  import { toRaw } from 'vue-demi';
-  import { CloseCircleOutlined, StarOutlined } from '@ant-design/icons-vue';
-  import { computed } from 'vue';
+  import { CloseCircleOutlined, StarFilled, StarOutlined } from '@ant-design/icons-vue';
+  import { computed, onMounted, ref } from 'vue';
 
   import type { Item } from '@ghs/types';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
+  import { f_cancelCollect, f_isCollect, f_saveCollect } from '@/utils/business';
 
   const props = defineProps({
     width: String,
@@ -40,18 +41,30 @@
     maxWidth: String,
     item: Object as PropType<Item>,
   });
-  const emits = defineEmits(['imgClick', 'triggerCollect', 'closeClick']);
+  const emits = defineEmits(['imgClick', 'closeClick']);
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
+  const isCollect = ref(false);
   const handleImgClick = () => {
     emits('imgClick');
   };
-  const handleCollect = () => {
-    emits('triggerCollect', toRaw(props));
+  const juCollect = async () => {
+    isCollect.value = await f_isCollect(props.item);
+  };
+  const toggleCollect = async () => {
+    if (isCollect.value) {
+      await f_cancelCollect(props.item);
+    } else {
+      await f_saveCollect(props.item);
+    }
+    await juCollect();
   };
   const handleCloseClick = () => {
     emits('closeClick');
   };
+  onMounted(async () => {
+    await juCollect();
+  });
 </script>
 
 <style scoped lang="less">
