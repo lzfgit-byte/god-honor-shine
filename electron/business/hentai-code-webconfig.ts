@@ -119,26 +119,46 @@ const webConfig: WebConfig = /* break */ {
       const $video = $img.find('#video');
       const $source = $video.find(ElementTypes.source);
       const $span = $img.find(`span[itemprop="name"]`);
-      return { detailType: 'mp4', renderType: 'normal', details: [], relations: [] };
+      return {
+        detailType: 'mp4',
+        renderType: 'normal',
+        details: [
+          { type: 'mp4', url: helpElAttr($source, ElementAttr.src), title: helpElText($span) },
+        ],
+        relations: [],
+      };
     }
     if (item.type === 'image') {
       const thumbs = $('#miniThumbContainer .minithumb');
-      const res = [];
       if (thumbs.length === 0) {
         const hwInfo = getHWImgInfo($);
-        return { detailType: 'image', renderType: 'normal', details: [], relations: [] };
+        return {
+          detailType: 'image',
+          renderType: 'normal',
+          details: [
+            { type: 'image', url: hwInfo.minUrl, fullUr: hwInfo.fullUrl, title: hwInfo.title },
+          ],
+          relations: [],
+        };
       }
       const urls = [];
       thumbs.each((i, el) => {
         urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
       });
+      const res = [];
       for (let i = 0; i < urls.length; i++) {
         const url_ = urls[i];
         const html = await getHtml(url_);
         const $ = cheerio.load(html);
-        res.push(getHWImgInfo($));
+        const hwInfo = getHWImgInfo($);
+        res.push({
+          type: 'image',
+          url: hwInfo.minUrl,
+          fullUr: hwInfo.fullUrl,
+          title: hwInfo.title,
+        });
       }
-      return { detailType: 'image', renderType: 'normal', details: [], relations: [] };
+      return { detailType: 'image', renderType: 'normal', details: res, relations: [] };
     }
     return null;
   },
