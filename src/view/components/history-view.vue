@@ -8,7 +8,7 @@
         :width="webConfig.imgWidth"
         :height="webConfig.imgHeight"
         :on-close-click="() => 1"
-        @img-click="showDetail(item)"
+        @img-click="showDetailProxy(item)"
       ></GhsItem>
     </TransitionGroup>
     <a-empty v-if="items.length === 0" />
@@ -18,8 +18,8 @@
   import { computed, onMounted, ref } from 'vue';
   import type { ViewedHistoryEntity } from '@ghs/constant';
   import type { PropType } from 'vue-demi';
-  import type { BaseConfig } from '@ghs/types';
-  import { generateKey } from '@ilzf/utils';
+  import type { BaseConfig, Item } from '@ghs/types';
+  import { executeFunc, generateKey, waitTime } from '@ilzf/utils';
   import { f_listHistory } from '@/utils/business';
   import GhsItem from '@/components/item/ghs-item.vue';
   const props = defineProps({ webConfig: Object as PropType<BaseConfig>, showDetail: Function });
@@ -28,6 +28,11 @@
 
   const initHistory = async () => {
     history.value = await f_listHistory();
+  };
+  const showDetailProxy = async (item: Item) => {
+    executeFunc(props?.showDetail, item);
+    await waitTime();
+    await initHistory();
   };
 
   const items = computed(() => history?.value.map((item) => JSON.parse(item.value)));
