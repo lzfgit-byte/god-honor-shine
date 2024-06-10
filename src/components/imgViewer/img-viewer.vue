@@ -117,7 +117,7 @@
   } from '@ant-design/icons-vue';
   import { watchEffect } from 'vue-demi';
   import type { Detail } from '@ghs/types';
-  import GhsImg2 from '@/components/image/ghs-img2.vue';
+  import GhsImg2 from '@/components/image/ghs-img-plain.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsImg from '@/components/image/ghs-img.vue';

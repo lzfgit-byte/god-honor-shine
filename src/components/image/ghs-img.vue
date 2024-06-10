@@ -11,7 +11,7 @@
         class="progress-img"
       >
         <div relative w-full box-border p-l-2 p-r-2 class="progress">
-          <!--          <GhsProgress v-model:percentage="percentageRef"></GhsProgress> -->
+          <a-progress :percent="percentageRef" :show-info="false" />
         </div>
       </div>
     </transition>

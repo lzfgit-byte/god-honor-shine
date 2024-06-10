@@ -31,6 +31,7 @@
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import { f_cancelCollect, f_isCollect, f_saveCollect } from '@/utils/business';
+  import GhsTag from '@/components/tag/ghs-tag.vue';
 
   const props = defineProps({
     width: String,
