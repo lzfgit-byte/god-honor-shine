@@ -11,7 +11,7 @@
       </div>
     </template>
     <template #body>
-      <div ref="bodyRef" h-full w-full overflow-auto>
+      <div ref="bodyRef" h-full w-full overflow-auto relative>
         <transition-group
           name="custom-classes"
           enter-active-class="animate__animated animate__pulse"
@@ -58,6 +58,13 @@
           :web-config="webConfig"
           :show-detail="showDetail"
         ></HistoryView>
+        <SystemConfig
+          v-if="segmentedValue === '系统配置'"
+          :key="webKey"
+          :web-config="webConfig"
+          :dbpath="dbPath"
+          :chose-db-path="setDbPath"
+        ></SystemConfig>
       </transition-group>
     </div>
   </a-drawer>
@@ -65,8 +72,6 @@
     :handle-draw-open="handleDrawOpen"
     :clear-cache="clearCache"
     :cache-size="cacheSize"
-    :db-path="dbPath"
-    :chose-db-path="setDbPath"
     :mouse-enter="calcCacheSize"
   ></FloatButtonGroup>
 </template>
@@ -84,6 +89,7 @@
   import useCollect from '@/view/hook/use-collect';
   import HistoryView from '@/view/components/history-view.vue';
   import FloatButtonGroup from '@/view/components/float-button-group.vue';
+  import SystemConfig from '@/view/components/system-config.vue';
   const route = useRoute();
   const webKey = route.query.key as string;
 
