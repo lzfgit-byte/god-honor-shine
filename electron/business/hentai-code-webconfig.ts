@@ -1,6 +1,7 @@
 import type { WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import { getHtml } from '../export';
 
 function helpElAttr($el: Cheerio<Element>, attr: string): string {
   return $el?.attr(attr) || '';
@@ -99,8 +100,46 @@ const webConfig: WebConfig = /* break */ {
     });
     return res;
   },
-  getDetailInfo(item, chee) {
-    console.log('getDetailInfo');
+  async getDetailInfo(item, cheerio) {
+    const getHWImgInfo = ($) => {
+      const $grid = $('#grid');
+      const $h1 = $grid.find(ElementTypes.h1);
+      const $minImg = $grid.find('#image img');
+      const $minImg2 = $grid.find('#doujin img');
+      const $fullA = $('#info a');
+      const fullUrl = helpElAttr($fullA, ElementAttr.href);
+      const minUrl = helpElAttr($minImg, ElementAttr.src) || helpElAttr($minImg2, ElementAttr.src);
+      const title = helpElText($h1);
+      return { fullUrl, minUrl, title };
+    };
+    let html = await getHtml(item.jumpUrl);
+    const $ = cheerio.load(html);
+    if (item.type === 'video') {
+      const $img = $('#image');
+      const $video = $img.find('#video');
+      const $source = $video.find(ElementTypes.source);
+      const $span = $img.find(`span[itemprop="name"]`);
+      return { detailType: 'mp4', renderType: 'normal', details: [], relations: [] };
+    }
+    if (item.type === 'image') {
+      const thumbs = $('#miniThumbContainer .minithumb');
+      const res = [];
+      if (thumbs.length === 0) {
+        const hwInfo = getHWImgInfo($);
+        return { detailType: 'image', renderType: 'normal', details: [], relations: [] };
+      }
+      const urls = [];
+      thumbs.each((i, el) => {
+        urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
+      });
+      for (let i = 0; i < urls.length; i++) {
+        const url_ = urls[i];
+        const html = await getHtml(url_);
+        const $ = cheerio.load(html);
+        res.push(getHWImgInfo($));
+      }
+      return { detailType: 'image', renderType: 'normal', details: [], relations: [] };
+    }
     return null;
   },
   adapterLoadUrl(url) {
@@ -113,6 +152,6 @@ const webConfig: WebConfig = /* break */ {
 };
 /* break */
 
-(() => (helpElAttr, helpElText, ElementAttr, ElementTypes) => {
+(() => (helpElAttr, helpElText, ElementAttr, ElementTypes, getHtml) => {
   return '$code';
 })();

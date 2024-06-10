@@ -1,4 +1,4 @@
-import type { BaseConfig, Item, Page, WebConfig } from '@ghs/types';
+import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
 import type { CollectEntity } from '@ghs/constant';
 import { executeFunction } from '@/utils/ipc';
 
@@ -114,4 +114,10 @@ export const f_saveCollect = async (item: Item) => {
  */
 export const f_cancelCollect = async (item: Item) => {
   return executeFunction('cancelCollect', item);
+};
+/**
+ * 获取detail
+ */
+export const f_getDetailPage = async (item: Item): Promise<DetailInfo> => {
+  return executeFunction('getDetailPage', item);
 };

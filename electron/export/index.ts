@@ -1,5 +1,6 @@
-import type { BaseConfig, Page, WebConfig } from '@ghs/types';
+import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
+
 import { MessageUtil } from '../utils/message';
 import {
   getBaseConfigByKey,
@@ -8,8 +9,12 @@ import {
   setCurrentKey,
 } from '../business/use-init-web-config';
 import { getCurrentBusiness } from '../business/business';
-
-// 后边是前端前端控制器
+// 搜索
+export * from './search';
+// 基础
+export * from './base';
+// 收藏
+export * from './collect';
 
 /**
  *获取所有的配置项
@@ -50,9 +55,11 @@ export const loadPage = async (url: string): Promise<Page> => {
   const business = getCurrentBusiness(getCurrentKey());
   return business.getPage(url);
 };
-// 搜索
-export * from './search';
-// 基础
-export * from './base';
-// 收藏
-export * from './collect';
+
+/**
+ * 获取detail
+ */
+export const getDetailPage = async (item: Item): Promise<DetailInfo> => {
+  const business = getCurrentBusiness(getCurrentKey());
+  return business.getDetailPage(item);
+};

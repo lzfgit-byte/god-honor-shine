@@ -3,6 +3,8 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { keys } from 'lodash';
 import { isFunction } from '@ilzf/utils';
+
+import { getHtml } from '../export';
 // @ts-ignore
 import demoWebCode from './hentai-code-webconfig?raw';
 
@@ -86,7 +88,8 @@ export const loadWebConfig = () => {
     helpElAttr,
     helpElText,
     ElementAttr,
-    ElementTypes
+    ElementTypes,
+    getHtml
   );
   cache[config.key] = config;
   setCurrentKey(config.key);

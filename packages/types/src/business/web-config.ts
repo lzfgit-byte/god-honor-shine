@@ -25,7 +25,7 @@ export interface WebConfig extends BaseConfig {
   // 获取全部分类
   getTags: ($: CheerioAPI) => Tag[];
 
-  getDetailInfo: (item: Item, cheerio: any) => DetailInfo;
+  getDetailInfo: (item: Item, cheerio: any) => Promise<DetailInfo>;
 
   // 处理排序等问题时调用
   adapterLoadUrl: (url: string) => string;
