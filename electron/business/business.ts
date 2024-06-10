@@ -1,4 +1,4 @@
-import type { DetailInfo, Item, MainPage, Pagination, Tag, WebConfig } from '@ghs/types';
+import type { DetailInfo, Item, Page, Pagination, Tag, WebConfig } from '@ghs/types';
 import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
@@ -48,8 +48,8 @@ class BaseBusiness extends NormalFunc {
   /**
    * 获取页面数据，包含首页，搜索页
    */
-  public async getMainPage(): Promise<MainPage> {
-    const html = await getHtml(this.webConfig.homeUrl);
+  public async getPage(url = this.webConfig.homeUrl): Promise<Page> {
+    const html = await getHtml(url);
     this.$ = cheerio.load(html);
     return {
       items: this.getItems(),
@@ -65,7 +65,19 @@ class BaseBusiness extends NormalFunc {
   public async getDetailPage(item: Item): Promise<DetailInfo> {
     return this.webConfig.getDetailInfo(item, cheerio);
   }
+
+  /**
+   * 搜索
+   * @param keyword
+   */
+  public async search(keyword: string): Promise<Page> {
+    return this.getPage(this.webConfig.adapterSearchUrl(keyword));
+  }
 }
+
+/**
+ * business 缓存
+ */
 const cache: Record<string, BaseBusiness> = {};
 export const getCurrentBusiness = (key: string) => {
   let res: BaseBusiness = cache[key];

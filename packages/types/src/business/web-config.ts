@@ -9,6 +9,7 @@ export interface BaseConfig {
   homeUrl: string;
   name: string;
   searchUrl: string;
+  searchKey: string;
 }
 
 export interface WebConfig extends BaseConfig {
@@ -22,4 +23,9 @@ export interface WebConfig extends BaseConfig {
   getTags: ($: CheerioAPI) => Tag[];
 
   getDetailInfo: (item: Item, cheerio: any) => DetailInfo;
+
+  // 处理排序等问题时调用
+  adapterLoadUrl: (url: string) => string;
+  // 处理搜索问题时调用
+  adapterSearchUrl: (url: string) => string;
 }

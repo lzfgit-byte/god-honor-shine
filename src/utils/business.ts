@@ -1,4 +1,4 @@
-import type { MainPage, WebConfig } from '@ghs/types';
+import type { Page, WebConfig } from '@ghs/types';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -54,13 +54,19 @@ export const f_listAllWebConfigs = async (): Promise<WebConfig[]> => {
  * 获取当前的key的封装
  */
 export const f_getCurrentKey = async (): Promise<string> => {
-  return executeFunction('getCurrentKey');
+  return executeFunction('getCurrentKeyExp');
 };
 
 /**
  * 获取主页基本信息的封装
  * @param key
  */
-export const f_getMainPage = async (key: string): Promise<MainPage> => {
-  return executeFunction('getMainPage', key);
+export const f_getPage = async (key: string): Promise<Page> => {
+  return executeFunction('getPage', key);
+};
+/**
+ * 调用搜索功能
+ */
+export const f_search = async (search: string): Promise<Page> => {
+  return executeFunction('search', search);
 };

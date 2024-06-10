@@ -4,20 +4,27 @@
     {{ item.name }}
   </a-button>
   {{ info }}
+  <a-input v-model:value="search" @keydown.enter="handleSearch"></a-input>
   <GhsMenu></GhsMenu>
 </template>
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import type { BaseConfig } from '@ghs/types';
-  import { f_getMainPage, f_listAllWebConfigs } from '@/utils/business';
+  import { f_getPage, f_listAllWebConfigs, f_search } from '@/utils/business';
   import GhsMenu from '@/components/menu/ghs-menu.vue';
 
   const configs = ref<BaseConfig[]>([]);
   const info = ref();
-
   const handleClick = async (item: BaseConfig) => {
-    info.value = await f_getMainPage(item.key);
+    info.value = await f_getPage(item.key);
     console.log(info.value);
+  };
+
+  const search = ref();
+  const handleSearch = async () => {
+    const s = await f_search(search.value);
+    info.value = s;
+    console.log(s);
   };
 
   onMounted(async () => {

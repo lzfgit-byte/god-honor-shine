@@ -1,4 +1,4 @@
-import type { MainPage, WebConfig } from '@ghs/types';
+import type { Page, WebConfig } from '@ghs/types';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -9,7 +9,7 @@ import {
   win_open,
 } from '../http';
 import { MessageUtil } from '../utils/message';
-import { getWebConfigAry } from '../business/use-init-web-config';
+import { getCurrentKey, getWebConfigAry } from '../business/use-init-web-config';
 import { getCurrentBusiness } from '../business/business';
 
 /**
@@ -67,14 +67,22 @@ export const listAllWebConfigs = async (): Promise<WebConfig[]> => {
 /**
  *获取当前的key
  */
-export const getCurrentKey = async (): Promise<string> => {
+export const getCurrentKeyExp = async (): Promise<string> => {
   return getCurrentKey();
 };
 /**
  * 获取主页基本信息
  * @param key
  */
-export const getMainPage = async (key: string): Promise<MainPage> => {
+export const getPage = async (key: string): Promise<Page> => {
   const business = getCurrentBusiness(key);
-  return business.getMainPage();
+  return business.getPage();
+};
+
+/**
+ * 执行搜索
+ */
+export const search = async (search: string): Promise<Page> => {
+  const business = getCurrentBusiness(getCurrentKey());
+  return business.search(search);
 };

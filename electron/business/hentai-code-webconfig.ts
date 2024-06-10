@@ -38,7 +38,8 @@ const webConfig: WebConfig = /* break */ {
   name: 'HW',
   favicon: 'https://thehentaiworld.com/favicon.ico',
   homeUrl: 'https://thehentaiworld.com/?new',
-  searchUrl: 'https://thehentaiworld.com/?s=$key',
+  searchUrl: 'https://thehentaiworld.com/?s=',
+  searchKey: '$key',
 
   getUrlReplace($) {
     return [];
@@ -99,6 +100,13 @@ const webConfig: WebConfig = /* break */ {
   getDetailInfo(item, chee) {
     console.log('getDetailInfo');
     return null;
+  },
+  adapterLoadUrl(url) {
+    return url;
+  },
+  adapterSearchUrl(key) {
+    key = key.replace(' ', '+');
+    return this.searchUrl + key;
   },
 };
 /* break */
