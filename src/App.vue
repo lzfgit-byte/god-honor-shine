@@ -3,10 +3,14 @@
     <router-view></router-view>
   </MainLayout>
   <GhsMenu></GhsMenu>
+  <ImgViewer ref="imgViewerRef"></ImgViewer>
 </template>
 <script setup lang="ts">
   import GhsMenu from '@/components/menu/ghs-menu.vue';
   import MainLayout from '@/components/layout/main-layout.vue';
+  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
+  import useGlobalRef from '@/hooks/use-global-ref';
+  const { imgViewerRef } = useGlobalRef();
 </script>
 
 <style lang="less">
