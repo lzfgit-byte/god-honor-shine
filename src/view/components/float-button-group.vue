@@ -30,7 +30,7 @@
     </template>
   </a-float-button>
   <a-float-button
-    :tooltip="`设置dbpath:${dbPath || ''}`"
+    :tooltip="`${dbPath || ''}`"
     type="default"
     :style="{ right: '15px', top: '240px' }"
     @click="choseDbPath"

@@ -18,6 +18,7 @@ declare module 'vue' {
     AProgress: typeof import('ant-design-vue/es')['Progress']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ASelect: typeof import('ant-design-vue/es')['Select']
+    ASpin: typeof import('ant-design-vue/es')['Spin']
     ATag: typeof import('ant-design-vue/es')['Tag']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
     GhsDialog: typeof import('./src/components/dialog/ghs-dialog.vue')['default']

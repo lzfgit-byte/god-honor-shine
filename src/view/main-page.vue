@@ -11,23 +11,25 @@
       </div>
     </template>
     <template #body>
-      <div ref="bodyRef" h-full w-full overflow-auto>
-        <transition-group
-          name="custom-classes"
-          enter-active-class="animate__animated animate__pulse"
-        >
-          <GhsItem
-            v-for="(item, index) in items"
-            :key="index"
-            :item="item"
-            :width="webConfig.imgWidth"
-            :height="webConfig.imgHeight"
-            :collect-sequence="collects?.length"
-            @img-click="showDetail(item)"
-            @up-collect="updateCollects"
-          ></GhsItem>
-        </transition-group>
-      </div>
+      <a-spin :spinning="loading">
+        <div ref="bodyRef" h-full w-full overflow-auto>
+          <transition-group
+            name="custom-classes"
+            enter-active-class="animate__animated animate__pulse"
+          >
+            <GhsItem
+              v-for="(item, index) in items"
+              :key="item.jumpUrl + index + generateKey()"
+              :item="item"
+              :width="webConfig.imgWidth"
+              :height="webConfig.imgHeight"
+              :collect-sequence="collects?.length"
+              @img-click="showDetail(item)"
+              @up-collect="updateCollects"
+            ></GhsItem>
+          </transition-group>
+        </div>
+      </a-spin>
     </template>
   </ViewLayout>
   <a-drawer
@@ -71,6 +73,7 @@
 </template>
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
+  import { generateKey } from '@ilzf/utils';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/use-page-state';
@@ -96,6 +99,7 @@
     cacheSize,
     dbPath,
     setDbPath,
+    loading,
   } = usePageState(webKey);
   const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
   const { collects, updateCollects } = useCollect(webKey);

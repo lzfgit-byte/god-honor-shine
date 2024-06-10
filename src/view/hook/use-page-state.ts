@@ -1,6 +1,6 @@
 import { onMounted, ref } from 'vue';
 import type { BaseConfig, Item, Pagination, Tag, UrlReplace } from '@ghs/types';
-import { isFalsity } from '@ilzf/utils';
+import { isFalsity, waitTime } from '@ilzf/utils';
 import {
   f_appSetDbDir,
   f_cacheDirDb,
@@ -21,19 +21,24 @@ export default (key: string) => {
   const dbPath = ref();
   const currentUrl = ref();
   const cacheSize = ref();
+  const loading = ref(false);
 
   const load = async (url: string = null) => {
+    loading.value = true;
+    const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
+
     pagination.value = [];
     items.value = [];
     tags.value = [];
     urlReplace.value = [];
     currentUrl.value = url;
 
-    const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
     pagination.value = page.pagination;
     items.value = page.items;
     tags.value = page.tags;
     urlReplace.value = page.urlReplace;
+
+    loading.value = false;
 
     cacheSize.value = await f_cacheDirSize();
   };
@@ -89,5 +94,6 @@ export default (key: string) => {
     clearCache,
     cacheSize,
     setDbPath,
+    loading,
   };
 };
