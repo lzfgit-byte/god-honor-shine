@@ -1,4 +1,5 @@
 import type { Page, WebConfig } from '@ghs/types';
+import { isFalsity } from '@ilzf/utils';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -9,7 +10,7 @@ import {
   win_open,
 } from '../http';
 import { MessageUtil } from '../utils/message';
-import { getCurrentKey, getWebConfigAry } from '../business/use-init-web-config';
+import { getCurrentKey, getWebConfigAry, setCurrentKey } from '../business/use-init-web-config';
 import { getCurrentBusiness } from '../business/business';
 
 /**
@@ -75,8 +76,21 @@ export const getCurrentKeyExp = async (): Promise<string> => {
  * @param key
  */
 export const getPage = async (key: string): Promise<Page> => {
+  if (isFalsity(key)) {
+    MessageUtil.error('获取页面的key 不能为空');
+    return null;
+  }
+  setCurrentKey(key);
   const business = getCurrentBusiness(key);
   return business.getPage();
+};
+/**
+ * 根据url 加载页面
+ * @param url
+ */
+export const loadPage = async (url: string): Promise<Page> => {
+  const business = getCurrentBusiness(getCurrentKey());
+  return business.getPage(url);
 };
 
 /**

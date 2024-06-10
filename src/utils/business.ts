@@ -65,6 +65,14 @@ export const f_getPage = async (key: string): Promise<Page> => {
   return executeFunction('getPage', key);
 };
 /**
+ * 代理加载页面功能
+ * @param url 页面URL
+ */
+export const f_loadPage = async (url: string): Promise<Page> => {
+  return executeFunction('loadPage', url);
+};
+
+/**
  * 调用搜索功能
  */
 export const f_search = async (search: string): Promise<Page> => {

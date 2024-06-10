@@ -8,11 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
+    AFlex: typeof import('ant-design-vue/es')['Flex']
     AInput: typeof import('ant-design-vue/es')['Input']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
     GhsImg: typeof import('./src/components/image/ghs-img.vue')['default']
     GhsImg2: typeof import('./src/components/image/ghs-img2.vue')['default']
     GhsMenu: typeof import('./src/components/menu/ghs-menu.vue')['default']
+    GhsPagination: typeof import('./src/components/pagination/ghs-pagination.vue')['default']
     ImgPercentage: typeof import('./src/components/image/component/ImgPercentage.vue')['default']
     Loading: typeof import('./src/components/layout/components/loading.vue')['default']
     MainLayout: typeof import('./src/components/layout/main-layout.vue')['default']
