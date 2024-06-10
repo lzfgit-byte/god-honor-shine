@@ -61,7 +61,11 @@
       </transition-group>
     </div>
   </a-drawer>
-  <FloatButtonGroup :handle-draw-open="handleDrawOpen" :clear-cache="clearCache"></FloatButtonGroup>
+  <FloatButtonGroup
+    :handle-draw-open="handleDrawOpen"
+    :clear-cache="clearCache"
+    :cache-size="cacheSize"
+  ></FloatButtonGroup>
 </template>
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
@@ -79,8 +83,16 @@
   const route = useRoute();
   const webKey = route.query.key as string;
 
-  const { pagination, handlePageClick, items, webConfig, handleSearch, tags, clearCache } =
-    usePageState(webKey);
+  const {
+    pagination,
+    handlePageClick,
+    items,
+    webConfig,
+    handleSearch,
+    tags,
+    clearCache,
+    cacheSize,
+  } = usePageState(webKey);
   const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
   const { collects, updateCollects } = useCollect(webKey);
 </script>

@@ -97,13 +97,22 @@ export const cache_suffix_clean = (fileSuffix?: any) => {
   MessageUtil.success(`清除了缓存-->${fileSuffix}`);
 };
 export const cache_dir_size = () => {
-  const files = readdirSync(CACHE_PATH);
-  let res = 0;
-  files.forEach((file) => {
-    const fullPath = path.join(CACHE_PATH, file);
-    const stats = statSync(fullPath);
-    res += stats.size;
-  });
-  return formatSize(res);
+  function calculateDirectorySize(directoryPath: string) {
+    let size = 0;
+    // 读取目录中的所有文件和目录
+    readdirSync(directoryPath).forEach((file) => {
+      const fullPath = path.join(directoryPath, file);
+      // 检查当前文件是文件还是目录
+      if (statSync(fullPath).isDirectory()) {
+        // 如果是目录，则递归调用函数
+        size += calculateDirectorySize(fullPath);
+      } else {
+        // 如果是文件，则累加文件大小
+        size += statSync(fullPath).size;
+      }
+    });
+    return size;
+  }
+  return formatSize(calculateDirectorySize(CACHE_PATH));
 };
 export const cache_dir_db = () => APP_PATHS.db_path;

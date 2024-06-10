@@ -10,7 +10,7 @@
     </template>
   </a-float-button>
   <a-float-button
-    tooltip="清除缓存"
+    :tooltip="`清除缓存,缓存大小:${cacheSize || 0}`"
     type="default"
     :style="{ right: '15px', top: '120px' }"
     @click="clearCache"
@@ -19,10 +19,26 @@
       <ClearOutlined />
     </template>
   </a-float-button>
+  <a-float-button
+    :tooltip="`清除HTML缓存,缓存大小:${cacheSize || 0}`"
+    type="default"
+    :style="{ right: '15px', top: '180px' }"
+    @click="clearCache(FileType.HTML)"
+  >
+    <template #icon>
+      <Html5Outlined />
+    </template>
+  </a-float-button>
 </template>
 <script setup lang="ts">
-  import { CarOutlined, ClearOutlined } from '@ant-design/icons-vue';
-  defineProps({ handleDrawOpen: Function, clearCache: Function });
+  import { CarOutlined, ClearOutlined, Html5Outlined } from '@ant-design/icons-vue';
+  import { FileType } from '@ghs/types';
+  defineProps({
+    handleDrawOpen: Function,
+    clearCache: Function,
+    dbPath: String,
+    cacheSize: String,
+  });
 </script>
 
 <style scoped lang="less"></style>

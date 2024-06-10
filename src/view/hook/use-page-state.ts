@@ -3,6 +3,7 @@ import type { BaseConfig, Item, Pagination, Tag, UrlReplace } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 import {
   f_cacheDirDb,
+  f_cacheDirSize,
   f_cacheSuffixClean,
   f_getCurrentWebConfig,
   f_getPage,
@@ -18,6 +19,7 @@ export default (key: string) => {
   const urlReplace = ref<UrlReplace[]>();
   const dbPath = ref();
   const currentUrl = ref();
+  const cacheSize = ref();
 
   const load = async (url: string = null) => {
     pagination.value = [];
@@ -31,6 +33,8 @@ export default (key: string) => {
     items.value = page.items;
     tags.value = page.tags;
     urlReplace.value = page.urlReplace;
+
+    cacheSize.value = await f_cacheDirSize();
   };
 
   const handlePageClick = async (item: Pagination) => {
@@ -50,8 +54,8 @@ export default (key: string) => {
   const refresh = async () => {
     await load(currentUrl.value);
   };
-  const clearCache = async () => {
-    await f_cacheSuffixClean();
+  const clearCache = async (suffix: string = null) => {
+    await f_cacheSuffixClean(suffix);
     await refresh();
   };
 
@@ -70,5 +74,6 @@ export default (key: string) => {
     handleSearch,
     dbPath,
     clearCache,
+    cacheSize,
   };
 };
