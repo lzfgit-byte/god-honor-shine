@@ -13,7 +13,8 @@
     :tooltip="`清除缓存,缓存大小:${cacheSize || 0}`"
     type="default"
     :style="{ right: '15px', top: '120px' }"
-    @click="clearCache"
+    @click="clearCache(null)"
+    @mouseenter="mouseEnter"
   >
     <template #icon>
       <ClearOutlined />
@@ -24,6 +25,7 @@
     type="default"
     :style="{ right: '15px', top: '180px' }"
     @click="clearCache(FileType.HTML)"
+    @mouseenter="mouseEnter"
   >
     <template #icon>
       <Html5Outlined />
@@ -54,6 +56,7 @@
     dbPath: String,
     cacheSize: String,
     choseDbPath: Function,
+    mouseEnter: Function,
   });
 </script>
 

@@ -23,6 +23,10 @@ export default (key: string) => {
   const cacheSize = ref();
   const loading = ref(false);
 
+  const calcCacheSize = async () => {
+    cacheSize.value = await f_cacheDirSize();
+  };
+
   const load = async (url: string = null) => {
     loading.value = true;
     const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
@@ -40,7 +44,7 @@ export default (key: string) => {
 
     loading.value = false;
 
-    cacheSize.value = await f_cacheDirSize();
+    await calcCacheSize();
   };
 
   const handlePageClick = async (item: Pagination) => {
@@ -95,5 +99,6 @@ export default (key: string) => {
     cacheSize,
     setDbPath,
     loading,
+    calcCacheSize,
   };
 };

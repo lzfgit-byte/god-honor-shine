@@ -69,6 +69,7 @@
     :cache-size="cacheSize"
     :db-path="dbPath"
     :chose-db-path="setDbPath"
+    :mouse-enter="calcCacheSize"
   ></FloatButtonGroup>
 </template>
 <script setup lang="ts">
@@ -100,6 +101,7 @@
     dbPath,
     setDbPath,
     loading,
+    calcCacheSize,
   } = usePageState(webKey);
   const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
   const { collects, updateCollects } = useCollect(webKey);
