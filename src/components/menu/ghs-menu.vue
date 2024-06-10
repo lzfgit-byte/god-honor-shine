@@ -42,7 +42,7 @@
 </template>
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
-  import { computed } from 'vue';
+  import { computed, watch } from 'vue';
   import { ref } from 'vue-demi';
   import { routes } from '@/router/router';
   import GhsImg from '@/components/image/ghs-img.vue';
@@ -69,6 +69,11 @@
   const onMouseLeave = () => {
     setTimer();
   };
+  watch(culRoutes, () => {
+    if (culRoutes.value.length > 0) {
+      router.push({ path: culRoutes.value[0].path, query: { key: culRoutes.value[0].key } });
+    }
+  });
 </script>
 
 <style scoped lang="less">
