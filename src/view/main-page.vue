@@ -61,15 +61,10 @@
       </transition-group>
     </div>
   </a-drawer>
-  <a-float-button type="default" :style="{ right: '15px', top: '60px' }" @click="handleDrawOpen">
-    <template #icon>
-      <CarOutlined />
-    </template>
-  </a-float-button>
+  <FloatButtonGroup :handle-draw-open="handleDrawOpen"></FloatButtonGroup>
 </template>
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
-  import { CarOutlined } from '@ant-design/icons-vue';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/use-page-state';
@@ -80,6 +75,7 @@
   import CollectView from '@/view/components/collect-view.vue';
   import useCollect from '@/view/hook/use-collect';
   import HistoryView from '@/view/components/history-view.vue';
+  import FloatButtonGroup from '@/view/components/float-button-group.vue';
   const route = useRoute();
   const webKey = route.query.key as string;
 

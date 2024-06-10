@@ -1,6 +1,12 @@
+import path from 'node:path';
+import { statSync } from 'node:fs';
 import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
 import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
+import { emptyDirSync, readdirSync } from 'fs-extra';
+import { formatSize } from '@ilzf/utils';
 import { getCurrentKey } from '../../electron/business/use-init-web-config';
+import { MessageUtil } from '../../electron/utils/message';
+import { APP_PATHS } from '../../electron/const/app-paths';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -128,4 +134,25 @@ export const f_getDetailPage = async (item: Item): Promise<DetailInfo> => {
  */
 export const f_listHistory = async (): Promise<ViewedHistoryEntity[]> => {
   return executeFunction('listHistory');
+};
+// 0-----------------------缓存操作-----------------------------0
+/**
+ * 根据特定后缀去删除文件
+ * @param fileSuffix
+ */
+export const f_cacheSuffixClean = (fileSuffix?: any) => {
+  return executeFunction('cache_suffix_clean', fileSuffix);
+};
+export const f_cacheDirSize = () => {
+  return executeFunction('cache_dir_size');
+};
+export const f_cacheDirDb = () => {
+  return executeFunction('cache_dir_db');
+};
+/**
+ * 存储db path
+ * @param path
+ */
+export const f_appSetDbDir = (path: string): Promise<boolean> => {
+  return executeFunction('app_set_db_dir', path);
 };

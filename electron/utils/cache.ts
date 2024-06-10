@@ -87,7 +87,7 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
  * 根据特定后缀去删除文件
  * @param fileSuffix
  */
-export const cache_suffix_clean = (fileSuffix: any) => {
+export const cache_suffix_clean = (fileSuffix?: any) => {
   if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
     MessageUtil.success('清除了全部缓存');

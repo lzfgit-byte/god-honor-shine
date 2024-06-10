@@ -1,3 +1,5 @@
+import { statSync } from 'node:fs';
+import { existsSync } from 'fs-extra';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -8,6 +10,7 @@ import {
   win_open,
 } from '../http';
 import { MessageUtil } from '../utils/message';
+import { app_set_config_dir } from '../const/app-paths';
 
 /**
  * 获取html
@@ -52,4 +55,16 @@ export const winOpenAny = async (url: string, code: string, width: number, heigh
  */
 export const getDataString = async (url: string): Promise<string> => {
   return request_string_get(url);
+};
+/**
+ * 设置db路径
+ * @param path
+ */
+export const app_set_db_dir = (path: string): boolean => {
+  const state = statSync(path);
+  if (existsSync(path) && state.isFile() && path.endsWith('.db')) {
+    app_set_config_dir(path);
+    return true;
+  }
+  return false;
 };

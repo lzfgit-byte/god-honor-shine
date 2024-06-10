@@ -28,6 +28,7 @@ export const app_set_config_dir = (dir: string) => {
   app.relaunch();
   app.quit();
 };
+
 export class APP_PATHS {
   static get db_dir() {
     return temp_dir;
