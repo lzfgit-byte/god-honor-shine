@@ -13,11 +13,13 @@ export interface BaseConfig {
 
 export interface WebConfig extends BaseConfig {
   getUrlReplace: ($: CheerioAPI) => UrlReplace[]; // 获取首页条件更改时的 replace 列表
-  getCurrentItems: ($: CheerioAPI) => Cheerio<Element>; // 获取页面所有的items
-  getItemByEl: (el: Element, $: CheerioAPI) => Item; // 根据item 获取具体的详细信息
-  getCurrentPagination: ($: CheerioAPI) => Cheerio<Element>; // 获取分页列表，item
-  getPaginationByEl: (el: Element, $: CheerioAPI) => Pagination; // 转换为 分页数据
-  getCurrentTags: ($: CheerioAPI) => Cheerio<Element>;
-  getTagByEl: (el: Element, $: CheerioAPI) => Tag;
+
+  // 获取页面元素
+  getItems: ($: CheerioAPI) => Item[];
+  // 获取分页数据
+  getPagination: ($: CheerioAPI) => Pagination[];
+  // 获取全部分类
+  getTags: ($: CheerioAPI) => Tag[];
+
   getDetailInfo: (item: Item, cheerio: any) => DetailInfo;
 }

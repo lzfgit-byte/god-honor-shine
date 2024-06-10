@@ -32,20 +32,17 @@ class BaseBusiness extends NormalFunc {
 
   // 获取页面的元素数据
   private getItems(): Item[] {
-    return this.getMainPageRes(this.webConfig.getCurrentItems, this.webConfig.getItemByEl);
+    return this.webConfig.getItems(this.$);
   }
 
   // 获取页面的分页数据;
   private getPagination(): Pagination[] {
-    return this.getMainPageRes(
-      this.webConfig.getCurrentPagination,
-      this.webConfig.getPaginationByEl
-    );
+    return this.webConfig.getPagination(this.$);
   }
 
   // 获取首页的标签数据
   private getTags(): Tag[] {
-    return this.getMainPageRes(this.webConfig.getCurrentTags, this.webConfig.getTagByEl);
+    return this.webConfig.getTags(this.$);
   }
 
   /**
