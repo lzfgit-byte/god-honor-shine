@@ -11,25 +11,23 @@
       </div>
     </template>
     <template #body>
-      <a-spin :spinning="loading">
-        <div ref="bodyRef" h-full w-full overflow-auto>
-          <transition-group
-            name="custom-classes"
-            enter-active-class="animate__animated animate__pulse"
-          >
-            <GhsItem
-              v-for="(item, index) in items"
-              :key="item.jumpUrl + index + generateKey()"
-              :item="item"
-              :width="webConfig.imgWidth"
-              :height="webConfig.imgHeight"
-              :collect-sequence="collects?.length"
-              @img-click="showDetail(item)"
-              @up-collect="updateCollects"
-            ></GhsItem>
-          </transition-group>
-        </div>
-      </a-spin>
+      <div ref="bodyRef" h-full w-full overflow-auto>
+        <transition-group
+          name="custom-classes"
+          enter-active-class="animate__animated animate__pulse"
+        >
+          <GhsItem
+            v-for="(item, index) in items"
+            :key="item.jumpUrl + index + generateKey()"
+            :item="item"
+            :width="webConfig.imgWidth"
+            :height="webConfig.imgHeight"
+            :collect-sequence="collects?.length"
+            @img-click="showDetail(item)"
+            @up-collect="updateCollects"
+          ></GhsItem>
+        </transition-group>
+      </div>
     </template>
   </ViewLayout>
   <a-drawer

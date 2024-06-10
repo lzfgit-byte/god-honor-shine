@@ -11,6 +11,7 @@ import {
   f_loadPage,
   f_search,
 } from '@/utils/business';
+import { nprogress } from '@/utils/nprogress';
 
 export default (key: string) => {
   const webConfig = ref<BaseConfig>();
@@ -29,6 +30,7 @@ export default (key: string) => {
 
   const load = async (url: string = null) => {
     loading.value = true;
+    nprogress.start();
     const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
 
     pagination.value = [];
@@ -43,7 +45,7 @@ export default (key: string) => {
     urlReplace.value = page.urlReplace;
 
     loading.value = false;
-
+    nprogress.done(true);
     await calcCacheSize();
   };
 
