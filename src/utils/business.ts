@@ -95,7 +95,7 @@ export const f_searchRecommend = async (search: string): Promise<string[]> => {
  * 收藏操作在这里 列出收藏
  */
 export const f_listCollect = async (key: string = null): Promise<CollectEntity[]> => {
-  return executeFunction('f_listCollect', key);
+  return executeFunction('listCollect', key);
 };
 /**
  * 判断是否已经收藏

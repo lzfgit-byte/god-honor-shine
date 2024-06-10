@@ -46,6 +46,9 @@
           v-if="segmentedValue === '收藏'"
           :key="webKey"
           v-model:collects="collects"
+          :web-key="webKey"
+          :web-config="webConfig"
+          :show-detail="showDetail"
         ></CollectView>
       </transition-group>
     </div>

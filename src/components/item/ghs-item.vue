@@ -1,7 +1,13 @@
 <template>
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
-    <div v-if="$props?.onCloseClick" absolute class="ghs-delete-icon" @click="handleCloseClick">
-      <CloseCircleOutlined />
+    <div
+      v-if="$props?.onCloseClick"
+      absolute
+      class="ghs-delete-icon"
+      cursor-pointer
+      @click="handleCloseClick"
+    >
+      <CloseCircleOutlined :style="{ fontSize: '20px' }" />
     </div>
     <div class="ghs-item-coverImg" w-full relative>
       <GhsImg
