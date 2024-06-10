@@ -29,12 +29,12 @@ export enum RenderType {
 // 将上边枚举转换为联合类型
 export type RenderTypeUnion = keyof typeof RenderType;
 export interface Detail {
-  type: ItemDetailTypeUnion;
-  url: string;
+  type?: ItemDetailTypeUnion;
+  url?: string;
   fullUrl?: string;
   quality?: string;
   title?: string;
-  comments: Comment[];
+  comments?: Comment[];
 }
 export interface Item {
   coverImg: string;

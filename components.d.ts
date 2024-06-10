@@ -10,6 +10,7 @@ declare module 'vue' {
     AButton: typeof import('ant-design-vue/es')['Button']
     AFlex: typeof import('ant-design-vue/es')['Flex']
     AInput: typeof import('ant-design-vue/es')['Input']
+    AModal: typeof import('ant-design-vue/es')['Modal']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ATag: typeof import('ant-design-vue/es')['Tag']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
