@@ -34,6 +34,7 @@
   import { computed, onMounted, ref } from 'vue';
 
   import type { Item } from '@ghs/types';
+  import { watch } from 'vue-demi';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import { f_cancelCollect, f_isCollect, f_saveCollect } from '@/utils/business';
@@ -47,6 +48,7 @@
     maxHeight: String,
     maxWidth: String,
     item: Object as PropType<Item>,
+    collectSequence: Number,
   });
   const emits = defineEmits(['imgClick', 'closeClick', 'upCollect']);
   const c_width = computed(() => props.width || '250px');
@@ -78,6 +80,12 @@
   onMounted(async () => {
     await juCollect();
   });
+  watch(
+    () => props?.collectSequence,
+    async () => {
+      await juCollect();
+    }
+  );
 </script>
 
 <style scoped lang="less">

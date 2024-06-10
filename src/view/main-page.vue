@@ -22,6 +22,7 @@
             :item="item"
             :width="webConfig.imgWidth"
             :height="webConfig.imgHeight"
+            :collect-sequence="collects?.length"
             @img-click="showDetail(item)"
             @up-collect="updateCollects"
           ></GhsItem>

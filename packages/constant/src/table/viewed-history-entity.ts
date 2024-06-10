@@ -9,6 +9,10 @@ export class ViewedHistoryEntity extends MyBaseEntity {
   type: string;
 
   // @ts-ignore
+  @Column('varchar', { comment: 'item的url' })
+  url: string;
+
+  // @ts-ignore
   @Column('varchar', { comment: '观看的配置信息' })
   value: string;
 }

@@ -50,11 +50,29 @@ class BaseBusiness extends NormalFunc {
 
   // 存储观看历史
   private async saveViewHistory(item: Item) {
+    const [list, count] = await ViewedHistoryEntity.findAndCount({
+      where: { type: this.webConfig.key },
+      order: { createTime: 'desc' },
+    });
+    if (count > 30) {
+      list.splice(30, count).forEach((item) => {
+        ViewedHistoryEntity.delete(item.id);
+      });
+    }
+
     const ent = new ViewedHistoryEntity();
     ent.type = this.webConfig.key;
     ent.value = JSON.stringify(item);
-    await ent.save();
-    LogMsgUtil.sendLogMsg(`历史观看记录保存成功: ${ent.value}`);
+    ent.url = item.jumpUrl;
+
+    const one = await ViewedHistoryEntity.findOne({ where: { url: item.jumpUrl } });
+    if (isFalsity(one)) {
+      await ent.save();
+      LogMsgUtil.sendLogMsg(`历史观看记录保存成功: ${ent.value}`);
+    } else {
+      one.createTime = new Date();
+      await ViewedHistoryEntity.update(one.id, one);
+    }
   }
 
   /**
