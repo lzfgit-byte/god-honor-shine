@@ -10,7 +10,28 @@
         </div>
       </div>
     </template>
-    <template #body></template>
+    <template #body>
+      <div ref="bodyRef" h-full w-full overflow-auto>
+        <transition-group
+          name="custom-classes"
+          enter-active-class="animate__animated animate__pulse"
+        >
+          <GhsItem
+            v-for="(item, index) in items"
+            :key="index"
+            :title="item.title"
+            :cover-img="item.coverImg"
+            :jump-url="item.jumpUrl"
+            :tags="item.tags"
+            :force="true"
+            width="220px"
+            height="147px"
+            @img-click="handleImageClick(item)"
+            @trigger-collect="collect_save(item)"
+          ></GhsItem>
+        </transition-group>
+      </div>
+    </template>
   </ViewLayout>
 </template>
 <script setup lang="ts">
@@ -23,7 +44,7 @@
   const route = useRoute();
   const webKey = route.query.key as string;
 
-  const { pagination, handlePageClick } = usePageState(webKey);
+  const { pagination, handlePageClick, items } = usePageState(webKey);
 
   onMounted(() => {
     console.log(webKey);

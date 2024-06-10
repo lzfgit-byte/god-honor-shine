@@ -29,8 +29,8 @@
     "app:preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@ilzf/utils": "^0.0.14",
-    "@vicons/ionicons5": "^0.12.0",
     "@vueuse/core": "^10.10.0",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^4.2.2",
