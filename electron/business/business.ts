@@ -4,7 +4,9 @@ import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { isFalsity } from '@ilzf/utils';
+import { SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
 import { getHtml } from '../export';
+import { LogMsgUtil } from '../utils/message';
 import { NormalFunc } from './common-func';
 import { getWebConfigByKey } from './use-init-web-config';
 
@@ -16,18 +18,6 @@ class BaseBusiness extends NormalFunc {
     super();
     this.key = key;
     this.webConfig = code;
-  }
-
-  getMainPageRes<T>(
-    list: ($: CheerioAPI) => Cheerio<Element>,
-    detail: (el: Element, $: CheerioAPI) => T
-  ) {
-    const res: T[] = [];
-    const items: Cheerio<Element> = list(this.$);
-    items?.each((i, el) => {
-      res.push(detail(el, this.$));
-    });
-    return res;
   }
 
   // 获取页面的元素数据
@@ -43,6 +33,24 @@ class BaseBusiness extends NormalFunc {
   // 获取首页的标签数据
   private getTags(): Tag[] {
     return this.webConfig.getTags(this.$);
+  }
+
+  // 存储搜索历史记录
+  private async saveSearchKey(key: string) {
+    this.webConfig.searchKey = key;
+    const ent = new SearchHistoryEntity();
+    ent.type = this.webConfig.key;
+    ent.value = key;
+    await ent.save();
+  }
+
+  // 存储观看历史
+  private async saveViewHistory(item: Item) {
+    const ent = new ViewedHistoryEntity();
+    ent.type = this.webConfig.key;
+    ent.value = JSON.stringify(item);
+    await ent.save();
+    LogMsgUtil.sendLogMsg(`历史观看记录保存成功: ${ent.value}`);
   }
 
   /**
@@ -63,6 +71,7 @@ class BaseBusiness extends NormalFunc {
    *item 点击后，获取详细信息
    */
   public async getDetailPage(item: Item): Promise<DetailInfo> {
+    this.saveViewHistory(item).then();
     return this.webConfig.getDetailInfo(item, cheerio);
   }
 
@@ -71,6 +80,7 @@ class BaseBusiness extends NormalFunc {
    * @param keyword
    */
   public async search(keyword: string): Promise<Page> {
+    this.saveSearchKey(keyword).then();
     return this.getPage(this.webConfig.adapterSearchUrl(keyword));
   }
 }
