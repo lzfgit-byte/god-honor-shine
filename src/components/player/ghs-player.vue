@@ -1,6 +1,6 @@
 <template>
-  <a-modal
-    v-model:open="visible"
+  <GhsDialog
+    v-model:visible="visible"
     :title="titleComp"
     :destroy-on-close="true"
     top="5%"
@@ -26,7 +26,7 @@
         {{ item.quality }}
       </GhsTag>
     </template>
-  </a-modal>
+  </GhsDialog>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue-demi';
@@ -34,6 +34,7 @@
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
+  import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();

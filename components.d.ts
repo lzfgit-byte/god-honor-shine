@@ -14,6 +14,7 @@ declare module 'vue' {
     ASelect: typeof import('ant-design-vue/es')['Select']
     ATag: typeof import('ant-design-vue/es')['Tag']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
+    GhsDialog: typeof import('./src/components/dialog/ghs-dialog.vue')['default']
     GhsImg: typeof import('./src/components/image/ghs-img.vue')['default']
     GhsImg2: typeof import('./src/components/image/ghs-img2.vue')['default']
     GhsItem: typeof import('./src/components/item/ghs-item.vue')['default']
