@@ -10,6 +10,7 @@ declare module 'vue' {
     AButton: typeof import('ant-design-vue/es')['Button']
     AFlex: typeof import('ant-design-vue/es')['Flex']
     AInput: typeof import('ant-design-vue/es')['Input']
+    ASelect: typeof import('ant-design-vue/es')['Select']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
     GhsImg: typeof import('./src/components/image/ghs-img.vue')['default']
     GhsImg2: typeof import('./src/components/image/ghs-img2.vue')['default']
@@ -20,6 +21,7 @@ declare module 'vue' {
     MainLayout: typeof import('./src/components/layout/main-layout.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./src/components/search/search.vue')['default']
     ViewLayout: typeof import('./src/components/layout/view-layout.vue')['default']
   }
 }
