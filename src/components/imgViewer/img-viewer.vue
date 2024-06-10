@@ -11,7 +11,7 @@
         h-full
         w-full
         absolute
-        z-2
+        z-99999
         left-0
         top-0
         @click="handleBackClick"
@@ -29,7 +29,7 @@
             w-full
             left-0
             top-0
-            z-4
+            z-999999
           >
             <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
               <span>{{ showCurrent }} / {{ images.length }}</span>
@@ -72,7 +72,7 @@
           items-center
           top-0
           left-0
-          z-3
+          z-999998
         >
           <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
@@ -89,10 +89,10 @@
             </transition>
           </div>
 
-          <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999>
+          <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999999>
             <LeftCircleOutlined @click="preImg" />
           </div>
-          <div class="ghsiv-dir" absolute right-4 flex justify-center items-center z-9999>
+          <div class="ghsiv-dir" absolute right-4 flex justify-center items-center z-9999999>
             <RightCircleOutlined @click="nextImg" />
           </div>
         </div>
