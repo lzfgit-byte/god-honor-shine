@@ -45,8 +45,9 @@
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
   const isCollect = ref(false);
-  const handleImgClick = () => {
-    emits('imgClick');
+  const handleImgClick = async () => {
+    // emits('imgClick');
+    await f_saveCollect(props.item);
   };
   const juCollect = async () => {
     isCollect.value = await f_isCollect(props.item);

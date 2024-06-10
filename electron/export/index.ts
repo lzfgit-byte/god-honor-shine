@@ -120,7 +120,7 @@ export const isCollect = async (item: Item): Promise<boolean> => {
 export const saveCollect = async (item: Item) => {
   const one = await CollectEntity.findOne({ where: { url: item.jumpUrl } });
   if (!isFalsity(one)) {
-    one.count = one.count++;
+    one.count = ++one.count;
     await CollectEntity.update(one.id, one);
     LogMsgUtil.sendLogMsg(`收藏成功更新-->${JSON.stringify(one)}`);
     return;
