@@ -20,8 +20,8 @@ export default () => {
     drawerOpen.value = true;
   };
 
-  const segmentedValue = ref('收藏');
-  const segmentedData = ref(['收藏', '历史', '设置', '全局配置']);
+  const segmentedValue = ref<'标签' | '收藏' | '历史' | '设置' | '全局配置'>('标签');
+  const segmentedData = ref(['标签', '收藏', '历史', '设置', '全局配置']);
 
   return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData };
 };

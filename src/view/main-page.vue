@@ -35,6 +35,14 @@
     :header-style="{ display: 'none' }"
   >
     <a-segmented v-model:value="segmentedValue" :options="segmentedData" />
+    <div h-full w-full m-t-4>
+      <transition
+        enter-active-class="animate__animated animate__fadeInLeft"
+        leave-active-class="animate__animated animate__fadeOutLeft"
+      >
+        <TagsView v-if="segmentedValue === '标签'" :key="webKey" :tags="tags"></TagsView>
+      </transition>
+    </div>
   </a-drawer>
   <a-float-button type="default" :style="{ right: '15px', top: '60px' }" @click="handleDrawOpen">
     <template #icon>
@@ -51,10 +59,12 @@
   import Search from '@/components/search/search.vue';
   import useFeature from '@/view/hook/useFeature';
   import GhsItem from '@/components/item/ghs-item.vue';
+  import TagsView from '@/view/components/tags-view.vue';
   const route = useRoute();
   const webKey = route.query.key as string;
 
-  const { pagination, handlePageClick, items, webConfig, handleSearch } = usePageState(webKey);
+  const { pagination, handlePageClick, items, webConfig, handleSearch, tags } =
+    usePageState(webKey);
   const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
 </script>
 
