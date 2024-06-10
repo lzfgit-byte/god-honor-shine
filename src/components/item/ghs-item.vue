@@ -56,6 +56,7 @@
     emits('imgClick');
     if (isCollect.value) {
       await f_saveCollect(props.item);
+      emits('upCollect');
     }
   };
   const juCollect = async () => {
@@ -70,8 +71,9 @@
     await juCollect();
     emits('upCollect');
   };
-  const handleCloseClick = () => {
-    emits('closeClick');
+  const handleCloseClick = async () => {
+    await f_cancelCollect(props.item);
+    emits('upCollect');
   };
   onMounted(async () => {
     await juCollect();

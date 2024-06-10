@@ -49,7 +49,9 @@
           :web-key="webKey"
           :web-config="webConfig"
           :show-detail="showDetail"
+          :up-collect="updateCollects"
         ></CollectView>
+        <HistoryView v-if="segmentedValue === '历史'"></HistoryView>
       </transition-group>
     </div>
   </a-drawer>
@@ -71,6 +73,7 @@
   import TagsView from '@/view/components/tags-view.vue';
   import CollectView from '@/view/components/collect-view.vue';
   import useCollect from '@/view/hook/use-collect';
+  import HistoryView from '@/view/components/history-view.vue';
   const route = useRoute();
   const webKey = route.query.key as string;
 
