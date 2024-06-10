@@ -138,7 +138,7 @@ const webConfig: WebConfig = /* break */ {
           detailType: 'image',
           renderType: 'normal',
           details: [
-            { type: 'image', url: hwInfo.minUrl, fullUr: hwInfo.fullUrl, title: hwInfo.title },
+            { type: 'image', url: hwInfo.minUrl, fullUrl: hwInfo.fullUrl, title: hwInfo.title },
           ],
           relations: [],
         };
@@ -158,7 +158,7 @@ const webConfig: WebConfig = /* break */ {
         res.push({
           type: 'image',
           url: hwInfo.minUrl,
-          fullUr: hwInfo.fullUrl,
+          fullUrl: hwInfo.fullUrl,
           title: hwInfo.title,
         });
       }

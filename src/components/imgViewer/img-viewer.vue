@@ -40,15 +40,23 @@
               </span>
             </div>
             <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
-              <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
+              <a-button
+                :type="choseUrl === 'minUrl' ? 'primary' : ''"
+                size="small"
+                style="color: white"
+                @click="choseUrl = 'minUrl'"
+              >
                 缩略
-              </GhsButton>
-              <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
+              </a-button>
+              <a-button
+                :type="choseUrl === 'fullUrl' ? 'primary' : ''"
+                size="small"
+                style="color: white"
+                @click="choseUrl = 'fullUrl'"
+              >
                 全图
-              </GhsButton>
-              <GhsIcon v-if="!readerMode" cursor-pointer color="white" @click="visible = false">
-                <Close> </Close>
-              </GhsIcon>
+              </a-button>
+              <CloseCircleOutlined v-if="!readerMode" @click="visible = false" />
             </div>
           </div>
         </transition>
@@ -69,7 +77,7 @@
           <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <Component
-                :is="solveImgComp"
+                :is="GhsImg2"
                 :key="imgUrl"
                 class="img-img"
                 :url="imgUrl"
@@ -102,11 +110,14 @@
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
   import { useIdle, useVModel } from '@vueuse/core';
-  import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
+  import {
+    CloseCircleOutlined,
+    LeftCircleOutlined,
+    RightCircleOutlined,
+  } from '@ant-design/icons-vue';
   import { watchEffect } from 'vue-demi';
   import type { Detail } from '@ghs/types';
   import GhsImg2 from '@/components/image/ghs-img2.vue';
-  import GhsIcon from '@/components/icon/ghs-icon.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsImg from '@/components/image/ghs-img.vue';
@@ -114,7 +125,6 @@
   const props = defineProps({
     force: Boolean,
     readerMode: Boolean,
-    solveImgComp: { type: Object, default: GhsImg2 },
     imgAttrs: Object,
     imagesArr: Array as PropType<Detail[]>,
     currentImg: String,
@@ -159,7 +169,8 @@
       current.value = 0;
       scale.value = 100;
       choseUrl.value = 'minUrl';
-      images.value = ims;
+      images.value = ims.map((item) => ({ ...item, minUrl: item.url }));
+      console.log(images.value);
       visible.value = true;
     },
     close: () => {

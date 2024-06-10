@@ -31,7 +31,7 @@ export type RenderTypeUnion = keyof typeof RenderType;
 export interface Detail {
   type: ItemDetailTypeUnion;
   url: string;
-  fullUr?: string;
+  fullUrl?: string;
   quality?: string;
   title?: string;
   comments: Comment[];
