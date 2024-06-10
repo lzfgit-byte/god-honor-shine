@@ -5,6 +5,8 @@ import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 
 export default () => {
   const drawerOpen = ref(false);
+  const segmentedValue = ref<'标签' | '收藏' | '历史' | '设置' | '全局配置'>('标签');
+  const segmentedData = ref(['标签', '收藏', '历史', '设置', '全局配置']);
 
   const showDetail = async (item: Item) => {
     const detail = await f_getDetailPage(item);
@@ -17,11 +19,9 @@ export default () => {
   };
 
   const handleDrawOpen = () => {
+    segmentedValue.value = '标签';
     drawerOpen.value = true;
   };
-
-  const segmentedValue = ref<'标签' | '收藏' | '历史' | '设置' | '全局配置'>('标签');
-  const segmentedData = ref(['标签', '收藏', '历史', '设置', '全局配置']);
 
   return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData };
 };

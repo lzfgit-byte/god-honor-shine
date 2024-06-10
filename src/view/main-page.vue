@@ -52,7 +52,12 @@
           :show-detail="showDetail"
           :up-collect="updateCollects"
         ></CollectView>
-        <HistoryView v-if="segmentedValue === '历史'"></HistoryView>
+        <HistoryView
+          v-if="segmentedValue === '历史'"
+          :key="webKey"
+          :web-config="webConfig"
+          :show-detail="showDetail"
+        ></HistoryView>
       </transition-group>
     </div>
   </a-drawer>

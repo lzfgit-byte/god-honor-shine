@@ -15,6 +15,8 @@ export * from './search';
 export * from './base';
 // 收藏
 export * from './collect';
+// 历史
+export * from './history';
 
 /**
  *获取所有的配置项

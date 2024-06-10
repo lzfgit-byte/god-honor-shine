@@ -1,5 +1,6 @@
 import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
-import type { CollectEntity } from '@ghs/constant';
+import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
+import { getCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -120,4 +121,11 @@ export const f_cancelCollect = async (item: Item) => {
  */
 export const f_getDetailPage = async (item: Item): Promise<DetailInfo> => {
   return executeFunction('getDetailPage', item);
+};
+// 0-------------------历史记录------------------------0
+/**
+ * 列出观看记录
+ */
+export const f_listHistory = async (): Promise<ViewedHistoryEntity[]> => {
+  return executeFunction('listHistory');
 };
