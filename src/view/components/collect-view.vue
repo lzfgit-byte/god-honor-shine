@@ -12,6 +12,7 @@
         @up-collect="props?.upCollect"
       ></GhsItem>
     </TransitionGroup>
+    <a-empty v-if="items.length === 0" />
   </div>
 </template>
 <script setup lang="ts">

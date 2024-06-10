@@ -7,6 +7,7 @@
       type="waring"
       :show-gap="true"
     ></GhsTag>
+    <a-empty v-if="tags.length === 0" />
   </div>
 </template>
 <script setup lang="ts">
