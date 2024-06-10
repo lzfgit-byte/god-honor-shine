@@ -37,6 +37,10 @@ class BaseBusiness extends NormalFunc {
 
   // 存储搜索历史记录
   private async saveSearchKey(key: string) {
+    const one = await SearchHistoryEntity.findOne({ where: { value: key } });
+    if (!isFalsity(one)) {
+      return;
+    }
     this.webConfig.searchKey = key;
     const ent = new SearchHistoryEntity();
     ent.type = this.webConfig.key;
@@ -79,9 +83,12 @@ class BaseBusiness extends NormalFunc {
    * 搜索
    * @param keyword
    */
-  public async search(keyword: string): Promise<Page> {
+  public search(keyword: string): string {
+    if (isFalsity(keyword)) {
+      return;
+    }
     this.saveSearchKey(keyword).then();
-    return this.getPage(this.webConfig.adapterSearchUrl(keyword));
+    return this.webConfig.adapterSearchUrl(keyword);
   }
 }
 

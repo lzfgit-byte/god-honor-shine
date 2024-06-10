@@ -81,9 +81,16 @@ export const f_loadPage = async (url: string): Promise<Page> => {
 /**
  * 调用搜索功能
  */
-export const f_search = async (search: string): Promise<Page> => {
+export const f_search = async (search: string): Promise<string> => {
   return executeFunction('search', search);
 };
+/**
+ * 搜索推荐
+ */
+export const f_searchRecommend = async (search: string): Promise<string[]> => {
+  return executeFunction('searchRecommend', search);
+};
+
 /**
  * 收藏操作在这里 列出收藏
  */
