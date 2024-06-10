@@ -42,7 +42,7 @@
     maxWidth: String,
     item: Object as PropType<Item>,
   });
-  const emits = defineEmits(['imgClick', 'closeClick']);
+  const emits = defineEmits(['imgClick', 'closeClick', 'upCollect']);
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
   const isCollect = ref(false);
@@ -62,6 +62,7 @@
       await f_saveCollect(props.item);
     }
     await juCollect();
+    emits('upCollect');
   };
   const handleCloseClick = () => {
     emits('closeClick');
