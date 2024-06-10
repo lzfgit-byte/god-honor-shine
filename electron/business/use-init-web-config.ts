@@ -2,9 +2,10 @@ import type { BaseConfig, WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { keys } from 'lodash';
-import { isFunction } from '@ilzf/utils';
+import { hashString, isFunction } from '@ilzf/utils';
 
 import { getHtml } from '../export';
+import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
 // @ts-ignore
 import demoWebCode from './hentai-code-webconfig?raw';
 
@@ -89,7 +90,10 @@ export const loadWebConfig = () => {
     helpElText,
     ElementAttr,
     ElementTypes,
-    getHtml
+    getHtml,
+    NotifyMsgUtil,
+    LogMsgUtil,
+    hashString
   );
   cache[config.key] = config;
   setCurrentKey(config.key);

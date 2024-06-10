@@ -39,12 +39,12 @@ export class StepMessageUtil {
       ?.send(MESSAGE_EVENT_KEY.SEND_STEP_MESSAGE, { ...msg, key: StepMessageUtil.key });
   }
 
-  static sendStepMsg(title: string, msg: string) {
-    this.sendMsg({ msg, title });
+  static sendStepMsg(title: string, msg: string, key: string) {
+    this.sendMsg({ msg, title, key });
   }
 
-  static closeStepMsg(title: string, msg: string) {
-    this.sendMsg({ msg, title, close: true });
+  static closeStepMsg(title: string, msg: string, key: string) {
+    this.sendMsg({ msg, title, key, close: true });
   }
 }
 
@@ -56,8 +56,12 @@ export class NotifyMsgUtil {
     webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, msg);
   }
 
-  static sendNotifyMsg(title: string, msg: string) {
-    this.sendMsg({ msg, title });
+  static sendNotifyMsg(title: string, msg: string, key: string) {
+    this.sendMsg({ msg, title, key });
+  }
+
+  static close(key: string) {
+    this.sendMsg({ close: true, key });
   }
 }
 

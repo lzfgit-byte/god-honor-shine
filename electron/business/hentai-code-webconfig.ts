@@ -1,7 +1,9 @@
 import type { WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import { hashString } from '@ilzf/utils';
 import { getHtml } from '../export';
+import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
 
 function helpElAttr($el: Cheerio<Element>, attr: string): string {
   return $el?.attr(attr) || '';
@@ -146,7 +148,9 @@ const webConfig: WebConfig = /* break */ {
         urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
       });
       const res = [];
+      const key = hashString(item.jumpUrl);
       for (let i = 0; i < urls.length; i++) {
+        NotifyMsgUtil.sendNotifyMsg(item.title, `${i + 1}/${urls.length}`, key);
         const url_ = urls[i];
         const html = await getHtml(url_);
         const $ = cheerio.load(html);
@@ -172,6 +176,18 @@ const webConfig: WebConfig = /* break */ {
 };
 /* break */
 
-(() => (helpElAttr, helpElText, ElementAttr, ElementTypes, getHtml) => {
-  return '$code';
-})();
+(
+  () =>
+  (
+    helpElAttr,
+    helpElText,
+    ElementAttr,
+    ElementTypes,
+    getHtml,
+    NotifyMsgUtil,
+    LogMsgUtil,
+    hashString
+  ) => {
+    return '$code';
+  }
+)();
