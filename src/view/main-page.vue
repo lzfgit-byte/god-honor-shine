@@ -19,11 +19,7 @@
           <GhsItem
             v-for="(item, index) in items"
             :key="index"
-            :title="item.title"
-            :cover-img="item.coverImg"
-            :jump-url="item.jumpUrl"
-            :tags="item.tags"
-            :force="true"
+            :item="item"
             width="220px"
             height="147px"
             @img-click="handleImageClick(item)"

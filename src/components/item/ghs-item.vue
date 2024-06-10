@@ -8,43 +8,37 @@
         cursor-pointer
         :max-height="maxHeight"
         :max-width="maxWidth"
-        :url="coverImg"
-        :force="force"
+        :url="item.coverImg"
         @click="handleImgClick"
       />
       <div v-if="!hideTag" absolute top-2 right-1 flex justify-end items-center gap-1>
-        <GhsTag v-for="(item, index) in tags" :key="index" :info="item"></GhsTag>
+        <GhsTag v-for="(item_, index) in item.tags" :key="index" :info="item_"></GhsTag>
       </div>
     </div>
-    <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
-      <GhsText :value="title" />
+    <div v-if="item.title" class="ghs-item-title" w-full flex justify-start items-center>
+      <GhsText :value="item.title" />
       <StarOutlined />
     </div>
   </div>
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
+  import { toRaw } from 'vue-demi';
   import { CloseCircleOutlined, StarOutlined } from '@ant-design/icons-vue';
   import { computed } from 'vue';
-  import { toRaw } from 'vue-demi';
-  import type { Tag } from '@ghs/types';
+
+  import type { Item } from '@ghs/types';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
 
   const props = defineProps({
-    jumpUrl: String,
-    coverImg: String,
-    title: String,
-    author: String,
-    tags: Array as PropType<Tag[]>,
     width: String,
     height: String,
-    force: Boolean,
-    onTriggerCollect: Function,
     onCloseClick: Function,
     hideTag: Boolean,
     maxHeight: String,
     maxWidth: String,
+    item: Object as PropType<Item>,
   });
   const emits = defineEmits(['imgClick', 'triggerCollect', 'closeClick']);
   const c_width = computed(() => props.width || '250px');
