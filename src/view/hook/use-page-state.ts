@@ -2,6 +2,7 @@ import { onMounted, ref } from 'vue';
 import type { BaseConfig, Item, Pagination, Tag, UrlReplace } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 import {
+  f_appSetDbDir,
   f_cacheDirDb,
   f_cacheDirSize,
   f_cacheSuffixClean,
@@ -59,6 +60,18 @@ export default (key: string) => {
     await refresh();
   };
 
+  const setDbPath = async () => {
+    const fileInput: HTMLInputElement = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.db';
+    fileInput.addEventListener('change', function () {
+      let selectedFile = fileInput.files[0];
+      const path = selectedFile.path;
+      f_appSetDbDir(path);
+    });
+    fileInput.click();
+  };
+
   onMounted(async () => {
     await init();
     await load();
@@ -75,5 +88,6 @@ export default (key: string) => {
     dbPath,
     clearCache,
     cacheSize,
+    setDbPath,
   };
 };

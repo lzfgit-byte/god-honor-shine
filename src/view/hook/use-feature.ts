@@ -1,6 +1,6 @@
 import type { Item } from '@ghs/types';
 import { ref } from 'vue';
-import { f_appSetDbDir, f_getDetailPage } from '@/utils/business';
+import { f_getDetailPage } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 
 export default () => {
@@ -23,17 +23,5 @@ export default () => {
     drawerOpen.value = true;
   };
 
-  const setDbPath = async () => {
-    const fileInput: HTMLInputElement = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.db';
-    fileInput.addEventListener('change', function () {
-      let selectedFile = fileInput.files[0];
-      const path = selectedFile.path;
-      f_appSetDbDir(path);
-    });
-    fileInput.click();
-  };
-
-  return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData, setDbPath };
+  return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData };
 };

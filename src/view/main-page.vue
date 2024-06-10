@@ -65,6 +65,8 @@
     :handle-draw-open="handleDrawOpen"
     :clear-cache="clearCache"
     :cache-size="cacheSize"
+    :db-path="dbPath"
+    :chose-db-path="setDbPath"
   ></FloatButtonGroup>
 </template>
 <script setup lang="ts">
@@ -92,6 +94,8 @@
     tags,
     clearCache,
     cacheSize,
+    dbPath,
+    setDbPath,
   } = usePageState(webKey);
   const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
   const { collects, updateCollects } = useCollect(webKey);

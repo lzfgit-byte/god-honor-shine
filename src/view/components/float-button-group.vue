@@ -29,15 +29,31 @@
       <Html5Outlined />
     </template>
   </a-float-button>
+  <a-float-button
+    :tooltip="`设置dbpath:${dbPath || ''}`"
+    type="default"
+    :style="{ right: '15px', top: '240px' }"
+    @click="choseDbPath"
+  >
+    <template #icon>
+      <FileTextOutlined />
+    </template>
+  </a-float-button>
 </template>
 <script setup lang="ts">
-  import { CarOutlined, ClearOutlined, Html5Outlined } from '@ant-design/icons-vue';
+  import {
+    CarOutlined,
+    ClearOutlined,
+    FileTextOutlined,
+    Html5Outlined,
+  } from '@ant-design/icons-vue';
   import { FileType } from '@ghs/types';
   defineProps({
     handleDrawOpen: Function,
     clearCache: Function,
     dbPath: String,
     cacheSize: String,
+    choseDbPath: Function,
   });
 </script>
 
