@@ -40,6 +40,6 @@ ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, (_event, args: MessageInf
   bus.emit(key, percentage);
 });
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, (_event, args: MessageInfo) => {
-  const { key, title, msg } = args;
-  notify(key, msg, title);
+  const { key, title, msg, close } = args;
+  notify(key, msg, title, close);
 });

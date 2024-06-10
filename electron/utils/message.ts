@@ -61,7 +61,7 @@ export class NotifyMsgUtil {
   }
 
   static close(key: string) {
-    this.sendMsg({ close: true, key });
+    this.sendMsg({ close: true, key, msg: 'done', title: 'done' });
   }
 }
 

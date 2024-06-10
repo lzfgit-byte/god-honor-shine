@@ -162,6 +162,7 @@ const webConfig: WebConfig = /* break */ {
           title: hwInfo.title,
         });
       }
+      NotifyMsgUtil.close(key);
       return { detailType: 'image', renderType: 'normal', details: res, relations: [] };
     }
     return null;
