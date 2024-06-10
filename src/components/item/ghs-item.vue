@@ -23,8 +23,8 @@
     </div>
     <div v-if="item.title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="item.title" />
-      <StarOutlined v-if="!isCollect" @click="toggleCollect" />
-      <StarFilled v-if="isCollect" @click="toggleCollect" />
+      <StarOutlined v-if="!isCollect && !$props?.onCloseClick" @click="toggleCollect" />
+      <StarFilled v-if="isCollect && !$props?.onCloseClick" @click="toggleCollect" />
     </div>
   </div>
 </template>
