@@ -37,10 +37,11 @@
     :header-style="{ display: 'none' }"
   >
     <a-segmented v-model:value="segmentedValue" :options="segmentedData" />
-    <div h-90vh overflow-auto w-full m-t-4>
+    <div h-85vh overflow-auto w-full m-t-4 p-t-4>
       <transition-group
         enter-active-class="animate__animated animate__fadeIn"
         leave-active-class="animate__animated animate__fadeOut"
+        duration="200"
       >
         <TagsView
           v-if="segmentedValue === '标签'"
