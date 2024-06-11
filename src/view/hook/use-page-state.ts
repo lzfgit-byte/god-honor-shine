@@ -1,6 +1,6 @@
 import { onMounted, ref } from 'vue';
-import type { BaseConfig, Item, Pagination, Tag, UrlReplace } from '@ghs/types';
-import { isFalsity, waitTime } from '@ilzf/utils';
+import type { BaseConfig, Item, MessageInfo, Pagination, Tag, UrlReplace } from '@ghs/types';
+import { hashString, isFalsity, waitTime } from '@ilzf/utils';
 import {
   f_appSetDbDir,
   f_cacheDirDb,
@@ -26,8 +26,12 @@ export default (key: string) => {
   const load = async (url: string = null) => {
     loading.value = true;
     nprogress.start();
+    if (url) {
+      bus.on(hashString(url), (args: MessageInfo) => {
+        nprogress.set(args.percentage);
+      });
+    }
     const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
-    bus.off();
 
     pagination.value = [];
     items.value = [];
@@ -42,6 +46,9 @@ export default (key: string) => {
 
     loading.value = false;
     nprogress.done(true);
+    if (url) {
+      bus.off(hashString(url));
+    }
     await calcCacheSize();
   };
 
