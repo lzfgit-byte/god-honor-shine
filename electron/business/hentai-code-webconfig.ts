@@ -4,6 +4,7 @@ import type { Element } from 'domhandler';
 import { hashString } from '@ilzf/utils';
 import { getHtml } from '../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
+import { eventEmitter } from '../utils/KitUtil';
 
 function helpElAttr($el: Cheerio<Element>, attr: string): string {
   return $el?.attr(attr) || '';
@@ -105,6 +106,7 @@ const webConfig: WebConfig = /* break */ {
     return res;
   },
   async getDetailInfo(item, cheerio) {
+    const key = hashString(item.jumpUrl);
     const getHWImgInfo = ($) => {
       const $grid = $('#grid');
       const $h1 = $grid.find(ElementTypes.h1);
@@ -116,7 +118,14 @@ const webConfig: WebConfig = /* break */ {
       const title = helpElText($h1);
       return { fullUrl, minUrl, title };
     };
+    NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html`, key);
+    const handle = (msg) => {
+      NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html:${msg}`, key);
+    };
+    eventEmitter.on(key, handle);
     let html = await getHtml(item.jumpUrl);
+    eventEmitter.off(key, handle);
+    NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html:success`, key);
     const $ = cheerio.load(html);
     if (item.type === 'video') {
       const $img = $('#image');
@@ -150,11 +159,19 @@ const webConfig: WebConfig = /* break */ {
         urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
       });
       const res = [];
-      const key = hashString(item.jumpUrl);
       for (let i = 0; i < urls.length; i++) {
-        NotifyMsgUtil.sendNotifyMsg(item.title, `${i + 1}/${urls.length}`, key);
+        NotifyMsgUtil.sendNotifyMsg('进度', `${i + 1}/${urls.length}`, key);
+
         const url_ = urls[i];
+        const keyFoo = hashString(url_);
+
+        const handle = (msg) => {
+          NotifyMsgUtil.sendNotifyMsg('进度', `${i + 1}/${urls.length},html:${msg}`, key);
+        };
+        eventEmitter.on(keyFoo, handle);
         const html = await getHtml(url_);
+        eventEmitter.off(keyFoo, handle);
+
         const $ = cheerio.load(html);
         const hwInfo = getHWImgInfo($);
         res.push({
@@ -189,7 +206,8 @@ const webConfig: WebConfig = /* break */ {
     getHtml,
     NotifyMsgUtil,
     LogMsgUtil,
-    hashString
+    hashString,
+    eventEmitter
   ) => {
     return '$code';
   }

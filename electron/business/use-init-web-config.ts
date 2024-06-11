@@ -6,6 +6,7 @@ import { hashString, isFunction } from '@ilzf/utils';
 
 import { getHtml } from '../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
+import { eventEmitter } from '../utils/KitUtil';
 // @ts-ignore
 import demoWebCode from './hentai-code-webconfig?raw';
 
@@ -93,7 +94,8 @@ export const loadWebConfig = () => {
     getHtml,
     NotifyMsgUtil,
     LogMsgUtil,
-    hashString
+    hashString,
+    eventEmitter
   );
   cache[config.key] = config;
   setCurrentKey(config.key);

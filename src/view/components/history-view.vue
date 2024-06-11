@@ -7,7 +7,6 @@
         :item="item"
         :width="webConfig.imgWidth"
         :height="webConfig.imgHeight"
-        :on-close-click="() => 1"
         @img-click="showDetailProxy(item)"
       ></GhsItem>
     </TransitionGroup>

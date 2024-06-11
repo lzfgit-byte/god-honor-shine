@@ -11,7 +11,7 @@
         class="progress-img"
       >
         <div relative w-full box-border p-l-2 p-r-2 class="progress">
-          <a-progress :percent="percentageRef" :show-info="false" />
+          {{ progressInfo }}
         </div>
       </div>
     </transition>
@@ -29,7 +29,7 @@
     maxWidth: String,
     global: Boolean,
   });
-  const { init, imgSrc, handleError, percentageRef } = useImg(props);
+  const { init, imgSrc, handleError, percentageRef, progressInfo } = useImg(props);
   init();
   const imgMaxHeight = computed(() => props.maxHeight || '100%');
   const imgMaxWidth = computed(() => props.maxWidth || '100%');
