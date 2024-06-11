@@ -13,6 +13,8 @@ export interface BaseConfig {
 
   imgWidth: string;
   imgHeight: string;
+
+  drawWidth: string;
 }
 
 export interface WebConfig extends BaseConfig {

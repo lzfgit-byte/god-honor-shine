@@ -33,11 +33,11 @@
   <a-drawer
     v-model:open="drawerOpen"
     placement="right"
-    width="60vw"
+    :width="webConfig?.drawWidth"
     :header-style="{ display: 'none' }"
   >
     <a-segmented v-model:value="segmentedValue" :options="segmentedData" />
-    <div h-full w-full m-t-4>
+    <div h-90vh overflow-auto w-full m-t-4>
       <transition-group
         enter-active-class="animate__animated animate__zoomIn"
         leave-active-class="animate__animated animate__slideOutDown"

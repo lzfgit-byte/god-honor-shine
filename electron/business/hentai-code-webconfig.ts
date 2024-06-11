@@ -46,6 +46,8 @@ const webConfig: WebConfig = /* break */ {
   imgWidth: '220px',
   imgHeight: '147px',
 
+  drawWidth: '780px',
+
   getUrlReplace($) {
     return [];
   },
