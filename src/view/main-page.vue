@@ -33,7 +33,7 @@
   <a-drawer
     v-model:open="drawerOpen"
     placement="right"
-    width="90vw"
+    width="60vw"
     :header-style="{ display: 'none' }"
   >
     <a-segmented v-model:value="segmentedValue" :options="segmentedData" />

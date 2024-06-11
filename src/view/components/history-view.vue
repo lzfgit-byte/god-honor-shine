@@ -31,8 +31,6 @@
   };
   const showDetailProxy = async (item: Item) => {
     executeFunc(props?.showDetail, item);
-    await waitTime();
-    await initHistory();
   };
 
   const items = computed(() => history?.value.map((item) => JSON.parse(item.value)));
