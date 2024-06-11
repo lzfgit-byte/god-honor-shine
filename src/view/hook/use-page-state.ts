@@ -12,17 +12,11 @@ import {
   f_search,
 } from '@/utils/business';
 import { nprogress } from '@/utils/nprogress';
+import useGlobalState from '@/hooks/use-global-state';
 
 export default (key: string) => {
-  const webConfig = ref<BaseConfig>();
-  const pagination = ref<Pagination[]>();
-  const items = ref<Item[]>();
-  const tags = ref<Tag[]>();
-  const urlReplace = ref<UrlReplace[]>();
-  const dbPath = ref();
-  const currentUrl = ref();
-  const cacheSize = ref();
-  const loading = ref(false);
+  const { cacheSize, dbPath, webConfig, loading, pagination, items, tags, urlReplace, currentUrl } =
+    useGlobalState();
 
   const calcCacheSize = async () => {
     cacheSize.value = await f_cacheDirSize();

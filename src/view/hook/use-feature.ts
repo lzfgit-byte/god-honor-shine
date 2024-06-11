@@ -1,13 +1,10 @@
 import type { Item } from '@ghs/types';
-import { ref } from 'vue';
 import { f_getDetailPage } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
+import useGlobalState from '@/hooks/use-global-state';
 
 export default () => {
-  const drawerOpen = ref(false);
-  const segmentedValue = ref<'标签' | '收藏' | '历史' | '过滤选项' | '系统配置'>('标签');
-  const segmentedData = ref(['标签', '收藏', '历史', '过滤选项', '系统配置']);
-
+  const { segmentedValue, drawerOpen, segmentedData } = useGlobalState();
   const showDetail = async (item: Item) => {
     const detail = await f_getDetailPage(item);
     if (detail.detailType === 'mp4') {

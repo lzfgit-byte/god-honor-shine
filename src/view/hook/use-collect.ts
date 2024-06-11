@@ -1,10 +1,11 @@
 import type { Ref } from 'vue';
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import type { CollectEntity } from '@ghs/constant';
 import { f_listCollect } from '@/utils/business';
+import useGlobalState from '@/hooks/use-global-state';
 
 export default (key: string) => {
-  const collects = ref<CollectEntity[]>();
+  const { collects } = useGlobalState();
   const updateCollects = async () => {
     collects.value = await f_listCollect(key);
   };
