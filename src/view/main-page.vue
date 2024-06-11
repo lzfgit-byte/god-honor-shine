@@ -39,10 +39,15 @@
     <a-segmented v-model:value="segmentedValue" :options="segmentedData" />
     <div h-90vh overflow-auto w-full m-t-4>
       <transition-group
-        enter-active-class="animate__animated animate__zoomIn"
-        leave-active-class="animate__animated animate__slideOutDown"
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__fadeOut"
       >
-        <TagsView v-if="segmentedValue === '标签'" :key="webKey" :tags="tags"></TagsView>
+        <TagsView
+          v-if="segmentedValue === '标签'"
+          :key="webKey"
+          :tags="tags"
+          :load="load"
+        ></TagsView>
         <CollectView
           v-if="segmentedValue === '收藏'"
           :key="webKey"
@@ -104,8 +109,8 @@
     cacheSize,
     dbPath,
     setDbPath,
-    loading,
     calcCacheSize,
+    load,
   } = usePageState(webKey);
   const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
   const { collects, updateCollects } = useCollect(webKey);

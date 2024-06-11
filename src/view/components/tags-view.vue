@@ -6,6 +6,7 @@
       :info="item"
       type="waring"
       :show-gap="true"
+      @click="load(item.url)"
     ></GhsTag>
     <a-empty v-if="tags.length === 0" />
   </div>
@@ -15,7 +16,7 @@
   import type { Tag } from '@ghs/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
 
-  const props = defineProps({ tags: Array as PropType<Tag[]> });
+  const props = defineProps({ tags: Array as PropType<Tag[]>, load: Function });
 </script>
 
 <style scoped lang="less"></style>

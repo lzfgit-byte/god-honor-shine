@@ -96,5 +96,6 @@ export default (key: string) => {
     setDbPath,
     loading,
     calcCacheSize,
+    load,
   };
 };
