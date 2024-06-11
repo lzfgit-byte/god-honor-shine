@@ -116,16 +116,14 @@
     LeftCircleOutlined,
     RightCircleOutlined,
   } from '@ant-design/icons-vue';
-  import { watch, watchEffect } from 'vue-demi';
-  import type { Detail, MessageInfo } from '@ghs/types';
-  import { hashString } from '@ilzf/utils';
+  import { watchEffect } from 'vue-demi';
+  import type { Detail } from '@ghs/types';
   import { ref } from 'vue';
   import GhsImg2 from '@/components/image/ghs-img-plain.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsImg from '@/components/image/ghs-img.vue';
   import useReadModel from '@/components/imgViewer/hooks/useReadModel';
-  import bus from '@/utils/bus';
   const props = defineProps({
     force: Boolean,
     readerMode: Boolean,
@@ -167,15 +165,6 @@
     totalImg_.value = `${images?.value?.length}`;
   });
   const percentage = ref();
-  watch(imgUrl, () => {
-    if (imgUrl.value) {
-      const key = hashString(imgUrl.value);
-      bus.off(key);
-      bus.on(key, (args: MessageInfo) => {
-        percentage.value = args.title;
-      });
-    }
-  });
   const expose = {
     show: (ims: Detail[]) => {
       translateX.value = 0;

@@ -1,10 +1,18 @@
 <template>
   <img :src="imgSrc" :alt="imgSrc" />
+  <span
+    v-if="percentageRef > 0 && percentageRef < 100"
+    absolute
+    color-white
+    style="left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); font-size: 16px"
+  >
+    {{ progressInfo }}
+  </span>
 </template>
 <script setup lang="ts">
   import useImg from '@/components/image/hooks/useImg';
   const props = defineProps({ url: String, force: Boolean, global: Boolean });
-  const { init, imgSrc } = useImg(props);
+  const { init, imgSrc, progressInfo, percentageRef } = useImg(props);
   init();
 </script>
 

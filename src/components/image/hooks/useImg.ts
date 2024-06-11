@@ -7,12 +7,14 @@ import { f_getImage } from '@/utils/business';
 export default (props: any) => {
   const imgSrc = ref(src);
   const percentageRef = ref(0);
+  const progressInfo = ref();
   const init = async () => {
     if (!props.url) {
       return;
     }
     const handleBus = async (args: MessageInfo) => {
       percentageRef.value = args.percentage;
+      progressInfo.value = args.title;
     };
     bus.off(hashString(props.url));
     bus.on(hashString(props.url), handleBus);
@@ -24,5 +26,5 @@ export default (props: any) => {
   const handleError = () => {
     imgSrc.value = src;
   };
-  return { imgSrc, init, handleError, percentageRef };
+  return { imgSrc, init, handleError, percentageRef, progressInfo };
 };
