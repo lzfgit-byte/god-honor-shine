@@ -1,12 +1,5 @@
-import path from 'node:path';
-import { statSync } from 'node:fs';
 import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
 import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
-import { emptyDirSync, readdirSync } from 'fs-extra';
-import { formatSize } from '@ilzf/utils';
-import { getCurrentKey } from '../../electron/business/use-init-web-config';
-import { MessageUtil } from '../../electron/utils/message';
-import { APP_PATHS } from '../../electron/const/app-paths';
 import { executeFunction } from '@/utils/ipc';
 
 /**
