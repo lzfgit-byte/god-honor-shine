@@ -38,6 +38,7 @@
               <span :title="imgUrl">
                 {{ images.length > 0 && (images[current]?.title || imgUrl) }}
               </span>
+              <span m-l-4> {{ percentage }} </span>
             </div>
             <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
               <a-button
@@ -115,13 +116,16 @@
     LeftCircleOutlined,
     RightCircleOutlined,
   } from '@ant-design/icons-vue';
-  import { watchEffect } from 'vue-demi';
-  import type { Detail } from '@ghs/types';
+  import { watch, watchEffect } from 'vue-demi';
+  import type { Detail, MessageInfo } from '@ghs/types';
+  import { hashString } from '@ilzf/utils';
+  import { ref } from 'vue';
   import GhsImg2 from '@/components/image/ghs-img-plain.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsImg from '@/components/image/ghs-img.vue';
   import useReadModel from '@/components/imgViewer/hooks/useReadModel';
+  import bus from '@/utils/bus';
   const props = defineProps({
     force: Boolean,
     readerMode: Boolean,
@@ -161,6 +165,16 @@
   watchEffect(() => {
     currentImg_.value = `${current.value}`;
     totalImg_.value = `${images?.value?.length}`;
+  });
+  const percentage = ref();
+  watch(imgUrl, () => {
+    if (imgUrl.value) {
+      const key = hashString(imgUrl.value);
+      bus.off(key);
+      bus.on(key, (args: MessageInfo) => {
+        percentage.value = args.title;
+      });
+    }
   });
   const expose = {
     show: (ims: Detail[]) => {

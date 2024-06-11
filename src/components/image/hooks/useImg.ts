@@ -14,6 +14,7 @@ export default (props: any) => {
     const handleBus = async (args: MessageInfo) => {
       percentageRef.value = args.percentage;
     };
+    bus.off(hashString(props.url));
     bus.on(hashString(props.url), handleBus);
     imgSrc.value = await f_getImage(props.url);
     if (imgSrc.value === 'data:image/png;base64,') {
