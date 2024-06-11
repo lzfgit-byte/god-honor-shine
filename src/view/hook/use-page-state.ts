@@ -13,6 +13,7 @@ import {
 } from '@/utils/business';
 import { nprogress } from '@/utils/nprogress';
 import useGlobalState from '@/hooks/use-global-state';
+import bus from '@/utils/bus';
 
 export default (key: string) => {
   const { cacheSize, dbPath, webConfig, loading, pagination, items, tags, urlReplace, currentUrl } =
@@ -26,6 +27,7 @@ export default (key: string) => {
     loading.value = true;
     nprogress.start();
     const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
+    bus.off();
 
     pagination.value = [];
     items.value = [];

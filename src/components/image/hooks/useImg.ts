@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi';
+import { onDeactivated, ref } from 'vue-demi';
 import { hashString } from '@ilzf/utils';
 import type { MessageInfo } from '@ghs/types';
 import src from '../loading.gif?url';
@@ -16,7 +16,6 @@ export default (props: any) => {
       percentageRef.value = args.percentage;
       progressInfo.value = args.title;
     };
-    bus.off(hashString(props.url));
     bus.on(hashString(props.url), handleBus);
     imgSrc.value = await f_getImage(props.url);
     if (imgSrc.value === 'data:image/png;base64,') {

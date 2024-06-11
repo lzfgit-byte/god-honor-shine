@@ -1,19 +1,29 @@
 <template>
-  <img :src="imgSrc" :alt="imgSrc" />
-  <span
-    v-if="percentageRef > 0 && percentageRef < 100"
-    absolute
-    color-white
-    style="left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); font-size: 16px"
-  >
-    {{ progressInfo }}
-  </span>
+  <div>
+    <img :src="imgSrc" :alt="imgSrc" />
+    <span
+      v-if="percentageRef > 0 && percentageRef < 100"
+      absolute
+      color-white
+      style="left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); font-size: 16px"
+    >
+      {{ progressInfo }}
+    </span>
+  </div>
 </template>
 <script setup lang="ts">
+  import { onMounted, onUnmounted } from 'vue';
+  import { hashString } from '@ilzf/utils';
   import useImg from '@/components/image/hooks/useImg';
+  import bus from '@/utils/bus';
   const props = defineProps({ url: String, force: Boolean, global: Boolean });
   const { init, imgSrc, progressInfo, percentageRef } = useImg(props);
-  init();
+  onMounted(() => {
+    init();
+  });
+  onUnmounted(() => {
+    bus.off(hashString(props.url));
+  });
 </script>
 
 <style scoped lang="less">
