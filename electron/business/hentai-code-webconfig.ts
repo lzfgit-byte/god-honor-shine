@@ -132,6 +132,7 @@ const webConfig: WebConfig = /* break */ {
       const $video = $img.find('#video');
       const $source = $video.find(ElementTypes.source);
       const $span = $img.find(`span[itemprop="name"]`);
+      NotifyMsgUtil.close(key);
       return {
         detailType: 'mp4',
         renderType: 'normal',

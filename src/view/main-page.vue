@@ -71,6 +71,7 @@
           :dbpath="dbPath"
           :chose-db-path="setDbPath"
         ></SystemConfig>
+        <LogView v-if="segmentedValue === '日志'" :key="webKey"></LogView>
       </transition-group>
     </div>
   </a-drawer>
@@ -96,25 +97,26 @@
   import HistoryView from '@/view/components/history-view.vue';
   import FloatButtonGroup from '@/view/components/float-button-group.vue';
   import SystemConfig from '@/view/components/system-config.vue';
+  import LogView from '@/view/components/log-view.vue';
+  import useGlobalState from '@/hooks/use-global-state';
   const route = useRoute();
-  const webKey = route.query.key as string;
-
   const {
+    webKey,
     pagination,
-    handlePageClick,
     items,
     webConfig,
-    handleSearch,
     tags,
-    clearCache,
-    cacheSize,
     dbPath,
-    setDbPath,
-    calcCacheSize,
-    load,
-  } = usePageState(webKey);
-  const { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData } = useFeature();
-  const { collects, updateCollects } = useCollect(webKey);
+    segmentedValue,
+    segmentedData,
+    cacheSize,
+  } = useGlobalState();
+  webKey.value = route.query.key as string;
+
+  const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load } =
+    usePageState();
+  const { showDetail, drawerOpen, handleDrawOpen } = useFeature();
+  const { collects, updateCollects } = useCollect();
 </script>
 
 <style scoped lang="less"></style>

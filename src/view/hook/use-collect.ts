@@ -4,10 +4,10 @@ import type { CollectEntity } from '@ghs/constant';
 import { f_listCollect } from '@/utils/business';
 import useGlobalState from '@/hooks/use-global-state';
 
-export default (key: string) => {
-  const { collects } = useGlobalState();
+export default () => {
+  const { collects, webKey } = useGlobalState();
   const updateCollects = async () => {
-    collects.value = await f_listCollect(key);
+    collects.value = await f_listCollect(webKey.value);
   };
   const getCollect = (): Ref<CollectEntity[]> => collects;
   onMounted(() => {

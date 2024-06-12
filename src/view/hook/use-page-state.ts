@@ -1,6 +1,6 @@
-import { onMounted, ref } from 'vue';
-import type { BaseConfig, Item, MessageInfo, Pagination, Tag, UrlReplace } from '@ghs/types';
-import { hashString, isFalsity, waitTime } from '@ilzf/utils';
+import { onMounted } from 'vue';
+import type { MessageInfo, Pagination } from '@ghs/types';
+import { hashString, isFalsity } from '@ilzf/utils';
 import {
   f_appSetDbDir,
   f_cacheDirDb,
@@ -15,9 +15,19 @@ import { nprogress } from '@/utils/nprogress';
 import useGlobalState from '@/hooks/use-global-state';
 import bus from '@/utils/bus';
 
-export default (key: string) => {
-  const { cacheSize, dbPath, webConfig, loading, pagination, items, tags, urlReplace, currentUrl } =
-    useGlobalState();
+export default () => {
+  const {
+    cacheSize,
+    dbPath,
+    webConfig,
+    loading,
+    pagination,
+    items,
+    tags,
+    urlReplace,
+    currentUrl,
+    webKey,
+  } = useGlobalState();
 
   const calcCacheSize = async () => {
     cacheSize.value = await f_cacheDirSize();
@@ -31,7 +41,7 @@ export default (key: string) => {
         nprogress.set(args.percentage);
       });
     }
-    const page = isFalsity(url) ? await f_getPage(key) : await f_loadPage(url);
+    const page = isFalsity(url) ? await f_getPage(webKey.value) : await f_loadPage(url);
 
     pagination.value = [];
     items.value = [];
@@ -56,7 +66,7 @@ export default (key: string) => {
     await load(item.url);
   };
   const init = async () => {
-    webConfig.value = await f_getCurrentWebConfig(key);
+    webConfig.value = await f_getCurrentWebConfig(webKey.value);
   };
 
   const handleSearch = async (value: string) => {

@@ -34,11 +34,6 @@ ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_MESSAGE, (_event, args: MessageInfo) => {
     }
   }
 });
-// 播放进度信息
-ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, (_event, args: MessageInfo) => {
-  const { key, percentage } = args;
-  bus.emit(key, percentage);
-});
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, (_event, args: MessageInfo) => {
   const { key, title, msg, close } = args;
   notify(key, msg, title, close);

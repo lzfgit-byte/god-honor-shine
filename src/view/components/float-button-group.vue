@@ -21,19 +21,19 @@
     </template>
   </a-float-button>
   <a-float-button
-    :tooltip="`清除HTML缓存,缓存大小:${cacheSize || 0}`"
+    tooltip="刷新页面"
     type="default"
     :style="{ right: '15px', top: '180px' }"
     @click="clearCache(FileType.HTML)"
     @mouseenter="mouseEnter"
   >
     <template #icon>
-      <Html5Outlined />
+      <RedoOutlined />
     </template>
   </a-float-button>
 </template>
 <script setup lang="ts">
-  import { CarOutlined, ClearOutlined, Html5Outlined } from '@ant-design/icons-vue';
+  import { CarOutlined, ClearOutlined, RedoOutlined } from '@ant-design/icons-vue';
   import { FileType } from '@ghs/types';
   defineProps({
     handleDrawOpen: Function,
