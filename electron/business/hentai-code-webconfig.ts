@@ -145,6 +145,7 @@ const webConfig: WebConfig = /* break */ {
       const thumbs = $('#miniThumbContainer .minithumb');
       if (thumbs.length === 0) {
         const hwInfo = getHWImgInfo($);
+        NotifyMsgUtil.close(key);
         return {
           detailType: 'image',
           renderType: 'normal',
