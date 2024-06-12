@@ -43,11 +43,11 @@ const webConfig: WebConfig = /* break */ {
   favicon: 'https://thehentaiworld.com/favicon.ico',
   homeUrl: 'https://thehentaiworld.com/?new',
   searchUrl: 'https://thehentaiworld.com/?s=',
-  searchKey: '$key',
   imgWidth: '220px',
   imgHeight: '147px',
 
   drawWidth: '780px',
+  historyRemember: 100,
 
   getUrlReplace($) {
     return [];

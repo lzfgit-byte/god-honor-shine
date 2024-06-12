@@ -41,7 +41,6 @@ class BaseBusiness extends NormalFunc {
     if (!isFalsity(one)) {
       return;
     }
-    this.webConfig.searchKey = key;
     const ent = new SearchHistoryEntity();
     ent.type = this.webConfig.key;
     ent.value = key;
@@ -54,8 +53,8 @@ class BaseBusiness extends NormalFunc {
       where: { type: this.webConfig.key },
       order: { createTime: 'desc' },
     });
-    if (count > 30) {
-      list.splice(30, count).forEach((item) => {
+    if (count > this.webConfig.historyRemember) {
+      list.splice(this.webConfig.historyRemember, count).forEach((item) => {
         ViewedHistoryEntity.delete(item.id);
       });
     }

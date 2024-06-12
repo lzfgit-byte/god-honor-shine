@@ -9,12 +9,12 @@ export interface BaseConfig {
   homeUrl: string;
   name: string;
   searchUrl: string;
-  searchKey: string;
 
   imgWidth: string;
   imgHeight: string;
 
   drawWidth: string;
+  historyRemember: number;
 }
 
 export interface WebConfig extends BaseConfig {

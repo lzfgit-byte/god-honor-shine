@@ -6,6 +6,7 @@ import { isObject } from '@ilzf/utils';
 
 import bus from '@/utils/bus';
 import { notify } from '@/utils/kit-utils';
+import useGlobalState from '@/hooks/use-global-state';
 // 执行后台的方法
 export const executeFunction = async (funcName: string, ...args: any[]) => {
   args = args.map((item) => {
@@ -16,6 +17,7 @@ export const executeFunction = async (funcName: string, ...args: any[]) => {
   });
   return await ipcRenderer.invoke(funcName, ...args);
 };
+const { logs } = useGlobalState();
 // 获取后台的消息
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_MESSAGE, (_event, args: MessageInfo) => {
   const { msg, type } = args;
@@ -41,4 +43,8 @@ ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, (_event, args: MessageInfo
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, (_event, args: MessageInfo) => {
   const { key } = args;
   bus.emit(key, args);
+});
+
+ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, (_event, args: MessageInfo) => {
+  logs.value.push(args);
 });
