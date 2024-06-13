@@ -85,6 +85,8 @@
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
   import { generateKey } from '@ilzf/utils';
+  import { watch } from 'vue-demi';
+  import { message } from 'ant-design-vue';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/use-page-state';

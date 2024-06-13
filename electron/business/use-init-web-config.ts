@@ -8,7 +8,11 @@ import { getHtml } from '../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter } from '../utils/KitUtil';
 // @ts-ignore
-import demoWebCode from './hentai-code-webconfig?raw';
+import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
+// @ts-ignore
+import rule34 from './webconfigs/rule34-code-webconfiig?raw';
+
+const configs: string[] = [demoWebCode, rule34];
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
@@ -86,19 +90,24 @@ export const loadWebConfig = () => {
     source: 'source',
     p: 'p',
   };
-  const config: WebConfig = eval(wrapperCode(demoWebCode))(
-    helpElAttr,
-    helpElText,
-    ElementAttr,
-    ElementTypes,
-    getHtml,
-    NotifyMsgUtil,
-    LogMsgUtil,
-    hashString,
-    eventEmitter
-  );
-  cache[config.key] = config;
-  setCurrentKey(config.key);
+
+  configs.forEach((item) => {
+    const config: WebConfig = eval(wrapperCode(item))(
+      helpElAttr,
+      helpElText,
+      ElementAttr,
+      ElementTypes,
+      getHtml,
+      NotifyMsgUtil,
+      LogMsgUtil,
+      hashString,
+      eventEmitter
+    );
+    cache[config.key] = config;
+    if (!getCurrentKey()) {
+      setCurrentKey(config.key);
+    }
+  });
 };
 
 export default () => {

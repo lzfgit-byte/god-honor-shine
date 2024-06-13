@@ -2,9 +2,9 @@ import type { WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { hashString } from '@ilzf/utils';
-import { getHtml } from '../export';
-import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
-import { eventEmitter } from '../utils/KitUtil';
+import { getHtml } from '../../export';
+import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
+import { eventEmitter } from '../../utils/KitUtil';
 
 function helpElAttr($el: Cheerio<Element>, attr: string): string {
   return $el?.attr(attr) || '';
