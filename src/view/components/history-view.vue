@@ -17,16 +17,16 @@
 <script setup lang="ts">
   import { computed, onMounted, ref } from 'vue';
   import type { ViewedHistoryEntity } from '@ghs/constant';
-  import type { PropType } from 'vue-demi';
-  import type { BaseConfig, Item } from '@ghs/types';
+  import type { Item } from '@ghs/types';
   import { executeFunc, generateKey, waitTime } from '@ilzf/utils';
   import { f_listHistory } from '@/utils/business';
   import GhsItem from '@/components/item/ghs-item.vue';
+  import useGlobalState from '@/hooks/use-global-state';
   const props = defineProps({
-    webConfig: Object as PropType<BaseConfig>,
     showDetail: Function,
     upCollect: Function,
   });
+  const { webConfig } = useGlobalState();
 
   const history = ref<ViewedHistoryEntity[]>([]);
 

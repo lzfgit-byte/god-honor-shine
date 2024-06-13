@@ -13,10 +13,10 @@
   </div>
 </template>
 <script setup lang="ts">
-  import type { PropType } from 'vue-demi';
-  import type { BaseConfig } from '@ghs/types';
+  import useGlobalState from '@/hooks/use-global-state';
 
-  defineProps({ webConfig: Object as PropType<BaseConfig>, dbpath: String, choseDbPath: Function });
+  defineProps({ choseDbPath: Function });
+  const { dbpath } = useGlobalState();
 </script>
 
 <style scoped lang="less"></style>

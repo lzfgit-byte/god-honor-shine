@@ -43,34 +43,24 @@
         leave-active-class="animate__animated animate__fadeOut"
         duration="200"
       >
-        <TagsView
-          v-if="segmentedValue === '标签'"
-          :key="webKey"
-          :tags="tags"
-          :load="load"
-        ></TagsView>
+        <TagsView v-if="segmentedValue === '标签'" :key="webKey" :load="load"></TagsView>
         <CollectView
           v-if="segmentedValue === '收藏'"
           :key="webKey"
-          v-model:collects="collects"
-          :web-key="webKey"
-          :web-config="webConfig"
           :show-detail="showDetail"
         ></CollectView>
         <HistoryView
           v-if="segmentedValue === '历史'"
           :key="webKey"
-          :web-config="webConfig"
           :show-detail="showDetail"
           :up-collect="updateCollects"
         ></HistoryView>
         <SystemConfig
           v-if="segmentedValue === '系统配置'"
           :key="webKey"
-          :web-config="webConfig"
-          :dbpath="dbPath"
           :chose-db-path="setDbPath"
         ></SystemConfig>
+        <FilterView v-if="segmentedValue === '过滤选项'"></FilterView>
         <LogView v-if="segmentedValue === '日志'" :key="webKey"></LogView>
       </transition-group>
     </div>
@@ -85,7 +75,7 @@
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
   import { generateKey } from '@ilzf/utils';
-  import { watch, watchEffect } from 'vue-demi';
+  import { watchEffect } from 'vue-demi';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/use-page-state';
@@ -100,18 +90,10 @@
   import SystemConfig from '@/view/components/system-config.vue';
   import LogView from '@/view/components/log-view.vue';
   import useGlobalState from '@/hooks/use-global-state';
+  import FilterView from '@/view/components/filter-view.vue';
   const route = useRoute();
-  const {
-    webKey,
-    pagination,
-    items,
-    webConfig,
-    tags,
-    dbPath,
-    segmentedValue,
-    segmentedData,
-    cacheSize,
-  } = useGlobalState();
+  const { webKey, pagination, items, webConfig, segmentedValue, segmentedData, cacheSize } =
+    useGlobalState();
   webKey.value = route.query.key as string;
 
   const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =

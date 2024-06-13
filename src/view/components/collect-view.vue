@@ -16,24 +16,17 @@
   </div>
 </template>
 <script setup lang="ts">
-  import type { PropType } from 'vue-demi';
-  import type { CollectEntity } from '@ghs/constant';
-  import { useVModel } from '@vueuse/core';
   import { computed } from 'vue';
-  import type { BaseConfig } from '@ghs/types';
   import { generateKey } from '@ilzf/utils';
   import GhsItem from '@/components/item/ghs-item.vue';
+  import useGlobalState from '@/hooks/use-global-state';
 
   const props = defineProps({
-    collects: Array as PropType<CollectEntity[]>,
-    webKey: String,
-    webConfig: Object as PropType<BaseConfig>,
     showDetail: Function,
     upCollect: Function,
   });
-  const emits = defineEmits(['update:collects']);
-  const collectsModel = useVModel(props, 'collects', emits);
-  const items = computed(() => collectsModel.value.map((item) => JSON.parse(item.value)));
+  const { webConfig, collects } = useGlobalState();
+  const items = computed(() => collects.value.map((item) => JSON.parse(item.value)));
 </script>
 
 <style scoped lang="less">

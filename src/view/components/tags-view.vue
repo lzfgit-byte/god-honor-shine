@@ -12,11 +12,11 @@
   </div>
 </template>
 <script setup lang="ts">
-  import type { PropType } from 'vue-demi';
-  import type { Tag } from '@ghs/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
+  import useGlobalState from '@/hooks/use-global-state';
 
-  const props = defineProps({ tags: Array as PropType<Tag[]>, load: Function });
+  defineProps({ load: Function });
+  const { tags } = useGlobalState();
 </script>
 
 <style scoped lang="less"></style>
