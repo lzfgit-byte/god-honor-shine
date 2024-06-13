@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi';
-import type { BaseConfig, Item, Pagination, Tag, UrlReplace } from '@ghs/types';
+import type { BaseConfig, Item, Pagination, SetTag, Tag, UrlReplace } from '@ghs/types';
 import type { CollectEntity } from '@ghs/constant';
+import { computed } from 'vue';
 
 const webKey = ref();
 
@@ -16,8 +17,8 @@ const loading = ref(false);
 const logs = ref([]);
 
 const drawerOpen = ref(false);
-const segmentedValue = ref<'标签' | '收藏' | '历史' | '过滤选项' | '系统配置' | '日志'>('标签');
-const segmentedData = ref(['标签', '收藏', '历史', '过滤选项', '系统配置', '日志']);
+const segmentedValue = ref<SetTag>('标签');
+const segmentedData = computed(() => webConfig?.value?.setTags);
 
 const collects = ref<CollectEntity[]>();
 

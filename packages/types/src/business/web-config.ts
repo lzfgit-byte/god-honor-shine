@@ -2,7 +2,7 @@ import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import type { DetailInfo, Item, Pagination, Tag, UrlReplace } from '@/business/index';
-
+export type SetTag = '标签' | '收藏' | '历史' | '过滤选项' | '系统配置' | '日志';
 export interface BaseConfig {
   key: string;
   favicon: string;
@@ -15,6 +15,8 @@ export interface BaseConfig {
 
   drawWidth: string;
   historyRemember: number;
+
+  setTags: SetTag[];
 }
 
 export interface WebConfig extends BaseConfig {

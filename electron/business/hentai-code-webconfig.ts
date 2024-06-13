@@ -49,6 +49,8 @@ const webConfig: WebConfig = /* break */ {
   drawWidth: '780px',
   historyRemember: 100,
 
+  setTags: ['标签', '收藏', '历史', '系统配置', '日志'],
+
   getUrlReplace($) {
     return [];
   },
