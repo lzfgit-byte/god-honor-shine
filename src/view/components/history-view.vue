@@ -8,6 +8,7 @@
         :width="webConfig.imgWidth"
         :height="webConfig.imgHeight"
         @img-click="showDetailProxy(item)"
+        @up-collect="upCollect"
       ></GhsItem>
     </TransitionGroup>
     <a-empty v-if="items.length === 0" />
@@ -21,7 +22,11 @@
   import { executeFunc, generateKey, waitTime } from '@ilzf/utils';
   import { f_listHistory } from '@/utils/business';
   import GhsItem from '@/components/item/ghs-item.vue';
-  const props = defineProps({ webConfig: Object as PropType<BaseConfig>, showDetail: Function });
+  const props = defineProps({
+    webConfig: Object as PropType<BaseConfig>,
+    showDetail: Function,
+    upCollect: Function,
+  });
 
   const history = ref<ViewedHistoryEntity[]>([]);
 

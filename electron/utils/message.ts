@@ -1,7 +1,7 @@
 import { webContents } from 'electron';
 import { MESSAGE_EVENT_KEY } from '@ghs/constant';
 import type { MessageInfo } from '@ghs/types';
-import { eventEmitter } from './KitUtil';
+import { eventEmitter, getCurrentDate } from './KitUtil';
 
 /**
  * 发送及时的消息
@@ -74,7 +74,7 @@ export class LogMsgUtil {
   }
 
   static sendLogMsg(msg: string) {
-    this.sendMsg({ msg });
+    this.sendMsg({ msg: `${getCurrentDate()} ${msg}` });
   }
 
   static close() {

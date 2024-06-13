@@ -56,13 +56,13 @@
           :web-key="webKey"
           :web-config="webConfig"
           :show-detail="showDetail"
-          :up-collect="updateCollects"
         ></CollectView>
         <HistoryView
           v-if="segmentedValue === '历史'"
           :key="webKey"
           :web-config="webConfig"
           :show-detail="showDetail"
+          :up-collect="updateCollects"
         ></HistoryView>
         <SystemConfig
           v-if="segmentedValue === '系统配置'"

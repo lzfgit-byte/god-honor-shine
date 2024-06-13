@@ -87,7 +87,7 @@
     left: 0;
     margin: auto;
     width: max-content;
-    z-index: 9999;
+    z-index: 99;
     .ghs-menu-item {
       padding: 5px 10px;
       margin: 3px;
@@ -109,6 +109,6 @@
     left: 0;
     margin: auto;
     width: max-content;
-    z-index: 9999;
+    z-index: 99;
   }
 </style>
