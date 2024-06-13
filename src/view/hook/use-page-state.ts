@@ -109,7 +109,6 @@ export default () => {
     urlReplace,
     webConfig,
     handleSearch,
-    dbPath,
     clearCache,
     cacheSize,
     setDbPath,

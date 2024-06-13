@@ -1,7 +1,8 @@
-import type { WebConfig } from '@ghs/types';
+import type { UrlReplace, WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { hashString } from '@ilzf/utils';
+
 import { getHtml } from '../../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter } from '../../utils/KitUtil';
@@ -81,7 +82,17 @@ const webConfig: WebConfig = /* break */ {
 `,
 
   getUrlReplace($) {
-    return [];
+    return [
+      {
+        schema: '排序',
+        urlAppend: [
+          { value: '', param: 'sort_by', title: 'Most Relevant' },
+          { value: 'post_date', param: 'sort_by', title: 'Latest' },
+          { value: 'video_viewed', param: 'sort_by', title: 'Most Viewed' },
+          { value: 'rating', param: 'sort_by', title: 'Top Rated' },
+        ],
+      },
+    ];
   },
   getItems($) {
     const res = [];
@@ -215,7 +226,14 @@ const webConfig: WebConfig = /* break */ {
       relations: [],
     };
   },
-  adapterLoadUrl(url) {
+  adapterLoadUrl(url, urlReplaces) {
+    url = url.replace('%20', '-');
+    const urlAppend = urlReplaces[0].urlAppend[0];
+    if (urlAppend) {
+      let newUrl = new URL(url);
+      newUrl.searchParams.set(urlAppend.param, urlAppend.value);
+      return newUrl.toString();
+    }
     return url;
   },
   adapterSearchUrl(key) {

@@ -1,7 +1,8 @@
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
-import type { DetailInfo, Item, Pagination, Tag, UrlReplace } from '@/business/index';
+import type { DetailInfo, Item, Pagination, Tag, UrlAppend, UrlReplace } from '@/business/index';
+
 export type SetTag = '标签' | '收藏' | '历史' | '过滤选项' | '系统配置' | '日志';
 export interface BaseConfig {
   key: string;
@@ -36,7 +37,7 @@ export interface WebConfig extends BaseConfig {
   getDetailInfo: (item: Item, cheerio: any) => Promise<DetailInfo>;
 
   // 处理排序等问题时调用
-  adapterLoadUrl: (url: string) => string;
+  adapterLoadUrl: (url: string, urlReplaces: UrlReplace[]) => string;
   // 处理搜索问题时调用
   adapterSearchUrl: (url: string) => string;
 }

@@ -60,7 +60,7 @@
           :key="webKey"
           :chose-db-path="setDbPath"
         ></SystemConfig>
-        <FilterView v-if="segmentedValue === '过滤选项'"></FilterView>
+        <FilterView v-if="segmentedValue === '过滤选项'" :key="webKey"></FilterView>
         <LogView v-if="segmentedValue === '日志'" :key="webKey"></LogView>
       </transition-group>
     </div>

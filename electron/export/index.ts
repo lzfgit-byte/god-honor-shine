@@ -1,4 +1,12 @@
-import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
+import type {
+  BaseConfig,
+  DetailInfo,
+  Item,
+  Page,
+  UrlAppend,
+  UrlReplace,
+  WebConfig,
+} from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 
 import { MessageUtil } from '../utils/message';
@@ -6,6 +14,7 @@ import {
   getBaseConfigByKey,
   getCurrentKey,
   getWebConfigAry,
+  getWebConfigByKey,
   setCurrentKey,
 } from '../business/use-init-web-config';
 import { getCurrentBusiness } from '../business/business';
@@ -64,4 +73,11 @@ export const loadPage = async (url: string): Promise<Page> => {
 export const getDetailPage = async (item: Item): Promise<DetailInfo> => {
   const business = getCurrentBusiness(getCurrentKey());
   return business.getDetailPage(item);
+};
+/**
+ * 处理排序
+ */
+export const adapterLoadUrl = (url: string, urlReplaces: UrlReplace[]) => {
+  const wc = getWebConfigByKey(getCurrentKey());
+  return wc.adapterLoadUrl(url, urlReplaces);
 };

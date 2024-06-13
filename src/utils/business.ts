@@ -1,5 +1,6 @@
-import type { BaseConfig, DetailInfo, Item, Page, WebConfig } from '@ghs/types';
+import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
 import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
+import { adapterLoadUrl } from '../../electron/export';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -148,4 +149,10 @@ export const f_cacheDirDb = () => {
  */
 export const f_appSetDbDir = (path: string): Promise<boolean> => {
   return executeFunction('app_set_db_dir', path);
+};
+/**
+ * 处理排序方法
+ */
+export const f_adapterLoadUrl = (url: string, urlReps: UrlReplace[]): Promise<boolean> => {
+  return executeFunction('adapterLoadUrl', url, urlReps);
 };
