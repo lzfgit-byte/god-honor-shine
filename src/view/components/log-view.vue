@@ -1,6 +1,6 @@
 <template>
   <div h-full w-full overflow-auto>
-    <div id="codemirror"></div>
+    <div id="codemirror" class="editor"></div>
   </div>
 </template>
 
@@ -9,6 +9,7 @@
   import { defaultKeymap } from '@codemirror/commands';
   import { EditorState } from '@codemirror/state';
   import { oneDark } from '@codemirror/theme-one-dark';
+  import { lineNumbers } from '@codemirror/gutter';
 
   import { onMounted, ref } from 'vue';
   import useGlobalState from '@/hooks/use-global-state';
@@ -43,10 +44,15 @@
       updateEditorContent('console.log("Updated content!");');
     }, 1000);
   });
-
-  // Example of dynamic update:
-  // Call updateEditorContent with new code to update the editor content
-  // updateEditorContent('console.log("Updated content!");');
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+  .editor {
+    height: 100%;
+    width: 100%;
+    :deep(.cm-editor) {
+      outline: none !important;
+      height: 100%;
+    }
+  }
+</style>
