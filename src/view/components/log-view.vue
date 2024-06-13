@@ -1,48 +1,34 @@
 <template>
-  <div h-full w-full overflow-auto>
-    <div id="codemirror" class="editor"></div>
+  <div h-full w-full class="editor">
+    <Codemirror
+      v-model="code"
+      :autofocus="true"
+      :indent-with-tab="true"
+      :tab-size="2"
+      :extensions="extensions"
+      @ready="handleReady"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { EditorView, keymap } from '@codemirror/view';
-  import { defaultKeymap } from '@codemirror/commands';
-  import { EditorState } from '@codemirror/state';
+  import { ref, shallowRef } from 'vue';
+  import { Codemirror } from 'vue-codemirror';
+  import { javascript } from '@codemirror/lang-javascript';
   import { oneDark } from '@codemirror/theme-one-dark';
-  import { lineNumbers } from '@codemirror/gutter';
-
-  import { onMounted, ref } from 'vue';
+  import { watchEffect } from 'vue-demi';
   import useGlobalState from '@/hooks/use-global-state';
-
   const { logs } = useGlobalState();
-  const editorView = ref<EditorView | null>(null);
+  const code = ref(``);
+  const extensions = [javascript(), oneDark];
 
-  const createEditor = () => {
-    const state = EditorState.create({
-      doc: `// 这是JavaScript代码编辑器\nconsole.log("Hello, CodeMirror 6!");`,
-      extensions: [keymap.of(defaultKeymap), oneDark],
-    });
-    editorView.value = new EditorView({
-      state,
-      parent: document.getElementById('codemirror'),
-    });
+  const view = shallowRef();
+  const handleReady = (payload) => {
+    view.value = payload.view;
   };
 
-  const updateEditorContent = (newContent: string) => {
-    if (editorView.value) {
-      const newState = EditorState.create({
-        doc: newContent,
-        extensions: [keymap.of(defaultKeymap), oneDark],
-      });
-      editorView.value.setState(newState);
-    }
-  };
-
-  onMounted(() => {
-    createEditor();
-    setTimeout(() => {
-      updateEditorContent('console.log("Updated content!");');
-    }, 1000);
+  watchEffect(() => {
+    code.value = logs.value.join('\n');
   });
 </script>
 
