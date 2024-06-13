@@ -116,5 +116,6 @@ export default () => {
     loading,
     calcCacheSize,
     load,
+    init,
   };
 };

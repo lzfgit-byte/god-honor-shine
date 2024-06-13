@@ -44,12 +44,16 @@
   import { useRouter } from 'vue-router';
   import { computed, watch } from 'vue';
   import { ref } from 'vue-demi';
+  import type { RouterType } from '@/router/router';
   import { routes } from '@/router/router';
   import GhsImg from '@/components/image/ghs-img.vue';
+  import useGlobalState from '@/hooks/use-global-state';
   let router = useRouter();
-  const culRoutes = computed(() => routes.value.filter((i) => i.icon));
+  const { webKey } = useGlobalState();
+  const culRoutes: RouterType[] = computed(() => routes.value.filter((i) => i.icon)) as any;
   const fullSize = ref(false);
   const handleClick = (item) => {
+    webKey.value = item.key;
     router.push(item.path);
   };
   let timer: any;

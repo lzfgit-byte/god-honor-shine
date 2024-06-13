@@ -20,8 +20,8 @@
             v-for="(item, index) in items"
             :key="item.jumpUrl + index + generateKey()"
             :item="item"
-            :width="webConfig.imgWidth"
-            :height="webConfig.imgHeight"
+            :width="webConfig?.imgWidth"
+            :height="webConfig?.imgHeight"
             :collect-sequence="collects?.length"
             @img-click="showDetail(item)"
             @up-collect="updateCollects"
@@ -85,8 +85,7 @@
 <script setup lang="ts">
   import { useRoute } from 'vue-router';
   import { generateKey } from '@ilzf/utils';
-  import { watch } from 'vue-demi';
-  import { message } from 'ant-design-vue';
+  import { watch, watchEffect } from 'vue-demi';
   import ViewLayout from '@/components/layout/view-layout.vue';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import usePageState from '@/view/hook/use-page-state';
@@ -115,10 +114,19 @@
   } = useGlobalState();
   webKey.value = route.query.key as string;
 
-  const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load } =
+  const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =
     usePageState();
   const { showDetail, drawerOpen, handleDrawOpen } = useFeature();
   const { collects, updateCollects } = useCollect();
+  watchEffect(() => {
+    console.log(webKey.value);
+    if (webKey.value) {
+      console.log('webKey.value', webKey.value);
+      load();
+      init();
+      updateCollects();
+    }
+  });
 </script>
 
 <style scoped lang="less"></style>
