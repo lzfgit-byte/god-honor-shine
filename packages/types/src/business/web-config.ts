@@ -18,7 +18,9 @@ export interface BaseConfig {
 
   setTags: SetTag[];
 
-  ifWinExecCode: string;
+  ifWinExecCode?: string;
+  winWidth?: number;
+  winHeight?: number;
 }
 
 export interface WebConfig extends BaseConfig {

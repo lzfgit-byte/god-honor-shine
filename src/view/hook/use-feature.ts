@@ -1,10 +1,10 @@
 import type { Item } from '@ghs/types';
-import { f_getDetailPage } from '@/utils/business';
+import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
 
 export default () => {
-  const { segmentedValue, drawerOpen, segmentedData } = useGlobalState();
+  const { segmentedValue, drawerOpen, segmentedData, webConfig } = useGlobalState();
   const showDetail = async (item: Item) => {
     const detail = await f_getDetailPage(item);
     if (detail.detailType === 'mp4' || detail.detailType === 'm3u8') {
@@ -24,7 +24,12 @@ export default () => {
     } else if (detail.detailType === 'image') {
       imgViewerRef.value.show(detail.details);
     } else if (detail.detailType === 'win') {
-      // TODO
+      await f_winOpenAny(
+        detail.details[0].url,
+        webConfig.value?.ifWinExecCode,
+        webConfig.value?.winWidth,
+        webConfig.value?.winHeight
+      );
     } else if (detail.detailType === 'comic') {
       // TODO
     }
