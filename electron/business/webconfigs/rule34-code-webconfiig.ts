@@ -51,6 +51,35 @@ const webConfig: WebConfig = /* break */ {
 
   setTags: ['收藏', '历史', '过滤选项', '系统配置', '日志'],
 
+  winWidth: 1200,
+  winHeight: 800,
+  ifWinExecCode: `(async () => {
+  return new Promise((resolve) => {
+    // @ts-ignore
+    $('body').attr('class', '');
+    // @ts-ignore
+    $('.spot_under').remove();
+    // $('#custom_list_videos_related_videos').remove();//视频列表
+    // @ts-ignore
+    $('.footer').remove();
+    // @ts-ignore
+    $('.header').remove();
+    // @ts-ignore
+    $('.btn_more').remove();
+    // @ts-ignore
+    $('.main').attr('style', 'padding: 10px 0 0 0;');
+    // @ts-ignore
+    $('.video_tools').attr('style', 'padding-bottom: 10px;');
+    // @ts-ignore
+    $('.video_tools').attr('style', 'padding-bottom: 10px;');
+    const $style = document.createElement('style');
+    $style.innerHTML = \` div::-webkit-scrollbar,body::-webkit-scrollbar {width: 0;}\`;
+    document.getElementsByTagName('head')[0].appendChild($style);
+    resolve('aaaa');
+  });
+})();
+`,
+
   getUrlReplace($) {
     return [];
   },
@@ -172,94 +201,25 @@ const webConfig: WebConfig = /* break */ {
     return [];
   },
   async getDetailInfo(item, cheerio) {
-    const key = hashString(item.jumpUrl);
-    const getHWImgInfo = ($) => {
-      const $grid = $('#grid');
-      const $h1 = $grid.find(ElementTypes.h1);
-      const $minImg = $grid.find('#image img');
-      const $minImg2 = $grid.find('#doujin img');
-      const $fullA = $('#info a');
-      const fullUrl = helpElAttr($fullA, ElementAttr.href);
-      const minUrl = helpElAttr($minImg, ElementAttr.src) || helpElAttr($minImg2, ElementAttr.src);
-      const title = helpElText($h1);
-      return { fullUrl, minUrl, title };
+    return {
+      detailType: 'win',
+      renderType: 'normal',
+      details: [
+        {
+          type: 'win',
+          url: item.jumpUrl,
+          fullUrl: '',
+          title: item.title,
+        },
+      ],
+      relations: [],
     };
-    NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html`, key);
-    const handle = (msg) => {
-      NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html:${msg}`, key);
-    };
-    eventEmitter.on(key, handle);
-    let html = await getHtml(item.jumpUrl);
-    eventEmitter.off(key, handle);
-    NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html:success`, key);
-    const $ = cheerio.load(html);
-    if (item.type === 'video') {
-      const $img = $('#image');
-      const $video = $img.find('#video');
-      const $source = $video.find(ElementTypes.source);
-      const $span = $img.find(`span[itemprop="name"]`);
-      NotifyMsgUtil.close(key);
-      return {
-        detailType: 'mp4',
-        renderType: 'normal',
-        details: [
-          { type: 'mp4', url: helpElAttr($source, ElementAttr.src), title: helpElText($span) },
-        ],
-        relations: [],
-      };
-    }
-    if (item.type === 'image') {
-      const thumbs = $('#miniThumbContainer .minithumb');
-      if (thumbs.length === 0) {
-        const hwInfo = getHWImgInfo($);
-        NotifyMsgUtil.close(key);
-        return {
-          detailType: 'image',
-          renderType: 'normal',
-          details: [
-            { type: 'image', url: hwInfo.minUrl, fullUrl: hwInfo.fullUrl, title: hwInfo.title },
-          ],
-          relations: [],
-        };
-      }
-      const urls = [];
-      thumbs.each((i, el) => {
-        urls.push(helpElAttr($(el).find(ElementTypes.a), ElementAttr.href));
-      });
-      const res = [];
-      for (let i = 0; i < urls.length; i++) {
-        NotifyMsgUtil.sendNotifyMsg('进度', `${i + 1}/${urls.length}`, key);
-
-        const url_ = urls[i];
-        const keyFoo = hashString(url_);
-
-        const handle = (msg) => {
-          NotifyMsgUtil.sendNotifyMsg('进度', `${i + 1}/${urls.length},html:${msg}`, key);
-        };
-        eventEmitter.on(keyFoo, handle);
-        const html = await getHtml(url_);
-        eventEmitter.off(keyFoo, handle);
-
-        const $ = cheerio.load(html);
-        const hwInfo = getHWImgInfo($);
-        res.push({
-          type: 'image',
-          url: hwInfo.minUrl,
-          fullUrl: hwInfo.fullUrl,
-          title: hwInfo.title,
-        });
-      }
-      NotifyMsgUtil.close(key);
-      return { detailType: 'image', renderType: 'normal', details: res, relations: [] };
-    }
-    return null;
   },
   adapterLoadUrl(url) {
     return url;
   },
   adapterSearchUrl(key) {
-    key = key.replace(' ', '+');
-    return this.searchUrl + key;
+    return `${this.searchUrl}${key.replace(' ', '-')}/`;
   },
 };
 /* break */

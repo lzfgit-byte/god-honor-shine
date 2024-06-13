@@ -49,11 +49,12 @@
   import GhsImg from '@/components/image/ghs-img.vue';
   import useGlobalState from '@/hooks/use-global-state';
   let router = useRouter();
-  const { webKey } = useGlobalState();
+  const { webKey, loading } = useGlobalState();
   const culRoutes: RouterType[] = computed(() => routes.value.filter((i) => i.icon)) as any;
   const fullSize = ref(false);
   const handleClick = (item) => {
     webKey.value = item.key;
+    loading.value = true;
     router.push(item.path);
   };
   let timer: any;

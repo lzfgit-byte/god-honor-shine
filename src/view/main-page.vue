@@ -119,9 +119,7 @@
   const { showDetail, drawerOpen, handleDrawOpen } = useFeature();
   const { collects, updateCollects } = useCollect();
   watchEffect(() => {
-    console.log(webKey.value);
     if (webKey.value) {
-      console.log('webKey.value', webKey.value);
       load();
       init();
       updateCollects();

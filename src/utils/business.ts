@@ -33,7 +33,7 @@ export const f_winGetDataCode = async (code: string, url: string): Promise<any> 
  * @param height
  */
 export const f_winOpenAny = async (url: string, code: string, width: number, height: number) => {
-  return executeFunction('winOpenAny', { url, code, width, height });
+  return executeFunction('winOpenAny', url, code, width, height);
 };
 
 /**
