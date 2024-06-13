@@ -19,6 +19,8 @@ export enum ItemDetailType {
   mp4 = 'mp4',
   m3u8 = 'm3u8',
   image = 'image',
+  win = 'win',
+  comic = 'comic',
 }
 // 将上边枚举转换为联合类型
 export type ItemDetailTypeUnion = keyof typeof ItemDetailType;

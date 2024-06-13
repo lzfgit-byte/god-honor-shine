@@ -17,6 +17,8 @@ export interface BaseConfig {
   historyRemember: number;
 
   setTags: SetTag[];
+
+  ifWinExecCode: string;
 }
 
 export interface WebConfig extends BaseConfig {
