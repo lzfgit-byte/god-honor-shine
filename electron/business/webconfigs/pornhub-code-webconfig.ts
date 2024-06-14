@@ -51,10 +51,8 @@ const getData = (): WebConfig => /* break */ ({
     };
     const sorts = [
       { value: '', name: '最相关' },
-      // { value: 'o=mv,cc=us', name: '最多观看' },
       { value: 'mv', name: '最多观看' },
       { value: 'tr', name: '最高分' },
-      // { value: 'o=ht,cc=us', name: '最热门' },
       { value: 'lg', name: '最长' },
       { value: 'mr', name: '最新' },
     ];
@@ -227,8 +225,7 @@ const getData = (): WebConfig => /* break */ ({
     const jScript = helpElText($('#player script'));
     const jsonJS = jScript.substring(jScript.indexOf('{'), jScript.indexOf('};') + 1);
     try {
-      const objs: { mediaDefinitions: { format: string; videoUrl: string; quality: string }[] } =
-        JSON.parse(jsonJS);
+      const objs = JSON.parse(jsonJS);
       objs.mediaDefinitions.forEach((item) => {
         if (typeof item.quality === 'string') {
           urls.push({ url: item.videoUrl, hd: item.quality });
