@@ -8,5 +8,7 @@
 //* ** let hashString = arguments[7];
 //* ** let eventEmitter = arguments[8];
 //* ** let request_string_get = arguments[9];
+//* ** let getCurrentItems = arguments[10];
+//* ** let MessageUtil = arguments[11];
 //* ** let cc = '$code';
 //* ** return cc;

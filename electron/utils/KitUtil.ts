@@ -18,3 +18,15 @@ export const helpElAttr = ($el: Cheerio<Element>, attr: string): string => {
 export const helpElText = ($el: Cheerio<Element>): string => {
   return $el?.text() || '';
 };
+export const getCurrentItems = (...items: (() => Cheerio<Element>)[]): Cheerio<Element> => {
+  let res = null;
+  items.forEach((func) => {
+    if (res === null) {
+      const foo = func();
+      if (foo.length > 0) {
+        res = foo;
+      }
+    }
+  });
+  return res || items[0]();
+};

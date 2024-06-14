@@ -6,8 +6,8 @@ import { hashString, isFunction } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes } from '@ghs/constant';
 import { getHtml } from '../export';
-import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
-import { eventEmitter, helpElAttr, helpElText } from '../utils/KitUtil';
+import { LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
+import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
 // @ts-ignore
 import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
@@ -20,9 +20,11 @@ import badnew from './webconfigs/badnews-code-webconfig?raw';
 // @ts-ignore
 import xvideo from './webconfigs/xvideo-code-webconfig?raw';
 // @ts-ignore
+import pornhub from './webconfigs/pornhub-code-webconfig?raw';
+// @ts-ignore
 import staticCode from './static-code?raw';
 
-const configs: string[] = [demoWebCode, rule34, lulu, badnew, xvideo];
+const configs: string[] = [demoWebCode, rule34, lulu, badnew, xvideo, pornhub];
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
@@ -37,7 +39,9 @@ const wrapperCode = (code: string) => {
   const codes = code.split(breakStr);
   if (codes.length === 2) {
     let replace = codes[1].substring(0, codes[1].lastIndexOf(';'));
-    return staticCode.replaceAll(staticBreak, '').replace(`'$code'`, replace.replace(': any', ''));
+    return staticCode
+      .replaceAll(staticBreak, '')
+      .replace(`'$code'`, replace.replace(': any', '').replace(': Item[]', ''));
   }
 };
 export const getWebConfigByKey = (key: string) => {
@@ -79,7 +83,9 @@ export const loadWebConfig = () => {
       LogMsgUtil,
       hashString,
       eventEmitter,
-      request_string_get
+      request_string_get,
+      getCurrentItems,
+      MessageUtil
     );
     cache[config.key] = config;
     if (!getCurrentKey()) {
