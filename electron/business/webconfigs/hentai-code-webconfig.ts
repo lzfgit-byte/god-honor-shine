@@ -200,21 +200,3 @@ const webConfig: WebConfig = /* break */ {
     return this.searchUrl + key;
   },
 };
-/* break */
-
-(
-  () =>
-  (
-    helpElAttr,
-    helpElText,
-    ElementAttr,
-    ElementTypes,
-    getHtml,
-    NotifyMsgUtil,
-    LogMsgUtil,
-    hashString,
-    eventEmitter
-  ) => {
-    return '$code';
-  }
-)();

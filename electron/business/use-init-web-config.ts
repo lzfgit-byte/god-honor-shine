@@ -11,6 +11,8 @@ import { eventEmitter } from '../utils/KitUtil';
 import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
 // @ts-ignore
 import rule34 from './webconfigs/rule34-code-webconfiig?raw';
+// @ts-ignore
+import staticCode from './static-code?raw';
 
 const configs: string[] = [demoWebCode, rule34];
 
@@ -22,13 +24,12 @@ export const getCurrentKey = () => currentKey;
 
 const cache: Record<string, WebConfig> = {};
 const breakStr = '/* break */';
+const staticBreak = '//* **';
 const wrapperCode = (code: string) => {
   const codes = code.split(breakStr);
-  if (codes.length === 3) {
-    let res = codes[2];
+  if (codes.length === 2) {
     let replace = codes[1].substring(0, codes[1].lastIndexOf(';'));
-    res = res.replace(`'$code'`, replace);
-    return res;
+    return staticCode.replaceAll(staticBreak, '').replace(`'$code'`, replace);
   }
 };
 export const getWebConfigByKey = (key: string) => {
@@ -92,7 +93,7 @@ export const loadWebConfig = () => {
   };
 
   configs.forEach((item) => {
-    const config: WebConfig = eval(wrapperCode(item))(
+    const config: WebConfig = new Function(wrapperCode(item))(
       helpElAttr,
       helpElText,
       ElementAttr,

@@ -276,21 +276,3 @@ const webConfig: WebConfig = /* break */ {
     return `${this.searchUrl}${key.replace(' ', '-')}/`;
   },
 };
-/* break */
-
-(
-  () =>
-  (
-    helpElAttr,
-    helpElText,
-    ElementAttr,
-    ElementTypes,
-    getHtml,
-    NotifyMsgUtil,
-    LogMsgUtil,
-    hashString,
-    eventEmitter
-  ) => {
-    return '$code';
-  }
-)();

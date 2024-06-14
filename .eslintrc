@@ -20,6 +20,7 @@
     "vue/no-constant-condition":"off",
     "@typescript-eslint/no-use-before-define":"off",
     "no-eval":"off",
+    "no-new-func":"off",
     "import/no-mutable-exports":"off",
     "unicorn/prefer-includes":"off",
     "prefer-const": "off"

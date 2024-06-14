@@ -1,0 +1,11 @@
+//* ** let helpElAttr = arguments[0];
+//* ** let helpElText = arguments[1];
+//* ** let ElementAttr = arguments[2];
+//* ** let ElementTypes = arguments[3];
+//* ** let getHtml = arguments[4];
+//* ** let NotifyMsgUtil = arguments[5];
+//* ** let LogMsgUtil = arguments[6];
+//* ** let hashString = arguments[7];
+//* ** let eventEmitter = arguments[8];
+//* ** let cc = '$code';
+//* ** return cc;
