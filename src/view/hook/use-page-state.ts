@@ -1,6 +1,6 @@
 import { onMounted } from 'vue';
 import type { MessageInfo, Pagination } from '@ghs/types';
-import { hashString, isFalsity } from '@ilzf/utils';
+import { hashString, isFalsity, waitTime } from '@ilzf/utils';
 import {
   f_appSetDbDir,
   f_cacheDirDb,
@@ -47,7 +47,7 @@ export default () => {
     items.value = [];
     tags.value = [];
     urlReplace.value = [];
-    currentUrl.value = url;
+    currentUrl.value = url || webConfig.value.homeUrl;
 
     pagination.value = page.pagination;
     items.value = page.items;

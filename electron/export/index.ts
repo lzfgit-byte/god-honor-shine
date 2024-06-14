@@ -40,6 +40,12 @@ export const getCurrentKeyExp = async (): Promise<string> => {
   return getCurrentKey();
 };
 /**
+ * 设置当前的key
+ */
+export const setCurrentKeyExp = async (key: string) => {
+  setCurrentKey(key);
+};
+/**
  * 获取当前的config
  */
 export const getCurrentWebConfig = async (key: string): Promise<BaseConfig> => {

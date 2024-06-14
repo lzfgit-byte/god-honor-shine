@@ -42,20 +42,23 @@
 </template>
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
+  import type { Ref } from 'vue';
   import { computed, watch } from 'vue';
   import { ref } from 'vue-demi';
   import type { RouterType } from '@/router/router';
   import { routes } from '@/router/router';
   import GhsImg from '@/components/image/ghs-img.vue';
   import useGlobalState from '@/hooks/use-global-state';
+  import { f_setCurrentKeyExp } from '@/utils/business';
   let router = useRouter();
   const { webKey, loading } = useGlobalState();
-  const culRoutes: RouterType[] = computed(() => routes.value.filter((i) => i.icon)) as any;
+  const culRoutes: Ref<RouterType[]> = computed(() => routes.value.filter((i) => i.icon)) as any;
   const fullSize = ref(false);
-  const handleClick = (item) => {
+  const handleClick = async (item) => {
     webKey.value = item.key;
+    await f_setCurrentKeyExp(webKey.value);
     loading.value = true;
-    router.push(item.path);
+    await router.push(item.path);
   };
   let timer: any;
   const setTimer = () => {

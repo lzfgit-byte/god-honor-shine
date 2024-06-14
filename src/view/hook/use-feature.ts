@@ -36,7 +36,6 @@ export default () => {
   };
 
   const handleDrawOpen = () => {
-    segmentedValue.value = '标签';
     drawerOpen.value = true;
   };
 

@@ -1,6 +1,7 @@
 import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
 import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
 import { adapterLoadUrl } from '../../electron/export';
+import { setCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -63,6 +64,12 @@ export const f_getCurrentKey = async (): Promise<string> => {
  */
 export const f_getCurrentWebConfig = async (key: string): Promise<BaseConfig> => {
   return executeFunction('getCurrentWebConfig', key);
+};
+/**
+ * 设置当前的key的封装
+ */
+export const f_setCurrentKeyExp = async (key: string) => {
+  return executeFunction('setCurrentKeyExp', key);
 };
 /**
  * 获取主页基本信息的封装

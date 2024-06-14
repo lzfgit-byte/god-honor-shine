@@ -36,7 +36,7 @@
     :width="webConfig?.drawWidth"
     :header-style="{ display: 'none' }"
   >
-    <a-segmented v-model:value="segmentedValue" :options="segmentedData" />
+    <a-segmented :key="segmentedData" v-model:value="segmentedValue" :options="segmentedData" />
     <div h-85vh overflow-auto w-full m-t-4 p-t-4>
       <transition-group
         enter-active-class="animate__animated animate__fadeIn"
@@ -100,11 +100,11 @@
     usePageState();
   const { showDetail, drawerOpen, handleDrawOpen } = useFeature();
   const { collects, updateCollects } = useCollect();
-  watchEffect(() => {
+  watchEffect(async () => {
     if (webKey.value) {
-      load();
-      init();
-      updateCollects();
+      await init();
+      await load();
+      await updateCollects();
     }
   });
 </script>
