@@ -16,10 +16,11 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { reactive, watchEffect } from 'vue-demi';
+  import { reactive, toRaw, watchEffect } from 'vue-demi';
   import { keys } from 'lodash';
   import { computed } from 'vue';
   import type { UrlReplace } from '@ghs/types';
+  import { message } from 'ant-design-vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_adapterLoadUrl } from '@/utils/business';
   import GhsTag from '@/components/tag/ghs-tag.vue';
@@ -30,23 +31,35 @@
   const cuReplaces = computed(() => {
     const res: UrlReplace[] = [];
     urlReplace.value.forEach((itm: UrlReplace) => {
-      res.push({
-        ...itm,
-        urlAppend: [
+      let urlAppend = null;
+      if (currentKeyReactive[itm.schema + itm.urlAppend[0].param][0]) {
+        urlAppend = [
           {
             value: currentKeyReactive[itm.schema + itm.urlAppend[0].param][0],
             title: currentKeyReactive[itm.schema + itm.urlAppend[0].param][1],
             param: itm.urlAppend[0].param,
             current: true,
           },
-        ],
+        ];
+      } else {
+        urlAppend = toRaw(itm.urlAppend.filter((item) => item.current));
+      }
+      if (urlAppend && urlAppend.length === 0) {
+        urlAppend = [{ ...itm.urlAppend[0], current: true }];
+      }
+      res.push({
+        ...itm,
+        urlAppend,
       });
     });
+    console.log('res--', res);
     return res;
   });
 
   const handleChange = async (key, args: [string, string]) => {
-    currentKeyReactive[key] = args;
+    console.log('args--', args);
+    currentKeyReactive[key] = [...args];
+    console.log(currentKeyReactive);
     props?.load(await f_adapterLoadUrl(currentUrl.value, cuReplaces.value));
   };
   watchEffect(() => {
@@ -57,13 +70,16 @@
       //
       urlReplace.value.forEach((item) => {
         if (item.urlAppend?.length > 0) {
-          currentKeyReactive[item.schema + item.urlAppend[0].param] = item.urlAppend[0].value;
+          const foo = item.urlAppend.findIndex((item) => item.current);
+          if (foo > -1) {
+            currentKeyReactive[item.schema + item.urlAppend[0].param] = [
+              item.urlAppend[foo].value,
+              item.urlAppend[foo].title,
+            ];
+          }
         }
       });
     }
-  });
-  watchEffect(() => {
-    console.log(urlReplace.value);
   });
 </script>
 

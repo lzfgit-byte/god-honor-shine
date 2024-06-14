@@ -37,7 +37,9 @@ class BaseBusiness extends NormalFunc {
 
   // 存储搜索历史记录
   private async saveSearchKey(key: string) {
-    const one = await SearchHistoryEntity.findOne({ where: { value: key } });
+    const one = await SearchHistoryEntity.findOne({
+      where: { value: key, type: this.webConfig.key },
+    });
     if (!isFalsity(one)) {
       return;
     }
@@ -102,6 +104,7 @@ class BaseBusiness extends NormalFunc {
    * @param keyword
    */
   public search(keyword: string, item: Item): string {
+    debugger;
     if (isFalsity(keyword)) {
       return;
     }
