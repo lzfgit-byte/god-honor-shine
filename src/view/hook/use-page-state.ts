@@ -70,7 +70,9 @@ export default () => {
   };
 
   const handleSearch = async (value: string) => {
-    await load(await f_search(value));
+    if (items.value.length > 0) {
+      await load(await f_search(value, items.value[0]));
+    }
   };
 
   const loadDbPath = async () => {

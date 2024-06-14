@@ -101,12 +101,12 @@ class BaseBusiness extends NormalFunc {
    * 搜索
    * @param keyword
    */
-  public search(keyword: string): string {
+  public search(keyword: string, item: Item): string {
     if (isFalsity(keyword)) {
       return;
     }
     this.saveSearchKey(keyword).then();
-    return this.webConfig.adapterSearchUrl(keyword);
+    return this.webConfig.adapterSearchUrl(keyword, item);
   }
 }
 

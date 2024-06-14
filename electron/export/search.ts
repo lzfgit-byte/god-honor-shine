@@ -1,14 +1,15 @@
 import { isFalsity } from '@ilzf/utils';
 import { SearchHistoryEntity } from '@ghs/constant';
+import type { Item } from '@ghs/types';
 import { getCurrentBusiness } from '../business/business';
 import { getCurrentKey } from '../business/use-init-web-config';
 
 /**
  * 执行搜索
  */
-export const search = async (search: string): Promise<string> => {
+export const search = async (search: string, item: Item): Promise<string> => {
   const business = getCurrentBusiness(getCurrentKey());
-  return business.search(search);
+  return business.search(search, item);
 };
 /**
  * 搜索推荐

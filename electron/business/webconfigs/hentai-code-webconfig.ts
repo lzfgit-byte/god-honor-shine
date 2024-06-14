@@ -14,7 +14,7 @@ const getData = (): WebConfig => /* break */ ({
   imgWidth: '220px',
   imgHeight: '147px',
 
-  drawWidth: '780px',
+  drawWidth: `${3.5 * 220}px`,
   historyRemember: 100,
 
   setTags: ['标签', '收藏', '历史', '系统配置', '日志'],
