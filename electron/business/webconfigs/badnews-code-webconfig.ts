@@ -131,13 +131,13 @@ const getData = (): WebConfig => /* break */ ({
       if (title.includes('更多')) {
         return;
       }
-      const url = `${this.homeUrl}${helpElAttr($a, ElementAttr.href)}`;
+      const url = `https://bad.news${helpElAttr($a, ElementAttr.href)}`;
       res.push({ title, url });
     });
     return res;
   },
   async getDetailInfo(item, cheerio) {
-    const { tags, jumpUrl, title } = item;
+    const { tags, jumpUrl } = item;
     if (tags.some((item) => item.title === 'm3u8')) {
       return {
         detailType: 'm3u8',
@@ -173,7 +173,7 @@ const getData = (): WebConfig => /* break */ ({
       const $ = cheerio.load(html);
       const $video = $('video');
       const jumpUrl = helpElAttr($video, ElementAttr.dataSource);
-      let type = helpElAttr($video, ElementAttr.dataType);
+      let type: any = helpElAttr($video, ElementAttr.dataType);
       if (type === '') {
         type = jumpUrl.includes('m3u8') ? 'm3u8' : 'mp4';
       }
@@ -196,13 +196,15 @@ const getData = (): WebConfig => /* break */ ({
     return url;
   },
   adapterSearchUrl(key, items) {
-    const flatTags = items.tags;
-    if (flatTags.some((i) => i.title === 'dm')) {
-      return `https://bad.news/dm/search/q-${key}`;
-    } else if (flatTags.some((i) => i.title === 'av')) {
-      return `https://bad.news/av/search/q-${key}`;
-    } else {
-      return `https://bad.news/search/q-${key}/type-porn`;
+    if (items) {
+      const flatTags = items.tags;
+      if (flatTags.some((i) => i.title === 'dm')) {
+        return `https://bad.news/dm/search/q-${key}`;
+      } else if (flatTags.some((i) => i.title === 'av')) {
+        return `https://bad.news/av/search/q-${key}`;
+      } else {
+        return `https://bad.news/search/q-${key}/type-porn`;
+      }
     }
   },
 });

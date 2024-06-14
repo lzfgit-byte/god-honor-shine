@@ -34,7 +34,7 @@ const wrapperCode = (code: string) => {
   const codes = code.split(breakStr);
   if (codes.length === 2) {
     let replace = codes[1].substring(0, codes[1].lastIndexOf(';'));
-    return staticCode.replaceAll(staticBreak, '').replace(`'$code'`, replace);
+    return staticCode.replaceAll(staticBreak, '').replace(`'$code'`, replace.replace(': any', ''));
   }
 };
 export const getWebConfigByKey = (key: string) => {
