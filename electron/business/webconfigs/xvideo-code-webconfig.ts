@@ -39,9 +39,9 @@ const getData = (): WebConfig => /* break */ ({
   ],
 
   getUrlReplace($) {
-    const judgeCurrent = (title) => {
+    const judgeCurrent = (schema, title) => {
       return (
-        this.currentUrlReplace.filter((item) => item.schema === '排序')[0].urlAppend[0].title ===
+        this.currentUrlReplace.filter((item) => item.schema === schema)[0].urlAppend[0].title ===
         title
       );
     };
@@ -73,7 +73,7 @@ const getData = (): WebConfig => /* break */ ({
           value: item.value,
           title: item.name,
           param: 'sort',
-          current: judgeCurrent(item.name),
+          current: judgeCurrent('sort', item.name),
         })),
       },
       {
@@ -82,7 +82,7 @@ const getData = (): WebConfig => /* break */ ({
           value: item.value,
           title: item.name,
           param: 'durf',
-          current: judgeCurrent(item.name),
+          current: judgeCurrent('durf', item.name),
         })),
       },
       {
@@ -91,7 +91,7 @@ const getData = (): WebConfig => /* break */ ({
           value: item.value,
           title: item.name,
           param: 'quality',
-          current: judgeCurrent(item.name),
+          current: judgeCurrent('quality', item.name),
         })),
       },
     ];
