@@ -1,7 +1,7 @@
 import { net } from 'electron';
 import { calcProcess, formatSize, hashString, isFalsity } from '@ilzf/utils';
 import { FileType } from '@ghs/types';
-import { MessageUtil, ProgressMsgUtil } from '../utils/message';
+import { LogMsgUtil, MessageUtil, ProgressMsgUtil } from '../utils/message';
 import { cache_exist, cache_get, cache_save } from '../utils';
 import { eventEmitter } from '../utils/KitUtil';
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
@@ -34,11 +34,11 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
         blob = null;
       });
       response.on('error', () => {
-        MessageUtil.error(`请求失败远程${url}`);
+        LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      MessageUtil.error(`请求失败远程${url}`);
+      LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
     });
     request.end();
   });

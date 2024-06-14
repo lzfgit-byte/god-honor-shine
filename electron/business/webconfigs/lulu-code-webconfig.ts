@@ -133,6 +133,7 @@ const getData = (): WebConfig => /* break */ ({
         }
       }
     });
+    LogMsgUtil.sendLogMsg(this.key, res);
     return {
       detailType: 'm3u8',
       renderType: 'normal',
