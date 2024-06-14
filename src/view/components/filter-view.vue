@@ -31,7 +31,10 @@
     const res: UrlReplace[] = [];
     urlReplace.value.forEach((itm: UrlReplace) => {
       let urlAppend = null;
-      if (currentKeyReactive[itm.schema + itm.urlAppend[0].param][0]) {
+      if (
+        currentKeyReactive[itm.schema + itm.urlAppend[0].param][0] !== null &&
+        currentKeyReactive[itm.schema + itm.urlAppend[0].param][0] !== undefined
+      ) {
         urlAppend = [
           {
             value: currentKeyReactive[itm.schema + itm.urlAppend[0].param][0],
