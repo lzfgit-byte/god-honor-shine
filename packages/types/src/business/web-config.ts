@@ -22,6 +22,8 @@ export interface BaseConfig {
   ifWinExecCode?: string;
   winWidth?: number;
   winHeight?: number;
+
+  currentUrlReplace: UrlReplace[];
 }
 
 export interface WebConfig extends BaseConfig {

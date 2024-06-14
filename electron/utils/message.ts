@@ -73,8 +73,8 @@ export class LogMsgUtil {
     webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, msg);
   }
 
-  static sendLogMsg(msg: string) {
-    this.sendMsg({ msg: `${getCurrentDate()} ${msg}` });
+  static sendLogMsg(...msg: string[]) {
+    this.sendMsg({ msg: `${getCurrentDate()} ${msg.join(' ')}` });
   }
 
   static close() {

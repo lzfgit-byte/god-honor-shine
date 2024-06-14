@@ -81,15 +81,48 @@ const webConfig: WebConfig = /* break */ {
 })();
 `,
 
+  currentUrlReplace: [
+    {
+      schema: '排序',
+      urlAppend: [{ value: '', param: 'sort_by', title: 'Most Relevant', current: true }],
+    },
+  ],
+
   getUrlReplace($) {
+    const judgeCurrent = (title) => {
+      return (
+        this.currentUrlReplace.filter((item) => item.schema === '排序')[0].urlAppend[0].title ===
+        title
+      );
+    };
     return [
       {
         schema: '排序',
         urlAppend: [
-          { value: '', param: 'sort_by', title: 'Most Relevant' },
-          { value: 'post_date', param: 'sort_by', title: 'Latest' },
-          { value: 'video_viewed', param: 'sort_by', title: 'Most Viewed' },
-          { value: 'rating', param: 'sort_by', title: 'Top Rated' },
+          {
+            value: '',
+            param: 'sort_by',
+            title: 'Most Relevant',
+            current: judgeCurrent('Most Relevant'),
+          },
+          {
+            value: 'post_date',
+            param: 'sort_by',
+            title: 'Latest',
+            current: judgeCurrent('Latest'),
+          },
+          {
+            value: 'video_viewed',
+            param: 'sort_by',
+            title: 'Most Viewed',
+            current: judgeCurrent('Most Viewed'),
+          },
+          {
+            value: 'rating',
+            param: 'sort_by',
+            title: 'Top Rated',
+            current: judgeCurrent('Top Rated'),
+          },
         ],
       },
     ];
@@ -227,6 +260,8 @@ const webConfig: WebConfig = /* break */ {
     };
   },
   adapterLoadUrl(url, urlReplaces) {
+    this.currentUrlReplace = urlReplaces;
+    LogMsgUtil.sendLogMsg(`uu ${JSON.stringify(this.currentUrlReplace)}`);
     url = url.replace('%20', '-');
     const urlAppend = urlReplaces[0].urlAppend[0];
     if (urlAppend) {
@@ -234,6 +269,7 @@ const webConfig: WebConfig = /* break */ {
       newUrl.searchParams.set(urlAppend.param, urlAppend.value);
       return newUrl.toString();
     }
+    LogMsgUtil.sendLogMsg(url);
     return url;
   },
   adapterSearchUrl(key) {

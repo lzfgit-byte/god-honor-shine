@@ -6,8 +6,8 @@
           v-for="(item_, index_) in item.urlAppend"
           :key="item_.title + index_"
           :show-gap="true"
-          :type="currentKeyReactive[item.schema + item_.param] === item_.value ? 'success' : 'info'"
-          @click="handleChange(item.schema + item_.param, item_.value)"
+          :type="item_.current ? 'success' : 'info'"
+          @click="handleChange(item.schema + item_.param, [item_.value, item_.title])"
         >
           {{ item_.title }}
         </GhsTag>
@@ -34,9 +34,10 @@
         ...itm,
         urlAppend: [
           {
-            value: currentKeyReactive[itm.schema + itm.urlAppend[0].param],
-            title: itm.urlAppend[0].title,
+            value: currentKeyReactive[itm.schema + itm.urlAppend[0].param][0],
+            title: currentKeyReactive[itm.schema + itm.urlAppend[0].param][1],
             param: itm.urlAppend[0].param,
+            current: true,
           },
         ],
       });
@@ -44,8 +45,8 @@
     return res;
   });
 
-  const handleChange = async (key, value) => {
-    currentKeyReactive[key] = value;
+  const handleChange = async (key, args: [string, string]) => {
+    currentKeyReactive[key] = args;
     props?.load(await f_adapterLoadUrl(currentUrl.value, cuReplaces.value));
   };
   watchEffect(() => {
@@ -60,6 +61,9 @@
         }
       });
     }
+  });
+  watchEffect(() => {
+    console.log(urlReplace.value);
   });
 </script>
 

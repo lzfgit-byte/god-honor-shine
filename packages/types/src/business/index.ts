@@ -50,6 +50,7 @@ export interface UrlAppend {
   value: string;
   param: string;
   title: string; // 展示的名字
+  current: boolean; // 是否当前的过滤条件
 }
 export interface UrlReplace {
   schema: string; // 分组

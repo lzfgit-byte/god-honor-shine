@@ -78,6 +78,7 @@ class BaseBusiness extends NormalFunc {
    * 获取页面数据，包含首页，搜索页
    */
   public async getPage(url = this.webConfig.homeUrl): Promise<Page> {
+    LogMsgUtil.sendLogMsg(this.webConfig.key, url);
     const html = await getHtml(url);
     this.$ = cheerio.load(html);
     return {
