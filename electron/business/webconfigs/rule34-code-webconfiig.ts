@@ -8,7 +8,7 @@ import { getHtml } from '../../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
-const webConfig: WebConfig = /* break */ {
+const getData = (): WebConfig => /* break */ ({
   key: 'rule34',
   name: 'r34',
   favicon: 'https://rule34video.com/favicon.ico',
@@ -245,4 +245,4 @@ const webConfig: WebConfig = /* break */ {
   adapterSearchUrl(key) {
     return `${this.searchUrl}${key.replace(' ', '-')}/`;
   },
-};
+});
