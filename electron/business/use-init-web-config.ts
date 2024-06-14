@@ -8,6 +8,7 @@ import { ElementAttr, ElementTypes } from '@ghs/constant';
 import { getHtml } from '../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../utils/KitUtil';
+import { request_string_get } from '../http';
 // @ts-ignore
 import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
 // @ts-ignore
@@ -17,9 +18,11 @@ import lulu from './webconfigs/lulu-code-webconfig?raw';
 // @ts-ignore
 import badnew from './webconfigs/badnews-code-webconfig?raw';
 // @ts-ignore
+import xvideo from './webconfigs/xvideo-code-webconfig?raw';
+// @ts-ignore
 import staticCode from './static-code?raw';
 
-const configs: string[] = [demoWebCode, rule34, lulu, badnew];
+const configs: string[] = [demoWebCode, rule34, lulu, badnew, xvideo];
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
@@ -75,7 +78,8 @@ export const loadWebConfig = () => {
       NotifyMsgUtil,
       LogMsgUtil,
       hashString,
-      eventEmitter
+      eventEmitter,
+      request_string_get
     );
     cache[config.key] = config;
     if (!getCurrentKey()) {

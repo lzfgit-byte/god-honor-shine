@@ -7,5 +7,6 @@
 //* ** let LogMsgUtil = arguments[6];
 //* ** let hashString = arguments[7];
 //* ** let eventEmitter = arguments[8];
+//* ** let request_string_get = arguments[9];
 //* ** let cc = '$code';
 //* ** return cc;
