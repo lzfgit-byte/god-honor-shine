@@ -20,7 +20,6 @@
   import { keys } from 'lodash';
   import { computed } from 'vue';
   import type { UrlReplace } from '@ghs/types';
-  import { message } from 'ant-design-vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_adapterLoadUrl } from '@/utils/business';
   import GhsTag from '@/components/tag/ghs-tag.vue';
@@ -52,14 +51,11 @@
         urlAppend,
       });
     });
-    console.log('res--', res);
     return res;
   });
 
   const handleChange = async (key, args: [string, string]) => {
-    console.log('args--', args);
     currentKeyReactive[key] = [...args];
-    console.log(currentKeyReactive);
     props?.load(await f_adapterLoadUrl(currentUrl.value, cuReplaces.value));
   };
   watchEffect(() => {
