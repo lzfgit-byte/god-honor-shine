@@ -12,3 +12,33 @@ export const MESSAGE_EVENT_KEY = {
  * 传输对象
  */
 export const TRANS_OBJ = 'obj||trans->';
+/**
+ * 定义元素属性
+ */
+export const ElementAttr = {
+  src: 'src',
+  title: 'title',
+  href: 'href',
+  class: 'class',
+  dataWebp: 'data-webp',
+  dataSrc: 'data-src',
+  dataOriginal: 'data-original',
+  poster: 'poster',
+  dataSource: 'data-source',
+  dataType: 'data-type',
+  dataEcho: 'data-echo',
+  dataError: 'data-error',
+  alt: 'alt',
+};
+/**
+ * 元素类型枚举
+ */
+export const ElementTypes = {
+  a: 'a',
+  img: 'img',
+  h4: 'h4',
+  h1: 'h1',
+  video: 'video',
+  source: 'source',
+  p: 'p',
+};

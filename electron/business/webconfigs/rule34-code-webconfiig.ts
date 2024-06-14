@@ -3,41 +3,11 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { hashString } from '@ilzf/utils';
 
+import { ElementAttr, ElementTypes } from '@ghs/constant';
 import { getHtml } from '../../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
-import { eventEmitter } from '../../utils/KitUtil';
+import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
-function helpElAttr($el: Cheerio<Element>, attr: string): string {
-  return $el?.attr(attr) || '';
-}
-
-function helpElText($el: Cheerio<Element>): string {
-  return $el?.text() || '';
-}
-const ElementAttr = {
-  src: 'src',
-  title: 'title',
-  href: 'href',
-  class: 'class',
-  dataWebp: 'data-webp',
-  dataSrc: 'data-src',
-  dataOriginal: 'data-original',
-  poster: 'poster',
-  dataSource: 'data-source',
-  dataType: 'data-type',
-  dataEcho: 'data-echo',
-  dataError: 'data-error',
-  alt: 'alt',
-};
-const ElementTypes = {
-  a: 'a',
-  img: 'img',
-  h4: 'h4',
-  h1: 'h1',
-  video: 'video',
-  source: 'source',
-  p: 'p',
-};
 const webConfig: WebConfig = /* break */ {
   key: 'rule34',
   name: 'r34',

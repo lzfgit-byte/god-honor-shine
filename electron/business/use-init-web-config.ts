@@ -4,9 +4,10 @@ import type { Element } from 'domhandler';
 import { keys } from 'lodash';
 import { hashString, isFunction } from '@ilzf/utils';
 
+import { ElementAttr, ElementTypes } from '@ghs/constant';
 import { getHtml } from '../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../utils/message';
-import { eventEmitter } from '../utils/KitUtil';
+import { eventEmitter, helpElAttr, helpElText } from '../utils/KitUtil';
 // @ts-ignore
 import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
 // @ts-ignore
@@ -60,38 +61,6 @@ export const getWebConfigAry = (): WebConfig[] => {
   return res;
 };
 export const loadWebConfig = () => {
-  function helpElAttr($el: Cheerio<Element>, attr: string): string {
-    return $el?.attr(attr) || '';
-  }
-
-  function helpElText($el: Cheerio<Element>): string {
-    return $el?.text() || '';
-  }
-  const ElementAttr = {
-    src: 'src',
-    title: 'title',
-    href: 'href',
-    class: 'class',
-    dataWebp: 'data-webp',
-    dataSrc: 'data-src',
-    dataOriginal: 'data-original',
-    poster: 'poster',
-    dataSource: 'data-source',
-    dataType: 'data-type',
-    dataEcho: 'data-echo',
-    dataError: 'data-error',
-    alt: 'alt',
-  };
-  const ElementTypes = {
-    a: 'a',
-    img: 'img',
-    h4: 'h4',
-    h1: 'h1',
-    video: 'video',
-    source: 'source',
-    p: 'p',
-  };
-
   configs.forEach((item) => {
     const config: WebConfig = new Function(wrapperCode(item))(
       helpElAttr,
