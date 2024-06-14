@@ -10,8 +10,8 @@ import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../../uti
 import { request_string_get } from '../../http';
 
 const getData = (): WebConfig => /* break */ ({
-  key: 'xVideo',
-  name: 'XV',
+  key: 'pornhub',
+  name: 'pb',
   favicon: 'https://www.pornhub.com/favicon.ico',
   homeUrl: 'https://www.pornhub.com',
   searchUrl: 'https://www.pornhub.com',
