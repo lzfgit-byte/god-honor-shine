@@ -5,7 +5,7 @@ import { getHtml } from '../../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
-const getData = (): WebConfig | any => /* break */ ({
+const getData = (): WebConfig => /* break */ ({
   key: 'badnews',
   name: 'BD',
   favicon: 'https://bad.news/favicon.ico',
@@ -137,27 +137,60 @@ const getData = (): WebConfig | any => /* break */ ({
     return res;
   },
   async getDetailInfo(item, cheerio) {
-    const html = await getHtml(item.jumpUrl);
-    const $ = cheerio.load(html);
-    const $video = $('video');
-    const jumpUrl = helpElAttr($video, ElementAttr.dataSource);
-    let type = helpElAttr($video, ElementAttr.dataType);
-    if (type === '') {
-      type = jumpUrl.includes('m3u8') ? 'm3u8' : 'mp4';
+    const { tags, jumpUrl, title } = item;
+    if (tags.some((item) => item.title === 'm3u8')) {
+      return {
+        detailType: 'm3u8',
+        renderType: 'normal',
+        details: [
+          {
+            type: 'm3u8',
+            url: jumpUrl,
+            fullUrl: '',
+            title: item.title,
+          },
+        ],
+        relations: [],
+      };
     }
-    return {
-      detailType: type,
-      renderType: 'normal',
-      details: [
-        {
-          type,
-          url: jumpUrl,
-          fullUrl: '',
-          title: item.title,
-        },
-      ],
-      relations: [],
-    };
+    if (tags.some((item) => item.title === 'mp4')) {
+      return {
+        detailType: 'mp4',
+        renderType: 'normal',
+        details: [
+          {
+            type: 'mp4',
+            url: jumpUrl,
+            fullUrl: '',
+            title: item.title,
+          },
+        ],
+        relations: [],
+      };
+    }
+    if (tags.some((item) => item.title === 'av') || tags.some((item) => item.title === 'dm')) {
+      const html = await getHtml(item.jumpUrl);
+      const $ = cheerio.load(html);
+      const $video = $('video');
+      const jumpUrl = helpElAttr($video, ElementAttr.dataSource);
+      let type = helpElAttr($video, ElementAttr.dataType);
+      if (type === '') {
+        type = jumpUrl.includes('m3u8') ? 'm3u8' : 'mp4';
+      }
+      return {
+        detailType: type,
+        renderType: 'normal',
+        details: [
+          {
+            type,
+            url: jumpUrl,
+            fullUrl: '',
+            title: item.title,
+          },
+        ],
+        relations: [],
+      };
+    }
   },
   adapterLoadUrl(url) {
     return url;
