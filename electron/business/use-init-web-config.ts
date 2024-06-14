@@ -13,9 +13,11 @@ import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
 // @ts-ignore
 import rule34 from './webconfigs/rule34-code-webconfiig?raw';
 // @ts-ignore
+import lulu from './webconfigs/lulu-code-webconfig?raw';
+// @ts-ignore
 import staticCode from './static-code?raw';
 
-const configs: string[] = [demoWebCode, rule34];
+const configs: string[] = [demoWebCode, rule34, lulu];
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
