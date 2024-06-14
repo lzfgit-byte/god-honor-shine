@@ -18,7 +18,7 @@ import { app_set_config_dir } from '../const/app-paths';
  */
 export const getHtml = async (url: string) => {
   let html = (await requestHtml(url)) as any;
-  if (html.indexOf('Just a moment...') > 0) {
+  if (html?.indexOf('Just a moment...') > 0) {
     MessageUtil.info('request 失败，使用win');
     html = await requestHtmlByWin(url);
   }

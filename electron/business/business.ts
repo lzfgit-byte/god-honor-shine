@@ -104,7 +104,6 @@ class BaseBusiness extends NormalFunc {
    * @param keyword
    */
   public search(keyword: string, item: Item): string {
-    debugger;
     if (isFalsity(keyword)) {
       return;
     }

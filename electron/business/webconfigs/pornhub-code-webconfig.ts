@@ -247,14 +247,25 @@ const getData = (): WebConfig => /* break */ ({
     LogMsgUtil.sendLogMsg(`uu ${JSON.stringify(this.currentUrlReplace)}`);
     const $url = new URL(url);
     urlReplaces.forEach((item) => {
-      if (item.schema === 'sort') {
-        $url.searchParams.set('sort', item.urlAppend[0].value);
+      if (item.schema === 'sort' && item.urlAppend[0].value) {
+        $url.searchParams.set('o', item.urlAppend[0].value);
+      } else {
+        $url.searchParams.delete('o');
       }
-      if (item.schema === 'durf') {
-        $url.searchParams.set('durf', item.urlAppend[0].value);
+      if (item.schema === 'max_duration' && item.urlAppend[0].value) {
+        $url.searchParams.set('max_duration', item.urlAppend[0].value);
+      } else {
+        $url.searchParams.delete('max_duration');
       }
-      if (item.schema === 'quality') {
-        $url.searchParams.set('quality', item.urlAppend[0].value);
+      if (item.schema === 'quality' && item.urlAppend[0].value) {
+        $url.searchParams.set('hd', item.urlAppend[0].value);
+      } else {
+        $url.searchParams.delete('hd');
+      }
+      if (item.schema === 'produce' && item.urlAppend[0].value) {
+        $url.searchParams.set('p', item.urlAppend[0].value);
+      } else {
+        $url.searchParams.delete('p');
       }
     });
 
