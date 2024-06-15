@@ -4,9 +4,11 @@ import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
 
 export default () => {
-  const { segmentedValue, drawerOpen, segmentedData, webConfig } = useGlobalState();
+  const { segmentedValue, drawerOpen, segmentedData, webConfig, loading } = useGlobalState();
   const showDetail = async (item: Item) => {
+    loading.value = true;
     const detail = await f_getDetailPage(item);
+    loading.value = false;
     if (detail.detailType === 'mp4' || detail.detailType === 'm3u8') {
       if (detail.details.length === 1) {
         videoGlobalRef.value.show(

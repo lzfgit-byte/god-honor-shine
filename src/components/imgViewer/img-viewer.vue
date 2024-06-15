@@ -11,7 +11,7 @@
         h-full
         w-full
         absolute
-        z-99999
+        z-1002
         left-0
         top-0
         @click="handleBackClick"
@@ -29,7 +29,7 @@
             w-full
             left-0
             top-0
-            z-999999
+            z-1003
           >
             <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
               <span>{{ showCurrent }} / {{ images.length }}</span>
@@ -73,7 +73,7 @@
           items-center
           top-0
           left-0
-          z-999998
+          z-1001
         >
           <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">

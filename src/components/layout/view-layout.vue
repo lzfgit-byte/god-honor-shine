@@ -6,7 +6,7 @@
       h-full
       w-full
       absolute
-      z-999999
+      z-1001
       flex
       justify-center
       items-center
