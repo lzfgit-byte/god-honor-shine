@@ -2,13 +2,19 @@
   <div h-full w-full>
     <a-row>
       <a-col>
-        <a-button size="small" type="default" @click="choseDbPath">选择dbPath</a-button>
+        <a-button @click="choseDbPath">选择dbPath</a-button>
       </a-col>
-      <a-col :span="20" :offset="1">
+      <a-col :span="16" :offset="1">
         <a-form-item label="dbPath">
           {{ dbPath }}
         </a-form-item>
       </a-col>
+    </a-row>
+    <a-row>
+      <a-space>
+        <a-button>收藏导入</a-button>
+        <a-button>收藏导出</a-button>
+      </a-space>
     </a-row>
   </div>
 </template>
