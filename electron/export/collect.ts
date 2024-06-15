@@ -7,7 +7,11 @@ import { LogMsgUtil } from '../utils/message';
  * 收藏操作在这里 列出收藏
  */
 export const listCollect = async (key: string = null): Promise<CollectEntity[]> => {
-  return await CollectEntity.find({ where: { type: key || getCurrentKey() } });
+  LogMsgUtil.sendLogMsg('刷新收藏');
+  return await CollectEntity.find({
+    where: { type: key || getCurrentKey() },
+    order: { count: 'DESC', createTime: 'DESC' },
+  });
 };
 /**
  * 判断是否已经收藏

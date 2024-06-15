@@ -12,20 +12,30 @@
     </a-row>
     <a-row>
       <a-space>
-        <a-button>收藏导入</a-button>
-        <a-button>收藏导出</a-button>
+        <a-button @click="handleImport">收藏导入</a-button>
+        <a-button @click="handleExport">收藏导出</a-button>
       </a-space>
     </a-row>
   </div>
 </template>
 <script setup lang="ts">
-  import { watchEffect } from 'vue-demi';
   import useGlobalState from '@/hooks/use-global-state';
+  import { f_importFavorite } from '@/utils/business';
 
   defineProps({ choseDbPath: Function });
   const { dbPath } = useGlobalState();
-
-  watchEffect(() => {});
+  const handleImport = () => {
+    const fileInput: HTMLInputElement = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.ghs';
+    fileInput.addEventListener('change', function () {
+      let selectedFile = fileInput.files[0];
+      const path = selectedFile.path;
+      f_importFavorite(path);
+    });
+    fileInput.click();
+  };
+  const handleExport = () => {};
 </script>
 
 <style scoped lang="less"></style>

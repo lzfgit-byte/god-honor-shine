@@ -1,6 +1,9 @@
-import { statSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
+
 import { existsSync } from 'fs-extra';
 import { hashString } from '@ilzf/utils';
+import { CollectEntity } from '@ghs/constant';
+import type { Detail, Item } from '@ghs/types';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -90,3 +93,36 @@ export const app_set_db_dir = (path: string): boolean => {
   }
   return false;
 };
+
+/**
+ * 收藏导入
+ */
+export const importFavorite = async (path: string) => {
+  const importData = readFileSync(path, { encoding: 'utf-8' });
+  const dataS: { RECORDS: any[] } = JSON.parse(importData);
+  for (const item_ of dataS?.RECORDS?.map((item) => ({ value: item.value, type: item.type }))) {
+    const item = JSON.parse(item_.value);
+    const type = item_.type;
+    const isVideo = item.flatTags.some((item: any) => item.title.toUpperCase() === 'VIDEO');
+    const detail: Item = {
+      ...item,
+      renderType: 'normal',
+      tags: item.flatTags,
+      type: isVideo ? 'video' : 'image',
+    } as any;
+    const one = await CollectEntity.findOne({ where: { type: detail.type, url: detail.jumpUrl } });
+    if (one) {
+      continue;
+    }
+    const ent = new CollectEntity();
+    ent.url = detail.jumpUrl;
+    ent.type = type;
+    ent.value = JSON.stringify(detail);
+    ent.count = 0;
+    await ent.save();
+  }
+};
+/**
+ * 收藏导出
+ */
+export const exportFavorite = async (path: string) => {};

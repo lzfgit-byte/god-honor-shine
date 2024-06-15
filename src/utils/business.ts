@@ -1,6 +1,6 @@
 import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
 import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
-import { adapterLoadUrl } from '../../electron/export';
+import { adapterLoadUrl, importFavorite } from '../../electron/export';
 import { setCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
 
@@ -162,4 +162,10 @@ export const f_appSetDbDir = (path: string): Promise<boolean> => {
  */
 export const f_adapterLoadUrl = (url: string, urlReps: UrlReplace[]): Promise<boolean> => {
   return executeFunction('adapterLoadUrl', url, urlReps);
+};
+/**
+ *
+ */
+export const f_importFavorite = (path: string) => {
+  return executeFunction('importFavorite', path);
 };
