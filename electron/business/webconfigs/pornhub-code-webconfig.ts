@@ -11,7 +11,7 @@ import { request_string_get } from '../../http';
 
 const getData = (): WebConfig => /* break */ ({
   key: 'pornhub',
-  name: 'pb',
+  name: 'PB',
   favicon: 'https://www.pornhub.com/favicon.ico',
   homeUrl: 'https://www.pornhub.com',
   searchUrl: 'https://www.pornhub.com',

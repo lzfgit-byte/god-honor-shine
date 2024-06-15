@@ -6,7 +6,7 @@ import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
 const getData = (): WebConfig => /* break */ ({
-  key: 'badnews',
+  key: 'bedNews',
   name: 'BD',
   favicon: 'https://bad.news/favicon.ico',
   homeUrl: 'https://bad.news/tag/porn',

@@ -10,7 +10,7 @@ import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 import { request_string_get } from '../../http';
 
 const getData = (): WebConfig => /* break */ ({
-  key: 'xVideo',
+  key: 'xvideos',
   name: 'XV',
   favicon: 'https://www.xvideos.com/favicon.ico',
   homeUrl: 'https://www.xvideos.com',

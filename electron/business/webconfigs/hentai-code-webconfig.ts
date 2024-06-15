@@ -6,7 +6,7 @@ import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
 const getData = (): WebConfig => /* break */ ({
-  key: 'hw',
+  key: 'hentaiWord',
   name: 'HW',
   favicon: 'https://thehentaiworld.com/favicon.ico',
   homeUrl: 'https://thehentaiworld.com/?new',
