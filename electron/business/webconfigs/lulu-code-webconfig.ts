@@ -124,7 +124,7 @@ const getData = (): WebConfig => /* break */ ({
   async getDetailInfo(item, cheerio) {
     const hs = (await getHtmlWithProcess(item.jumpUrl)).split('\n');
     let res = '';
-    hs.forEach((item, index) => {
+    hs?.forEach((item, index) => {
       if (item.includes('window.location = "https://www.m3u8hls')) {
         const ss = item.split('#');
         if (ss.length === 2) {

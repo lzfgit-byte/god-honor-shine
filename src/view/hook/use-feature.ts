@@ -1,16 +1,22 @@
 import type { Item } from '@ghs/types';
+import { message } from 'ant-design-vue';
 import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
 
 export default () => {
-  const { segmentedValue, drawerOpen, segmentedData, webConfig, loading } = useGlobalState();
+  const { segmentedValue, drawerOpen, segmentedData, webConfig, loading, logs } = useGlobalState();
   const showDetail = async (item: Item) => {
     loading.value = true;
     const detail = await f_getDetailPage(item);
     loading.value = false;
     if (detail.detailType === 'mp4' || detail.detailType === 'm3u8') {
       if (detail.details.length === 1) {
+        if (detail.details[0]?.url === '') {
+          message.warn('视频地址为空');
+          logs.value.push(JSON.stringify(detail));
+          return;
+        }
         videoGlobalRef.value.show(
           detail.details[0].url,
           detail.details[0].title,

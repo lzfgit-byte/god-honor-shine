@@ -96,6 +96,7 @@ class BaseBusiness extends NormalFunc {
    */
   public async getDetailPage(item: Item): Promise<DetailInfo> {
     this.saveViewHistory(item).then();
+    LogMsgUtil.sendLogMsg(this.webConfig.key, 'jumpUrl', item.jumpUrl);
     return this.webConfig.getDetailInfo(item, cheerio);
   }
 

@@ -17,7 +17,6 @@ declare module 'vue' {
     AInput: typeof import('ant-design-vue/es')['Input']
     ARow: typeof import('ant-design-vue/es')['Row']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
-    ASelect: typeof import('ant-design-vue/es')['Select']
     ASpace: typeof import('ant-design-vue/es')['Space']
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
@@ -39,7 +38,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/search/search.vue')['default']
-    Search2: typeof import('./src/components/search/search2.vue')['default']
     VideoHtml5: typeof import('./src/components/player/video-html5.vue')['default']
     ViewLayout: typeof import('./src/components/layout/view-layout.vue')['default']
   }
