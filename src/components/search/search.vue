@@ -7,19 +7,20 @@
       placeholder="请输入"
       h-4
       allow-clear
-      @keydown.enter="handleEnterClick"
+      @keydown.enter="handleSearch(value)"
       @change="handleChange"
-      @focus="showHistory = true"
+      @mouseenter="handleChange"
+      @click="handleChange"
       @blur="showHistory = false"
     />
     <transition duration="200">
       <div
-        v-if="showHistory || active"
+        v-if="showHistory"
         class="historySearch"
         w-full
         absolute
         z-2
-        @mouseleave="active = false"
+        @mouseleave="showHistory = false"
       >
         <GhsScroller max-height="30vh">
           <div
@@ -32,11 +33,11 @@
             flex
             justify-between
             items-center
-            @click.stop="handlerSearch(item)"
+            @click.stop="handleSearch(item)"
           >
             <span> {{ item }}</span>
 
-            <CloseCircleOutlined />
+            <CloseCircleOutlined @click="handleDelete(item)" />
           </div>
         </GhsScroller>
       </div>
@@ -47,19 +48,24 @@
   import { ref } from 'vue';
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
-  import { f_searchRecommend } from '@/utils/business';
+  import { f_deleteSearch, f_searchRecommend } from '@/utils/business';
   const emits = defineEmits(['search']);
   const value = ref('');
   const data = ref<any[]>();
   const showHistory = ref(false);
 
-  const handleSearch = async (val: string) => {
-    value.value = val;
-    emits('search', val);
+  const handleSearch = async (str: string) => {
+    value.value = str;
+    emits('search', value.value);
   };
-  const handleChange = async (val: string) => {
-    const strS = await f_searchRecommend(val);
-    data.value = strS.map((key) => ({ value: key }));
+  const handleChange = async () => {
+    showHistory.value = true;
+    const res = await f_searchRecommend(value.value);
+    data.value = res.filter((item) => item.trim() !== '');
+  };
+  const handleDelete = async (val: string) => {
+    await f_deleteSearch(val);
+    await handleChange();
   };
 </script>
 

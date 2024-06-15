@@ -164,8 +164,17 @@ export const f_adapterLoadUrl = (url: string, urlReps: UrlReplace[]): Promise<bo
   return executeFunction('adapterLoadUrl', url, urlReps);
 };
 /**
- *
+ * 导入
  */
 export const f_importFavorite = (path: string) => {
   return executeFunction('importFavorite', path);
+};
+/**
+ *
+ */
+/**
+ * 删除搜索记录
+ */
+export const f_deleteSearch = async (searchValue: string) => {
+  return executeFunction('deleteSearch', searchValue);
 };
