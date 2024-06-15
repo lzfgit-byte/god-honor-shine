@@ -1,6 +1,19 @@
 <template>
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
     <div
+      v-if="loading"
+      class="loading-container"
+      h-full
+      w-full
+      absolute
+      z-2
+      flex
+      justify-center
+      items-center
+    >
+      <a-spin />
+    </div>
+    <div
       v-if="$props?.onCloseClick"
       absolute
       class="ghs-delete-icon"
@@ -49,6 +62,7 @@
     maxWidth: String,
     item: Object as PropType<Item>,
     collectSequence: Number,
+    loading: Boolean,
   });
   const emits = defineEmits(['imgClick', 'closeClick', 'upCollect']);
   const c_width = computed(() => props.width || '250px');
@@ -116,5 +130,8 @@
     right: -2%;
     top: -4%;
     z-index: 3;
+  }
+  .loading-container {
+    background-color: rgba(51, 51, 51, 0.44);
   }
 </style>

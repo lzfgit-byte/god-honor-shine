@@ -1,5 +1,5 @@
 <template>
-  <ViewLayout :key="webKey">
+  <ViewLayout :loading="loading">
     <template #action>
       <div h-full w-full flex items-center justify-between>
         <div m-l-4>
@@ -92,8 +92,8 @@
   import useGlobalState from '@/hooks/use-global-state';
   import FilterView from '@/view/components/filter-view.vue';
   const route = useRoute();
-  const { webKey, pagination, items, webConfig, segmentedValue, segmentedData, cacheSize } =
-    useGlobalState();
+  const { webKey, pagination, items, webConfig } = useGlobalState();
+  const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
   webKey.value = route.query.key as string;
 
   const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =

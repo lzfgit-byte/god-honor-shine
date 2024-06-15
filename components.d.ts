@@ -29,6 +29,7 @@ declare module 'vue' {
     GhsImg2: typeof import('./src/components/image/ghs-img-plain.vue')['default']
     GhsImgPlain: typeof import('./src/components/image/ghs-img-plain.vue')['default']
     GhsItem: typeof import('./src/components/item/ghs-item.vue')['default']
+    GhsLoading: typeof import('./src/components/loading/ghs-loading.vue')['default']
     GhsMenu: typeof import('./src/components/menu/ghs-menu.vue')['default']
     GhsPagination: typeof import('./src/components/pagination/ghs-pagination.vue')['default']
     GhsPlayer: typeof import('./src/components/player/ghs-player.vue')['default']
