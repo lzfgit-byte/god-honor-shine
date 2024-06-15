@@ -4,7 +4,7 @@ import type { Element } from 'domhandler';
 import { hashString } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes } from '@ghs/constant';
-import { getHtml } from '../../export';
+import { getHtml, getHtmlWithProcess } from '../../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
@@ -122,7 +122,7 @@ const getData = (): WebConfig => /* break */ ({
     return pageTags;
   },
   async getDetailInfo(item, cheerio) {
-    const hs = (await getHtml(item.jumpUrl)).split('\n');
+    const hs = (await getHtmlWithProcess(item.jumpUrl)).split('\n');
     let res = '';
     hs.forEach((item, index) => {
       if (item.includes('window.location = "https://www.m3u8hls')) {

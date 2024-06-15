@@ -1,5 +1,6 @@
 import { statSync } from 'node:fs';
 import { existsSync } from 'fs-extra';
+import { hashString } from '@ilzf/utils';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -9,8 +10,9 @@ import {
   win_get_data,
   win_open,
 } from '../http';
-import { MessageUtil } from '../utils/message';
+import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { app_set_config_dir } from '../const/app-paths';
+import { eventEmitter } from '../utils/KitUtil';
 
 /**
  * 获取html
@@ -18,6 +20,26 @@ import { app_set_config_dir } from '../const/app-paths';
  */
 export const getHtml = async (url: string) => {
   let html = (await requestHtml(url)) as any;
+  if (html?.indexOf('Just a moment...') > 0) {
+    MessageUtil.info('request 失败，使用win');
+    html = await requestHtmlByWin(url);
+  }
+  return html;
+};
+/**
+ * 获取html
+ * @param url
+ */
+export const getHtmlWithProcess = async (url: string) => {
+  const key = hashString(url);
+  const handle = (msg) => {
+    NotifyMsgUtil.sendNotifyMsg('进度', `开始获取html:${msg}`, key);
+  };
+  eventEmitter.on(key, handle);
+  let html = (await requestHtml(url)) as any;
+  NotifyMsgUtil.close(key);
+  eventEmitter.off(key, handle);
+
   if (html?.indexOf('Just a moment...') > 0) {
     MessageUtil.info('request 失败，使用win');
     html = await requestHtmlByWin(url);

@@ -1,14 +1,19 @@
-//* ** let helpElAttr = arguments[0];
-//* ** let helpElText = arguments[1];
-//* ** let ElementAttr = arguments[2];
-//* ** let ElementTypes = arguments[3];
-//* ** let getHtml = arguments[4];
-//* ** let NotifyMsgUtil = arguments[5];
-//* ** let LogMsgUtil = arguments[6];
-//* ** let hashString = arguments[7];
-//* ** let eventEmitter = arguments[8];
-//* ** let request_string_get = arguments[9];
-//* ** let getCurrentItems = arguments[10];
-//* ** let MessageUtil = arguments[11];
-//* ** let cc = '$code';
-//* ** return cc;
+// @ts-ignore
+return (
+  helpElAttr,
+  helpElText,
+  ElementAttr,
+  ElementTypes,
+  getHtml,
+  NotifyMsgUtil,
+  LogMsgUtil,
+  hashString,
+  eventEmitter,
+  request_string_get,
+  getCurrentItems,
+  MessageUtil,
+  getHtmlWithProcess
+) => {
+  let cc = '$code';
+  return cc;
+};

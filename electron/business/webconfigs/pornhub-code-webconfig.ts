@@ -4,7 +4,7 @@ import type { Element } from 'domhandler';
 import { hashString } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes } from '@ghs/constant';
-import { getHtml } from '../../export';
+import { getHtml, getHtmlWithProcess } from '../../export';
 import { LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../../utils/KitUtil';
 import { request_string_get } from '../../http';
@@ -218,7 +218,7 @@ const getData = (): WebConfig => /* break */ ({
     return res;
   },
   async getDetailInfo(item, cheerio) {
-    let html = await getHtml(item.jumpUrl);
+    let html = await getHtmlWithProcess(item.jumpUrl);
     const $ = cheerio.load(html);
     const $title = $('title');
     const urls = [];

@@ -1,7 +1,7 @@
 import type { WebConfig } from '@ghs/types';
 import { hashString } from '@ilzf/utils';
 import { ElementAttr, ElementTypes } from '@ghs/constant';
-import { getHtml } from '../../export';
+import { getHtml, getHtmlWithProcess } from '../../export';
 import { LogMsgUtil, NotifyMsgUtil } from '../../utils/message';
 import { eventEmitter, helpElAttr, helpElText } from '../../utils/KitUtil';
 
@@ -169,7 +169,7 @@ const getData = (): WebConfig => /* break */ ({
       };
     }
     if (tags.some((item) => item.title === 'av') || tags.some((item) => item.title === 'dm')) {
-      const html = await getHtml(item.jumpUrl);
+      const html = await getHtmlWithProcess(item.jumpUrl);
       const $ = cheerio.load(html);
       const $video = $('video');
       const jumpUrl = helpElAttr($video, ElementAttr.dataSource);
