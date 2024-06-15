@@ -122,18 +122,64 @@ const getData = (): WebConfig => /* break */ ({
     return pageTags;
   },
   async getDetailInfo(item, cheerio) {
-    const hs = (await getHtmlWithProcess(item.jumpUrl)).split('\n');
+    const html = await getHtmlWithProcess(item.jumpUrl);
     let res = '';
-    hs?.forEach((item, index) => {
-      if (item.includes('window.location = "https://www.m3u8hls')) {
-        const ss = item.split('#');
-        if (ss.length === 2) {
-          let url = ss[1];
-          res = url.replace(`";`, '');
+    const $ = cheerio.load(html);
+    const scrs = [];
+    function dCode(d, e, f) {
+      let g = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'.split('');
+      let h = g.slice(0, e);
+      let i = g.slice(0, f);
+      let j = d
+        .split('')
+        .reverse()
+        // eslint-disable-next-line array-callback-return
+        .reduce(function (a, b, c) {
+          if (h.indexOf(b) !== -1) {
+            return (a += h.indexOf(b) * e ** c);
+          }
+        }, 0);
+      let k = '';
+      while (j > 0) {
+        k = i[j % f] + k;
+        j = (j - (j % f)) / f;
+      }
+      return k || '0';
+    }
+    function getData(h, u, n, t, e, r) {
+      r = '';
+      for (let i = 0, len = h.length; i < len; i++) {
+        let s = '';
+        while (h[i] !== n[e]) {
+          s += h[i];
+          i++;
+        }
+        for (let j = 0; j < n.length; j++) {
+          s = s.replace(new RegExp(n[j], 'g'), `${j}`);
+        }
+        // @ts-ignore
+        r += String.fromCharCode(dCode(s, e, 10) - t);
+      }
+      return decodeURIComponent(escape(r));
+    }
+    $('script').each((i, el) => {
+      const $sc = $(el);
+      if (!helpElAttr($sc, ElementAttr.src)) {
+        const text = helpElText($(el));
+        if (text.includes('decodeURIComponent')) {
+          scrs.push(helpElText($(el)));
         }
       }
     });
-    LogMsgUtil.sendLogMsg(this.key, res);
+    if (scrs.length === 2) {
+      const cuSrc = scrs[1];
+      const rows = cuSrc.split('escape(r))}(');
+      if (rows.length === 2) {
+        const argsStr = rows[1].replace('))', '').replace('\\“', '');
+        let jsStr = eval(`getData(${argsStr})`);
+        res = jsStr.substring(jsStr.indexOf(` src: '`) + 7, jsStr.indexOf(`', type:`));
+      }
+    }
     return {
       detailType: 'm3u8',
       renderType: 'normal',

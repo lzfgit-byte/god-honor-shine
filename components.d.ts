@@ -19,6 +19,7 @@ declare module 'vue' {
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ASpace: typeof import('ant-design-vue/es')['Space']
     ASpin: typeof import('ant-design-vue/es')['Spin']
+    ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
     GhsDialog: typeof import('./src/components/dialog/ghs-dialog.vue')['default']
     GhsImg: typeof import('./src/components/image/ghs-img.vue')['default']

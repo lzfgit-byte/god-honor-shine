@@ -24,7 +24,7 @@ import pornhub from './webconfigs/pornhub-code-webconfig?raw';
 // @ts-ignore
 import staticCode from './static-code?raw';
 
-const configs: string[] = [demoWebCode, rule34, badnew, xvideo, pornhub];
+const configs: string[] = [demoWebCode, rule34, badnew, lulu, xvideo, pornhub];
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
