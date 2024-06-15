@@ -1,5 +1,6 @@
 import { BrowserWindow } from 'electron';
 import useProxySetting from '../setting/use-proxy-setting';
+import { getMainWin } from '../main';
 
 /**
  * 使用新窗口获取数据，执行外部传入code，执行完毕后关闭
@@ -48,10 +49,13 @@ export const win_open = (url: string, code = '', width = 800, height = 800) => {
   if (!url) {
     return;
   }
+  const winW = getMainWin();
   const win = new BrowserWindow({
     width,
     height,
+    parent: winW,
     show: true,
+    modal: true,
     title: 'newWindow',
     webPreferences: {
       nodeIntegration: true,

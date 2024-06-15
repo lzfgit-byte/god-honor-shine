@@ -88,3 +88,4 @@ app.on('activate', () => {
 // 注册远程方法
 useIpcMain();
 useCookie();
+export const getMainWin = (): BrowserWindow => win;
