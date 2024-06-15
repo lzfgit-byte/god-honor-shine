@@ -16,17 +16,21 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { computed } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { generateKey } from '@ilzf/utils';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useGlobalState from '@/hooks/use-global-state';
+  import { f_listCollect } from '@/utils/business';
 
   const props = defineProps({
     showDetail: Function,
     upCollect: Function,
   });
-  const { webConfig, collects } = useGlobalState();
+  const { webConfig, collects, webKey } = useGlobalState();
   const items = computed(() => collects.value.map((item) => JSON.parse(item.value)));
+  onMounted(async () => {
+    await f_listCollect(webKey.value);
+  });
 </script>
 
 <style scoped lang="less">
