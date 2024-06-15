@@ -1,8 +1,7 @@
-import { isFalsity } from '@ilzf/utils';
 import { SearchHistoryEntity } from '@ghs/constant';
 import type { Item } from '@ghs/types';
 import { getCurrentBusiness } from '../business/business';
-import { getCurrentKey } from '../business/use-init-web-config';
+import { getCurrentKey, getWebConfigByKey } from '../business/use-init-web-config';
 
 /**
  * 执行搜索
@@ -16,6 +15,10 @@ export const search = async (search: string, item: Item): Promise<string> => {
  */
 export const searchRecommend = async (search: string): Promise<string[]> => {
   const ents = await SearchHistoryEntity.find({ where: { type: getCurrentKey() } });
+  const wc = getWebConfigByKey(getCurrentKey());
+  if (wc.adapterRemoteSearch) {
+    return [...wc.adapterRemoteSearch(search), ...ents.map((item) => item.value)];
+  }
   return [...ents.map((item) => item.value)];
 };
 /**

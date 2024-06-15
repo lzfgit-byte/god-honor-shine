@@ -37,7 +37,7 @@
           >
             <span> {{ item }}</span>
 
-            <CloseCircleOutlined @click="handleDelete(item)" />
+            <CloseCircleOutlined @click.stop="handleDelete(item)" />
           </div>
         </GhsScroller>
       </div>

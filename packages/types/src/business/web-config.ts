@@ -42,4 +42,6 @@ export interface WebConfig extends BaseConfig {
   adapterLoadUrl: (url: string, urlReplaces: UrlReplace[]) => string;
   // 处理搜索问题时调用
   adapterSearchUrl: (url: string, item: Item) => string;
+  // adapter
+  adapterRemoteSearch?: (searchKey: string) => string[];
 }
