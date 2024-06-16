@@ -3,7 +3,7 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import type { DetailInfo, Item, Pagination, Tag, UrlAppend, UrlReplace } from '@/business/index';
 
-export type SetTag = '标签' | '收藏' | '历史' | '过滤选项' | '系统配置' | '日志';
+export type SetTag = '标签' | '收藏' | '历史' | '过滤选项' | '系统配置' | '日志' | '配置';
 export interface BaseConfig {
   key: string;
   favicon: string;

@@ -17,7 +17,7 @@ const getData = (): WebConfig => /* break */ ({
   drawWidth: `${3.5 * 220}px`,
   historyRemember: 100,
 
-  setTags: ['标签', '收藏', '历史', '系统配置', '日志'],
+  setTags: ['标签', '收藏', '历史', '系统配置', '日志', '配置'],
 
   currentUrlReplace: null,
 

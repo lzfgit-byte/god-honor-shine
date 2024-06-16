@@ -7,11 +7,8 @@
   import type { PropType } from 'vue';
   import { onMounted, watch } from 'vue';
   import type * as monaco from 'monaco-editor';
-  import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-  import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
-  import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
-  import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
   import { useMonacoEditor } from './hooks/use-monaco-editor';
+  import EditorWorker from '@/components/MonacoEditor/components/editor-worker.vue';
 
   const props = defineProps({
     width: {
@@ -39,21 +36,9 @@
       default: () => ({}),
     },
   });
+
   const emits = defineEmits(['blur', 'update:modelValue']);
-  self.MonacoEnvironment = {
-    getWorker(workerId, label) {
-      if (label === 'json') {
-        return new jsonWorker();
-      }
-      if (label === 'typescript' || label === 'javascript') {
-        return new tsWorker();
-      }
-      if (label === 'html') {
-        return new htmlWorker();
-      }
-      return new editorWorker();
-    },
-  };
+
   const { el, updateVal, getEditor, createEditor } = useMonacoEditor(props.language);
 
   const updateMonacoVal = (_val?: string) => {

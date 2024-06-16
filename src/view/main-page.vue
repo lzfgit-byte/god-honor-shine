@@ -62,6 +62,7 @@
         ></SystemConfig>
         <FilterView v-if="segmentedValue === '过滤选项'" :key="webKey" :load="load"></FilterView>
         <LogView v-if="segmentedValue === '日志'" :key="webKey"></LogView>
+        <MonacoEditor v-if="segmentedValue === '配置'" :key="webKey"> </MonacoEditor>
       </transition-group>
     </div>
   </a-drawer>
@@ -91,6 +92,7 @@
   import LogView from '@/view/components/log-view.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import FilterView from '@/view/components/filter-view.vue';
+  import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   const route = useRoute();
   const { webKey, pagination, items, webConfig } = useGlobalState();
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
