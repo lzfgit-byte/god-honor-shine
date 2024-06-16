@@ -48,6 +48,7 @@
           v-if="segmentedValue === '收藏'"
           :key="webKey"
           :show-detail="showDetail"
+          :up-collect="updateCollects"
         ></CollectView>
         <HistoryView
           v-if="segmentedValue === '历史'"

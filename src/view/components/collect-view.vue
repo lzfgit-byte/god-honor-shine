@@ -8,8 +8,7 @@
         :width="webConfig.imgWidth"
         :height="webConfig.imgHeight"
         :on-close-click="() => 1"
-        @img-click="showDetail(item)"
-        @up-collect="props?.upCollect"
+        @img-click="showDetailAndUp(item)"
       ></GhsItem>
     </TransitionGroup>
     <a-empty v-if="items.length === 0" />
@@ -28,6 +27,11 @@
   });
   const { webConfig, collects, webKey } = useGlobalState();
   const items = computed(() => collects.value.map((item) => JSON.parse(item.value)));
+
+  const showDetailAndUp = async (item) => {
+    await props?.showDetail(item);
+    await props?.upCollect();
+  };
   onMounted(async () => {
     await f_listCollect(webKey.value);
   });
