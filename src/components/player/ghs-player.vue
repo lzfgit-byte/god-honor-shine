@@ -6,7 +6,7 @@
     top="5%"
     :mask-closed="true"
   >
-    <div min-h-80vh>
+    <div id="ghs-video-container-id" min-h-80vh relative>
       <VideoHtml5
         v-if="videoVisible && visible"
         :key="srcComp"
@@ -14,6 +14,38 @@
         :title="titleComp"
         :type="typeComp"
       ></VideoHtml5>
+      <a-float-button
+        v-if="comments.length > 0"
+        tooltip="查看评论"
+        type="default"
+        :style="{
+          right: '15px',
+          top: '250px',
+          width: '30px',
+          height: '30px',
+          opacity: 0.2,
+        }"
+        @click="drawerOpen = true"
+      >
+        <template #icon>
+          <CommentOutlined :style="{ fontSize: '14px', color: '#323' }" />
+        </template>
+      </a-float-button>
+      <a-drawer
+        v-model:open="drawerOpen"
+        title=""
+        placement="right"
+        :closable="false"
+        :mask-closable="true"
+        :content-wrapper-style="{ 'background-color': '#333' }"
+        :body-style="{ 'background-color': '#333', padding: '10px' }"
+        :get-container="getDrawerContainer"
+        :style="{ position: 'absolute' }"
+      >
+        <div h-full w-full overflow-auto>
+          <div v-for="item in comments" :key="item" m-b-2 :title="item">{{ item }}</div>
+        </div>
+      </a-drawer>
     </div>
     <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
@@ -31,6 +63,7 @@
 <script setup lang="ts">
   import { ref } from 'vue-demi';
   import type { Detail } from '@ghs/types';
+  import { CommentOutlined } from '@ant-design/icons-vue';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
@@ -45,6 +78,9 @@
     srcComp.value = info.url;
     videoVisible.value = true;
   };
+  const drawerOpen = ref(false);
+  const comments = ref([]);
+  const getDrawerContainer = () => document.getElementById('ghs-video-container-id');
   defineExpose({
     show: (src: string, title: string, type: VideoType) => {
       srcComp.value = src;
