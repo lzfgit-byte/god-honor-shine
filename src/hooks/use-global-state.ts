@@ -4,6 +4,8 @@ import type { CollectEntity } from '@ghs/constant';
 import { computed } from 'vue';
 import { message } from 'ant-design-vue';
 
+const allWebKeys = ref([]);
+
 const webKey = ref();
 
 const webConfig = ref<BaseConfig>();
@@ -60,4 +62,5 @@ export default () => ({
   webKey,
   logs,
   currentCode,
+  allWebKeys,
 });

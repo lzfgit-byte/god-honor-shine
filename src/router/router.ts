@@ -3,6 +3,8 @@ import type { App } from 'vue';
 import type { BaseConfig } from '@ghs/types';
 import { ref } from 'vue';
 import { f_listAllWebConfigs } from '@/utils/business';
+import useGlobalState from '@/hooks/use-global-state';
+const { allWebKeys } = useGlobalState();
 export interface RouterType {
   path?: string;
   key?: string;
@@ -30,6 +32,7 @@ const router = createRouter({
 export default router;
 const initRoute = async () => {
   const webConfigs: BaseConfig[] = await f_listAllWebConfigs();
+  allWebKeys.value = webConfigs.map((item) => item.key);
   webConfigs.forEach((item) => {
     router.addRoute({
       path: `/${item.key}`,

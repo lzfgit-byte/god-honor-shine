@@ -24,12 +24,17 @@ export const saveWebConfigCode = async (key: string, code: string) => {
 
     return;
   }
-  const ent = new WebConfigEntity();
-  ent.key = key;
-  ent.code = code;
-  ent.sort = 0;
-  await ent.save();
-  MessageUtil.success('代码保存成功');
+  try {
+    const ent = new WebConfigEntity();
+    parseWebConfig(base64ToStr(code));
+    ent.key = key;
+    ent.code = code;
+    ent.sort = 0;
+    await ent.save();
+    MessageUtil.success('代码保存成功');
+  } catch (e) {
+    MessageUtil.success(`代码保存失败，代码解析失败${e.message}`);
+  }
 };
 /**
  * 获取webConfig

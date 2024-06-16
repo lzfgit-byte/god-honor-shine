@@ -8,7 +8,7 @@
   >
     <a-row>
       <a-col :span="24">
-        <a-input v-model:value="currentKey"></a-input>
+        <a-input v-model:value="currentKey" :disabled="isEdit"></a-input>
       </a-col>
     </a-row>
     <div h-full w-full>
@@ -26,15 +26,16 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { base64ToStr, strToBase64 } from '@ilzf/utils';
+  import { base64ToStr, isFalsity, strToBase64 } from '@ilzf/utils';
   import { message } from 'ant-design-vue';
   import { preBreak } from '@ghs/constant';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
   import { preConfigCode } from '@/view/hook/pre-config-code';
-  const { currentCode } = useGlobalState();
+  const { currentCode, allWebKeys } = useGlobalState();
   const drawerOpen = ref(false);
+  const isEdit = ref(false);
   const loadCode = async (key: string) => {
     const code = await f_getWebConfigCode(key);
     if (code) {
@@ -42,7 +43,15 @@
     }
   };
   const saveCode = async (key: string) => {
+    if (!isEdit.value && allWebKeys.value.includes(key)) {
+      message.warn('新增时key不能与已有的重复');
+      return;
+    }
     let code = currentCode.value;
+    if (isFalsity(code)) {
+      message.warn('存储的代码不能为空');
+      return;
+    }
     const codes = code.split(preBreak);
     if (codes.length === 2) {
       code = codes[1];
@@ -66,12 +75,14 @@
       currentCode.value = `${preConfigCode}${preBreak}\n`;
       drawerOpen.value = true;
       currentKey.value = key;
+      isEdit.value = false;
     },
     edit: async (key: string) => {
       currentCode.value = '';
       currentKey.value = key;
       drawerOpen.value = true;
       await loadCode(key);
+      isEdit.value = true;
     },
   });
 </script>
