@@ -11,4 +11,8 @@ export class WebConfigEntity extends MyBaseEntity {
   // @ts-ignore
   @Column('varchar', { comment: '收藏的url' })
   code: string;
+
+  // @ts-ignore
+  @Column('integer', { comment: '收藏的url' })
+  sort: number;
 }

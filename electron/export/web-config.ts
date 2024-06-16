@@ -17,6 +17,7 @@ export const saveWebConfigCode = async (key: string, code: string) => {
   const ent = new WebConfigEntity();
   ent.key = key;
   ent.code = code;
+  ent.sort = 0;
   await ent.save();
   MessageUtil.success('代码保存成功');
 };
