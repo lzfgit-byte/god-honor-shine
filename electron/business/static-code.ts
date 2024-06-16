@@ -12,7 +12,8 @@ return (
   request_string_get,
   getCurrentItems,
   MessageUtil,
-  getHtmlWithProcess
+  getHtmlWithProcess,
+  ConsoleLogUtil
 ) => {
   let cc = '$code';
   return cc;

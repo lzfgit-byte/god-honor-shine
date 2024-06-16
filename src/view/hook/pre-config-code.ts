@@ -250,7 +250,18 @@ export class ProgressMsgUtil {
   }
 }
 
-export const eventEmitter: any = null;
+export class ConsoleLogUtil {
+  private static sendMsg(msg: MessageInfo) {
+  }
+  static sendLogMsg(...msg: string[]) {
+  }
+}
+export const eventEmitter = {
+  on: (event: string, callback: (...args: any[]) => void) => {},
+  off: (event: string, callback: (...args: any[]) => void) => {},
+  emit: (event: string, ...args: any[]) => {},
+};
+
 function getHtml(str: string) {
   return str;
 }
