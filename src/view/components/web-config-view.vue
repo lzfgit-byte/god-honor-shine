@@ -48,13 +48,13 @@
       return;
     }
     let code = currentCode.value;
-    if (isFalsity(code)) {
-      message.warn('存储的代码不能为空');
-      return;
-    }
     const codes = code.split(preBreak);
     if (codes.length === 2) {
       code = codes[1];
+    }
+    if (isFalsity(code.trim())) {
+      message.warn('存储的代码不能为空');
+      return;
     }
     await f_saveWebConfigCode(key, strToBase64(code));
   };
