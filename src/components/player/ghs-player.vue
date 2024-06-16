@@ -82,14 +82,15 @@
   const comments = ref([]);
   const getDrawerContainer = () => document.getElementById('ghs-video-container-id');
   defineExpose({
-    show: (src: string, title: string, type: VideoType) => {
+    show: (src: string, title: string, type: VideoType, comments_?: string[]) => {
       srcComp.value = src;
       titleComp.value = title;
       typeComp.value = type;
       visible.value = true;
       videoVisible.value = true;
+      comments.value = comments_;
     },
-    showWithTag: (urls: Detail[], title: string, type: VideoType) => {
+    showWithTag: (urls: Detail[], title: string, type: VideoType, comments_?: string[]) => {
       videoVisible.value = false;
       srcComp.value = null;
       urlsRef.value = urls;
@@ -100,6 +101,7 @@
       const c = urls.map((i) => parseInt(i.quality)).reduce((c, n) => (c > n ? c : n), 0);
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
+      comments.value = comments_;
     },
   });
 </script>
