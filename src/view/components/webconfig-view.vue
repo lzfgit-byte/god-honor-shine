@@ -15,7 +15,9 @@
   const { webKey, currentCode } = useGlobalState();
   const loadCode = async () => {
     const code = await f_getWebConfigCode(webKey.value);
-    currentCode.value = base64ToStr(code);
+    if (code) {
+      currentCode.value = base64ToStr(code);
+    }
   };
   watchEffect(async () => {
     if (webKey.value) {

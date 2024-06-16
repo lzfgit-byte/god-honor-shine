@@ -1,12 +1,4 @@
-import type {
-  BaseConfig,
-  DetailInfo,
-  Item,
-  Page,
-  UrlAppend,
-  UrlReplace,
-  WebConfig,
-} from '@ghs/types';
+import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 
 import { MessageUtil } from '../utils/message';

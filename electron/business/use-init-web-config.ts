@@ -71,7 +71,7 @@ export const getWebConfigAry = (): WebConfig[] => {
   });
   return res;
 };
-export const loadWebConfig = () => {
+export const loadWebConfig = async () => {
   configs.forEach((item) => {
     const config: WebConfig = new Function(wrapperCode(item))()(
       helpElAttr,
@@ -88,6 +88,7 @@ export const loadWebConfig = () => {
       MessageUtil,
       getHtmlWithProcess
     );
+    config.setTags.push('配置');
     cache[config.key] = config;
     if (!getCurrentKey()) {
       setCurrentKey(config.key);
