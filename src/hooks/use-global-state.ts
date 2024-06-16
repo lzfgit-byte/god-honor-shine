@@ -2,6 +2,7 @@ import { ref, watch } from 'vue-demi';
 import type { BaseConfig, Item, Pagination, SetTag, Tag, UrlReplace } from '@ghs/types';
 import type { CollectEntity } from '@ghs/constant';
 import { computed } from 'vue';
+import { message } from 'ant-design-vue';
 
 const webKey = ref();
 
@@ -28,6 +29,19 @@ watch(segmentedData, () => {
 const collects = ref<CollectEntity[]>();
 
 const currentCode = ref();
+
+let timer = null;
+watch(loading, () => {
+  if (loading.value) {
+    timer = setTimeout(() => {
+      message.warn('loading timeout：50000').then(() => 1);
+      loading.value = false;
+    }, 10000);
+  } else {
+    timer && clearTimeout(timer);
+    timer = null;
+  }
+});
 
 export default () => ({
   webConfig,
