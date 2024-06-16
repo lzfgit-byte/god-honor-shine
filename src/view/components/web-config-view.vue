@@ -38,11 +38,16 @@
   const loadCode = async (key: string) => {
     const code = await f_getWebConfigCode(key);
     if (code) {
-      currentCode.value = base64ToStr(code);
+      currentCode.value = preConfigCode + preBreak + base64ToStr(code);
     }
   };
   const saveCode = async (key: string) => {
-    await f_saveWebConfigCode(key, strToBase64(currentCode.value));
+    let code = currentCode.value;
+    const codes = code.split(preBreak);
+    if (codes.length === 2) {
+      code = codes[1];
+    }
+    await f_saveWebConfigCode(key, strToBase64(code));
   };
   const currentKey = ref();
   const handleSaveCode = async () => {
