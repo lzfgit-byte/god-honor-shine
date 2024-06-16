@@ -28,6 +28,7 @@
   import { ref } from 'vue';
   import { base64ToStr, strToBase64 } from '@ilzf/utils';
   import { message } from 'ant-design-vue';
+  import { preBreak } from '@ghs/constant';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
@@ -56,7 +57,7 @@
   };
   defineExpose({
     add: async (key: string) => {
-      currentCode.value = preConfigCode;
+      currentCode.value = `${preConfigCode}${preBreak}\n`;
       drawerOpen.value = true;
       currentKey.value = key;
     },

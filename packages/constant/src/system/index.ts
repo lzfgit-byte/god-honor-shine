@@ -48,3 +48,8 @@ export const ElementTypes = {
  */
 export const SaveCodeEvent = 'save-code';
 export const ReloadCodeEvent = 'reload-code';
+/**
+ * 代码解析占位符
+ */
+export const breakStr = '/* break */';
+export const preBreak = '/* preBreak */';

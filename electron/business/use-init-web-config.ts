@@ -4,8 +4,8 @@ import type { Element } from 'domhandler';
 import { keys } from 'lodash';
 import { base64ToStr, hashString, isFunction } from '@ilzf/utils';
 
-import { ElementAttr, ElementTypes } from '@ghs/constant';
-import { getHtml, getHtmlWithProcess, listAllWebConfigs, listWebConfig } from '../export';
+import { ElementAttr, ElementTypes, breakStr } from '@ghs/constant';
+import { getHtml, getHtmlWithProcess, listWebConfig } from '../export';
 import { ConsoleLogUtil, LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
@@ -19,8 +19,6 @@ export const setCurrentKey = (key: string) => {
 export const getCurrentKey = () => currentKey;
 
 const cache: Record<string, WebConfig> = {};
-const breakStr = '/* break */';
-const bBreak = '/* breakStr */';
 const staticBreak = '//* **';
 const wrapperCode = (code: string) => {
   const codes = code.split(breakStr);
