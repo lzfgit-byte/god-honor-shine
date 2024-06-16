@@ -1,4 +1,5 @@
 import { WebConfigEntity } from '@ghs/constant';
+import { MessageUtil } from '../utils/message';
 
 /**
  * 保存WebConfig
@@ -9,12 +10,15 @@ export const saveWebConfigCode = async (key: string, code: string) => {
   const one = await WebConfigEntity.findOne({ where: { key } });
   if (one) {
     one.code = code;
-    return await WebConfigEntity.update(key, one);
+    await WebConfigEntity.update(key, one);
+    MessageUtil.success('代码更新成功');
+    return;
   }
   const ent = new WebConfigEntity();
   ent.key = key;
   ent.code = code;
   await ent.save();
+  MessageUtil.success('代码保存成功');
 };
 /**
  * 获取webConfig

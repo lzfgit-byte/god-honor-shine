@@ -26,6 +26,8 @@ export * from './base';
 export * from './collect';
 // 历史
 export * from './history';
+//
+export * from './web-config';
 
 /**
  *获取所有的配置项
