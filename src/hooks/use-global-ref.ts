@@ -11,7 +11,7 @@ export interface GhsPlayerExpose {
 }
 export interface WebConfigExpose {
   add: (key: string) => void;
-  edit: () => void;
+  edit: (key: string) => void;
 }
 export const imgViewerRef = ref<ImgViewerExpose>();
 export const videoGlobalRef = ref<GhsPlayerExpose>();

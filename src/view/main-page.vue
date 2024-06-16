@@ -100,7 +100,7 @@
   import LogView from '@/view/components/log-view.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import FilterView from '@/view/components/filter-view.vue';
-  import WebConfigView from '@/view/components/webconfig-view.vue';
+  import WebConfigView from '@/view/components/web-config-view.vue';
   const route = useRoute();
   const { webKey, pagination, items, webConfig } = useGlobalState();
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
