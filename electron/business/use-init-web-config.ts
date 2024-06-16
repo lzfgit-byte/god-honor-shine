@@ -89,7 +89,7 @@ export const loadWebConfig = async () => {
       MessageUtil,
       getHtmlWithProcess
     );
-    config.setTags.push('配置');
+    // config.setTags.push('配置');
     cache[config.key] = config;
     if (!getCurrentKey()) {
       setCurrentKey(config.key);
