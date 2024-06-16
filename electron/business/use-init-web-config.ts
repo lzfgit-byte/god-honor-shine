@@ -4,7 +4,7 @@ import type { Element } from 'domhandler';
 import { keys } from 'lodash';
 import { base64ToStr, hashString, isFunction } from '@ilzf/utils';
 
-import { ElementAttr, ElementTypes, breakStr } from '@ghs/constant';
+import { ElementAttr, ElementTypes, WebConfigEntity, breakStr } from '@ghs/constant';
 import { getHtml, getHtmlWithProcess, listWebConfig } from '../export';
 import { ConsoleLogUtil, LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
@@ -56,26 +56,30 @@ export const getWebConfigAry = (): WebConfig[] => {
   });
   return res;
 };
+const parseWebConfig = (code: string) => {
+  const config: WebConfig = new Function(wrapperCode(code))()(
+    helpElAttr,
+    helpElText,
+    ElementAttr,
+    ElementTypes,
+    getHtml,
+    NotifyMsgUtil,
+    LogMsgUtil,
+    hashString,
+    eventEmitter,
+    request_string_get,
+    getCurrentItems,
+    MessageUtil,
+    getHtmlWithProcess,
+    ConsoleLogUtil
+  );
+  return config;
+};
 export const loadWebConfig = async () => {
   const list = await listWebConfig();
   const configs = list.map((item) => base64ToStr(item.code));
   configs.forEach((item) => {
-    const config: WebConfig = new Function(wrapperCode(item))()(
-      helpElAttr,
-      helpElText,
-      ElementAttr,
-      ElementTypes,
-      getHtml,
-      NotifyMsgUtil,
-      LogMsgUtil,
-      hashString,
-      eventEmitter,
-      request_string_get,
-      getCurrentItems,
-      MessageUtil,
-      getHtmlWithProcess,
-      ConsoleLogUtil
-    );
+    const config = parseWebConfig(item);
     // config.setTags.push('配置');
     cache[config.key] = config;
     if (!getCurrentKey()) {
@@ -83,7 +87,10 @@ export const loadWebConfig = async () => {
     }
   });
 };
-
+export const resetWebConfig = async (key: string) => {
+  const ent = await WebConfigEntity.findOne({ where: { key } });
+  cache[key] = parseWebConfig(base64ToStr(ent.code));
+};
 export default () => {
   loadWebConfig().then(() => 1);
 };

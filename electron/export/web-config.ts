@@ -1,5 +1,6 @@
 import { WebConfigEntity } from '@ghs/constant';
 import { MessageUtil } from '../utils/message';
+import { resetWebConfig } from '../business/use-init-web-config';
 
 /**
  * 保存WebConfig
@@ -12,6 +13,7 @@ export const saveWebConfigCode = async (key: string, code: string) => {
     one.code = code;
     await WebConfigEntity.update(one.id, one);
     MessageUtil.success(`代码更新成功`);
+    await resetWebConfig(key);
     return;
   }
   const ent = new WebConfigEntity();
