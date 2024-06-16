@@ -47,5 +47,7 @@ export default () => {
     drawerOpen.value = true;
   };
 
-  return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData };
+  const handleSaveCode = () => {};
+
+  return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData, handleSaveCode };
 };

@@ -62,9 +62,16 @@
         ></SystemConfig>
         <FilterView v-if="segmentedValue === '过滤选项'" :key="webKey" :load="load"></FilterView>
         <LogView v-if="segmentedValue === '日志'" :key="webKey"></LogView>
-        <WebconfigView v-if="segmentedValue === '配置'" :key="webKey"> </WebconfigView>
+        <WebConfigView v-if="segmentedValue === '配置'" :key="webKey"> </WebConfigView>
       </transition-group>
     </div>
+    <template v-if="['配置'].includes(segmentedValue)" #footer>
+      <div h-full w-full flex justify-end items-center>
+        <a-space>
+          <a-button size="small" type="primary" @click="handleSaveCode">保存代码</a-button>
+        </a-space>
+      </div>
+    </template>
   </a-drawer>
   <FloatButtonGroup
     :handle-draw-open="handleDrawOpen"
@@ -92,8 +99,7 @@
   import LogView from '@/view/components/log-view.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import FilterView from '@/view/components/filter-view.vue';
-  import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
-  import WebconfigView from '@/view/components/webconfig-view.vue';
+  import WebConfigView from '@/view/components/webconfig-view.vue';
   const route = useRoute();
   const { webKey, pagination, items, webConfig } = useGlobalState();
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
@@ -101,7 +107,7 @@
 
   const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =
     usePageState();
-  const { showDetail, drawerOpen, handleDrawOpen } = useFeature();
+  const { showDetail, drawerOpen, handleDrawOpen, handleSaveCode } = useFeature();
   const { collects, updateCollects } = useCollect();
   watchEffect(async () => {
     if (webKey.value) {

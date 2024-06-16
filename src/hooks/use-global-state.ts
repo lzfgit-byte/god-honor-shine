@@ -27,6 +27,8 @@ watch(segmentedData, () => {
 
 const collects = ref<CollectEntity[]>();
 
+const currentCode = ref();
+
 export default () => ({
   webConfig,
   pagination,
@@ -43,4 +45,5 @@ export default () => ({
   collects,
   webKey,
   logs,
+  currentCode,
 });
