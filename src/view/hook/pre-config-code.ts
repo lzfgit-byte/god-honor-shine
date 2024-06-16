@@ -120,7 +120,7 @@ export interface WebConfig extends BaseConfig {
   // 处理搜索问题时调用
   adapterSearchUrl: (url: string, item: Item) => string;
   // adapter
-  adapterRemoteSearch?: (searchKey: string) => string[];
+  adapterRemoteSearch?: (searchKey: string) => Promise<string[]>;
 }
 export const ElementAttr = {
   src: 'src',
@@ -268,4 +268,81 @@ function getHtml(str: string) {
 async function getHtmlWithProcess(url: string) {
   return '';
 }
+`;
+export const defaultWebConfig = `
+const getData = (): WebConfig => /* break */ ({
+  key: 'demo',
+  name: 'demo',
+  favicon: 'https://demo.com/favicon.ico',
+  homeUrl: '',
+  searchUrl: '',
+  imgWidth: '220px',
+  imgHeight: '147px',
+
+  drawWidth: \`${3.5 * 220}px\`,
+  historyRemember: 100,
+
+  setTags: ['标签', '收藏', '历史', '系统配置', '日志'],
+
+  currentUrlReplace: null,
+
+  getUrlReplace($) {
+    return [];
+  },
+  getItems($) {
+    const res = [];
+    $('#thumbContainer .thumb').each((i, el) => {
+      const $el = $(el);
+      res.push({
+        jumpUrl,
+        title,
+        coverImg,
+        type: isVideo ? 'video' : 'image',
+        renderType: 'normal',
+        tags: flatTags.filter((item) => item.title),
+      });
+    });
+
+    return res;
+  },
+
+  getPagination($) {
+    const res = [];
+    $('#more-hentai li').each((i, el) => {
+      const $el = $(el);
+      res.push({ title, isCurrent, url });
+    });
+    return res;
+  },
+  getTags($) {
+    const res = [];
+    $('#tags > li').each((i, el) => {
+      const $el = $(el);
+      res.push({ title, url });
+    });
+    return res;
+  },
+  async getDetailInfo(item, cheerio) {
+     return {
+      detailType: 'win',
+      renderType: 'normal',
+      details: [
+        {
+          type: 'win',
+          url: item.jumpUrl,
+          fullUrl: '',
+          title: item.title,
+        },
+      ],
+      relations: [],
+    };
+  },
+  adapterLoadUrl(url) {
+    return url;
+  },
+  adapterSearchUrl(key) {
+    key = key.replace(' ', '+');
+    return this.searchUrl + key;
+  },
+});
 `;

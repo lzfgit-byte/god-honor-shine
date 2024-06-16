@@ -32,7 +32,7 @@
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
-  import { preConfigCode } from '@/view/hook/pre-config-code';
+  import { defaultWebConfig, preConfigCode } from '@/view/hook/pre-config-code';
   const { currentCode, allWebKeys } = useGlobalState();
   const drawerOpen = ref(false);
   const isEdit = ref(false);
@@ -72,7 +72,7 @@
   };
   defineExpose({
     add: async (key: string) => {
-      currentCode.value = `${preConfigCode}${preBreak}\n`;
+      currentCode.value = `${preConfigCode}${preBreak}${defaultWebConfig}`;
       drawerOpen.value = true;
       currentKey.value = key;
       isEdit.value = false;

@@ -17,7 +17,7 @@ export const searchRecommend = async (search: string): Promise<string[]> => {
   const ents = await SearchHistoryEntity.find({ where: { type: getCurrentKey() } });
   const wc = getWebConfigByKey(getCurrentKey());
   if (wc.adapterRemoteSearch) {
-    return [...wc.adapterRemoteSearch(search), ...ents.map((item) => item.value)];
+    return [...(await wc.adapterRemoteSearch(search)), ...ents.map((item) => item.value)];
   }
   return [...ents.map((item) => item.value)];
 };
