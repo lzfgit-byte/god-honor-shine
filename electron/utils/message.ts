@@ -103,6 +103,19 @@ export class ProgressMsgUtil {
   }
 }
 
+/**
+ *控制台设置日志
+ */
+export class ConsoleLogUtil {
+  private static sendMsg(msg: MessageInfo) {
+    webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_CONSOLE_LOG, msg);
+  }
+
+  static sendLogMsg(...msg: string[]) {
+    this.sendMsg({ msg: `${getCurrentDate()} ${msg.join(' ')}` });
+  }
+}
+
 export const useGlobalMessage = () => {
   eventEmitter.on(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, (msg) => {
     LogMsgUtil.sendLogMsg(msg);

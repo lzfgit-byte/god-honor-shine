@@ -32,6 +32,7 @@
     "@ant-design/icons-vue": "^7.0.1",
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@guolao/vue-monaco-editor": "^1.5.1",
     "@ilzf/utils": "^0.0.15",
     "@vueuse/core": "^10.10.0",
     "animate.css": "^4.1.1",
@@ -59,7 +60,8 @@
     "vue": "^3.3.4",
     "vue-codemirror": "^6.1.1",
     "vue-demi": "^0.14.6",
-    "vue-router": "4.1.5"
+    "vue-router": "4.1.5",
+    "monaco-editor": "^0.33.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.36.0",

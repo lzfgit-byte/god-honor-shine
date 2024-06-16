@@ -48,3 +48,6 @@ ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, (_event, args: MessageInf
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, (_event, args: MessageInfo) => {
   logs.value.push(args.msg);
 });
+ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_CONSOLE_LOG, (_event, args: MessageInfo) => {
+  console.log(args.msg);
+});

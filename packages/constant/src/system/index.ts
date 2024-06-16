@@ -7,6 +7,7 @@ export const MESSAGE_EVENT_KEY = {
   SEND_LOG_MESSAGE: 'send_log_message', // 发送日志信息
   SEND_PROCESS_MESSAGE: 'send_process_message', // 发送进度条信息
   SEND_STEP_MESSAGE: 'send_step_message',
+  SEND_CONSOLE_LOG: 'send_console_log',
 };
 /**
  * 传输对象
