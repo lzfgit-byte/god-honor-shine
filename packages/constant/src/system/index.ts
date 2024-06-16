@@ -43,3 +43,7 @@ export const ElementTypes = {
   source: 'source',
   p: 'p',
 };
+/**
+ *保存代码事件
+ */
+export const SaveCodeEvent = 'save-code';

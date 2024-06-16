@@ -1,8 +1,10 @@
 import type { Item } from '@ghs/types';
 import { message } from 'ant-design-vue';
+import { SaveCodeEvent } from '@ghs/constant';
 import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
+import bus from '@/utils/bus';
 
 export default () => {
   const { segmentedValue, drawerOpen, segmentedData, webConfig, loading, logs } = useGlobalState();
@@ -47,7 +49,9 @@ export default () => {
     drawerOpen.value = true;
   };
 
-  const handleSaveCode = () => {};
+  const handleSaveCode = () => {
+    bus.emit(SaveCodeEvent);
+  };
 
   return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData, handleSaveCode };
 };
