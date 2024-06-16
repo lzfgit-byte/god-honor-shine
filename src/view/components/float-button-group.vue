@@ -31,12 +31,22 @@
       <RedoOutlined />
     </template>
   </a-float-button>
-  <a-float-button tooltip="添加config" type="default" :style="{ right: '15px', top: '240px' }">
+  <a-float-button
+    tooltip="添加config"
+    type="default"
+    :style="{ right: '15px', top: '240px' }"
+    @click="addCode"
+  >
     <template #icon>
       <PlusOutlined />
     </template>
   </a-float-button>
-  <a-float-button tooltip="编辑config" type="default" :style="{ right: '15px', top: '300px' }">
+  <a-float-button
+    tooltip="编辑config"
+    type="default"
+    :style="{ right: '15px', top: '300px' }"
+    @click="editCode"
+  >
     <template #icon>
       <FormOutlined />
     </template>

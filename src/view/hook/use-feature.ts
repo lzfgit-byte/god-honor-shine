@@ -49,7 +49,7 @@ export default () => {
   };
 
   const handleAddCode = () => {
-    webConfigRef.value.add('test');
+    webConfigRef.value.add('');
   };
   const handleEditCode = () => {
     webConfigRef.value.edit(webKey.value);

@@ -6,6 +6,11 @@
     :header-style="{ display: 'none' }"
     :force-render="true"
   >
+    <a-row>
+      <a-col :span="24">
+        <a-input v-model:value="currentKey"></a-input>
+      </a-col>
+    </a-row>
     <div h-full w-full>
       <MonacoEditor v-model="currentCode"></MonacoEditor>
     </div>
@@ -22,6 +27,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { base64ToStr, strToBase64 } from '@ilzf/utils';
+  import { message } from 'ant-design-vue';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
@@ -38,7 +44,11 @@
   };
   const currentKey = ref();
   const handleSaveCode = async () => {
-    await saveCode(currentKey.value);
+    if (currentKey.value) {
+      await saveCode(currentKey.value);
+    } else {
+      message.warn('key为空');
+    }
   };
   const handleLoadCode = async () => {
     await loadCode(currentKey.value);
