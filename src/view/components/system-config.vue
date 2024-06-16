@@ -64,7 +64,13 @@
     }
     videoGlobalRef.value.show(videoUrl.value, '测试', 'm3u8');
   };
-  const playMp4 = () => {};
+  const playMp4 = () => {
+    if (isFalsity(videoUrl.value)) {
+      message.warn('地址为空');
+      return;
+    }
+    videoGlobalRef.value.show(videoUrl.value, '测试', 'mp4');
+  };
 </script>
 
 <style scoped lang="less"></style>
