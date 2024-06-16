@@ -15,7 +15,7 @@
         :type="typeComp"
       ></VideoHtml5>
       <a-float-button
-        v-if="comments.length > 0"
+        v-if="comments?.length > 0"
         tooltip="查看评论"
         type="default"
         :style="{
