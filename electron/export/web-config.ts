@@ -1,5 +1,10 @@
 import { WebConfigEntity } from '@ghs/constant';
 
+/**
+ * 保存WebConfig
+ * @param key
+ * @param code
+ */
 export const saveWebConfigCode = async (key: string, code: string) => {
   const one = await WebConfigEntity.findOne({ where: { key } });
   if (one) {
@@ -10,4 +15,17 @@ export const saveWebConfigCode = async (key: string, code: string) => {
   ent.key = key;
   ent.code = code;
   await ent.save();
+};
+/**
+ * 获取webConfig
+ */
+export const getWebConfigCode = async (key: string) => {
+  const one = await WebConfigEntity.findOne({ where: { key } });
+  return one?.code;
+};
+/**
+ * 列出webConfig
+ */
+export const listWebConfig = async () => {
+  return await WebConfigEntity.find();
 };

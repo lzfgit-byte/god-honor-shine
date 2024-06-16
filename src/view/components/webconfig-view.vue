@@ -4,16 +4,18 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { watchEffect } from 'vue-demi';
   import { onMounted } from 'vue';
   import { SaveCodeEvent } from '@ghs/constant';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import bus from '@/utils/bus';
+  import { f_saveWebConfigCode } from '@/utils/business';
   const { webKey, currentCode } = useGlobalState();
   onMounted(() => {
     bus.off(SaveCodeEvent);
-    bus.on(SaveCodeEvent, () => {});
+    bus.on(SaveCodeEvent, async () => {
+      await f_saveWebConfigCode(webKey.value, currentCode.value);
+    });
   });
 </script>
 

@@ -178,3 +178,23 @@ export const f_importFavorite = (path: string) => {
 export const f_deleteSearch = async (searchValue: string) => {
   return executeFunction('deleteSearch', searchValue);
 };
+/**
+ * 保存WebConfig
+ * @param key
+ * @param code
+ */
+export const f_saveWebConfigCode = async (key: string, code: string) => {
+  return executeFunction('saveWebConfigCode', key, code);
+};
+/**
+ * 获取webConfig
+ */
+export const f_getWebConfigCode = async (key: string) => {
+  return executeFunction('getWebConfigCode', key);
+};
+/**
+ * 列出webConfig
+ */
+export const f_listWebConfig = async () => {
+  return executeFunction('listWebConfig');
+};
