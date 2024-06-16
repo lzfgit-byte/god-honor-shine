@@ -15,8 +15,9 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { computed, onMounted } from 'vue';
+  import { computed, onActivated, onMounted, onUnmounted } from 'vue';
   import { generateKey } from '@ilzf/utils';
+  import { onDeactivated } from 'vue-demi';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_listCollect } from '@/utils/business';
@@ -30,10 +31,9 @@
 
   const showDetailAndUp = async (item) => {
     await props?.showDetail(item);
-    await props?.upCollect();
   };
-  onMounted(async () => {
-    await f_listCollect(webKey.value);
+  onUnmounted(async () => {
+    await props?.upCollect();
   });
 </script>
 
