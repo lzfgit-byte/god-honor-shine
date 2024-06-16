@@ -32,7 +32,7 @@ export const useMonacoEditor = (language = 'javascript') => {
     monacoEditor = monaco.editor.create(el.value, {
       model: javascriptModel,
       // 是否启用预览图
-      minimap: { enabled: false },
+      minimap: { enabled: true },
       // 圆角
       roundedSelection: true,
       // 主题 'vs-dark': 'vs'
