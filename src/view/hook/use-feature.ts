@@ -21,7 +21,8 @@ export default () => {
         videoGlobalRef.value.show(
           detail.details[0].url,
           detail.details[0].title,
-          detail.detailType
+          detail.detailType,
+          detail.details[0].comments
         );
       } else {
         videoGlobalRef.value.showWithTag(

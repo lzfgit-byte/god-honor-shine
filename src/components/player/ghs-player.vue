@@ -43,7 +43,9 @@
         :style="{ position: 'absolute' }"
       >
         <div h-full w-full overflow-auto>
-          <div v-for="item in comments" :key="item" m-b-2 :title="item">{{ item }}</div>
+          <div v-for="item in comments" :key="item" m-b-2 :title="item">
+            【{{ item.datetime }}】 {{ item.comment }}
+          </div>
         </div>
       </a-drawer>
     </div>
@@ -62,7 +64,7 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue-demi';
-  import type { Detail } from '@ghs/types';
+  import type { Comment, Detail } from '@ghs/types';
   import { CommentOutlined } from '@ant-design/icons-vue';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
@@ -79,10 +81,10 @@
     videoVisible.value = true;
   };
   const drawerOpen = ref(false);
-  const comments = ref([]);
+  const comments = ref<Comment[]>([]);
   const getDrawerContainer = () => document.getElementById('ghs-video-container-id');
   defineExpose({
-    show: (src: string, title: string, type: VideoType, comments_?: string[]) => {
+    show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
       srcComp.value = src;
       titleComp.value = title;
       typeComp.value = type;
@@ -90,7 +92,7 @@
       videoVisible.value = true;
       comments.value = comments_;
     },
-    showWithTag: (urls: Detail[], title: string, type: VideoType, comments_?: string[]) => {
+    showWithTag: (urls: Detail[], title: string, type: VideoType) => {
       videoVisible.value = false;
       srcComp.value = null;
       urlsRef.value = urls;
@@ -101,7 +103,6 @@
       const c = urls.map((i) => parseInt(i.quality)).reduce((c, n) => (c > n ? c : n), 0);
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
-      comments.value = comments_;
     },
   });
 </script>
