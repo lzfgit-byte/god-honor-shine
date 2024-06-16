@@ -1,6 +1,7 @@
 import { WebConfigEntity } from '@ghs/constant';
+import { base64ToStr } from '@ilzf/utils';
 import { MessageUtil } from '../utils/message';
-import { resetWebConfig } from '../business/use-init-web-config';
+import { parseWebConfig, resetWebConfig } from '../business/use-init-web-config';
 
 /**
  * 保存WebConfig
@@ -10,10 +11,17 @@ import { resetWebConfig } from '../business/use-init-web-config';
 export const saveWebConfigCode = async (key: string, code: string) => {
   const one = await WebConfigEntity.findOne({ where: { key } });
   if (one) {
+    one.backCode = one.code;
     one.code = code;
-    await WebConfigEntity.update(one.id, one);
-    MessageUtil.success(`代码更新成功`);
-    await resetWebConfig(key);
+    try {
+      parseWebConfig(base64ToStr(code));
+      await WebConfigEntity.update(one.id, one);
+      MessageUtil.success(`代码更新成功`);
+      await resetWebConfig(key);
+    } catch (e) {
+      MessageUtil.success(`代码更新失败，代码解析失败${e.message}`);
+    }
+
     return;
   }
   const ent = new WebConfigEntity();

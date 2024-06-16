@@ -9,8 +9,12 @@ export class WebConfigEntity extends MyBaseEntity {
   key: string;
 
   // @ts-ignore
-  @Column('varchar', { comment: '收藏的url' })
+  @Column('varchar', { comment: '代码' })
   code: string;
+
+  // @ts-ignore
+  @Column('varchar', { comment: '代码备份', nullable: true })
+  backCode: string;
 
   // @ts-ignore
   @Column('integer', { comment: '排序' })

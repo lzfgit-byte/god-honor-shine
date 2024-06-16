@@ -56,7 +56,7 @@ export const getWebConfigAry = (): WebConfig[] => {
   });
   return res;
 };
-const parseWebConfig = (code: string) => {
+export const parseWebConfig = (code: string) => {
   const config: WebConfig = new Function(wrapperCode(code))()(
     helpElAttr,
     helpElText,
@@ -80,7 +80,6 @@ export const loadWebConfig = async () => {
   const configs = list.map((item) => base64ToStr(item.code));
   configs.forEach((item) => {
     const config = parseWebConfig(item);
-    // config.setTags.push('配置');
     cache[config.key] = config;
     if (!getCurrentKey()) {
       setCurrentKey(config.key);
