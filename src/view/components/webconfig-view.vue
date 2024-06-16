@@ -4,7 +4,6 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ref, shallowRef } from 'vue';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
 </script>
 

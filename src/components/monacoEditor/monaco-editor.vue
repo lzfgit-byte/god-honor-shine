@@ -1,6 +1,8 @@
 <template>
-  <div ref="el" class="go-editor-area" :style="{ width, height }"></div>
-  <EditorWorker></EditorWorker>
+  <div h-full w-full>
+    <div ref="el" class="go-editor-area" :style="{ width, height }"></div>
+    <EditorWorker></EditorWorker>
+  </div>
 </template>
 
 <script lang="ts" setup>
