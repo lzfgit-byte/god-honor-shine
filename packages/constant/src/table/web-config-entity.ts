@@ -13,6 +13,6 @@ export class WebConfigEntity extends MyBaseEntity {
   code: string;
 
   // @ts-ignore
-  @Column('integer', { comment: '收藏的url' })
+  @Column('integer', { comment: '排序' })
   sort: number;
 }
