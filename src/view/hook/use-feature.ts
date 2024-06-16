@@ -1,13 +1,12 @@
 import type { Item } from '@ghs/types';
 import { message } from 'ant-design-vue';
-import { ReloadCodeEvent, SaveCodeEvent } from '@ghs/constant';
 import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
-import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
+import { imgViewerRef, videoGlobalRef, webConfigRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
-import bus from '@/utils/bus';
 
 export default () => {
-  const { segmentedValue, drawerOpen, segmentedData, webConfig, loading, logs } = useGlobalState();
+  const { segmentedValue, drawerOpen, segmentedData, webConfig } = useGlobalState();
+  const { loading, logs, webKey } = useGlobalState();
   const showDetail = async (item: Item) => {
     loading.value = true;
     const detail = await f_getDetailPage(item);
@@ -49,11 +48,11 @@ export default () => {
     drawerOpen.value = true;
   };
 
-  const handleSaveCode = () => {
-    bus.emit(SaveCodeEvent);
+  const handleAddCode = () => {
+    webConfigRef.value.add('test');
   };
-  const handleLoadCode = () => {
-    bus.emit(ReloadCodeEvent);
+  const handleEditCode = () => {
+    webConfigRef.value.edit(webKey.value);
   };
 
   return {
@@ -62,7 +61,7 @@ export default () => {
     handleDrawOpen,
     segmentedValue,
     segmentedData,
-    handleSaveCode,
-    handleLoadCode,
+    handleAddCode,
+    handleEditCode,
   };
 };

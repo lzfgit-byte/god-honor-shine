@@ -56,6 +56,8 @@
     clearCache: Function,
     cacheSize: String,
     mouseEnter: Function,
+    addCode: Function,
+    editCode: Function,
   });
 </script>
 

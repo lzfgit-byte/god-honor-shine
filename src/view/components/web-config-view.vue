@@ -22,11 +22,9 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { base64ToStr, strToBase64 } from '@ilzf/utils';
-  import { ReloadCodeEvent, SaveCodeEvent } from '@ghs/constant';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
-  import bus from '@/utils/bus';
   const { currentCode } = useGlobalState();
   const drawerOpen = ref(false);
   const loadCode = async (key: string) => {
@@ -39,8 +37,12 @@
     await f_saveWebConfigCode(key, strToBase64(currentCode.value));
   };
   const currentKey = ref();
-  const handleSaveCode = () => {};
-  const handleLoadCode = () => {};
+  const handleSaveCode = async () => {
+    await saveCode(currentKey.value);
+  };
+  const handleLoadCode = async () => {
+    await loadCode(currentKey.value);
+  };
   defineExpose({
     add: async (key: string) => {
       currentCode.value = '';

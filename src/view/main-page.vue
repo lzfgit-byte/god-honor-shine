@@ -65,20 +65,14 @@
         <WebConfigView v-if="segmentedValue === '配置'" :key="webKey"> </WebConfigView>
       </transition-group>
     </div>
-    <template v-if="['配置'].includes(segmentedValue)" #footer>
-      <div h-full w-full flex justify-end items-center>
-        <a-space>
-          <a-button size="small" type="primary" @click="handleLoadCode">加载数据库代码</a-button>
-          <a-button size="small" type="primary" @click="handleSaveCode">保存代码</a-button>
-        </a-space>
-      </div>
-    </template>
   </a-drawer>
   <FloatButtonGroup
     :handle-draw-open="handleDrawOpen"
     :clear-cache="clearCache"
     :cache-size="cacheSize"
     :mouse-enter="calcCacheSize"
+    :add-code="handleAddCode"
+    :edit-code="handleEditCode"
   ></FloatButtonGroup>
 </template>
 <script setup lang="ts">
@@ -108,7 +102,7 @@
 
   const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =
     usePageState();
-  const { showDetail, drawerOpen, handleDrawOpen, handleSaveCode, handleLoadCode } = useFeature();
+  const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode } = useFeature();
   const { collects, updateCollects } = useCollect();
   watchEffect(async () => {
     if (webKey.value) {
