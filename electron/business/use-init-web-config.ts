@@ -2,29 +2,15 @@ import type { BaseConfig, WebConfig } from '@ghs/types';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { keys } from 'lodash';
-import { hashString, isFunction } from '@ilzf/utils';
+import { base64ToStr, hashString, isFunction } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes } from '@ghs/constant';
-import { getHtml, getHtmlWithProcess, listAllWebConfigs } from '../export';
+import { getHtml, getHtmlWithProcess, listAllWebConfigs, listWebConfig } from '../export';
 import { LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
 // @ts-ignore
-import demoWebCode from './webconfigs/hentai-code-webconfig?raw';
-// @ts-ignore
-import rule34 from './webconfigs/rule34-code-webconfiig?raw';
-// @ts-ignore
-import lulu from './webconfigs/lulu-code-webconfig?raw';
-// @ts-ignore
-import badnew from './webconfigs/badnews-code-webconfig?raw';
-// @ts-ignore
-import xvideo from './webconfigs/xvideo-code-webconfig?raw';
-// @ts-ignore
-import pornhub from './webconfigs/pornhub-code-webconfig?raw';
-// @ts-ignore
 import staticCode from './static-code?raw';
-
-const configs: string[] = [demoWebCode, rule34, badnew, lulu, xvideo, pornhub];
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
@@ -72,7 +58,8 @@ export const getWebConfigAry = (): WebConfig[] => {
   return res;
 };
 export const loadWebConfig = async () => {
-  // const list = await listAllWebConfigs();
+  const list = await listWebConfig();
+  const configs = list.map((item) => base64ToStr(item.code));
   configs.forEach((item) => {
     const config: WebConfig = new Function(wrapperCode(item))()(
       helpElAttr,
