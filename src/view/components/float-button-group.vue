@@ -31,9 +31,25 @@
       <RedoOutlined />
     </template>
   </a-float-button>
+  <a-float-button tooltip="添加config" type="default" :style="{ right: '15px', top: '240px' }">
+    <template #icon>
+      <PlusOutlined />
+    </template>
+  </a-float-button>
+  <a-float-button tooltip="编辑config" type="default" :style="{ right: '15px', top: '300px' }">
+    <template #icon>
+      <FormOutlined />
+    </template>
+  </a-float-button>
 </template>
 <script setup lang="ts">
-  import { CarOutlined, ClearOutlined, RedoOutlined } from '@ant-design/icons-vue';
+  import {
+    CarOutlined,
+    ClearOutlined,
+    FormOutlined,
+    PlusOutlined,
+    RedoOutlined,
+  } from '@ant-design/icons-vue';
   import { FileType } from '@ghs/types';
   defineProps({
     handleDrawOpen: Function,

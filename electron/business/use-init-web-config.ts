@@ -5,7 +5,7 @@ import { keys } from 'lodash';
 import { hashString, isFunction } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes } from '@ghs/constant';
-import { getHtml, getHtmlWithProcess } from '../export';
+import { getHtml, getHtmlWithProcess, listAllWebConfigs } from '../export';
 import { LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
@@ -72,6 +72,7 @@ export const getWebConfigAry = (): WebConfig[] => {
   return res;
 };
 export const loadWebConfig = async () => {
+  // const list = await listAllWebConfigs();
   configs.forEach((item) => {
     const config: WebConfig = new Function(wrapperCode(item))()(
       helpElAttr,
