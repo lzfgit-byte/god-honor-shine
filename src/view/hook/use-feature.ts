@@ -1,6 +1,6 @@
 import type { Item } from '@ghs/types';
 import { message } from 'ant-design-vue';
-import { SaveCodeEvent } from '@ghs/constant';
+import { ReloadCodeEvent, SaveCodeEvent } from '@ghs/constant';
 import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
@@ -52,6 +52,17 @@ export default () => {
   const handleSaveCode = () => {
     bus.emit(SaveCodeEvent);
   };
+  const handleLoadCode = () => {
+    bus.emit(ReloadCodeEvent);
+  };
 
-  return { showDetail, drawerOpen, handleDrawOpen, segmentedValue, segmentedData, handleSaveCode };
+  return {
+    showDetail,
+    drawerOpen,
+    handleDrawOpen,
+    segmentedValue,
+    segmentedData,
+    handleSaveCode,
+    handleLoadCode,
+  };
 };

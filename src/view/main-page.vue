@@ -68,6 +68,7 @@
     <template v-if="['配置'].includes(segmentedValue)" #footer>
       <div h-full w-full flex justify-end items-center>
         <a-space>
+          <a-button size="small" type="primary" @click="handleLoadCode">加载数据库代码</a-button>
           <a-button size="small" type="primary" @click="handleSaveCode">保存代码</a-button>
         </a-space>
       </div>
@@ -107,7 +108,7 @@
 
   const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =
     usePageState();
-  const { showDetail, drawerOpen, handleDrawOpen, handleSaveCode } = useFeature();
+  const { showDetail, drawerOpen, handleDrawOpen, handleSaveCode, handleLoadCode } = useFeature();
   const { collects, updateCollects } = useCollect();
   watchEffect(async () => {
     if (webKey.value) {

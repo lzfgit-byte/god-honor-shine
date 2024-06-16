@@ -47,3 +47,4 @@ export const ElementTypes = {
  *保存代码事件
  */
 export const SaveCodeEvent = 'save-code';
+export const ReloadCodeEvent = 'reload-code';
