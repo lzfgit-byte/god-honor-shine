@@ -15,18 +15,16 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { computed, onActivated, onMounted, onUnmounted } from 'vue';
+  import { computed, onUnmounted } from 'vue';
   import { generateKey } from '@ilzf/utils';
-  import { onDeactivated } from 'vue-demi';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useGlobalState from '@/hooks/use-global-state';
-  import { f_listCollect } from '@/utils/business';
 
   const props = defineProps({
     showDetail: Function,
     upCollect: Function,
   });
-  const { webConfig, collects, webKey } = useGlobalState();
+  const { webConfig, collects } = useGlobalState();
   const items = computed(() => collects.value.map((item) => JSON.parse(item.value)));
 
   const showDetailAndUp = async (item) => {
