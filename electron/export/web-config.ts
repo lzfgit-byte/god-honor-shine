@@ -10,8 +10,8 @@ export const saveWebConfigCode = async (key: string, code: string) => {
   const one = await WebConfigEntity.findOne({ where: { key } });
   if (one) {
     one.code = code;
-    await WebConfigEntity.update(key, one);
-    MessageUtil.success('代码更新成功');
+    await WebConfigEntity.update(one.id, one);
+    MessageUtil.success(`代码更新成功`);
     return;
   }
   const ent = new WebConfigEntity();

@@ -85,5 +85,5 @@ export const loadWebConfig = async () => {
 };
 
 export default () => {
-  loadWebConfig();
+  loadWebConfig().then(() => 1);
 };

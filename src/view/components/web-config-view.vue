@@ -54,6 +54,7 @@
   };
   const handleLoadCode = async () => {
     await loadCode(currentKey.value);
+    message.success('加载远程数据库成功');
   };
   defineExpose({
     add: async (key: string) => {
