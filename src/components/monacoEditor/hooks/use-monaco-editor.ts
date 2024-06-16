@@ -45,7 +45,7 @@ export const useMonacoEditor = (language = 'javascript') => {
         horizontalScrollbarSize: 8,
       },
       // 行号
-      lineNumbers: 'off',
+      lineNumbers: 'on',
       // tab大小
       tabSize: 2,
       // 字体大小

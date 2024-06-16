@@ -37,7 +37,7 @@
     :header-style="{ display: 'none' }"
   >
     <a-segmented :key="segmentedData" v-model:value="segmentedValue" :options="segmentedData" />
-    <div h-85vh overflow-auto w-full m-t-4 p-t-4>
+    <div h-85vh overflow-auto w-full m-t-4 p-t-2>
       <transition-group
         enter-active-class="animate__animated animate__fadeIn"
         leave-active-class="animate__animated animate__fadeOut"
