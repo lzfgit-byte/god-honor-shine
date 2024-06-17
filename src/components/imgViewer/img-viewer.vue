@@ -148,6 +148,7 @@
   import { watchEffect } from 'vue-demi';
   import type { Comment, Detail } from '@ghs/types';
   import { ref } from 'vue';
+  import { isFalsity } from '@ilzf/utils';
   import GhsImg2 from '@/components/image/ghs-img-plain.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
@@ -205,7 +206,10 @@
       choseUrl.value = 'minUrl';
       images.value = ims.map((item) => ({ ...item, minUrl: item.url }));
       visible.value = true;
-      comments.value = ims.map((item) => item.comments).reduce((acc, cur) => acc.concat(cur), []);
+      comments.value = ims
+        .map((item) => item.comments)
+        .reduce((acc, cur) => acc.concat(cur), [])
+        .filter((item) => !isFalsity(item));
     },
     close: () => {
       visible.value = false;
