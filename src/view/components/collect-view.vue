@@ -3,12 +3,13 @@
     <TransitionGroup name="list">
       <GhsItem
         v-for="(item, index) in items"
-        :key="`${generateKey(`${index}`)}`"
+        :key="item.jumpUrl + index"
         :item="item"
         :width="webConfig.imgWidth"
         :height="webConfig.imgHeight"
         :on-close-click="() => 1"
         @img-click="showDetailAndUp(item)"
+        @up-collect-close="upCollect"
       ></GhsItem>
     </TransitionGroup>
     <a-empty v-if="items.length === 0" />
@@ -16,7 +17,7 @@
 </template>
 <script setup lang="ts">
   import { computed, onUnmounted } from 'vue';
-  import { generateKey } from '@ilzf/utils';
+  import type { Item } from '@ghs/types';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useGlobalState from '@/hooks/use-global-state';
 
@@ -25,7 +26,7 @@
     upCollect: Function,
   });
   const { webConfig, collects } = useGlobalState();
-  const items = computed(() => collects.value.map((item) => JSON.parse(item.value)));
+  const items: Item[] = computed(() => collects.value.map((item) => JSON.parse(item.value))) as any;
 
   const showDetailAndUp = async (item) => {
     await props?.showDetail(item);
@@ -39,13 +40,13 @@
   .list-move, /* 对移动中的元素应用的过渡 */
 .list-enter-active,
 .list-leave-active {
-    transition: all 0.5s ease;
+    transition: all 0.5s ease-in-out;
   }
 
   .list-enter-from,
   .list-leave-to {
     opacity: 0;
-    transform: translateX(30px);
+    //transform: translateX(30px);
   }
   .list-leave-active {
     position: absolute;

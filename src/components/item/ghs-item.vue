@@ -64,7 +64,7 @@
     collectSequence: Number,
     loading: Boolean,
   });
-  const emits = defineEmits(['imgClick', 'closeClick', 'upCollect']);
+  const emits = defineEmits(['imgClick', 'closeClick', 'upCollect', 'upCollectClose']);
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
   const isCollect = ref(false);
@@ -89,7 +89,7 @@
   };
   const handleCloseClick = async () => {
     await f_cancelCollect(props.item);
-    emits('upCollect');
+    emits('upCollectClose');
   };
   onMounted(async () => {
     await juCollect();
