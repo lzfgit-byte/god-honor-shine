@@ -1,9 +1,9 @@
 <template>
   <div h-full w-full>
-    <TransitionGroup name="list">
+    <TransitionGroup name="list" tag="div">
       <GhsItem
-        v-for="(item, index) in items"
-        :key="item.jumpUrl + index"
+        v-for="item in items"
+        :key="item.jumpUrl"
         :item="item"
         :width="webConfig.imgWidth"
         :height="webConfig.imgHeight"
