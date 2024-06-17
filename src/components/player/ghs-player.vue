@@ -38,8 +38,10 @@
         placement="right"
         :closable="false"
         :mask-closable="true"
-        :content-wrapper-style="{ 'background-color': '#333' }"
-        :body-style="{ 'background-color': '#333', padding: '10px' }"
+        z-index="20000"
+        root-class-name="ghs-video-drawer-container"
+        :content-wrapper-style="{ zIndex: 20000 }"
+        :body-style="{ zIndex: 20000, padding: '10px' }"
         width="55%"
         :get-container="getDrawerContainer"
         :style="{ position: 'absolute' }"
@@ -89,7 +91,7 @@
   };
   const drawerOpen = ref(false);
   const comments = ref<Comment[]>([]);
-  const getDrawerContainer = () => document.getElementById('ghs-video-container-id');
+  const getDrawerContainer = () => document.getElementById('body');
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
       srcComp.value = src;
