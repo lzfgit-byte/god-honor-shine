@@ -27,6 +27,7 @@ export default () => {
     urlReplace,
     currentUrl,
     webKey,
+    init,
   } = useGlobalState();
 
   const calcCacheSize = async () => {
@@ -64,9 +65,6 @@ export default () => {
 
   const handlePageClick = async (item: Pagination) => {
     await load(item.url);
-  };
-  const init = async () => {
-    webConfig.value = await f_getCurrentWebConfig(webKey.value);
   };
 
   const handleSearch = async (value: string) => {

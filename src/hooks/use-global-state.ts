@@ -3,6 +3,7 @@ import type { BaseConfig, Item, Pagination, SetTag, Tag, UrlReplace } from '@ghs
 import type { CollectEntity } from '@ghs/constant';
 import { computed } from 'vue';
 import { message } from 'ant-design-vue';
+import { f_getCurrentWebConfig } from '@/utils/business';
 
 const allWebKeys = ref([]);
 
@@ -44,7 +45,9 @@ watch(loading, () => {
     timer = null;
   }
 });
-
+const init = async () => {
+  webConfig.value = await f_getCurrentWebConfig(webKey.value);
+};
 export default () => ({
   webConfig,
   pagination,
@@ -63,4 +66,5 @@ export default () => ({
   logs,
   currentCode,
   allWebKeys,
+  init,
 });

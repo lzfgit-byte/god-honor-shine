@@ -10,14 +10,13 @@
         :on-close-click="() => 1"
         @img-click="showDetailAndUp(item)"
         @up-collect-close="upCollect"
-        @up-collect="upCollect"
       ></GhsItem>
     </TransitionGroup>
     <a-empty v-if="items.length === 0" />
   </div>
 </template>
 <script setup lang="ts">
-  import { computed, onUnmounted } from 'vue';
+  import { computed, onMounted, onUnmounted } from 'vue';
   import type { Item } from '@ghs/types';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useGlobalState from '@/hooks/use-global-state';
@@ -32,7 +31,7 @@
   const showDetailAndUp = async (item) => {
     await props?.showDetail(item);
   };
-  onUnmounted(async () => {
+  onMounted(async () => {
     await props?.upCollect();
   });
 </script>

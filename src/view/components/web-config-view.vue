@@ -33,7 +33,7 @@
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
   import { defaultWebConfig, preConfigCode } from '@/view/hook/pre-config-code';
-  const { currentCode, allWebKeys } = useGlobalState();
+  const { currentCode, allWebKeys, init } = useGlobalState();
   const drawerOpen = ref(false);
   const isEdit = ref(false);
   const loadCode = async (key: string) => {
@@ -62,6 +62,7 @@
   const handleSaveCode = async () => {
     if (currentKey.value) {
       await saveCode(currentKey.value);
+      await init();
     } else {
       message.warn('key为空');
     }
