@@ -5,6 +5,7 @@
     :destroy-on-close="true"
     top="5%"
     :mask-closed="true"
+    @close="drawerOpen = false"
   >
     <div id="ghs-video-container-id" min-h-80vh relative>
       <VideoHtml5

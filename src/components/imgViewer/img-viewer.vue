@@ -166,7 +166,6 @@
   });
   const emits = defineEmits(['update:currentImg', 'update:totalImg']);
   const { idle } = useIdle(2 * 1000); // 2s
-  const { comments, getDrawerContainer, drawerOpen } = useComments();
   const {
     bodyRef,
     imgContainerRef,
@@ -190,6 +189,7 @@
     handleBackClick,
     preloadUrl,
   } = useImgShow(translateX, translateY, scale);
+  const { comments, getDrawerContainer, drawerOpen } = useComments(visible);
   const currentImg_ = useVModel(props, 'currentImg', emits);
   const totalImg_ = useVModel(props, 'totalImg', emits);
   watchEffect(() => {
