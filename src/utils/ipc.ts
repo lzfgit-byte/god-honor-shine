@@ -34,6 +34,9 @@ ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_MESSAGE, (_event, args: MessageInfo) => {
       message.info(msg).then(() => 1);
       break;
     }
+    case 'warning': {
+      message.warn(msg).then(() => 1);
+    }
   }
 });
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, (_event, args: MessageInfo) => {

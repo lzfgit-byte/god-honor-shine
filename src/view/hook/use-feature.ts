@@ -10,6 +10,10 @@ export default () => {
   const showDetail = async (item: Item) => {
     loading.value = true;
     const detail = await f_getDetailPage(item);
+    if (detail === null) {
+      loading.value = false;
+      return;
+    }
     loading.value = false;
     if (detail.detailType === 'mp4' || detail.detailType === 'm3u8') {
       if (detail.details.length === 1) {

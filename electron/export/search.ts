@@ -14,8 +14,15 @@ export const search = async (search: string, item: Item): Promise<string> => {
  * 搜索推荐
  */
 export const searchRecommend = async (search: string): Promise<string[]> => {
-  const ents = await SearchHistoryEntity.find({ where: { type: getCurrentKey() } });
+  const ents = await SearchHistoryEntity.find({
+    where: { type: getCurrentKey() },
+    order: { createTime: 'DESC' },
+  });
+
   const wc = getWebConfigByKey(getCurrentKey());
+  if (ents.length > wc.historyRemember) {
+    await SearchHistoryEntity.delete(ents.slice(wc.historyRemember).map((item) => item.id));
+  }
   if (wc.adapterRemoteSearch) {
     return [...(await wc.adapterRemoteSearch(search)), ...ents.map((item) => item.value)];
   }

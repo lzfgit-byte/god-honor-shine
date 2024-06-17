@@ -43,27 +43,36 @@
         leave-active-class="animate__animated animate__fadeOut"
         duration="200"
       >
-        <TagsView v-if="segmentedValue === '标签'" :key="webKey" :load="load"></TagsView>
+        <TagsView
+          v-if="drawerOpen && segmentedValue === '标签'"
+          :key="webKey"
+          :load="load"
+        ></TagsView>
         <CollectView
-          v-if="segmentedValue === '收藏'"
+          v-if="drawerOpen && segmentedValue === '收藏'"
           :key="webKey"
           :show-detail="showDetail"
           :up-collect="updateCollects"
         ></CollectView>
         <HistoryView
-          v-if="segmentedValue === '历史'"
+          v-if="drawerOpen && segmentedValue === '历史'"
           :key="webKey"
           :show-detail="showDetail"
           :up-collect="updateCollects"
         ></HistoryView>
         <SystemConfig
-          v-if="segmentedValue === '系统配置'"
+          v-if="drawerOpen && segmentedValue === '系统配置'"
           :key="webKey"
           :chose-db-path="setDbPath"
         ></SystemConfig>
-        <FilterView v-if="segmentedValue === '过滤选项'" :key="webKey" :load="load"></FilterView>
-        <LogView v-if="segmentedValue === '日志'" :key="webKey"></LogView>
-        <WebConfigView v-if="segmentedValue === '配置'" :key="webKey"> </WebConfigView>
+        <FilterView
+          v-if="drawerOpen && segmentedValue === '过滤选项'"
+          :key="webKey"
+          :load="load"
+        ></FilterView>
+        <LogView v-if="drawerOpen && segmentedValue === '日志'" :key="webKey"></LogView>
+        <WebConfigView v-if="drawerOpen && segmentedValue === '配置'" :key="webKey">
+        </WebConfigView>
       </transition-group>
     </div>
     <template v-if="['日志'].includes('日志')" #footer>

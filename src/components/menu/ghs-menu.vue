@@ -19,6 +19,7 @@
           v-for="(item, index) in culRoutes"
           :key="index"
           class="ghs-menu-item"
+          :class="{ 'ghs-menu-chose': webKey === item.key }"
           flex
           justify-center
           items-center
@@ -55,6 +56,9 @@
   const culRoutes: Ref<RouterType[]> = computed(() => routes.value.filter((i) => i.icon)) as any;
   const fullSize = ref(false);
   const handleClick = async (item) => {
+    if (webKey.value === item.key) {
+      return;
+    }
     webKey.value = item.key;
     await f_setCurrentKeyExp(webKey.value);
     loading.value = true;
@@ -105,6 +109,9 @@
       &:hover {
         background-color: #484747;
       }
+    }
+    .ghs-menu-chose {
+      background-color: #484747;
     }
   }
   .ghs-menu-mimiSize {
