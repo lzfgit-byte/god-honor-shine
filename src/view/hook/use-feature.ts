@@ -55,6 +55,9 @@ export default () => {
   const handleEditCode = () => {
     webConfigRef.value.edit(webKey.value);
   };
+  const clearLogs = () => {
+    logs.value = [];
+  };
 
   return {
     showDetail,
@@ -64,5 +67,6 @@ export default () => {
     segmentedData,
     handleAddCode,
     handleEditCode,
+    clearLogs,
   };
 };

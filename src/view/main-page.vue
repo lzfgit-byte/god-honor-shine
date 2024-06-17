@@ -66,6 +66,15 @@
         <WebConfigView v-if="segmentedValue === '配置'" :key="webKey"> </WebConfigView>
       </transition-group>
     </div>
+    <template v-if="['日志'].includes('日志')" #footer>
+      <div h-full w-full flex justify-end items-center>
+        <a-space>
+          <a-button v-if="segmentedValue === '日志'" size="small" @click="clearLogs">
+            清空日志
+          </a-button>
+        </a-space>
+      </div>
+    </template>
   </a-drawer>
   <FloatButtonGroup
     :handle-draw-open="handleDrawOpen"
@@ -103,7 +112,8 @@
 
   const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =
     usePageState();
-  const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode } = useFeature();
+  const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
+    useFeature();
   const { collects, updateCollects } = useCollect();
   watchEffect(async () => {
     if (webKey.value) {
