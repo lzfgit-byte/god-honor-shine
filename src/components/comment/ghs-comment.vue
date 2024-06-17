@@ -1,6 +1,6 @@
 <template>
-  <div flex w-full m-2>
-    <a-tooltip placement="top">
+  <div :id="gKey" flex w-full m-2 :title="datetime">
+    <a-tooltip placement="top" :get-popup-container="getPopupContainer">
       <template #title>
         <span>{{ datetime }}</span>
       </template>
@@ -11,7 +11,11 @@
   </div>
 </template>
 <script setup lang="ts">
+  import { generateKey } from '@ilzf/utils';
+
   defineProps({ datetime: String, comment: String });
+  const gKey = generateKey();
+  const getPopupContainer = () => document.getElementById(gKey);
 </script>
 
 <style scoped lang="less"></style>
