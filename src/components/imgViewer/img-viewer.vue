@@ -21,7 +21,7 @@
           leave-active-class="animate__animated animate__slideOutUp"
         >
           <div
-            v-show="!idle"
+            v-show="!drawerOpen && !idle"
             class="ghsiv-header"
             absolute
             flex
@@ -68,6 +68,7 @@
         </transition>
 
         <div
+          id="img-view-id"
           ref="bodyRef"
           class="ghsiv-body"
           absolute
@@ -80,29 +81,7 @@
           left-0
           z-1001
         >
-          <div id="img-view-id" ref="imgContainerRef" class="img-container" w-auto>
-            <a-drawer
-              v-model:open="drawerOpen"
-              title=""
-              placement="right"
-              :closable="false"
-              :mask-closable="true"
-              :content-wrapper-style="{ zIndex: 1006 }"
-              :body-style="{ padding: '10px' }"
-              width="55%"
-              :get-container="getDrawerContainer"
-              :style="{ position: 'absolute' }"
-            >
-              <div h-full w-full overflow-auto m-t-40px @wheel.stop="() => 1">
-                <GhsComment
-                  v-for="item in comments"
-                  :key="item"
-                  :datetime="item.datetime"
-                  :comment="item.comment"
-                >
-                </GhsComment>
-              </div>
-            </a-drawer>
+          <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <Component
                 :is="GhsImg2"
@@ -134,6 +113,28 @@
       :force="force"
     ></GhsImg>
   </teleport>
+  <a-drawer
+    v-model:open="drawerOpen"
+    title=""
+    placement="right"
+    :closable="false"
+    :mask-closable="true"
+    :content-wrapper-style="{}"
+    :body-style="{ padding: '10px' }"
+    width="55%"
+    :get-container="getDrawerContainer"
+    :style="{ position: 'absolute' }"
+  >
+    <div h-full w-full overflow-auto @wheel.stop="() => 1">
+      <GhsComment
+        v-for="item in comments"
+        :key="item"
+        :datetime="item.datetime"
+        :comment="item.comment"
+      >
+      </GhsComment>
+    </div>
+  </a-drawer>
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
