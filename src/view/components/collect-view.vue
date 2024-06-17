@@ -10,6 +10,7 @@
         :on-close-click="() => 1"
         @img-click="showDetailAndUp(item)"
         @up-collect-close="upCollect"
+        @up-collect="upCollect"
       ></GhsItem>
     </TransitionGroup>
     <a-empty v-if="items.length === 0" />
