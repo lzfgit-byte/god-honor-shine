@@ -39,12 +39,14 @@
         :mask-closable="true"
         :content-wrapper-style="{ 'background-color': '#333' }"
         :body-style="{ 'background-color': '#333', padding: '10px' }"
+        width="60%"
         :get-container="getDrawerContainer"
         :style="{ position: 'absolute' }"
       >
         <div h-full w-full overflow-auto>
-          <div v-for="item in comments" :key="item" m-b-2 :title="item">
-            【{{ item.datetime }}】 {{ item.comment }}
+          <div v-for="item in comments" :key="item" m-b-4 :title="item">
+            【{{ item.datetime }}】<br />
+            {{ item.comment }}
           </div>
         </div>
       </a-drawer>

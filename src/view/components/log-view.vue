@@ -1,5 +1,6 @@
 <template>
   <div h-full w-full class="editor">
+    <a-button size="small" @click="clearLogs">清空日志</a-button>
     <Codemirror
       v-model="code"
       :autofocus="true"
@@ -25,6 +26,9 @@
   const view = shallowRef();
   const handleReady = (payload) => {
     view.value = payload.view;
+  };
+  const clearLogs = () => {
+    logs.value = [];
   };
 
   watchEffect(() => {
