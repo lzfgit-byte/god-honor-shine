@@ -196,7 +196,7 @@
   });
   const percentage = ref();
   const expose = {
-    show: (ims: Detail[], comments_?: Comment[]) => {
+    show: (ims: Detail[]) => {
       translateX.value = 0;
       translateY.value = 0;
       current.value = 0;
@@ -204,7 +204,7 @@
       choseUrl.value = 'minUrl';
       images.value = ims.map((item) => ({ ...item, minUrl: item.url }));
       visible.value = true;
-      comments.value = comments_;
+      comments.value = ims.map((item) => item.comments).reduce((acc, cur) => acc.concat(cur), []);
     },
     close: () => {
       visible.value = false;
