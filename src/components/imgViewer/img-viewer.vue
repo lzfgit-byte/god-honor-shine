@@ -57,6 +57,11 @@
               >
                 全图
               </a-button>
+              <CommentOutlined
+                v-if="comments?.length > 0"
+                :style="{ fontSize: '14px', color: '#FFF' }"
+                @click="drawerOpen = !drawerOpen"
+              />
               <CloseCircleOutlined v-if="!readerMode" @click="visible = false" />
             </div>
           </div>
@@ -75,7 +80,29 @@
           left-0
           z-1001
         >
-          <div ref="imgContainerRef" class="img-container" w-auto>
+          <div id="img-view-id" ref="imgContainerRef" class="img-container" w-auto>
+            <a-drawer
+              v-model:open="drawerOpen"
+              title=""
+              placement="right"
+              :closable="false"
+              :mask-closable="true"
+              :content-wrapper-style="{ zIndex: 1006 }"
+              :body-style="{ padding: '10px' }"
+              width="55%"
+              :get-container="getDrawerContainer"
+              :style="{ position: 'absolute' }"
+            >
+              <div h-full w-full overflow-auto m-t-40px @wheel.stop="() => 1">
+                <GhsComment
+                  v-for="item in comments"
+                  :key="item"
+                  :datetime="item.datetime"
+                  :comment="item.comment"
+                >
+                </GhsComment>
+              </div>
+            </a-drawer>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <Component
                 :is="GhsImg2"
@@ -113,17 +140,20 @@
   import { useIdle, useVModel } from '@vueuse/core';
   import {
     CloseCircleOutlined,
+    CommentOutlined,
     LeftCircleOutlined,
     RightCircleOutlined,
   } from '@ant-design/icons-vue';
   import { watchEffect } from 'vue-demi';
-  import type { Detail } from '@ghs/types';
+  import type { Comment, Detail } from '@ghs/types';
   import { ref } from 'vue';
   import GhsImg2 from '@/components/image/ghs-img-plain.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
   import GhsImg from '@/components/image/ghs-img.vue';
   import useReadModel from '@/components/imgViewer/hooks/useReadModel';
+  import GhsComment from '@/components/comment/ghs-comment.vue';
+  import useComments from '@/components/imgViewer/hooks/useComments';
   const props = defineProps({
     force: Boolean,
     readerMode: Boolean,
@@ -134,7 +164,7 @@
   });
   const emits = defineEmits(['update:currentImg', 'update:totalImg']);
   const { idle } = useIdle(2 * 1000); // 2s
-
+  const { comments, getDrawerContainer, drawerOpen } = useComments();
   const {
     bodyRef,
     imgContainerRef,
@@ -166,7 +196,7 @@
   });
   const percentage = ref();
   const expose = {
-    show: (ims: Detail[]) => {
+    show: (ims: Detail[], comments_?: Comment[]) => {
       translateX.value = 0;
       translateY.value = 0;
       current.value = 0;
@@ -174,6 +204,7 @@
       choseUrl.value = 'minUrl';
       images.value = ims.map((item) => ({ ...item, minUrl: item.url }));
       visible.value = true;
+      comments.value = comments_;
     },
     close: () => {
       visible.value = false;

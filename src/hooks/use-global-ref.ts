@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import type { Comment, Detail } from '@ghs/types';
 import type { VideoType } from '@/components/player/types';
 export interface ImgViewerExpose {
-  show: (imgs: Detail[]) => void;
+  show: (imgs: Detail[], comments?: Comment[]) => void;
   close: () => void;
 }
 export interface GhsPlayerExpose {

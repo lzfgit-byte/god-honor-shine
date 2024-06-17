@@ -39,15 +39,18 @@
         :mask-closable="true"
         :content-wrapper-style="{ 'background-color': '#333' }"
         :body-style="{ 'background-color': '#333', padding: '10px' }"
-        width="60%"
+        width="55%"
         :get-container="getDrawerContainer"
         :style="{ position: 'absolute' }"
       >
         <div h-full w-full overflow-auto>
-          <div v-for="item in comments" :key="item" m-b-4 :title="item">
-            【{{ item.datetime }}】<br />
-            {{ item.comment }}
-          </div>
+          <GhsComment
+            v-for="item in comments"
+            :key="item"
+            :datetime="item.datetime"
+            :comment="item.comment"
+          >
+          </GhsComment>
         </div>
       </a-drawer>
     </div>
@@ -72,6 +75,7 @@
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
+  import GhsComment from '@/components/comment/ghs-comment.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();
