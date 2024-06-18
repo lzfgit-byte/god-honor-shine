@@ -3,6 +3,7 @@ import type { BaseConfig, Item, Pagination, SetTag, Tag, UrlReplace } from '@ghs
 import type { CollectEntity } from '@ghs/constant';
 import { computed } from 'vue';
 import { message } from 'ant-design-vue';
+import { useTextSelection } from '@vueuse/core';
 import { f_getCurrentWebConfig } from '@/utils/business';
 
 const allWebKeys = ref([]);

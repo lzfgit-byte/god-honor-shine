@@ -114,6 +114,7 @@
   import useGlobalState from '@/hooks/use-global-state';
   import FilterView from '@/view/components/filter-view.vue';
   import WebConfigView from '@/view/components/web-config-view.vue';
+  import useTranslate from '@/hooks/use-translate';
   const route = useRoute();
   const { webKey, pagination, items, webConfig } = useGlobalState();
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
@@ -124,6 +125,7 @@
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
     useFeature();
   const { collects, updateCollects } = useCollect();
+  const { state } = useTranslate();
   watchEffect(async () => {
     if (webKey.value) {
       await init();
