@@ -1,127 +1,13 @@
-export const preConfigCode = `export interface Pagination {
-  url: string;
-  title: string;
-  isCurrent: boolean;
-}
-export interface Tag {
-  title?: string;
-  url?: string;
-}
-export enum ItemType {
-  video = 'video',
-  image = 'image',
-  text = 'text',
-  comic = 'comic',
-}
-// 将上边枚举转换为联合类型
-export type ItemTypeUnion = keyof typeof ItemType;
-export enum ItemDetailType {
-  mp4 = 'mp4',
-  m3u8 = 'm3u8',
-  image = 'image',
-  win = 'win',
-  comic = 'comic',
-}
-// 将上边枚举转换为联合类型
-export type ItemDetailTypeUnion = keyof typeof ItemDetailType;
-export enum RenderType {
-  force = 'force',
-  normal = 'normal',
-}
-// 将上边枚举转换为联合类型
-export type RenderTypeUnion = keyof typeof RenderType;
-export interface Detail {
-  type?: ItemDetailTypeUnion;
-  url?: string;
-  fullUrl?: string;
-  quality?: string;
-  title?: string;
-  comments?: Comment[];
-}
-export interface Item {
-  coverImg: string;
-  title: string;
-  type: ItemTypeUnion;
-  jumpUrl: string;
-  renderType: RenderTypeUnion; // 渲染类型,强制渲染,正常渲染
-  tags: Tag[];
-}
-export interface UrlAppend {
-  value: string;
-  param: string;
-  title: string; // 展示的名字
-  current: boolean; // 是否当前的过滤条件
-}
-export interface UrlReplace {
-  schema: string; // 分组
-  urlAppend: UrlAppend[];
-}
-export interface Comment {
-  datetime: string;
-  comment: string;
-}
-/**
- *点击Item,后获取详细信息
- */
-export interface DetailInfo {
-  detailType: ItemDetailTypeUnion;
-  renderType: RenderTypeUnion; // 渲染类型,强制渲染,正常渲染
-  details: Detail[];
-  relations: Item[];
-}
-
-/**
- * 每一页的类型
- */
-export interface Page {
-  pagination: Pagination[]; // 分页
-  tags: Tag[];
-  items: Item[];
-  urlReplace?: UrlReplace[];
-}
-
-type SetTag = '标签' | '收藏' | '历史' | '过滤选项' | '系统配置' | '日志' | '配置';
-interface BaseConfig {
-  key: string;
-  favicon: string;
-  homeUrl: string;
-  name: string;
-  searchUrl: string;
-
-  imgWidth: string;
-  imgHeight: string;
-
-  drawWidth: string;
-  historyRemember: number;
-
-  setTags: SetTag[];
-
-  ifWinExecCode?: string;
-  winWidth?: number;
-  winHeight?: number;
-
-  currentUrlReplace: any[];
-}
-
-export interface WebConfig extends BaseConfig {
-  getUrlReplace: ($) => UrlReplace[]; // 获取首页条件更改时的 replace 列表
-
-  // 获取页面元素
-  getItems: ($) => Item[];
-  // 获取分页数据
-  getPagination: ($) => Pagination[];
-  // 获取全部分类
-  getTags: ($) => Tag[];
-
-  getDetailInfo: (item: Item, cheerio: any) => Promise<any>;
-
-  // 处理排序等问题时调用
-  adapterLoadUrl: (url: string, urlReplaces: UrlReplace[]) => string;
-  // 处理搜索问题时调用
-  adapterSearchUrl: (url: string, item: Item) => string;
-  // adapter
-  adapterRemoteSearch?: (searchKey: string) => Promise<string[]>;
-}
+import { businessText, webConfigText } from '@ghs/types';
+const wrapperCode = (code: string) => {
+  let cs = code.split('\n');
+  cs = cs
+    .filter((item) => !item.startsWith('import ') && !item.includes('export *'))
+    .map((item) => item.replace('CheerioAPI', 'any'));
+  return cs.join('\n');
+};
+export const preConfigCode = `${wrapperCode(businessText)} 
+${wrapperCode(webConfigText)}
 export const ElementAttr = {
   src: 'src',
   title: 'title',

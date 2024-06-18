@@ -15,6 +15,7 @@ export interface BaseConfig {
   imgHeight: string;
 
   drawWidth: string;
+  inputWidth?: string;
   historyRemember: number;
 
   setTags: SetTag[];

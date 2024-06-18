@@ -50,6 +50,7 @@
                 缩略
               </a-button>
               <a-button
+                v-if="images?.length > 0 && images[current].fullUrl"
                 :type="choseUrl === 'fullUrl' ? 'primary' : ''"
                 size="small"
                 style="color: white"

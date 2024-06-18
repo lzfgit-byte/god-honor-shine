@@ -3,9 +3,8 @@
     <a-input
       v-model:value="value"
       class="ghs-search"
-      h-full
       placeholder="请输入"
-      h-4
+      :style="{ width: webConfig?.inputWidth || '200px' }"
       allow-clear
       @keydown.enter="handleSearch(value)"
       @change="handleChange"
@@ -49,11 +48,12 @@
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
   import GhsScroller from '@/components/scroller/ghs-scroller.vue';
   import { f_deleteSearch, f_searchRecommend } from '@/utils/business';
+  import useGlobalState from '@/hooks/use-global-state';
   const emits = defineEmits(['search']);
   const value = ref('');
   const data = ref<any[]>();
   const showHistory = ref(false);
-
+  const { webConfig } = useGlobalState();
   const handleSearch = async (str: string) => {
     value.value = str;
     emits('search', value.value);
