@@ -1,4 +1,4 @@
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { MessageInfo, Pagination } from '@ghs/types';
 import { hashString, isFalsity, waitTime } from '@ilzf/utils';
 import { message } from 'ant-design-vue';
@@ -30,7 +30,7 @@ export default () => {
     webKey,
     init,
   } = useGlobalState();
-
+  const bodyRef = ref<HTMLDivElement>();
   const calcCacheSize = async () => {
     cacheSize.value = await f_cacheDirSize();
   };
@@ -61,6 +61,7 @@ export default () => {
     urlReplace.value = page.urlReplace;
 
     loading.value = false;
+    bodyRef.value.scrollTo({ top: 0, behavior: 'smooth' });
     nprogress.done(true);
     if (url) {
       bus.off(hashString(url));
@@ -123,5 +124,6 @@ export default () => {
     calcCacheSize,
     load,
     init,
+    bodyRef,
   };
 };

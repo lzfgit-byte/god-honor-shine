@@ -120,8 +120,16 @@
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
   webKey.value = route.query.key as string;
 
-  const { handlePageClick, handleSearch, clearCache, setDbPath, calcCacheSize, load, init } =
-    usePageState();
+  const {
+    handlePageClick,
+    handleSearch,
+    clearCache,
+    setDbPath,
+    calcCacheSize,
+    load,
+    init,
+    bodyRef,
+  } = usePageState();
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
     useFeature();
   const { collects, updateCollects } = useCollect();
