@@ -1,6 +1,7 @@
 import { onMounted } from 'vue';
 import type { MessageInfo, Pagination } from '@ghs/types';
 import { hashString, isFalsity, waitTime } from '@ilzf/utils';
+import { message } from 'ant-design-vue';
 import {
   f_appSetDbDir,
   f_cacheDirDb,
@@ -43,7 +44,11 @@ export default () => {
       });
     }
     const page = isFalsity(url) ? await f_getPage(webKey.value) : await f_loadPage(url);
-
+    if (page.items.length === 0) {
+      loading.value = false;
+      message.info('未获取到数据');
+      return;
+    }
     pagination.value = [];
     items.value = [];
     tags.value = [];
@@ -70,6 +75,8 @@ export default () => {
   const handleSearch = async (value: string) => {
     if (items.value.length > 0) {
       await load(await f_search(value, items.value[0]));
+    } else {
+      await load(await f_search(value, null));
     }
   };
 
