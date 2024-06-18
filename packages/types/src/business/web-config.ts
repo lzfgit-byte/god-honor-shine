@@ -28,7 +28,8 @@ export interface BaseConfig {
 }
 
 export interface WebConfig extends BaseConfig {
-  getUrlReplace: ($: CheerioAPI) => UrlReplace[]; // 获取首页条件更改时的 replace 列表
+  // 获取首页条件更改时的 replace 列表
+  getUrlReplace: ($: CheerioAPI) => UrlReplace[];
 
   // 获取页面元素
   getItems: ($: CheerioAPI) => Item[];

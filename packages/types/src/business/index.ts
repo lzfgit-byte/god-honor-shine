@@ -43,17 +43,21 @@ export interface Item {
   title: string;
   type: ItemTypeUnion;
   jumpUrl: string;
-  renderType: RenderTypeUnion; // 渲染类型,强制渲染,正常渲染
+  // 渲染类型,强制渲染,正常渲染
+  renderType: RenderTypeUnion;
   tags: Tag[];
 }
 export interface UrlAppend {
   value: string;
   param: string;
-  title: string; // 展示的名字
-  current: boolean; // 是否当前的过滤条件
+  // 展示的名字
+  title: string;
+  // 是否当前的过滤条件
+  current: boolean;
 }
 export interface UrlReplace {
-  schema: string; // 分组
+  // 分组
+  schema: string;
   urlAppend: UrlAppend[];
 }
 export interface Comment {
@@ -65,7 +69,8 @@ export interface Comment {
  */
 export interface DetailInfo {
   detailType: ItemDetailTypeUnion;
-  renderType: RenderTypeUnion; // 渲染类型,强制渲染,正常渲染
+  // 渲染类型,强制渲染,正常渲染
+  renderType: RenderTypeUnion;
   details: Detail[];
   relations: Item[];
 }
@@ -74,7 +79,8 @@ export interface DetailInfo {
  * 每一页的类型
  */
 export interface Page {
-  pagination: Pagination[]; // 分页
+  // 分页
+  pagination: Pagination[];
   tags: Tag[];
   items: Item[];
   urlReplace?: UrlReplace[];

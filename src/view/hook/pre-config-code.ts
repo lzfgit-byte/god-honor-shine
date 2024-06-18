@@ -2,11 +2,16 @@ import { businessText, webConfigText } from '@ghs/types';
 const wrapperCode = (code: string) => {
   let cs = code.split('\n');
   cs = cs
-    .filter((item) => !item.startsWith('import ') && !item.includes('export *'))
+    .filter((item) => {
+      return !item.startsWith('import ') && !item.includes('export *') && !item.includes(`//`);
+    })
     .map((item) => item.replace('CheerioAPI', 'any'));
-  return cs.join('\n');
+  return cs.join('');
 };
-export const preConfigCode = `${wrapperCode(businessText)} 
+const flattCode = (code: string) => {
+  return code.split('\n').join('').split('\r').join('');
+};
+const preConfigCode_ = `${wrapperCode(businessText)} 
 ${wrapperCode(webConfigText)}
 export const ElementAttr = {
   src: 'src',
@@ -43,8 +48,7 @@ export const helpElText = ($el: any): string => {
 };
 export const hashString = (str: string) => {
   return '';
-};
-export interface MessageInfo {
+};export interface MessageInfo {
   key?: string;
   msg?: string;
   percentage?: number;
@@ -52,109 +56,48 @@ export interface MessageInfo {
   type?: 'error' | 'info' | 'success' | 'warning';
   close?: boolean;
 }
-
 export class MessageUtil {
-  static info(msg: string) {
-    this.sendMsg({ type: 'info', msg });
-  }
-
-  static error(msg: string) {
-    this.sendMsg({ type: 'error', msg });
-  }
-
-  static success(msg: string) {
-    this.sendMsg({ type: 'success', msg });
-  }
-
-  static warning(msg: string) {
-    this.sendMsg({ type: 'warning', msg });
-  }
-
+  static info(msg: string) {}
+  static error(msg: string) {}
+  static success(msg: string) {}
+  static warning(msg: string) {}
   private static sendMsg(msg: MessageInfo) {}
 }
-
-/**
- * 发送步骤信息
- */
 export class StepMessageUtil {
   static key: 'step_msg_key';
   private static sendMsg(msg: MessageInfo) {}
-
-  static sendStepMsg(title: string, msg: string, key: string) {
-    this.sendMsg({ msg, title, key });
-  }
-
-  static closeStepMsg(title: string, msg: string, key: string) {
-    this.sendMsg({ msg, title, key, close: true });
-  }
+  static sendStepMsg(title: string, msg: string, key: string) {this.sendMsg({ msg, title, key });}
+  static closeStepMsg(title: string, msg: string, key: string) {this.sendMsg({ msg, title, key, close: true });}
 }
-
-/**
- *发送侧边信息
- */
 export class NotifyMsgUtil {
   private static sendMsg(msg: MessageInfo) {}
-
-  static sendNotifyMsg(title: string, msg: string, key: string) {
-    this.sendMsg({ msg, title, key });
-  }
-
-  static close(key: string) {
-    this.sendMsg({ close: true, key, msg: 'done', title: 'done' });
-  }
+  static sendNotifyMsg(title: string, msg: string, key: string) {this.sendMsg({ msg, title, key });}
+  static close(key: string) {this.sendMsg({ close: true, key, msg: 'done', title: 'done' });}
 }
-
-/**
- *发送一时的日志信息
- */
 export class LogMsgUtil {
   private static sendMsg(msg: MessageInfo) {}
-
   static sendLogMsg(...msg: string[]) {}
-
-  static close() {
-    this.sendMsg({ close: true });
-  }
+  static close() { this.sendMsg({ close: true }); }
 }
-
-/**
- * 发送进度信息
- */
 export class ProgressMsgUtil {
   private static sendMsg(msg: MessageInfo) {}
-
-  static sendProgressMsg(msg: MessageInfo) {
-    this.sendMsg(msg);
-  }
-
-  static sendProgress(percentage: number, key: string, title?: string, msg?: string) {
-    this.sendMsg({ percentage, key, title, msg });
-  }
-
-  static close(key: string) {
-    this.sendMsg({ percentage: 100, close: true, key });
-  }
+  static sendProgressMsg(msg: MessageInfo) {this.sendMsg(msg);}
+  static sendProgress(percentage: number, key: string, title?: string, msg?: string) { this.sendMsg({ percentage, key, title, msg }); }
+  static close(key: string) { this.sendMsg({ percentage: 100, close: true, key });}
 }
-
 export class ConsoleLogUtil {
-  private static sendMsg(msg: MessageInfo) {
-  }
-  static sendLogMsg(...msg: string[]) {
-  }
+  private static sendMsg(msg: MessageInfo) {}
+  static sendLogMsg(...msg: string[]) {}
 }
 export const eventEmitter = {
   on: (event: string, callback: (...args: any[]) => void) => {},
   off: (event: string, callback: (...args: any[]) => void) => {},
   emit: (event: string, ...args: any[]) => {},
-};
-
-function getHtml(str: string) {
-  return str;
-}
-async function getHtmlWithProcess(url: string) {
-  return '';
-}
+};function getHtml(str: string) {return str;}
+async function getHtmlWithProcess(url: string) {return '';}
 `;
+
+export const preConfigCode = flattCode(preConfigCode_);
 export const defaultWebConfig = `
 const getData = (): WebConfig => /* break */ ({
   key: 'demo',

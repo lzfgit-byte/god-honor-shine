@@ -39,7 +39,7 @@
   const loadCode = async (key: string) => {
     const code = await f_getWebConfigCode(key);
     if (code) {
-      currentCode.value = preConfigCode + preBreak + base64ToStr(code);
+      currentCode.value = `${preConfigCode}\n${preBreak}${base64ToStr(code)}`;
     }
   };
   const saveCode = async (key: string) => {
