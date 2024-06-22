@@ -22,6 +22,13 @@ export const staticRoutes: RouterType[] = [
     showInMenu: true,
     component: () => import('@/components/comic/comic-reader.vue'),
   },
+  {
+    path: '/',
+    name: 'hHome',
+    aliasZH: 'hHome',
+    showInMenu: true,
+    component: () => import('@/view/start-app-view.vue'),
+  },
 ];
 
 const router = createRouter({
