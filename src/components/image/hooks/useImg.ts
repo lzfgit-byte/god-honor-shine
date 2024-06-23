@@ -8,6 +8,7 @@ export default (props: any) => {
   const imgSrc = ref(src);
   const percentageRef = ref(0);
   const progressInfo = ref();
+  const isError = ref(false);
   const init = async () => {
     if (!props.url) {
       return;
@@ -24,8 +25,8 @@ export default (props: any) => {
   };
   const handleError = () => {
     console.log('图片加载失败:', props.url);
-    console.log(imgSrc.value);
+    isError.value = true;
     imgSrc.value = src;
   };
-  return { imgSrc, init, handleError, percentageRef, progressInfo };
+  return { imgSrc, init, handleError, percentageRef, progressInfo, isError };
 };

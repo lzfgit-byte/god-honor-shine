@@ -33,7 +33,7 @@
         </a-col>
       </a-row>
     </a-card>
-    <a-card>
+    <a-card style="height: 300px">
       <template #title>加载图片</template>
       <template #extra>
         <a-button size="small" @click="handleLoadImg">加载图片</a-button>
@@ -48,11 +48,11 @@
           <a-textarea
             v-model:value="base64Text"
             placeholder=""
-            :auto-size="{ minRows: 2, maxRows: 5 }"
+            :auto-size="{ minRows: 2, maxRows: 6 }"
           />
         </a-col>
         <a-col :span="12">
-          <img :src="base64Text" />
+          <img v-if="base64Text" :key="base64Text" :src="base64Text" alt="" height="177px" />
         </a-col>
       </a-row>
     </a-card>
