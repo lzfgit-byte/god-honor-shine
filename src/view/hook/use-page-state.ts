@@ -29,6 +29,7 @@ export default () => {
     currentUrl,
     webKey,
     init,
+    loadSysConfig,
   } = useGlobalState();
   const bodyRef = ref<HTMLDivElement>();
   const calcCacheSize = async () => {
@@ -108,6 +109,7 @@ export default () => {
     await init();
     await load();
     await loadDbPath();
+    await loadSysConfig();
   });
   return {
     pagination,

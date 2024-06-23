@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import { ensureFileSync, writeFileSync } from 'fs-extra';
-import { app } from 'electron';
+import { restartApp } from '../utils/KitUtil';
 let config_json = null;
 const PATH_KEY = 'ghs4.0';
 let temp_dir = `${process.env.LOCALAPPDATA}\\${PATH_KEY}`; // aka C:\Users\用户名\AppData\Local\ghs4.0
@@ -25,8 +25,7 @@ const loadConfigFile = () => {
 export const app_set_config_dir = (dir: string) => {
   config_json.db_path = dir;
   writeFileSync(config_path, JSON.stringify(config_json, null, 2), { encoding: 'utf-8' });
-  app.relaunch();
-  app.quit();
+  restartApp();
 };
 
 export class APP_PATHS {

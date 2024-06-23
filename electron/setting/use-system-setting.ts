@@ -22,6 +22,7 @@ const init = async () => {
     keysList.forEach((key) => {
       const fs = list.find((item) => item.name === key);
       if (!fs) {
+        // 如果数据库不存在，存在则不处理
         const config = new ConfigEntity();
         config.name = key;
         config.value = defaultSetting[key];
@@ -30,6 +31,11 @@ const init = async () => {
       }
     });
     await ConfigEntity.save(entityS);
+  } else {
+    // 更新defaultSetting的值
+    list.forEach((item) => {
+      defaultSetting[item.name] = item.value;
+    });
   }
 };
 

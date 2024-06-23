@@ -1,5 +1,6 @@
 import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
-import type { CollectEntity, ViewedHistoryEntity } from '@ghs/constant';
+import type { CollectEntity, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
+
 import { adapterLoadUrl, importFavorite } from '../../electron/export';
 import { setCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
@@ -197,4 +198,23 @@ export const f_getWebConfigCode = async (key: string) => {
  */
 export const f_listWebConfig = async () => {
   return executeFunction('listWebConfig');
+};
+
+/**
+ * 获取系统配置
+ */
+export const f_listSystemConfig = async (): Promise<ConfigEntity[]> => {
+  return executeFunction('listSystemConfig');
+};
+/**
+ * 更新系统配置
+ */
+export const f_updateSystemConfig = async (key: string, value: string) => {
+  return executeFunction('updateSystemConfig', key, value);
+};
+/**
+ * 重启程序
+ */
+export const restartAPP = () => {
+  return executeFunction('restartAPP');
 };

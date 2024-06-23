@@ -3,6 +3,7 @@ import { EventEmitter } from 'node:events';
 import dayjs from 'dayjs';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import { app } from 'electron';
 
 export const getCurrentDate = () => dayjs().format('YYYY-MM-DD HH:mm:ss');
 export const execPercentage = (cur: number, total: number): number => {
@@ -29,4 +30,8 @@ export const getCurrentItems = (...items: (() => Cheerio<Element>)[]): Cheerio<E
     }
   });
   return res || items[0]();
+};
+export const restartApp = () => {
+  app.relaunch();
+  app.quit();
 };

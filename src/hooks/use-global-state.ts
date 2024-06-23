@@ -1,10 +1,11 @@
 import { ref, watch } from 'vue-demi';
 import type { BaseConfig, Item, Pagination, SetTag, Tag, UrlReplace } from '@ghs/types';
-import type { CollectEntity } from '@ghs/constant';
+import type { CollectEntity, ConfigEntity } from '@ghs/constant';
 import { computed } from 'vue';
 import { message } from 'ant-design-vue';
 import { useTextSelection } from '@vueuse/core';
-import { f_getCurrentWebConfig } from '@/utils/business';
+
+import { f_getCurrentWebConfig, f_listSystemConfig } from '@/utils/business';
 
 const allWebKeys = ref([]);
 
@@ -38,7 +39,7 @@ let timer = null;
 watch(loading, () => {
   if (loading.value) {
     timer = setTimeout(() => {
-      message.warn('loading timeout：50000').then(() => 1);
+      message.warn('loading timeout：10000').then(() => 1);
       loading.value = false;
     }, 10000);
   } else {
@@ -46,8 +47,14 @@ watch(loading, () => {
     timer = null;
   }
 });
+
 const init = async () => {
   webConfig.value = await f_getCurrentWebConfig(webKey.value);
+};
+// 系统设置
+const systemConfigs = ref<ConfigEntity[]>([]);
+const loadSysConfig = async () => {
+  systemConfigs.value = await f_listSystemConfig();
 };
 export default () => ({
   webConfig,
@@ -68,4 +75,5 @@ export default () => ({
   currentCode,
   allWebKeys,
   init,
+  loadSysConfig,
 });

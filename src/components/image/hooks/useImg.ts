@@ -23,6 +23,8 @@ export default (props: any) => {
     }
   };
   const handleError = () => {
+    console.log('图片加载失败:', props.url);
+    console.log(imgSrc.value);
     imgSrc.value = src;
   };
   return { imgSrc, init, handleError, percentageRef, progressInfo };

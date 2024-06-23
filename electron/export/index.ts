@@ -20,6 +20,7 @@ export * from './collect';
 export * from './history';
 //
 export * from './web-config';
+export * from './system-comfig';
 
 /**
  *获取所有的配置项

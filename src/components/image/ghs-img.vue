@@ -1,7 +1,7 @@
 <template>
   <div h-full w-full relative flex justify-center items-center class="img-container">
     <img :src="imgSrc || src" :alt="imgSrc" @error="handleError" />
-    <transition duration="300">
+    <transition :duration="300">
       <div
         v-if="percentageRef > 0 && percentageRef < 100"
         absolute
