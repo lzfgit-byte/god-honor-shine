@@ -215,6 +215,6 @@ export const f_updateSystemConfig = async (key: string, value: string) => {
 /**
  * 重启程序
  */
-export const restartAPP = () => {
+export const f_restartAPP = () => {
   return executeFunction('restartAPP');
 };

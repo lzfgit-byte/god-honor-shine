@@ -18,32 +18,81 @@
         </a-space>
       </a-col>
     </a-row>
-    <a-row>
-      <a-col :span="24">
-        <a-textarea v-model:value="videoUrl" auto-size></a-textarea>
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="24">
+    <a-card>
+      <a-row>
+        <a-col :span="24">
+          <a-textarea v-model:value="videoUrl" auto-size></a-textarea>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24">
+          <a-space>
+            <a-button @click="playM3u8">播放m3u8</a-button>
+            <a-button @click="playMp4">播放mp4</a-button>
+          </a-space>
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card>
+      <template #title>加载图片</template>
+      <template #extra>
+        <a-button size="small" @click="handleLoadImg">加载图片</a-button>
+      </template>
+      <a-row>
+        <a-col :span="24">
+          <a-input v-model:value="imgUrl"></a-input>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="12">
+          <a-textarea
+            v-model:value="base64Text"
+            placeholder=""
+            :auto-size="{ minRows: 2, maxRows: 5 }"
+          />
+        </a-col>
+        <a-col :span="12">
+          <img :src="base64Text" />
+        </a-col>
+      </a-row>
+    </a-card>
+    <a-card>
+      <template #extra>
         <a-space>
-          <a-button @click="playM3u8">播放m3u8</a-button>
-          <a-button @click="playMp4">播放mp4</a-button>
+          <a-button size="small" @click="handleSave">保存设置</a-button>
+          <a-button size="small" @click="restartApp">重启应用</a-button>
         </a-space>
-      </a-col>
-    </a-row>
-    <a-row></a-row>
+      </template>
+      <a-row v-for="item in systemConfigs" :key="item.id">
+        <a-col :span="24">
+          <a-form-item :label="item.name">
+            <a-input
+              v-model:value="configFormData[item.name]"
+              :disabled="item.name === 'dbVersion'"
+            ></a-input>
+          </a-form-item>
+        </a-col>
+      </a-row>
+    </a-card>
   </div>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
   import { isFalsity } from '@ilzf/utils';
   import { message } from 'ant-design-vue';
+  import { reactive, watchEffect } from 'vue-demi';
+  import { forIn, keys } from 'lodash';
   import useGlobalState from '@/hooks/use-global-state';
-  import { f_importFavorite } from '@/utils/business';
+  import {
+    f_getImage,
+    f_importFavorite,
+    f_restartAPP,
+    f_updateSystemConfig,
+  } from '@/utils/business';
   import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
 
   defineProps({ choseDbPath: Function });
-  const { dbPath } = useGlobalState();
+  const { dbPath, systemConfigs } = useGlobalState();
   const handleImport = () => {
     const fileInput: HTMLInputElement = document.createElement('input');
     fileInput.type = 'file';
@@ -71,6 +120,33 @@
       return;
     }
     videoGlobalRef.value.show(videoUrl.value, '测试', 'mp4');
+  };
+
+  const configFormData = reactive({});
+  watchEffect(() => {
+    if (systemConfigs.value?.length > 0) {
+      systemConfigs.value.forEach((item) => {
+        configFormData[item.name] = item.value;
+      });
+    }
+  });
+  const handleSave = () => {
+    forIn(configFormData, (value, key) => {
+      f_updateSystemConfig(key, value);
+    });
+    message.success('更新成功');
+  };
+  const restartApp = () => {
+    f_restartAPP();
+  };
+  // 图片测试
+  const imgUrl = ref('');
+  const base64Text = ref();
+  const handleLoadImg = async () => {
+    if (imgUrl.value) {
+      base64Text.value = await f_getImage(imgUrl.value);
+    }
+    message.warn('url不能为空');
   };
 </script>
 

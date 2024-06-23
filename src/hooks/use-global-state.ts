@@ -75,5 +75,6 @@ export default () => ({
   currentCode,
   allWebKeys,
   init,
+  systemConfigs,
   loadSysConfig,
 });
