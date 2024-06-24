@@ -5,6 +5,7 @@ import { cache_exist, cache_get, cache_save } from '../utils';
 import useProxySetting from '../setting/use-proxy-setting';
 import useSystemSetting from '../setting/use-system-setting';
 import { logger } from '../utils/logger';
+import { LogMsgUtil } from '../utils/message';
 // @ts-ignore
 import code from './img-windows-code?raw';
 let parentWin: BrowserWindow;
@@ -66,6 +67,7 @@ const getAFreeWin = async (): Promise<BrowserWindow> => {
 const timer = setInterval(async () => {
   const { imgWinMin } = await useSystemSetting();
   if (childWinds.length > 0) {
+    LogMsgUtil.sendLogMsg('现在运行的子窗口的数量是:', `${childWinds.length}`);
     for (let i = childWinds.length - 1; i > imgWinMin; i--) {
       if (childWinds[i].free) {
         childWinds[i].win.close();
