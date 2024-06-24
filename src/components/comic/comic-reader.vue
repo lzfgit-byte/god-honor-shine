@@ -1,5 +1,10 @@
 <template>
-  <div ref="containerRef" h-full w-full></div>
+  <div ref="containerRef" h-full w-full overflow-auto>
+    <a-button v-for="item in contents" :key="item.url" @click="getImages(item.url)">
+      {{ item.title }}
+    </a-button>
+    {{ comicImages }}
+  </div>
   <a-float-button>
     <template #icon>
       <RollbackOutlined @click="router.back()" />
@@ -14,7 +19,9 @@
 
   const route = useRoute();
   const router = useRouter();
-  const { containerRef } = useComicState(route?.query?.url as string);
+  const { containerRef, contents, getImages, comicImages } = useComicState(
+    route?.query?.url as string
+  );
   onMounted(() => {
     console.log(route.query);
   });

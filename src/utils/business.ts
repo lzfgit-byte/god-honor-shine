@@ -1,5 +1,6 @@
 import type {
   BaseConfig,
+  CComic,
   CContent,
   DetailInfo,
   Item,
@@ -235,6 +236,6 @@ export const f_getContent = (url: string): Promise<CContent[]> => {
 /**
  * 获取漫画图片
  */
-export const f_getComicIImages = (url: string): Promise<string[]> => {
+export const f_getComicIImages = (url: string): Promise<CComic[]> => {
   return executeFunction('getComicIImages', url);
 };

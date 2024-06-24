@@ -1,12 +1,21 @@
-import type { CContent, DetailInfo, Item, Page, Pagination, Tag, WebConfig } from '@ghs/types';
+import type {
+  CComic,
+  CContent,
+  DetailInfo,
+  Item,
+  Page,
+  Pagination,
+  Tag,
+  WebConfig,
+} from '@ghs/types';
 import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
-import { isFalsity } from '@ilzf/utils';
+import { isFalsity, isFunction } from '@ilzf/utils';
 import { SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
 import { getHtml } from '../export';
-import { LogMsgUtil } from '../utils/message';
+import { LogMsgUtil, MessageUtil } from '../utils/message';
 import { NormalFunc } from './common-func';
 import { getWebConfigByKey } from './use-init-web-config';
 
@@ -102,13 +111,16 @@ class BaseBusiness extends NormalFunc {
 
   /**
    * 搜索
-   * @param keyword
    */
   public search(keyword: string, item: Item): string {
     if (isFalsity(keyword)) {
       return;
     }
     this.saveSearchKey(keyword).then();
+    if (!isFunction(this.webConfig.adapterSearchUrl)) {
+      MessageUtil.error('未定义搜索方法');
+      return;
+    }
     return this.webConfig.adapterSearchUrl(keyword, item);
   }
 
@@ -116,11 +128,20 @@ class BaseBusiness extends NormalFunc {
    * 漫画获取目录
    */
   public async getContents(url: string): Promise<CContent[]> {
-    return this.webConfig.getContents(url, cheerio);
+    if (!isFunction(this.webConfig.getContents)) {
+      MessageUtil.error('未定义漫画目录获取方法');
+      return [];
+    }
+    return this.webConfig?.getContents(url, cheerio);
   }
 
-  public async getComicImages(url: string): Promise<string[]> {
-    return await this.webConfig.getComicImages(url);
+  public async getComicImages(url: string): Promise<CComic[]> {
+    if (!isFunction(this.webConfig.getComicImages)) {
+      MessageUtil.error('未定义漫画图片获取方法');
+      return [];
+    }
+    debugger;
+    return await this.webConfig?.getComicImages(url, cheerio);
   }
 }
 
