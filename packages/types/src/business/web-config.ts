@@ -26,6 +26,11 @@ export interface BaseConfig {
 
   currentUrlReplace: UrlReplace[];
 }
+export interface CContent {
+  title: string;
+  url: string;
+  isCurrent: boolean;
+}
 
 export interface WebConfig extends BaseConfig {
   // 获取首页条件更改时的 replace 列表
@@ -46,4 +51,6 @@ export interface WebConfig extends BaseConfig {
   adapterSearchUrl: (url: string, item: Item) => string;
   // adapter
   adapterRemoteSearch?: (searchKey: string) => Promise<string[]>;
+  // 漫画处理,获取目录
+  getContents?: (url: string, cheerio: any) => Promise<CContent[]>;
 }

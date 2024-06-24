@@ -1,4 +1,4 @@
-import type { DetailInfo, Item, Page, Pagination, Tag, WebConfig } from '@ghs/types';
+import type { CContent, DetailInfo, Item, Page, Pagination, Tag, WebConfig } from '@ghs/types';
 import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
@@ -110,6 +110,13 @@ class BaseBusiness extends NormalFunc {
     }
     this.saveSearchKey(keyword).then();
     return this.webConfig.adapterSearchUrl(keyword, item);
+  }
+
+  /**
+   * 漫画获取目录
+   */
+  public async getContents(url: string): Promise<CContent[]> {
+    return this.webConfig.getContents(url, cheerio);
   }
 }
 

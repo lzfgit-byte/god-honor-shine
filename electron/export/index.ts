@@ -1,4 +1,12 @@
-import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
+import type {
+  BaseConfig,
+  CContent,
+  DetailInfo,
+  Item,
+  Page,
+  UrlReplace,
+  WebConfig,
+} from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 
 import { MessageUtil } from '../utils/message';
@@ -81,4 +89,11 @@ export const getDetailPage = async (item: Item): Promise<DetailInfo> => {
 export const adapterLoadUrl = (url: string, urlReplaces: UrlReplace[]) => {
   const wc = getWebConfigByKey(getCurrentKey());
   return wc.adapterLoadUrl(url, urlReplaces);
+};
+/**
+ * 获取目录
+ */
+export const getContent = (url: string): Promise<CContent[]> => {
+  const business = getCurrentBusiness(getCurrentKey());
+  return business.getContents(url);
 };

@@ -1,4 +1,12 @@
-import type { BaseConfig, DetailInfo, Item, Page, UrlReplace, WebConfig } from '@ghs/types';
+import type {
+  BaseConfig,
+  CContent,
+  DetailInfo,
+  Item,
+  Page,
+  UrlReplace,
+  WebConfig,
+} from '@ghs/types';
 import type { CollectEntity, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
 
 import { adapterLoadUrl, importFavorite } from '../../electron/export';
@@ -217,4 +225,10 @@ export const f_updateSystemConfig = async (key: string, value: string) => {
  */
 export const f_restartAPP = () => {
   return executeFunction('restartAPP');
+};
+/**
+ * 获取目录
+ */
+export const f_getContent = (url: string): Promise<CContent[]> => {
+  return executeFunction('getContent', url);
 };
