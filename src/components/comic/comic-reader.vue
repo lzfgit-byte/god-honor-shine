@@ -4,6 +4,12 @@
       {{ item.title }}
     </a-button>
     {{ comicImages }}
+    <ComicImage
+      v-for="item in comicImages"
+      :key="item.url"
+      :url="item.url"
+      :extra="item.extra"
+    ></ComicImage>
   </div>
   <a-float-button>
     <template #icon>
@@ -16,6 +22,7 @@
   import { onMounted } from 'vue';
   import { RollbackOutlined } from '@ant-design/icons-vue';
   import useComicState from '@/components/comic/hooks/useComicState';
+  import ComicImage from '@/components/comic/comic-image.vue';
 
   const route = useRoute();
   const router = useRouter();

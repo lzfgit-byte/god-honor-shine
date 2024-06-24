@@ -22,6 +22,7 @@ declare module 'vue' {
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
+    ComicImage: typeof import('./src/components/comic/comic-image.vue')['default']
     ComicReader: typeof import('./src/components/comic/comic-reader.vue')['default']
     EditorWorker: typeof import('./src/components/monacoEditor/components/editor-worker.vue')['default']
     GhsComment: typeof import('./src/components/comment/ghs-comment.vue')['default']
