@@ -16,8 +16,8 @@ export interface RouterType {
 export const routes = ref<RouterType[]>([]);
 export const staticRoutes: RouterType[] = [
   {
-    path: '/18-comic-reader',
-    name: '18-comic-reader',
+    path: '/comic-reader',
+    name: 'comic-reader',
     aliasZH: '18C',
     showInMenu: true,
     component: () => import('@/components/comic/comic-reader.vue'),

@@ -1,5 +1,6 @@
 import type { Item } from '@ghs/types';
 import { message } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
 import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
 import { imgViewerRef, videoGlobalRef, webConfigRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
@@ -7,6 +8,7 @@ import useGlobalState from '@/hooks/use-global-state';
 export default () => {
   const { segmentedValue, drawerOpen, segmentedData, webConfig } = useGlobalState();
   const { loading, logs, webKey } = useGlobalState();
+  const router = useRouter();
   const showDetail = async (item: Item) => {
     loading.value = true;
     const detail = await f_getDetailPage(item);
@@ -45,7 +47,8 @@ export default () => {
         webConfig.value?.winHeight
       );
     } else if (detail.detailType === 'comic') {
-      // TODO
+      console.log(detail);
+      await router.push({ path: '/comic-reader', query: { url: detail.details[0].url } });
     }
   };
 
