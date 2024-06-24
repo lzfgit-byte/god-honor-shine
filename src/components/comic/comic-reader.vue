@@ -2,7 +2,7 @@
   <div ref="containerRef" h-full w-full></div>
   <a-float-button>
     <template #icon>
-      <RollbackOutlined />
+      <RollbackOutlined @click="router.back()" />
     </template>
   </a-float-button>
 </template>

@@ -26,7 +26,7 @@ const drawerOpen = ref(false);
 const segmentedValue = ref<SetTag>();
 const segmentedData = computed(() => webConfig?.value?.setTags);
 watch(segmentedData, () => {
-  if (segmentedData.value.length > 0) {
+  if (segmentedData.value?.length > 0) {
     segmentedValue.value = segmentedData.value[0];
   }
 });
