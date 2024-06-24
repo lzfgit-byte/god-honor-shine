@@ -4,6 +4,7 @@ import { existsSync } from 'fs-extra';
 import { hashString } from '@ilzf/utils';
 import { CollectEntity } from '@ghs/constant';
 import type { Detail, Item } from '@ghs/types';
+import { FileType } from '@ghs/types';
 import {
   getImgBase64ByWin,
   requestHtml,
@@ -16,6 +17,7 @@ import {
 import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { app_set_config_dir } from '../const/app-paths';
 import { eventEmitter } from '../utils/KitUtil';
+import { cache_clean } from '../utils';
 
 /**
  * 获取html
@@ -25,6 +27,7 @@ export const getHtml = async (url: string) => {
   let html = (await requestHtml(url)) as any;
   if (html?.indexOf('Just a moment...') > 0) {
     MessageUtil.info('request 失败，使用win');
+    cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
   }
   return html;
@@ -56,6 +59,7 @@ export const getHtmlWithProcess = async (url: string) => {
 export const getImage = async (url: string) => {
   let str = (await requestImage(url)) as any;
   if (str.indexOf('Just a moment...') > 0 || str === '') {
+    cache_clean(url, FileType.IMAGE);
     str = await getImgBase64ByWin(url);
   }
   return str;

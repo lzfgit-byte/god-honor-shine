@@ -67,6 +67,11 @@ export const requestImage = async (url: string) => {
     if (blob) {
       if (blob?.length < 100) {
         MessageUtil.warning(`【img】 获取图片长度不足100 ${url} `);
+        return '';
+      }
+      const str = Buffer.from(blob).toString('utf8');
+      if (str.indexOf('Just a moment...') > -1) {
+        return '';
       }
       return `data:image/png;base64,${Buffer.from(blob).toString('base64')}`;
     } else {

@@ -44,6 +44,11 @@
         </a-col>
       </a-row>
       <a-row>
+        <a-col :span="24">
+          <a-input :value="hashString(imgUrl)"></a-input>
+        </a-col>
+      </a-row>
+      <a-row>
         <a-col :span="12">
           <a-textarea
             v-model:value="base64Text"
@@ -78,7 +83,7 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { isFalsity } from '@ilzf/utils';
+  import { hashString, isFalsity } from '@ilzf/utils';
   import { message } from 'ant-design-vue';
   import { reactive, watchEffect } from 'vue-demi';
   import { forIn, keys } from 'lodash';
@@ -145,6 +150,7 @@
   const handleLoadImg = async () => {
     if (imgUrl.value) {
       base64Text.value = await f_getImage(imgUrl.value);
+      return;
     }
     message.warn('url不能为空');
   };
