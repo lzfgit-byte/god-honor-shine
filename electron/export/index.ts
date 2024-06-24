@@ -97,3 +97,10 @@ export const getContent = (url: string): Promise<CContent[]> => {
   const business = getCurrentBusiness(getCurrentKey());
   return business.getContents(url);
 };
+/**
+ * 获取漫画图片
+ */
+export const getComicIImages = (url: string): Promise<string[]> => {
+  const business = getCurrentBusiness(getCurrentKey());
+  return business.getComicImages(url);
+};

@@ -118,6 +118,10 @@ class BaseBusiness extends NormalFunc {
   public async getContents(url: string): Promise<CContent[]> {
     return this.webConfig.getContents(url, cheerio);
   }
+
+  public async getComicImages(url: string): Promise<string[]> {
+    return await this.webConfig.getComicImages(url);
+  }
 }
 
 /**

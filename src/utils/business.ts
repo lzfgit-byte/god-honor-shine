@@ -232,3 +232,9 @@ export const f_restartAPP = () => {
 export const f_getContent = (url: string): Promise<CContent[]> => {
   return executeFunction('getContent', url);
 };
+/**
+ * 获取漫画图片
+ */
+export const f_getComicIImages = (url: string): Promise<string[]> => {
+  return executeFunction('getComicIImages', url);
+};
