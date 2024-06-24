@@ -47,7 +47,6 @@ export default () => {
         webConfig.value?.winHeight
       );
     } else if (detail.detailType === 'comic') {
-      console.log(detail);
       await router.push({ path: '/comic-reader', query: { url: detail.details[0].url } });
     }
   };

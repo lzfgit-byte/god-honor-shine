@@ -49,7 +49,6 @@ export default () => {
       return;
     }
     const page = isFalsity(url) ? await f_getPage(webKey.value) : await f_loadPage(url);
-    console.log(page);
     if (page?.items?.length === 0) {
       loading.value = false;
       message.info('未获取到数据');

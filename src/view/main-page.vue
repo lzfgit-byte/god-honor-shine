@@ -118,7 +118,7 @@
   const route = useRoute();
   const { webKey, pagination, items, webConfig } = useGlobalState();
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
-  webKey.value = route.query.key as string;
+  webKey.value = (route?.query?.key as string) || webKey.value;
 
   const {
     handlePageClick,
