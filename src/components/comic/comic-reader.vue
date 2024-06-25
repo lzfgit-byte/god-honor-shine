@@ -6,38 +6,37 @@
       :url="item.url"
       :extra="item.extra"
     ></ComicImage>
-    <a-drawer v-model:open="drawValue" title="目录" width="30vw">
-      <a-button
-        v-for="item in contents"
-        :key="item.url"
-        :title="item.url"
-        @click="getImages(item.url)"
-      >
-        {{ item.title }}
-      </a-button>
+    <a-drawer v-model:open="drawValue" title="目录" width="40vw">
+      <div v-for="item in contents" :key="item.url" flex justify-start items-center m-b-2>
+        <a-button type="text" size="small" w-full text-start @click="getImages(item.url)">
+          <GhsText :value="item.title"></GhsText>
+        </a-button>
+      </div>
     </a-drawer>
   </div>
-  <a-float-button @click="router.back()">
+  <a-float-button :style="{ right: '15px', bottom: '20px' }" @click="router.back()">
     <template #icon>
       <RollbackOutlined />
+    </template>
+  </a-float-button>
+  <a-float-button :style="{ right: '15px', bottom: '90px' }" @click="drawValue = true">
+    <template #icon>
+      <ProfileOutlined />
     </template>
   </a-float-button>
 </template>
 <script setup lang="ts">
   import { useRoute, useRouter } from 'vue-router';
-  import { onMounted } from 'vue';
-  import { RollbackOutlined } from '@ant-design/icons-vue';
+  import { ProfileOutlined, RollbackOutlined } from '@ant-design/icons-vue';
   import useComicState from '@/components/comic/hooks/useComicState';
   import ComicImage from '@/components/comic/comic-image.vue';
+  import GhsText from '@/components/text/ghs-text.vue';
 
   const route = useRoute();
   const router = useRouter();
   const { containerRef, contents, getImages, comicImages, drawValue } = useComicState(
     route?.query?.url as string
   );
-  onMounted(() => {
-    console.log(route.query);
-  });
 </script>
 
 <style scoped lang="less"></style>
