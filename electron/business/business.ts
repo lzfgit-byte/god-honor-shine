@@ -194,3 +194,8 @@ export const getCurrentBusiness = (key: string) => {
   }
   return res;
 };
+export const resetCurrentBusiness = (key: string) => {
+  if (cache[key]) {
+    delete cache[key];
+  }
+};

@@ -2,7 +2,12 @@ import { onMounted, ref } from 'vue-demi';
 import type { Ref } from 'vue';
 import { computed, onUnmounted } from 'vue';
 import type { Detail } from '@ghs/types';
-
+import { hashString } from '@ilzf/utils';
+import bus from '@/utils/bus';
+export const ImgEmitEnum = {
+  nextImg: 'nextImg',
+  preImg: 'preImg',
+};
 export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) => {
   const images = ref<Detail[]>([]);
   const current = ref(0);
@@ -80,9 +85,11 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     if (event.type === 'keydown') {
       if (event.key === 'ArrowRight') {
         nextImg();
+        bus.emit(ImgEmitEnum.nextImg, hashString(imgUrl.value));
       }
       if (event.key === 'ArrowLeft') {
         preImg();
+        bus.emit(ImgEmitEnum.preImg, hashString(imgUrl.value));
       }
     }
   };

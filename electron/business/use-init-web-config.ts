@@ -11,6 +11,7 @@ import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/
 import { request_string_get } from '../http';
 // @ts-ignore
 import staticCode from './static-code?raw';
+import { resetCurrentBusiness } from './business';
 
 let currentKey = '';
 export const setCurrentKey = (key: string) => {
@@ -89,6 +90,7 @@ export const loadWebConfig = async () => {
 export const resetWebConfig = async (key: string) => {
   const ent = await WebConfigEntity.findOne({ where: { key } });
   cache[key] = parseWebConfig(base64ToStr(ent.code));
+  resetCurrentBusiness(key);
 };
 export default () => {
   loadWebConfig().then(() => 1);

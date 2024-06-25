@@ -22,7 +22,7 @@
     </div>
   </a-drawer>
   <a-float-button
-    :style="{ right: '-10px', bottom: '-10px', zIndex: 30000 }"
+    :style="{ right: '-10px', top: '-10px', zIndex: 30000 }"
     @click="drawerOpen = true"
   >
     <template #icon>
