@@ -10,11 +10,12 @@
       <div v-for="item in contents" :key="item.url" flex justify-start items-center m-b-2>
         <a-button type="text" size="small" w-full text-start @click="getImages(item.url)">
           <GhsText :value="item.title"></GhsText>
+          <span v-if="currentContent === item.url">*</span>
         </a-button>
       </div>
     </a-drawer>
   </div>
-  <a-float-button :style="{ right: '15px', bottom: '20px' }" @click="router.back()">
+  <a-float-button :style="{ right: '15px', bottom: '40px' }" @click="router.back()">
     <template #icon>
       <RollbackOutlined />
     </template>
@@ -34,9 +35,8 @@
 
   const route = useRoute();
   const router = useRouter();
-  const { containerRef, contents, getImages, comicImages, drawValue } = useComicState(
-    route?.query?.url as string
-  );
+  const { containerRef, contents, getImages, comicImages, drawValue, currentContent } =
+    useComicState(route?.query?.url as string);
 </script>
 
 <style scoped lang="less"></style>

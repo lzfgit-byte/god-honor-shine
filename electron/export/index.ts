@@ -1,5 +1,6 @@
 import type {
   BaseConfig,
+  CComic,
   CContent,
   DetailInfo,
   Item,
@@ -100,7 +101,14 @@ export const getContent = (url: string): Promise<CContent[]> => {
 /**
  * 获取漫画图片
  */
-export const getComicIImages = (url: string): Promise<string[]> => {
+export const getComicIImages = (url: string): Promise<CComic[]> => {
   const business = getCurrentBusiness(getCurrentKey());
   return business.getComicImages(url);
+};
+/**
+ * 获取当前的目录url
+ */
+export const getCurrentContentUrl = (): Promise<string> => {
+  const business = getCurrentBusiness(getCurrentKey());
+  return business.getComicCurrentContent();
 };

@@ -13,7 +13,7 @@ import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { isFalsity, isFunction } from '@ilzf/utils';
-import { SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
+import { ComicHistory, SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
 import { getHtml } from '../export';
 import { LogMsgUtil, MessageUtil } from '../utils/message';
 import { NormalFunc } from './common-func';
@@ -21,12 +21,21 @@ import { getWebConfigByKey } from './use-init-web-config';
 
 class BaseBusiness extends NormalFunc {
   private key: string;
+  private comicDetailUrl = '';
   $: CheerioAPI;
   webConfig: WebConfig;
   public constructor(key: string, code: WebConfig) {
     super();
     this.key = key;
     this.webConfig = code;
+  }
+
+  private getComicUrl(): string {
+    return this.comicDetailUrl;
+  }
+
+  private setComicUrl(url: string) {
+    this.comicDetailUrl = url;
   }
 
   // 获取页面的元素数据
@@ -132,6 +141,7 @@ class BaseBusiness extends NormalFunc {
       MessageUtil.error('未定义漫画目录获取方法');
       return [];
     }
+    this.setComicUrl(url);
     return this.webConfig?.getContents(url, cheerio);
   }
 
@@ -140,8 +150,27 @@ class BaseBusiness extends NormalFunc {
       MessageUtil.error('未定义漫画图片获取方法');
       return [];
     }
-    debugger;
+    const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    if (detailEnt) {
+      detailEnt.contentUrl = url;
+      detailEnt.currentImage = 0;
+      await ComicHistory.update(detailEnt.id, detailEnt);
+    } else {
+      const comicHistory = new ComicHistory();
+      comicHistory.detailUrl = this.getComicUrl();
+      comicHistory.contentUrl = url;
+      comicHistory.currentImage = 0;
+      await comicHistory.save();
+    }
     return await this.webConfig?.getComicImages(url, cheerio);
+  }
+
+  public async getComicCurrentContent(): Promise<string> {
+    const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    if (detailEnt) {
+      return detailEnt.contentUrl;
+    }
+    return '';
   }
 }
 
@@ -153,6 +182,7 @@ export const getCurrentBusiness = (key: string) => {
   let res: BaseBusiness = cache[key];
   if (isFalsity(res)) {
     res = new BaseBusiness(key, getWebConfigByKey(key));
+    cache[key] = res;
   }
   return res;
 };

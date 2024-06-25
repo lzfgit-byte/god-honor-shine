@@ -239,3 +239,9 @@ export const f_getContent = (url: string): Promise<CContent[]> => {
 export const f_getComicIImages = (url: string): Promise<CComic[]> => {
   return executeFunction('getComicIImages', url);
 };
+/**
+ * 获取当前的目录url
+ */
+export const f_getCurrentContentUrl = (): Promise<string> => {
+  return executeFunction('getCurrentContentUrl');
+};
