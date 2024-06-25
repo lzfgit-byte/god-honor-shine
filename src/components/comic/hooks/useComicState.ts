@@ -10,6 +10,7 @@ export default (url: string) => {
   const containerRef = ref<HTMLDivElement>();
   const contents = ref<CContent[]>([]);
   const comicImages = ref<CComic[]>([]);
+  const drawValue = ref(true);
   const loadContent = async () => {
     contents.value = await f_getContent(url);
   };
@@ -27,5 +28,5 @@ export default (url: string) => {
   onMounted(async () => {
     await loadContent();
   });
-  return { containerRef, contents, comicImages, getImages };
+  return { containerRef, contents, comicImages, getImages, drawValue };
 };
