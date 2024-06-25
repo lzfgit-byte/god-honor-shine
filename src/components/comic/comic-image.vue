@@ -5,7 +5,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import { Md5 } from 'ts-md5'; //
   import type { PropType } from 'vue-demi';
   import src from '@/components/image/loading.gif?url';
@@ -21,6 +21,7 @@
   const imagesRef = ref<HTMLImageElement>();
   const { webConfig } = useGlobalState();
   const { imgViewerRef } = useGlobalRef();
+  const maxWidth = computed(() => webConfig.value?.comicImgMaxWidth || '80vw');
   const init = async () => {
     if (!props.url) {
       return;
@@ -46,6 +47,6 @@
 
 <style scoped lang="less">
   img {
-    max-width: 80vw;
+    max-width: v-bind(maxWidth);
   }
 </style>

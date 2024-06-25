@@ -36,6 +36,7 @@ export interface BaseConfig {
   currentUrlReplace: UrlReplace[];
 
   adapterImageCode?: string;
+  comicImgMaxWidth?: string;
 }
 
 export interface WebConfig extends BaseConfig {
