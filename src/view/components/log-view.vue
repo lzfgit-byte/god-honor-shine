@@ -1,14 +1,34 @@
 <template>
-  <div h-full w-full class="editor">
-    <Codemirror
-      v-model="code"
-      :autofocus="true"
-      :indent-with-tab="true"
-      :tab-size="2"
-      :extensions="extensions"
-      @ready="handleReady"
-    />
-  </div>
+  <a-drawer
+    v-model:open="drawerOpen"
+    placement="right"
+    width="90vw"
+    :header-style="{ display: 'none' }"
+    z-index="30000"
+    root-class-name="ghs-video-drawer-container"
+    :content-wrapper-style="{ zIndex: 30000 }"
+    :body-style="{ zIndex: 30000, padding: '0' }"
+    :force-render="true"
+  >
+    <div h-full w-full class="editor">
+      <Codemirror
+        v-model="code"
+        :autofocus="true"
+        :indent-with-tab="true"
+        :tab-size="2"
+        :extensions="extensions"
+        @ready="handleReady"
+      />
+    </div>
+  </a-drawer>
+  <a-float-button
+    :style="{ right: '-10px', bottom: '-10px', zIndex: 30000 }"
+    @click="drawerOpen = true"
+  >
+    <template #icon>
+      <ProfileOutlined />
+    </template>
+  </a-float-button>
 </template>
 
 <script setup lang="ts">
@@ -17,11 +37,12 @@
   import { javascript } from '@codemirror/lang-javascript';
   import { oneDark } from '@codemirror/theme-one-dark';
   import { watchEffect } from 'vue-demi';
+  import { ProfileOutlined } from '@ant-design/icons-vue';
   import useGlobalState from '@/hooks/use-global-state';
   const { logs } = useGlobalState();
   const code = ref(``);
   const extensions = [javascript(), oneDark];
-
+  const drawerOpen = ref(false);
   const view = shallowRef();
   const handleReady = (payload) => {
     view.value = payload.view;
@@ -29,6 +50,11 @@
 
   watchEffect(() => {
     code.value = logs.value.join('\n');
+  });
+  defineExpose({
+    show: () => {
+      drawerOpen.value = true;
+    },
   });
 </script>
 

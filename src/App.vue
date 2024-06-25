@@ -7,6 +7,7 @@
     <ImgViewer ref="imgViewerRef"></ImgViewer>
     <GhsPlayer ref="videoGlobalRef"></GhsPlayer>
     <WebConfigView ref="webConfigRef"></WebConfigView>
+    <LogView ref="logRef"></LogView>
   </a-config-provider>
 </template>
 <script setup lang="ts">
@@ -17,7 +18,8 @@
   import useGlobalRef from '@/hooks/use-global-ref';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import WebConfigView from '@/view/components/web-config-view.vue';
-  const { imgViewerRef, videoGlobalRef, webConfigRef } = useGlobalRef();
+  import LogView from '@/view/components/log-view.vue';
+  const { imgViewerRef, videoGlobalRef, webConfigRef, logRef } = useGlobalRef();
 </script>
 
 <style lang="less">

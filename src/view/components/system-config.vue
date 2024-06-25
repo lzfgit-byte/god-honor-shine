@@ -94,10 +94,11 @@
     f_restartAPP,
     f_updateSystemConfig,
   } from '@/utils/business';
-  import { imgViewerRef, videoGlobalRef } from '@/hooks/use-global-ref';
+  import useGlobalRef from '@/hooks/use-global-ref';
 
   defineProps({ choseDbPath: Function });
   const { dbPath, systemConfigs } = useGlobalState();
+  const { videoGlobalRef } = useGlobalRef();
   const handleImport = () => {
     const fileInput: HTMLInputElement = document.createElement('input');
     fileInput.type = 'file';

@@ -2,12 +2,13 @@ import type { Item } from '@ghs/types';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { f_getDetailPage, f_winOpenAny } from '@/utils/business';
-import { imgViewerRef, videoGlobalRef, webConfigRef } from '@/hooks/use-global-ref';
 import useGlobalState from '@/hooks/use-global-state';
+import useGlobalRef from '@/hooks/use-global-ref';
 
 export default () => {
   const { segmentedValue, drawerOpen, segmentedData, webConfig } = useGlobalState();
   const { loading, logs, webKey } = useGlobalState();
+  const { imgViewerRef, videoGlobalRef, webConfigRef } = useGlobalRef();
   const router = useRouter();
   const showDetail = async (item: Item) => {
     loading.value = true;

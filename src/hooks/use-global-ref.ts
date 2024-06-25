@@ -13,9 +13,10 @@ export interface WebConfigExpose {
   add: (key: string) => void;
   edit: (key: string) => void;
 }
-export const imgViewerRef = ref<ImgViewerExpose>();
-export const videoGlobalRef = ref<GhsPlayerExpose>();
-export const webConfigRef = ref<WebConfigExpose>();
+const imgViewerRef = ref<ImgViewerExpose>();
+const videoGlobalRef = ref<GhsPlayerExpose>();
+const webConfigRef = ref<WebConfigExpose>();
+const logRef = ref<{ show: () => void }>();
 export default () => {
-  return { imgViewerRef, videoGlobalRef, webConfigRef };
+  return { imgViewerRef, videoGlobalRef, webConfigRef, logRef };
 };
