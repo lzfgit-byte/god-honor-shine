@@ -72,6 +72,9 @@ function downloadURL() {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'blob';
+  xhr.onprogress = function (progress) {
+    sendMessage(`获取中，${progress.loaded}/${progress.total}`);
+  };
   xhr.onload = function () {
     if (xhr.status === 200) {
       const blob = xhr.response;

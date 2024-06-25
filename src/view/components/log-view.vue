@@ -10,7 +10,8 @@
     :body-style="{ zIndex: 30000, padding: '0' }"
     :force-render="true"
   >
-    <div h-full w-full class="editor">
+    <div h-full w-full class="editor" relative>
+      <a-button z-30001 size="small" absolute right-12 top-1 @click="logs = []">清除日志</a-button>
       <Codemirror
         v-model="code"
         :autofocus="true"
@@ -23,7 +24,7 @@
   </a-drawer>
   <a-float-button
     :style="{ right: '-10px', top: '-10px', zIndex: 30000 }"
-    @click="drawerOpen = true"
+    @click="drawerOpen = !drawerOpen"
   >
     <template #icon>
       <ProfileOutlined />
