@@ -66,6 +66,9 @@ export default (url: string) => {
       document
         .querySelector('.currentContentInDraw')
         ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (contents.value.length === 1) {
+      // 就一个目录，则加载
+      await getImages(contents.value[0].url);
     }
   });
   onUnmounted(() => {
