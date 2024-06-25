@@ -57,6 +57,9 @@ export const getHtmlWithProcess = async (url: string) => {
  * @param url
  */
 export const getImage = async (url: string) => {
+  if (url.startsWith('data:')) {
+    return url;
+  }
   let str = (await requestImage(url)) as any;
   if (str.indexOf('Just a moment...') > 0 || str === '') {
     cache_clean(url, FileType.IMAGE);

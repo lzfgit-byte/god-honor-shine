@@ -8,7 +8,7 @@
     ></ComicImage>
     <a-drawer v-model:open="drawValue" title="目录" width="40vw">
       <div
-        v-for="item in contents"
+        v-for="(item, index) in contents"
         :key="item.url"
         flex
         justify-start
@@ -16,7 +16,9 @@
         m-b-2
         :class="{ currentContentInDraw: currentContent?.contentUrl === item.url }"
       >
-        <span v-if="currentContent?.contentUrl === item.url">{{ '>>>' }}</span>
+        <span v-if="currentContent?.contentUrl === item.url">
+          {{ `${index + 1}/${contents.length}` }}
+        </span>
         <a-button
           :type="currentContent?.contentUrl === item.url ? 'link' : 'text'"
           size="small"

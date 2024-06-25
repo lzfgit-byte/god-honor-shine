@@ -1,16 +1,17 @@
 <template>
   <div h-auto w-full relative flex justify-center>
-    <img ref="imagesRef" :src="imgSrc" alt="" />
+    <img ref="imagesRef" :src="imgSrc" alt="" @click="handleImgView" />
     <canvas v-show="false" ref="canvas"></canvas>
   </div>
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { Md5 } from 'ts-md5'; //
   import type { PropType } from 'vue-demi';
   import src from '@/components/image/loading.gif?url';
   import { f_getImage } from '@/utils/business';
   import useGlobalState from '@/hooks/use-global-state';
+  import useGlobalRef from '@/hooks/use-global-ref';
   const props = defineProps({
     url: String,
     extra: Object as PropType<Record<string, any>>,
@@ -19,7 +20,7 @@
   const canvas = ref<HTMLCanvasElement>();
   const imagesRef = ref<HTMLImageElement>();
   const { webConfig } = useGlobalState();
-
+  const { imgViewerRef } = useGlobalRef();
   const init = async () => {
     if (!props.url) {
       return;
@@ -35,19 +36,16 @@
       );
     }
   };
-  init();
+  const handleImgView = () => {
+    imgViewerRef.value.show([{ type: 'image', url: imgSrc.value, title: 'xx' }]);
+  };
+  onMounted(() => {
+    init();
+  });
 </script>
 
 <style scoped lang="less">
   img {
-    //max-width: 100%;
-    //max-height: 100%;
-    //height: auto;
-    //width: auto;
-    //-webkit-user-drag: none;
-    //user-select: none;
-    //-moz-user-select: none;
-    //-webkit-user-select: none;
-    //-ms-user-select: none;
+    max-width: 80vw;
   }
 </style>

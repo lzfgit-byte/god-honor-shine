@@ -129,7 +129,7 @@
     <div h-full w-full overflow-auto @wheel.stop="() => 1">
       <GhsComment
         v-for="item in comments"
-        :key="item"
+        :key="item.comment"
         :datetime="item.datetime"
         :comment="item.comment"
       >
@@ -147,7 +147,7 @@
     RightCircleOutlined,
   } from '@ant-design/icons-vue';
   import { watchEffect } from 'vue-demi';
-  import type { Comment, Detail } from '@ghs/types';
+  import type { Detail } from '@ghs/types';
   import { ref } from 'vue';
   import { isFalsity } from '@ilzf/utils';
   import GhsImg2 from '@/components/image/ghs-img-plain.vue';
