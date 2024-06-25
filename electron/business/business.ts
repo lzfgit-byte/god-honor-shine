@@ -165,12 +165,12 @@ class BaseBusiness extends NormalFunc {
     return await this.webConfig?.getComicImages(url, cheerio);
   }
 
-  public async getComicCurrentContent(): Promise<string> {
+  public async getComicCurrentContent(): Promise<ComicHistory> {
     const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
     if (detailEnt) {
-      return detailEnt.contentUrl;
+      return detailEnt;
     }
-    return '';
+    return null;
   }
 }
 

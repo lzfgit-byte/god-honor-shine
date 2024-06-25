@@ -10,6 +10,7 @@ import type {
 } from '@ghs/types';
 import { isFalsity } from '@ilzf/utils';
 
+import type { ComicHistory } from '@ghs/constant';
 import { MessageUtil } from '../utils/message';
 import {
   getBaseConfigByKey,
@@ -108,7 +109,7 @@ export const getComicIImages = (url: string): Promise<CComic[]> => {
 /**
  * 获取当前的目录url
  */
-export const getCurrentContentUrl = (): Promise<string> => {
+export const getCurrentContentUrl = (): Promise<ComicHistory> => {
   const business = getCurrentBusiness(getCurrentKey());
   return business.getComicCurrentContent();
 };

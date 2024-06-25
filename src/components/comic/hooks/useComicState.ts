@@ -2,6 +2,7 @@ import { onMounted, ref } from 'vue';
 import type { CComic, CContent } from '@ghs/types';
 import { message } from 'ant-design-vue';
 import { isString } from '@ilzf/utils';
+import type { ComicHistory } from '@ghs/constant';
 import useGlobalState from '@/hooks/use-global-state';
 import { f_getComicIImages, f_getContent, f_getCurrentContentUrl } from '@/utils/business';
 
@@ -11,7 +12,7 @@ export default (url: string) => {
   const contents = ref<CContent[]>([]);
   const comicImages = ref<CComic[]>([]);
   const drawValue = ref(true);
-  const currentContent = ref();
+  const currentContent = ref<ComicHistory>();
   const loadContent = async () => {
     contents.value = await f_getContent(url);
   };

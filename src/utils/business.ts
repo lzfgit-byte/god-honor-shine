@@ -8,7 +8,7 @@ import type {
   UrlReplace,
   WebConfig,
 } from '@ghs/types';
-import type { CollectEntity, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
+import type { CollectEntity, ComicHistory, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
 
 import { adapterLoadUrl, importFavorite } from '../../electron/export';
 import { setCurrentKey } from '../../electron/business/use-init-web-config';
@@ -242,6 +242,6 @@ export const f_getComicIImages = (url: string): Promise<CComic[]> => {
 /**
  * 获取当前的目录url
  */
-export const f_getCurrentContentUrl = (): Promise<string> => {
+export const f_getCurrentContentUrl = (): Promise<ComicHistory> => {
   return executeFunction('getCurrentContentUrl');
 };
