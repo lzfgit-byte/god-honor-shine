@@ -1,6 +1,11 @@
 <template>
   <div ref="containerRef" h-full w-full overflow-auto>
-    <a-button v-for="item in contents" :key="item.url" @click="getImages(item.url)">
+    <a-button
+      v-for="item in contents"
+      :key="item.url"
+      :title="item.url"
+      @click="getImages(item.url)"
+    >
       {{ item.title }}
     </a-button>
     {{ comicImages }}
@@ -11,9 +16,9 @@
       :extra="item.extra"
     ></ComicImage>
   </div>
-  <a-float-button>
+  <a-float-button @click="router.back()">
     <template #icon>
-      <RollbackOutlined @click="router.back()" />
+      <RollbackOutlined />
     </template>
   </a-float-button>
 </template>

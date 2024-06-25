@@ -21,29 +21,21 @@
   const canvas = ref<HTMLCanvasElement>();
   const imagesRef = ref();
   const { webConfig } = useGlobalState();
-  const staticCode = `
-    return (
-    imgSrc,
-  extra,
-  Md5,
-  url,
-  canvas
-) => {
-  $code;
-};
-  `;
+
   const init = async () => {
     if (!props.url) {
       return;
     }
     imgSrc.value = await f_getImage(props.url);
-    new Function(staticCode.replace('$code', webConfig.value.adapterImageCode))()(
-      imgSrc,
-      props?.extra,
-      Md5,
-      props?.url,
-      canvas
-    );
+    if (webConfig.value.adapterImageCode) {
+      new Function(webConfig.value.adapterImageCode)()(
+        imgSrc,
+        props?.extra,
+        Md5,
+        props?.url,
+        canvas
+      );
+    }
   };
   init();
 </script>
