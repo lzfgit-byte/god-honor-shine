@@ -22,6 +22,7 @@ import { getWebConfigByKey } from './use-init-web-config';
 class BaseBusiness extends NormalFunc {
   private key: string;
   private comicDetailUrl = '';
+  private currentUrl = '';
   $: CheerioAPI;
   webConfig: WebConfig;
   public constructor(key: string, code: WebConfig) {
@@ -97,8 +98,17 @@ class BaseBusiness extends NormalFunc {
   /**
    * 获取页面数据，包含首页，搜索页
    */
-  public async getPage(url = this.webConfig.homeUrl): Promise<Page> {
-    LogMsgUtil.sendLogMsg(this.webConfig.key, url);
+  public async getPage(url = null): Promise<Page> {
+    if (url === null && this.currentUrl === '') {
+      url = this.webConfig.homeUrl;
+      this.currentUrl = url;
+    } else if (url === null && this.currentUrl !== '') {
+      url = this.currentUrl;
+    } else {
+      this.currentUrl = url;
+    }
+    LogMsgUtil.sendLogMsg('页面加载：', this.webConfig.key, 'url>', url, 'cu>', this.currentUrl);
+
     const html = await getHtml(url);
     this.$ = cheerio.load(html);
     return {
