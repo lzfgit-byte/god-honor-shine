@@ -29,7 +29,7 @@
       </div>
     </a-drawer>
   </div>
-  <a-float-button :style="{ right: '15px', bottom: '140px' }" @click="router.back()">
+  <a-float-button :style="{ right: '15px', bottom: '140px' }">
     <template #icon>
       {{ (percent * 100).toFixed(0) }}
     </template>

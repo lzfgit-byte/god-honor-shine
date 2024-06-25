@@ -1,6 +1,6 @@
 <template>
   <div h-auto w-full relative flex justify-center>
-    <img ref="imagesRef" :width="720" :height="3008" :src="imgSrc" alt="" />
+    <img ref="imagesRef" :src="imgSrc" alt="" />
     <canvas v-show="false" ref="canvas"></canvas>
   </div>
 </template>
@@ -34,7 +34,6 @@
         canvas
       );
     }
-    console.log(imagesRef.value.naturalWidth, imagesRef.value.naturalHeight);
   };
   init();
 </script>
