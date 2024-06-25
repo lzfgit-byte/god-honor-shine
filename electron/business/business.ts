@@ -190,6 +190,10 @@ class BaseBusiness extends NormalFunc {
     detailEnt.currentImage = per;
     await ComicHistory.update(detailEnt.id, detailEnt);
   }
+
+  public async clearCurrentUrl() {
+    this.currentUrl = '';
+  }
 }
 
 /**

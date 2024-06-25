@@ -252,3 +252,9 @@ export const f_getCurrentContentUrl = (): Promise<ComicHistory> => {
 export const f_updateCurrentComic = debounce((per: number) => {
   return executeFunction('updateCurrentComic', per);
 }, 100);
+/**
+ *清楚当前的url
+ */
+export const f_clearCurrentUrl = async () => {
+  return executeFunction('clearCurrentUrl');
+};

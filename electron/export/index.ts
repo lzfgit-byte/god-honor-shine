@@ -120,3 +120,10 @@ export const updateCurrentComic = (per: number) => {
   const business = getCurrentBusiness(getCurrentKey());
   business.updateCurrentComic(per).then(() => 1);
 };
+/**
+ *清楚当前的url
+ */
+export const clearCurrentUrl = async () => {
+  const business = getCurrentBusiness(getCurrentKey());
+  await business.clearCurrentUrl();
+};

@@ -50,7 +50,7 @@
   import { routes } from '@/router/router';
   import GhsImg from '@/components/image/ghs-img.vue';
   import useGlobalState from '@/hooks/use-global-state';
-  import { f_setCurrentKeyExp } from '@/utils/business';
+  import { f_clearCurrentUrl, f_setCurrentKeyExp } from '@/utils/business';
   let router = useRouter();
   const { webKey, loading } = useGlobalState();
   const culRoutes: Ref<RouterType[]> = computed(() => routes.value.filter((i) => i.icon)) as any;
@@ -59,6 +59,7 @@
     if (webKey.value === item.key) {
       return;
     }
+    await f_clearCurrentUrl();
     webKey.value = item.key;
     await f_setCurrentKeyExp(webKey.value);
     loading.value = true;
