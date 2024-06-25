@@ -54,6 +54,9 @@ export default (url: string) => {
       await getImages(currentContent.value.contentUrl);
       await waitTime();
       y.value = currentContent.value.currentImage;
+      document
+        .querySelector('.currentContentInDraw')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
   return { containerRef, contents, comicImages, getImages, drawValue, currentContent, percent };

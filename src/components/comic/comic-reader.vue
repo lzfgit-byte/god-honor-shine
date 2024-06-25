@@ -7,10 +7,24 @@
       :extra="item.extra"
     ></ComicImage>
     <a-drawer v-model:open="drawValue" title="目录" width="40vw">
-      <div v-for="item in contents" :key="item.url" flex justify-start items-center m-b-2>
-        <a-button type="text" size="small" w-full text-start @click="getImages(item.url)">
+      <div
+        v-for="item in contents"
+        :key="item.url"
+        flex
+        justify-start
+        items-center
+        m-b-2
+        :class="{ currentContentInDraw: currentContent?.contentUrl === item.url }"
+      >
+        <span v-if="currentContent?.contentUrl === item.url">{{ '>>>' }}</span>
+        <a-button
+          :type="currentContent?.contentUrl === item.url ? 'link' : 'text'"
+          size="small"
+          w-full
+          text-start
+          @click="getImages(item.url)"
+        >
           <GhsText :value="item.title"></GhsText>
-          <span v-if="currentContent?.contentUrl === item.url">*</span>
         </a-button>
       </div>
     </a-drawer>

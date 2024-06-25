@@ -1,8 +1,6 @@
 <template>
-  <div h-full w-full relative>
-    <div h-full w-full relative flex justify-center items-center class="img-container">
-      <img ref="imagesRef" h-full w-full :src="imgSrc" alt="" />
-    </div>
+  <div h-auto w-full relative flex justify-center>
+    <img ref="imagesRef" :width="720" :height="3008" :src="imgSrc" alt="" />
     <canvas v-show="false" ref="canvas"></canvas>
   </div>
 </template>
@@ -19,7 +17,7 @@
   });
   const imgSrc = ref(src);
   const canvas = ref<HTMLCanvasElement>();
-  const imagesRef = ref();
+  const imagesRef = ref<HTMLImageElement>();
   const { webConfig } = useGlobalState();
 
   const init = async () => {
@@ -36,24 +34,21 @@
         canvas
       );
     }
+    console.log(imagesRef.value.naturalWidth, imagesRef.value.naturalHeight);
   };
   init();
 </script>
 
 <style scoped lang="less">
   img {
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    width: auto;
-    cursor: grab;
-    &:active {
-      cursor: grabbing !important;
-    }
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+    //max-width: 100%;
+    //max-height: 100%;
+    //height: auto;
+    //width: auto;
+    //-webkit-user-drag: none;
+    //user-select: none;
+    //-moz-user-select: none;
+    //-webkit-user-select: none;
+    //-ms-user-select: none;
   }
 </style>
