@@ -152,8 +152,10 @@ class BaseBusiness extends NormalFunc {
     }
     const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
     if (detailEnt) {
-      detailEnt.contentUrl = url;
-      detailEnt.currentImage = 0;
+      if (detailEnt.contentUrl !== url) {
+        detailEnt.contentUrl = url;
+        detailEnt.currentImage = 0;
+      }
       await ComicHistory.update(detailEnt.id, detailEnt);
     } else {
       const comicHistory = new ComicHistory();
@@ -171,6 +173,12 @@ class BaseBusiness extends NormalFunc {
       return detailEnt;
     }
     return null;
+  }
+
+  public async updateCurrentComic(per: number) {
+    const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    detailEnt.currentImage = per;
+    await ComicHistory.update(detailEnt.id, detailEnt);
   }
 }
 

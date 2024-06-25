@@ -10,6 +10,7 @@ import type {
 } from '@ghs/types';
 import type { CollectEntity, ComicHistory, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
 
+import { debounce } from 'lodash';
 import { adapterLoadUrl, importFavorite } from '../../electron/export';
 import { setCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
@@ -245,3 +246,9 @@ export const f_getComicIImages = (url: string): Promise<CComic[]> => {
 export const f_getCurrentContentUrl = (): Promise<ComicHistory> => {
   return executeFunction('getCurrentContentUrl');
 };
+/**
+ * 获取当前的目录url
+ */
+export const f_updateCurrentComic = debounce((per: number) => {
+  return executeFunction('updateCurrentComic', per);
+}, 100);

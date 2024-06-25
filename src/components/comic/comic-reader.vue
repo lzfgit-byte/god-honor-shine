@@ -15,14 +15,19 @@
       </div>
     </a-drawer>
   </div>
-  <a-float-button :style="{ right: '15px', bottom: '40px' }" @click="router.back()">
+  <a-float-button :style="{ right: '15px', bottom: '140px' }" @click="router.back()">
     <template #icon>
-      <RollbackOutlined />
+      {{ (percent * 100).toFixed(0) }}
     </template>
   </a-float-button>
   <a-float-button :style="{ right: '15px', bottom: '90px' }" @click="drawValue = true">
     <template #icon>
       <ProfileOutlined />
+    </template>
+  </a-float-button>
+  <a-float-button :style="{ right: '15px', bottom: '40px' }" @click="router.back()">
+    <template #icon>
+      <RollbackOutlined />
     </template>
   </a-float-button>
 </template>
@@ -35,7 +40,7 @@
 
   const route = useRoute();
   const router = useRouter();
-  const { containerRef, contents, getImages, comicImages, drawValue, currentContent } =
+  const { containerRef, contents, getImages, comicImages, drawValue, currentContent, percent } =
     useComicState(route?.query?.url as string);
 </script>
 

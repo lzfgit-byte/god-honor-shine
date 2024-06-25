@@ -113,3 +113,10 @@ export const getCurrentContentUrl = (): Promise<ComicHistory> => {
   const business = getCurrentBusiness(getCurrentKey());
   return business.getComicCurrentContent();
 };
+/**
+ * 获取当前的目录url
+ */
+export const updateCurrentComic = (per: number) => {
+  const business = getCurrentBusiness(getCurrentKey());
+  business.updateCurrentComic(per).then(() => 1);
+};
