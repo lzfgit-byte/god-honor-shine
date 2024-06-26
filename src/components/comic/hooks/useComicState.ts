@@ -42,6 +42,7 @@ export default (url: string) => {
       message.warn('目录地址为空');
       return;
     }
+    offComicEmit();
     imagesBase64 = {};
     comicImages.value = await f_getComicIImages(url);
     comicImages.value.forEach((item, index) => {
@@ -71,11 +72,14 @@ export default (url: string) => {
       await getImages(contents.value[0].url);
     }
   });
-  onUnmounted(() => {
+  const offComicEmit = () => {
     bus.off(ComicEmitEnum.comicPre);
     bus.off(ComicEmitEnum.comicNext);
     bus.off(ImgEmitEnum.preImg);
     bus.off(ImgEmitEnum.nextImg);
+  };
+  onUnmounted(() => {
+    offComicEmit();
   });
   return { containerRef, contents, comicImages, getImages, drawValue, currentContent, percent };
 };
