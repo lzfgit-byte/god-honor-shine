@@ -187,6 +187,10 @@ class BaseBusiness extends NormalFunc {
 
   public async updateCurrentComic(per: number) {
     const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    if (isFalsity(per)) {
+      LogMsgUtil.sendLogMsg(`更新当前漫画进度失败per为:${per}`);
+      return;
+    }
     detailEnt.currentImage = per;
     await ComicHistory.update(detailEnt.id, detailEnt);
   }
