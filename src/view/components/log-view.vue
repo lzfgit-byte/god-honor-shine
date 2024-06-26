@@ -22,18 +22,18 @@
       />
     </div>
   </a-drawer>
-  <a-float-button
-    :style="{ right: '-10px', top: '-10px', zIndex: 30000 }"
-    @click="drawerOpen = !drawerOpen"
-  >
-    <template #icon>
-      <ProfileOutlined />
-    </template>
-  </a-float-button>
+  <!--  <a-float-button -->
+  <!--    :style="{ right: '-10px', top: '-10px', zIndex: 30000 }" -->
+  <!--    @click="drawerOpen = !drawerOpen" -->
+  <!--  > -->
+  <!--    <template #icon> -->
+  <!--      <ProfileOutlined /> -->
+  <!--    </template> -->
+  <!--  </a-float-button> -->
 </template>
 
 <script setup lang="ts">
-  import { ref, shallowRef } from 'vue';
+  import { onMounted, ref, shallowRef } from 'vue';
   import { Codemirror } from 'vue-codemirror';
   import { javascript } from '@codemirror/lang-javascript';
   import { oneDark } from '@codemirror/theme-one-dark';
@@ -56,6 +56,13 @@
     show: () => {
       drawerOpen.value = true;
     },
+  });
+  onMounted(() => {
+    document.addEventListener('keydown', function (event) {
+      if (event.ctrlKey && event.key === 'l') {
+        drawerOpen.value = !drawerOpen.value;
+      }
+    });
   });
 </script>
 

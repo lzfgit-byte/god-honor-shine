@@ -54,6 +54,7 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     scale.value = 100;
   };
   const preImg = () => {
+    bus.emit(ImgEmitEnum.preImg, hashString(imgUrl.value));
     if (images.value.length === 1) {
       return;
     }
@@ -65,6 +66,7 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     }
   };
   const nextImg = () => {
+    bus.emit(ImgEmitEnum.nextImg, hashString(imgUrl.value));
     if (images.value.length === 1) {
       return;
     }
