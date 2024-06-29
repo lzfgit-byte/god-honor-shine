@@ -37,7 +37,7 @@ const createNewWin = async () => {
     },
   });
   childWinds.push({ win: sChildWindow, free: false });
-  logger.log('new', sChildWindow.id, '  ', childWinds.length);
+  LogMsgUtil.sendLogMsg('new', `${sChildWindow.id}`, `${childWinds.length}`);
   useProxySetting(sChildWindow);
   return sChildWindow;
 };
@@ -48,8 +48,8 @@ const getAFreeWin = async (): Promise<BrowserWindow> => {
     return childWinds[index].win;
   }
   const { imgWinMax } = await useSystemSetting();
-  if (childWinds.length === imgWinMax) {
-    logger.log('创建的窗口超限制了，等待其他资源释放');
+  if (childWinds.length > imgWinMax) {
+    LogMsgUtil.sendLogMsg('创建的窗口超限制了，等待其他资源释放');
     return new Promise((resolve) => {
       const timer = setInterval(() => {
         const index = childWinds.findIndex((item) => item.free);
