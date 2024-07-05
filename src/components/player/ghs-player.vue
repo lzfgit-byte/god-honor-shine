@@ -49,7 +49,7 @@
         <div h-full w-full overflow-auto>
           <GhsComment
             v-for="item in comments"
-            :key="item"
+            :key="item.comment"
             :datetime="item.datetime"
             :comment="item.comment"
           >
@@ -94,6 +94,7 @@
   const getDrawerContainer = () => document.getElementById('body');
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
+      urlsRef.value = [];
       srcComp.value = src;
       titleComp.value = title;
       typeComp.value = type;

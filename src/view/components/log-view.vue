@@ -11,7 +11,7 @@
     :force-render="true"
   >
     <div h-full w-full class="editor" relative>
-      <a-button z-30001 size="small" absolute right-12 top-1 @click="logs = []">清除日志</a-button>
+      <a-button z-30001 size="small" absolute right-5 top-1 @click="logs = []">清除日志</a-button>
       <Codemirror
         v-model="code"
         :autofocus="true"
@@ -61,6 +61,9 @@
     document.addEventListener('keydown', function (event) {
       if (event.ctrlKey && event.key === 'l') {
         drawerOpen.value = !drawerOpen.value;
+      }
+      if (event.ctrlKey && event.key === 'c') {
+        logs.value = [];
       }
     });
   });

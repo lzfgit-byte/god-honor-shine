@@ -70,7 +70,7 @@
           :key="webKey"
           :load="load"
         ></FilterView>
-        <LogView v-if="drawerOpen && segmentedValue === '日志'" :key="webKey"></LogView>
+        <!--        <LogView v-if="drawerOpen && segmentedValue === '日志'" :key="webKey"></LogView> -->
         <WebConfigView v-if="drawerOpen && segmentedValue === '配置'" :key="webKey">
         </WebConfigView>
       </transition-group>

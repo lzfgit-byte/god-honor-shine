@@ -25,10 +25,11 @@
   </a-drawer>
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { onActivated, onMounted, onUnmounted, ref } from 'vue';
   import { base64ToStr, isFalsity, strToBase64 } from '@ilzf/utils';
   import { message } from 'ant-design-vue';
   import { preBreak } from '@ghs/constant';
+  import { onDeactivated } from 'vue-demi';
   import MonacoEditor from '@/components/monacoEditor/monaco-editor.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import { f_getWebConfigCode, f_saveWebConfigCode } from '@/utils/business';
@@ -71,6 +72,14 @@
     await loadCode(currentKey.value);
     message.success('加载远程数据库成功');
   };
+  onMounted(() => {
+    document.addEventListener('keydown', function (event) {
+      if (event.ctrlKey && event.key === 's' && drawerOpen.value) {
+        handleSaveCode();
+      }
+    });
+  });
+
   defineExpose({
     add: async (key: string) => {
       currentCode.value = `${preConfigCode}${preBreak}${defaultWebConfig}`;
