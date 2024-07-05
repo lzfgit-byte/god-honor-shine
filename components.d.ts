@@ -20,6 +20,7 @@ declare module 'vue' {
     ASegmented: typeof import('ant-design-vue/es')['Segmented']
     ASpace: typeof import('ant-design-vue/es')['Space']
     ASpin: typeof import('ant-design-vue/es')['Spin']
+    ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ComicImage: typeof import('./src/components/comic/comic-image.vue')['default']

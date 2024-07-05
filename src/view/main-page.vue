@@ -41,7 +41,7 @@
       <transition-group
         enter-active-class="animate__animated animate__fadeIn"
         leave-active-class="animate__animated animate__fadeOut"
-        duration="200"
+        :duration="200"
       >
         <TagsView
           v-if="drawerOpen && segmentedValue === '标签'"
@@ -70,7 +70,6 @@
           :key="webKey"
           :load="load"
         ></FilterView>
-        <!--        <LogView v-if="drawerOpen && segmentedValue === '日志'" :key="webKey"></LogView> -->
         <WebConfigView v-if="drawerOpen && segmentedValue === '配置'" :key="webKey">
         </WebConfigView>
       </transition-group>
@@ -110,11 +109,9 @@
   import HistoryView from '@/view/components/history-view.vue';
   import FloatButtonGroup from '@/view/components/float-button-group.vue';
   import SystemConfig from '@/view/components/system-config.vue';
-  import LogView from '@/view/components/log-view.vue';
   import useGlobalState from '@/hooks/use-global-state';
   import FilterView from '@/view/components/filter-view.vue';
   import WebConfigView from '@/view/components/web-config-view.vue';
-  import useTranslate from '@/hooks/use-translate';
   const route = useRoute();
   const { webKey, pagination, items, webConfig } = useGlobalState();
   const { segmentedValue, segmentedData, cacheSize, loading } = useGlobalState();
@@ -133,7 +130,6 @@
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
     useFeature();
   const { collects, updateCollects } = useCollect();
-  const { state } = useTranslate();
   watchEffect(async () => {
     if (webKey.value) {
       await init();

@@ -12,6 +12,14 @@
   >
     <div h-full w-full class="editor" relative>
       <a-button z-30001 size="small" absolute right-5 top-1 @click="logs = []">清除日志</a-button>
+      <a-switch
+        v-model:checked="isQuickDelete"
+        z-30001
+        size="small"
+        absolute
+        right-30
+        top-2
+      ></a-switch>
       <Codemirror
         v-model="code"
         :autofocus="true"
@@ -38,13 +46,13 @@
   import { javascript } from '@codemirror/lang-javascript';
   import { oneDark } from '@codemirror/theme-one-dark';
   import { watchEffect } from 'vue-demi';
-  import { ProfileOutlined } from '@ant-design/icons-vue';
   import useGlobalState from '@/hooks/use-global-state';
   const { logs } = useGlobalState();
   const code = ref(``);
   const extensions = [javascript(), oneDark];
   const drawerOpen = ref(false);
   const view = shallowRef();
+  const isQuickDelete = ref(false);
   const handleReady = (payload) => {
     view.value = payload.view;
   };
@@ -62,7 +70,7 @@
       if (event.ctrlKey && event.key === 'l') {
         drawerOpen.value = !drawerOpen.value;
       }
-      if (event.ctrlKey && event.key === 'c') {
+      if (event.ctrlKey && isQuickDelete.value && event.key === 'c') {
         logs.value = [];
       }
     });

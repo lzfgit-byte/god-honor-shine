@@ -49,6 +49,7 @@ export default () => {
       return;
     }
     const page = isFalsity(url) ? await f_getPage(webKey.value) : await f_loadPage(url);
+    currentUrl.value = url || webConfig.value.homeUrl;
     if (page?.items?.length === 0) {
       loading.value = false;
       message.info('未获取到数据');
@@ -58,7 +59,6 @@ export default () => {
     items.value = [];
     tags.value = [];
     urlReplace.value = [];
-    currentUrl.value = url || webConfig.value.homeUrl;
 
     pagination.value = page.pagination;
     items.value = page.items;
