@@ -105,9 +105,10 @@ class BaseBusiness extends NormalFunc {
     } else if (url === null && this.currentUrl !== '') {
       url = this.currentUrl;
     } else {
+      url = this.webConfig.adapterLoadUrl(url, this.webConfig.currentUrlReplace);
       this.currentUrl = url;
     }
-    LogMsgUtil.sendLogMsg('页面加载：', this.webConfig.key, 'url>', url, 'cu>', this.currentUrl);
+    LogMsgUtil.sendLogMsg('页面加载：', this.webConfig.key, 'url>', url, '\ncu>', this.currentUrl);
 
     const html = await getHtml(url);
     this.$ = cheerio.load(html);
