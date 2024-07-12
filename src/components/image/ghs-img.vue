@@ -45,6 +45,7 @@
       height: auto;
       width: auto;
       border-radius: @radius;
+      position: absolute;
     }
     .progress-img {
       background-color: rgba(0, 0, 0, 0.44);
