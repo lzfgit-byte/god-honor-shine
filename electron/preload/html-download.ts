@@ -2,20 +2,21 @@
  * 通过窗口获取页面html的preload
  */
 import { ipcRenderer } from 'electron';
-import { HTML_WIN_EVENT, SYS_GLOB_KEY } from '@ghs/share';
+import { USE_CHILD_WIN_EVENT } from '@ghs/constant';
+
 const sendMessage = (msg: string) => {
   ipcRenderer
-    .invoke(SYS_GLOB_KEY.SEND_MESSAGE, `${msg} f 【${window.location.href}】`)
+    .invoke(USE_CHILD_WIN_EVENT.STEP_MESSAGE, `${msg} f 【${window.location.href}】`)
     .then(() => 1);
 };
 const sendHtml = (html: string) => {
-  ipcRenderer.invoke(HTML_WIN_EVENT.SEND_HTML, html).then(() => 1);
+  ipcRenderer.invoke(USE_CHILD_WIN_EVENT.SEND_HTML, html).then(() => 1);
 };
 function showWindow() {
-  ipcRenderer.invoke(HTML_WIN_EVENT.SHOW_HTML_GET_WIN).then(() => 1);
+  ipcRenderer.invoke(USE_CHILD_WIN_EVENT.SHOW_WIN).then(() => 1);
 }
 function hideWindow() {
-  ipcRenderer.invoke(HTML_WIN_EVENT.HIDE_HTML_GET_WIN).then(() => 1);
+  ipcRenderer.invoke(USE_CHILD_WIN_EVENT.HIDE_WIN).then(() => 1);
 }
 sendMessage(`获取页面中`);
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
@@ -71,6 +72,9 @@ function downloadURL() {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'blob';
+  xhr.onprogress = function (progress) {
+    sendMessage(`获取中，${progress.loaded}/${progress.total}`);
+  };
   xhr.onload = function () {
     if (xhr.status === 200) {
       const blob = xhr.response;

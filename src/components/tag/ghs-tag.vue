@@ -21,11 +21,11 @@
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
-  import type { PageTags } from '@ghs/share';
+  import type { Tag } from '@ghs/types';
   import type { GhsTagsType } from '@/components/tag/ghs-tage-type';
 
   defineProps({
-    info: Object as PropType<PageTags>,
+    info: Object as PropType<Tag>,
     type: { type: String as PropType<GhsTagsType>, default: 'default' },
     showGap: Boolean,
   });

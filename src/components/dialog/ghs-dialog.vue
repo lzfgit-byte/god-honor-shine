@@ -8,7 +8,7 @@
       box-border
       h-full
       w-full
-      :style="{ zIndex }"
+      z-1005
       :class="{ dxShowMask: visible }"
       @click="handleMaskClick(false, $event)"
     >
@@ -65,8 +65,6 @@
   });
   // 销毁并未销毁render方法，只是销毁的页面元素
   const emits = defineEmits(['update:visible', 'close']);
-  const { nextIndex } = useDXZIndex();
-  const zIndex = nextIndex();
   const visible_ = useVModel(props, 'visible');
   const hideVis = ref(false);
   const maskRef = ref<HTMLDivElement>();

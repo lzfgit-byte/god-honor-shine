@@ -1,57 +1,32 @@
-import { clearInterval } from 'node:timers';
-import type { ProcessMsgType } from '@ghs/share';
-import { ref } from 'vue-demi';
+import { onDeactivated, ref } from 'vue-demi';
+import { hashString } from '@ilzf/utils';
+import type { MessageInfo } from '@ghs/types';
 import src from '../loading.gif?url';
 import bus from '@/utils/bus';
-import { f_request_img_get, f_win_img_get } from '@/utils/functions';
-import { GHSNotify } from '@/components/message';
-import type { NotifyShow } from '@/components/message/types';
-import { waitTime } from '@/utils/kit-utils';
+import { f_getImage } from '@/utils/business';
 export default (props: any) => {
-  const imgSrc = ref();
+  const imgSrc = ref(src);
   const percentageRef = ref(0);
-  let timer: any = null;
-
+  const progressInfo = ref();
+  const isError = ref(false);
   const init = async () => {
     if (!props.url) {
       return;
     }
-    let notify: NotifyShow = null;
-    const msgs: ProcessMsgType[] = [];
-    const handleBus = async (args: ProcessMsgType) => {
-      const { percentage, down } = args;
-      msgs.push(args);
-      percentageRef.value = down ? 100 : percentage;
-      if (timer === null && props.global) {
-        timer = setInterval(async () => {
-          if (msgs.length > 0) {
-            const { percentage, down, info, title } = msgs.shift();
-            notify = notify || (await GHSNotify.show({ percentage, info, title }));
-            notify.update({ percentage: down ? 100 : percentage, info, title });
-            if (down || percentage === 100) {
-              clearInterval(timer);
-              timer = null;
-              bus.off(props.url);
-              await waitTime(600);
-              notify?.destroy();
-              notify = null;
-            }
-          }
-        }, 10);
-      }
+    const handleBus = async (args: MessageInfo) => {
+      percentageRef.value = args.percentage;
+      progressInfo.value = args.title;
     };
-    bus.on(props.url, handleBus);
-    if (props.force) {
-      imgSrc.value = await f_win_img_get(props.url);
-    } else {
-      imgSrc.value = await f_request_img_get(props.url);
-    }
+    bus.on(hashString(props.url), handleBus);
+    imgSrc.value = await f_getImage(props.url);
     if (imgSrc.value === 'data:image/png;base64,') {
       imgSrc.value = src;
     }
   };
   const handleError = () => {
+    console.log('图片加载失败:', props.url);
+    isError.value = true;
     imgSrc.value = src;
   };
-  return { imgSrc, init, handleError, percentageRef };
+  return { imgSrc, init, handleError, percentageRef, progressInfo, isError };
 };

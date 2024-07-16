@@ -19,6 +19,7 @@
           v-for="(item, index) in culRoutes"
           :key="index"
           class="ghs-menu-item"
+          :class="{ 'ghs-menu-chose': webKey === item.key }"
           flex
           justify-center
           items-center
@@ -42,15 +43,27 @@
 </template>
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
-  import { computed } from 'vue';
+  import type { Ref } from 'vue';
+  import { computed, watch } from 'vue';
   import { ref } from 'vue-demi';
+  import type { RouterType } from '@/router/router';
   import { routes } from '@/router/router';
   import GhsImg from '@/components/image/ghs-img.vue';
+  import useGlobalState from '@/hooks/use-global-state';
+  import { f_clearCurrentUrl, f_setCurrentKeyExp } from '@/utils/business';
   let router = useRouter();
-  const culRoutes = computed(() => routes.filter((i) => i.icon));
+  const { webKey, loading } = useGlobalState();
+  const culRoutes: Ref<RouterType[]> = computed(() => routes.value.filter((i) => i.icon)) as any;
   const fullSize = ref(false);
-  const handleClick = (item) => {
-    router.push(item.path);
+  const handleClick = async (item) => {
+    if (webKey.value === item.key) {
+      return;
+    }
+    await f_clearCurrentUrl();
+    webKey.value = item.key;
+    await f_setCurrentKeyExp(webKey.value);
+    loading.value = true;
+    await router.push(item.path);
   };
   let timer: any;
   const setTimer = () => {
@@ -69,6 +82,11 @@
   const onMouseLeave = () => {
     setTimer();
   };
+  watch(culRoutes, () => {
+    if (culRoutes.value.length > 0) {
+      router.push({ path: culRoutes.value[0].path, query: { key: culRoutes.value[0].key } });
+    }
+  });
 </script>
 
 <style scoped lang="less">
@@ -82,7 +100,7 @@
     left: 0;
     margin: auto;
     width: max-content;
-    z-index: 9999;
+    z-index: 99;
     .ghs-menu-item {
       padding: 5px 10px;
       margin: 3px;
@@ -92,6 +110,9 @@
       &:hover {
         background-color: #484747;
       }
+    }
+    .ghs-menu-chose {
+      background-color: #484747;
     }
   }
   .ghs-menu-mimiSize {
@@ -104,6 +125,6 @@
     left: 0;
     margin: auto;
     width: max-content;
-    z-index: 9999;
+    z-index: 99;
   }
 </style>

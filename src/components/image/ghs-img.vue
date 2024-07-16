@@ -1,7 +1,7 @@
 <template>
   <div h-full w-full relative flex justify-center items-center class="img-container">
     <img :src="imgSrc || src" :alt="imgSrc" @error="handleError" />
-    <transition duration="300">
+    <transition :duration="300">
       <div
         v-if="percentageRef > 0 && percentageRef < 100"
         absolute
@@ -10,8 +10,9 @@
         color="white"
         class="progress-img"
       >
+        <a-button v-if="isError" @click="init">重新加载</a-button>
         <div relative w-full box-border p-l-2 p-r-2 class="progress">
-          <GhsProgress v-model:percentage="percentageRef"></GhsProgress>
+          {{ progressInfo }}
         </div>
       </div>
     </transition>
@@ -21,7 +22,6 @@
   import { computed } from 'vue';
   import src from './loading.gif?url';
   import useImg from '@/components/image/hooks/useImg';
-  import GhsProgress from '@/components/progress/ghs-progress.vue';
 
   const props = defineProps({
     url: String,
@@ -30,7 +30,7 @@
     maxWidth: String,
     global: Boolean,
   });
-  const { init, imgSrc, handleError, percentageRef } = useImg(props);
+  const { init, imgSrc, handleError, percentageRef, progressInfo, isError } = useImg(props);
   init();
   const imgMaxHeight = computed(() => props.maxHeight || '100%');
   const imgMaxWidth = computed(() => props.maxWidth || '100%');
@@ -45,6 +45,7 @@
       height: auto;
       width: auto;
       border-radius: @radius;
+      position: absolute;
     }
     .progress-img {
       background-color: rgba(0, 0, 0, 0.44);

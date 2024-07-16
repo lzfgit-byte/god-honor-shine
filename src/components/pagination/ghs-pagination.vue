@@ -17,15 +17,31 @@
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
-  import type { PaginationType } from '@ghs/share';
+  import type { Pagination } from '@ghs/types';
+  import { onMounted } from 'vue';
+  import { message } from 'ant-design-vue';
+  import { watch } from 'vue-demi';
+  import { f_getHtml } from '@/utils/business';
 
-  defineProps({ pagination: Array as PropType<PaginationType[]> });
+  const props = defineProps({ pagination: Array as PropType<Pagination[]> });
   const emits = defineEmits(['click']);
-  const handleClick = (item: PaginationType) => {
+  const handleClick = (item: Pagination) => {
     if (item.url && !item.isCurrent) {
       emits('click', item);
     }
   };
+  watch(
+    () => props.pagination,
+    async () => {
+      const index = props?.pagination?.findIndex((item) => item.isCurrent);
+      if (index < props?.pagination?.length) {
+        const next: Pagination = props?.pagination[index + 1];
+        if (next) {
+          await f_getHtml(next.url);
+        }
+      }
+    }
+  );
 </script>
 
 <style scoped lang="less">

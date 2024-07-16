@@ -1,22 +1,11 @@
 import { net } from 'electron';
-import { CacheFileType, SHOW_FILE_SIZE } from '@ghs/share';
-import { processMessage, sendMessage } from '../utils/message';
-import { cache_exist, cache_get, cache_save } from '../utils/cache';
-import { formatSize, isFalsity } from '../utils/KitUtil';
-const sendMsg = (fileSize: number, suffix: string, blob: Buffer, url: string) => {
-  if (suffix === CacheFileType.html || (fileSize && fileSize > SHOW_FILE_SIZE)) {
-    if (isNaN(fileSize)) {
-      fileSize = blob.length + 10;
-    }
-    processMessage({
-      title: `【${suffix}】数据请求 ${formatSize(fileSize)}`,
-      percentage: +((blob.length / fileSize) * 100).toFixed(0),
-      key: url,
-      global: suffix === CacheFileType.html,
-    });
-  }
-};
+import { calcProcess, formatSize, hashString, isFalsity } from '@ilzf/utils';
+import { FileType } from '@ghs/types';
+import { LogMsgUtil, MessageUtil, ProgressMsgUtil } from '../utils/message';
+import { cache_exist, cache_get, cache_save } from '../utils';
+import { eventEmitter } from '../utils/KitUtil';
 const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => {
+  const progressKey = hashString(url);
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
       const cache = cache_get(url, suffix);
@@ -24,30 +13,32 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       return;
     }
 
-    if (suffix === CacheFileType.html) {
-      sendMessage(`${CacheFileType.html}请求开始->${url}`);
-    }
     const request = net.request(url);
 
     let blob: any = Buffer.alloc(0);
+    ProgressMsgUtil.sendProgress(0, progressKey);
+    eventEmitter.emit(progressKey, 0);
     request.on('response', (response) => {
       const header = response.headers;
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        sendMsg(fileSize, suffix, blob, url);
+        const format = `${formatSize(blob.length)}/${fileSize ? formatSize(fileSize) : '未知'}`;
+
+        ProgressMsgUtil.sendProgress(calcProcess(blob.length, fileSize), progressKey, format);
+        eventEmitter.emit(progressKey, format);
       });
       response.on('end', () => {
         resolve(cache_save(url, apply(blob), suffix));
-        sendMsg(blob.length, suffix, blob, url);
+        ProgressMsgUtil.close(progressKey);
         blob = null;
       });
       response.on('error', () => {
-        sendMessage(`请求失败远程${url}`);
+        LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage(`请求失败远程${url}`);
+      LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
     });
     request.end();
   });
@@ -61,7 +52,7 @@ export const requestHtml = (url: string) => {
   if (isFalsity(url)) {
     return;
   }
-  return requestFunc(url, CacheFileType.html, (blob) => String(blob));
+  return requestFunc(url, FileType.HTML, (blob) => String(blob));
 };
 
 /**
@@ -72,14 +63,19 @@ export const requestImage = async (url: string) => {
   if (isFalsity(url)) {
     return;
   }
-  return requestFunc(url, CacheFileType.img, (blob) => {
+  return requestFunc(url, FileType.IMAGE, (blob) => {
     if (blob) {
       if (blob?.length < 100) {
-        sendMessage(`【img】 获取图片长度不足100 ${url} `);
+        MessageUtil.warning(`【img】 获取图片长度不足100 ${url} `);
+        return '';
+      }
+      const str = Buffer.from(blob).toString('utf8');
+      if (str.indexOf('Just a moment...') > -1) {
+        return '';
       }
       return `data:image/png;base64,${Buffer.from(blob).toString('base64')}`;
     } else {
-      sendMessage(`【img】获取图片失败 ${url} `);
+      MessageUtil.warning(`【img】获取图片失败 ${url} `);
       return '';
     }
   });

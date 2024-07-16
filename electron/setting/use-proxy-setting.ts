@@ -11,16 +11,14 @@ let func = `function FindProxyForURL(url, host) {
 }`;
 
 const doJob = async (win: BrowserWindow) => {
-  const { proxy, needProxy, proxyHttp, proxyWhitelist } = await useSystemSetting();
+  const { proxyHttp, proxyWhitelist } = await useSystemSetting();
   const pacUrl = `data:video/mp2t;base64,${Buffer.from(
     func.replace('$proxyHttp', proxyHttp).replace('$proxyWhitelist', proxyWhitelist),
     'utf8'
   ).toString('base64')}`;
-  if (needProxy && proxy) {
-    await win.webContents.session.setProxy({
-      pacScript: pacUrl,
-    });
-  }
+  await win.webContents.session.setProxy({
+    pacScript: pacUrl,
+  });
 };
 
 export default (win: BrowserWindow) => {

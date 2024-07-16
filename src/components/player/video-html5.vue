@@ -15,8 +15,7 @@
   import type { PropType } from 'vue-demi';
   import { debounce } from 'lodash';
   import type { VideoType } from '@/components/player/types';
-  import { GHSClassLog } from '@/components/log';
-  import { GHSNotify } from '@/components/message';
+  import { notify } from '@/utils/kit-utils';
 
   const props = defineProps({
     src: String,
@@ -50,7 +49,7 @@
       parse,
     });
     const errFunc = debounce(() => {
-      GHSNotify.show({ title: '视频播放错误', info: props.src });
+      notify(1, props.src, '视频播放错误');
     }, 10);
     mp.on('error', errFunc);
   });

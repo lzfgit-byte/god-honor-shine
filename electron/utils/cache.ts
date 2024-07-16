@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { statSync, unlinkSync } from 'node:fs';
 
-import { Md5 } from 'ts-md5';
 import {
   emptyDirSync,
   ensureFileSync,
@@ -10,15 +9,14 @@ import {
   readdirSync,
   writeFileSync,
 } from 'fs-extra';
-import type { CacheFileType } from '@ghs/share';
+import { formatSize, hashString, isFalsity } from '@ilzf/utils';
 import { APP_PATHS } from '../const/app-paths';
-import { formatSize, isFalsity } from './KitUtil';
-import { sendMessage } from './message';
+import { MessageUtil } from './message';
 
 const CACHE_PATH = APP_PATHS.cache_path;
 
-export const buildCacheFilePath = (fileName: string, suffix = '') => {
-  return CACHE_PATH + Md5.hashStr(fileName) + suffix;
+export const buildCacheFilePath = (fileName: string, suffix = 'temp') => {
+  return `${CACHE_PATH}\\${suffix}\\${hashString(fileName)}`;
 };
 /**
  *判断是否缓存是否存在
@@ -89,28 +87,32 @@ export const cache_clean = (fileName?: string, suffix?: string) => {
  * 根据特定后缀去删除文件
  * @param fileSuffix
  */
-export const cache_suffix_clean = (fileSuffix: CacheFileType) => {
+export const cache_suffix_clean = (fileSuffix?: any) => {
   if (!fileSuffix) {
     emptyDirSync(CACHE_PATH);
-    sendMessage('清除了所有缓存');
+    MessageUtil.success('清除了全部缓存');
     return;
   }
-  const filePaths = readdirSync(CACHE_PATH);
-  const needRemoves = filePaths?.filter((file) => file.endsWith(fileSuffix));
-  needRemoves.forEach((file) => {
-    const filePath = path.join(CACHE_PATH, file);
-    unlinkSync(filePath);
-  });
-  sendMessage(`清除了缓存--${fileSuffix}`);
+  emptyDirSync(`${CACHE_PATH}\\${fileSuffix}`);
+  MessageUtil.success(`清除了缓存-->${fileSuffix}`);
 };
 export const cache_dir_size = () => {
-  const files = readdirSync(CACHE_PATH);
-  let res = 0;
-  files.forEach((file) => {
-    const fullPath = path.join(CACHE_PATH, file);
-    const stats = statSync(fullPath);
-    res += stats.size;
-  });
-  return formatSize(res);
+  function calculateDirectorySize(directoryPath: string) {
+    let size = 0;
+    // 读取目录中的所有文件和目录
+    readdirSync(directoryPath).forEach((file) => {
+      const fullPath = path.join(directoryPath, file);
+      // 检查当前文件是文件还是目录
+      if (statSync(fullPath).isDirectory()) {
+        // 如果是目录，则递归调用函数
+        size += calculateDirectorySize(fullPath);
+      } else {
+        // 如果是文件，则累加文件大小
+        size += statSync(fullPath).size;
+      }
+    });
+    return size;
+  }
+  return formatSize(calculateDirectorySize(CACHE_PATH));
 };
 export const cache_dir_db = () => APP_PATHS.db_path;

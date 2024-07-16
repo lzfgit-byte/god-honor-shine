@@ -1,7 +1,9 @@
-export const waitTime = (during = 200): Promise<any> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, during);
+import { notification } from 'ant-design-vue';
+export const notify = (key: any, msg: string, title: string, close = false) => {
+  return notification.info({
+    key,
+    message: title,
+    description: msg,
+    duration: close ? 1 : 4,
   });
 };

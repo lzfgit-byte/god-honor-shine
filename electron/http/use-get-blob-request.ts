@@ -1,10 +1,15 @@
 import { net } from 'electron';
-import { CacheFileType } from '@ghs/share';
+import { formatSize, hashString } from '@ilzf/utils';
+import { FileType } from '@ghs/types';
 import { cache_exist, cache_get, cache_save } from '../utils';
-import { processMessage, sendMessage } from '../utils/message';
-import { formatSize } from '../utils/KitUtil';
+import { MessageUtil, ProgressMsgUtil } from '../utils/message';
 
-export const request_string_get = (url: string, suffix = CacheFileType.blob): Promise<string> => {
+/**
+ * 测试用
+ * @param url
+ * @param suffix
+ */
+export const request_string_get = (url: string, suffix = FileType.TEXT): Promise<string> => {
   return new Promise((resolve) => {
     if (cache_exist(url, suffix)) {
       const cache = cache_get(url, suffix);
@@ -25,17 +30,17 @@ export const request_string_get = (url: string, suffix = CacheFileType.blob): Pr
         blob = null;
       });
       response.on('error', () => {
-        sendMessage(`请求失败远程${url}`);
+        MessageUtil.error(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage(`请求失败远程${url}`);
+      MessageUtil.error(`请求失败远程${url}`);
     });
     request.end();
   });
 };
 
-export const request_mp4_data = (url: string, suffix = CacheFileType.blob): Promise<any> => {
+export const request_mp4_data = (url: string, suffix = FileType.VIDEO): Promise<any> => {
   return new Promise((resolve) => {
     const request = net.request(url);
     let blob: any = Buffer.alloc(0);
@@ -43,33 +48,25 @@ export const request_mp4_data = (url: string, suffix = CacheFileType.blob): Prom
       const header: any = response.headers;
       const length = header['content-length'];
       const filename = header.filename;
-      sendMessage(`header${JSON.stringify(header)}`, 'info');
       response.on('data', (chunk) => {
         blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        processMessage({
+        ProgressMsgUtil.sendProgressMsg({
           title: `${formatSize(blob.length)}/${formatSize(length)}`,
-          global: true,
           percentage: parseInt(((blob.length / length) * 100).toFixed(0)),
-          key: url,
+          key: hashString(url),
         });
       });
       response.on('end', () => {
         resolve(`data:video/mp4;base64,${Buffer.from(blob).toString('base64')}`);
-        processMessage({
-          title: filename,
-          global: true,
-          percentage: parseInt(((blob.length / length) * 100).toFixed(0)),
-          key: url,
-          down: true,
-        });
+        ProgressMsgUtil.close(hashString(url));
         blob = null;
       });
       response.on('error', () => {
-        sendMessage(`请求失败远程${url}`);
+        MessageUtil.error(`请求失败远程${url}`);
       });
     });
     request.on('error', () => {
-      sendMessage(`请求失败远程${url}`);
+      MessageUtil.error(`请求失败远程${url}`);
     });
     request.end();
   });

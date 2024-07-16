@@ -1,26 +1,45 @@
-import { SYSTEM_SET_KEY } from '@ghs/share';
-import initSettingDb from './init-setting-db';
-
-interface optsType {
-  proxy: string;
-  proxyHttp: string;
-  proxyWhitelist: string;
-  needProxy: boolean;
-  imgWinMin: number;
-  imgWinMax: number;
-}
-let GetSet = async (): Promise<optsType> => {
-  const table = initSettingDb();
-  const getValue = (key: string) => table.getByField('name', key)?.value;
-  const set = {
-    proxy: getValue(SYSTEM_SET_KEY.proxy),
-    proxyHttp: getValue(SYSTEM_SET_KEY.proxyHttp),
-    proxyWhitelist: getValue(SYSTEM_SET_KEY.proxyWhitelist),
-    needProxy: getValue(SYSTEM_SET_KEY.needProxy) === 'true',
-    imgWinMin: +getValue(SYSTEM_SET_KEY.imgWinMin) || 5,
-    imgWinMax: +getValue(SYSTEM_SET_KEY.imgWinMax) || 10,
-  };
-  GetSet = async (): Promise<optsType> => Promise.resolve(set);
-  return GetSet();
+import type { SystemSetting } from '@ghs/types';
+import { keys } from 'lodash';
+import { ConfigEntity } from '@ghs/constant';
+const defaultSetting: SystemSetting = {
+  proxyHttp: '127.0.0.1:10809',
+  proxySocks5: 'socks5://127.0.0.1:10808',
+  imgWinMax: 10,
+  imgWinMin: 5,
+  dbVersion: 1,
+  proxyWhitelist: '"bobolj.com","lbbf9.com","video.huishenghuo888888.com","v.ykv3.com"',
 };
-export default async (): Promise<optsType> => await GetSet();
+let lock = false;
+const init = async () => {
+  if (lock) {
+    return;
+  }
+  lock = true;
+  const [list, count] = await ConfigEntity.findAndCount();
+  const keysList = keys(defaultSetting);
+  if (count !== keysList.length) {
+    const entityS = [];
+    keysList.forEach((key) => {
+      const fs = list.find((item) => item.name === key);
+      if (!fs) {
+        // 如果数据库不存在，存在则不处理
+        const config = new ConfigEntity();
+        config.name = key;
+        config.value = defaultSetting[key];
+        config.createTime = new Date();
+        entityS.push(config);
+      }
+    });
+    await ConfigEntity.save(entityS);
+  } else {
+    // 更新defaultSetting的值
+    list.forEach((item) => {
+      defaultSetting[item.name] = item.value;
+    });
+  }
+};
+
+export default async (): Promise<SystemSetting> => {
+  await init();
+  return defaultSetting;
+};

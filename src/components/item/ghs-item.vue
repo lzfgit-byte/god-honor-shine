@@ -1,74 +1,105 @@
 <template>
   <div class="ghs-item-container" relative inline-flex flex-col justify-start items-center>
-    <div v-if="$props?.onCloseClick" absolute class="ghs-delete-icon" @click="handleCloseClick">
-      <GhsIcon width="20px" height="20px" color="#9f9898"><CloseCircleOutline /></GhsIcon>
+    <div
+      v-if="loading"
+      class="loading-container"
+      h-full
+      w-full
+      absolute
+      z-2
+      flex
+      justify-center
+      items-center
+    >
+      <a-spin />
+    </div>
+    <div
+      v-if="$props?.onCloseClick"
+      absolute
+      class="ghs-delete-icon"
+      cursor-pointer
+      @click="handleCloseClick"
+    >
+      <CloseCircleOutlined :style="{ fontSize: '20px' }" />
     </div>
     <div class="ghs-item-coverImg" w-full relative>
       <GhsImg
         cursor-pointer
         :max-height="maxHeight"
         :max-width="maxWidth"
-        :url="coverImg"
-        :force="force"
+        :url="item.coverImg"
         @click="handleImgClick"
       />
       <div v-if="!hideTag" absolute top-2 right-1 flex justify-end items-center gap-1>
-        <GhsTag v-for="(item, index) in flatTags" :key="index" :info="item"></GhsTag>
+        <GhsTag v-for="(item_, index) in item.tags" :key="index" :info="item_"></GhsTag>
       </div>
     </div>
-    <div v-if="title" class="ghs-item-title" w-full flex justify-start items-center>
-      <GhsText :value="title" />
-      <GhsIcon v-if="$props?.onTriggerCollect" absolute title="收藏" @click="handleCollect">
-        <StarOutline />
-      </GhsIcon>
-    </div>
-    <div v-if="author" class="ghs-item-author" w-full flex justify-start items-center>
-      <GhsText :value="author" />
-    </div>
-    <div v-if="tags" class="ghs-item-tags" w-full relative flex justify-start items-center>
-      <GhsText :value="tags.map((i) => i.title).join(' ')" />
+    <div v-if="item.title" class="ghs-item-title" w-full flex justify-start items-center>
+      <GhsText :value="item.title" />
+      <StarOutlined v-if="!isCollect && !$props?.onCloseClick" @click="toggleCollect" />
+      <StarFilled v-if="isCollect && !$props?.onCloseClick" @click="toggleCollect" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
   import type { PropType } from 'vue-demi';
-  import type { PageTags } from '@ghs/share';
-  import { computed } from 'vue';
-  import { CloseCircleOutline, StarOutline } from '@vicons/ionicons5';
-  import { toRaw } from 'vue-demi';
+  import { CloseCircleOutlined, StarFilled, StarOutlined } from '@ant-design/icons-vue';
+  import { computed, onMounted, ref } from 'vue';
+
+  import type { Item } from '@ghs/types';
+  import { watch } from 'vue-demi';
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
+  import { f_cancelCollect, f_isCollect, f_saveCollect } from '@/utils/business';
   import GhsTag from '@/components/tag/ghs-tag.vue';
-  import GhsIcon from '@/components/icon/ghs-icon.vue';
 
   const props = defineProps({
-    jumpUrl: String,
-    coverImg: String,
-    title: String,
-    author: String,
-    tags: Array as PropType<PageTags[]>,
-    flatTags: Array as PropType<PageTags[]>,
     width: String,
     height: String,
-    force: Boolean,
-    onTriggerCollect: Function,
     onCloseClick: Function,
     hideTag: Boolean,
     maxHeight: String,
     maxWidth: String,
+    item: Object as PropType<Item>,
+    collectSequence: Number,
+    loading: Boolean,
   });
-  const emits = defineEmits(['imgClick', 'triggerCollect', 'closeClick']);
+  const emits = defineEmits(['imgClick', 'closeClick', 'upCollect', 'upCollectClose']);
   const c_width = computed(() => props.width || '250px');
   const imgHeight = computed(() => props.height || '200px');
-  const handleImgClick = () => {
+  const isCollect = ref(false);
+  const handleImgClick = async () => {
     emits('imgClick');
+    if (isCollect.value) {
+      await f_saveCollect(props.item);
+      emits('upCollect');
+    }
   };
-  const handleCollect = () => {
-    emits('triggerCollect', toRaw(props));
+  const juCollect = async () => {
+    isCollect.value = await f_isCollect(props.item);
   };
-  const handleCloseClick = () => {
-    emits('closeClick');
+  const toggleCollect = async () => {
+    if (isCollect.value) {
+      await f_cancelCollect(props.item);
+    } else {
+      await f_saveCollect(props.item);
+    }
+    await juCollect();
+    emits('upCollect');
   };
+  const handleCloseClick = async () => {
+    await f_cancelCollect(props.item);
+    emits('upCollectClose');
+  };
+  onMounted(async () => {
+    await juCollect();
+  });
+  watch(
+    () => props?.collectSequence,
+    async () => {
+      await juCollect();
+    }
+  );
 </script>
 
 <style scoped lang="less">
@@ -99,5 +130,8 @@
     right: -2%;
     top: -4%;
     z-index: 3;
+  }
+  .loading-container {
+    background-color: rgba(51, 51, 51, 0.44);
   }
 </style>

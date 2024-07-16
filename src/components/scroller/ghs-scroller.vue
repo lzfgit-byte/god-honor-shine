@@ -13,19 +13,16 @@
         bottom-2
         class="ghs-scroller-icon"
       >
-        <GhsIcon width="15px" height="15px" :color="colorComp">
-          <ChevronDownCircleOutline></ChevronDownCircleOutline>
-        </GhsIcon>
+        <DownCircleOutlined />
       </div>
     </transition>
   </div>
 </template>
 <script setup lang="ts">
-  import { computed, onMounted } from 'vue';
+  import { computed } from 'vue';
   import { ref, watch } from 'vue-demi';
   import { useElementSize, useScroll } from '@vueuse/core';
-  import { ChevronDownCircleOutline } from '@vicons/ionicons5';
-  import GhsIcon from '@/components/icon/ghs-icon.vue';
+  import { DownCircleOutlined } from '@ant-design/icons-vue';
 
   const props = defineProps({ maxHeight: String, color: String });
   const maxHeight = computed(() => props.maxHeight || '30vh');

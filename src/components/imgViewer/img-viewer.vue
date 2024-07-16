@@ -11,7 +11,7 @@
         h-full
         w-full
         absolute
-        z-2
+        z-1002
         left-0
         top-0
         @click="handleBackClick"
@@ -21,7 +21,7 @@
           leave-active-class="animate__animated animate__slideOutUp"
         >
           <div
-            v-show="!idle"
+            v-show="!drawerOpen && !idle"
             class="ghsiv-header"
             absolute
             flex
@@ -29,7 +29,7 @@
             w-full
             left-0
             top-0
-            z-4
+            z-1003
           >
             <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
               <span>{{ showCurrent }} / {{ images.length }}</span>
@@ -38,22 +38,38 @@
               <span :title="imgUrl">
                 {{ images.length > 0 && (images[current]?.title || imgUrl) }}
               </span>
+              <span m-l-4> {{ percentage }} </span>
             </div>
             <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
-              <GhsButton :active="choseUrl === 'minUrl'" type="text" @click="choseUrl = 'minUrl'">
+              <a-button
+                :type="choseUrl === 'minUrl' ? 'primary' : ''"
+                size="small"
+                style="color: white"
+                @click="choseUrl = 'minUrl'"
+              >
                 缩略
-              </GhsButton>
-              <GhsButton :active="choseUrl === 'fullUrl'" type="text" @click="choseUrl = 'fullUrl'">
+              </a-button>
+              <a-button
+                v-if="images?.length > 0 && images[current].fullUrl"
+                :type="choseUrl === 'fullUrl' ? 'primary' : ''"
+                size="small"
+                style="color: white"
+                @click="choseUrl = 'fullUrl'"
+              >
                 全图
-              </GhsButton>
-              <GhsIcon v-if="!readerMode" cursor-pointer color="white" @click="visible = false">
-                <Close> </Close>
-              </GhsIcon>
+              </a-button>
+              <CommentOutlined
+                v-if="comments?.length > 0"
+                :style="{ fontSize: '14px', color: '#FFF' }"
+                @click="drawerOpen = !drawerOpen"
+              />
+              <CloseCircleOutlined v-if="!readerMode" @click="visible = false" />
             </div>
           </div>
         </transition>
 
         <div
+          id="img-view-id"
           ref="bodyRef"
           class="ghsiv-body"
           absolute
@@ -64,12 +80,12 @@
           items-center
           top-0
           left-0
-          z-3
+          z-1001
         >
           <div ref="imgContainerRef" class="img-container" w-auto>
             <transition enter-active-class="animate__animated animate__zoomIn">
               <Component
-                :is="solveImgComp"
+                :is="GhsImg2"
                 :key="imgUrl"
                 class="img-img"
                 :url="imgUrl"
@@ -81,15 +97,11 @@
             </transition>
           </div>
 
-          <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999>
-            <GhsIcon color="white" cursor-pointer width="30px" height="30px" @click="preImg">
-              <ArrowBackCircleOutline />
-            </GhsIcon>
+          <div class="ghsiv-dir" absolute left-4 flex justify-center items-center z-9999999>
+            <LeftCircleOutlined @click="preImg" />
           </div>
-          <div class="ghsiv-dir" absolute right-4 flex justify-center items-center z-9999>
-            <GhsIcon color="white" width="30px" height="30px" cursor-pointer @click="nextImg">
-              <ArrowForwardCircleOutline />
-            </GhsIcon>
+          <div class="ghsiv-dir" absolute right-4 flex justify-center items-center z-9999999>
+            <RightCircleOutlined @click="nextImg" />
           </div>
         </div>
       </div>
@@ -102,32 +114,59 @@
       :force="force"
     ></GhsImg>
   </teleport>
+  <a-drawer
+    v-model:open="drawerOpen"
+    title=""
+    placement="right"
+    :closable="false"
+    :mask-closable="true"
+    :content-wrapper-style="{}"
+    :body-style="{ padding: '10px' }"
+    width="55%"
+    :get-container="getDrawerContainer"
+    :style="{ position: 'absolute' }"
+  >
+    <div h-full w-full overflow-auto @wheel.stop="() => 1">
+      <GhsComment
+        v-for="item in comments"
+        :key="item.comment"
+        :datetime="item.datetime"
+        :comment="item.comment"
+      >
+      </GhsComment>
+    </div>
+  </a-drawer>
 </template>
 <script setup lang="ts">
-  import type { HWImgInfo } from '@ghs/share';
-  import { ArrowBackCircleOutline, ArrowForwardCircleOutline, Close } from '@vicons/ionicons5';
   import type { PropType } from 'vue-demi';
   import { useIdle, useVModel } from '@vueuse/core';
+  import {
+    CloseCircleOutlined,
+    CommentOutlined,
+    LeftCircleOutlined,
+    RightCircleOutlined,
+  } from '@ant-design/icons-vue';
   import { watchEffect } from 'vue-demi';
-  import GhsImg2 from '@/components/image/ghs-img2.vue';
-  import GhsIcon from '@/components/icon/ghs-icon.vue';
+  import type { Detail } from '@ghs/types';
+  import { ref } from 'vue';
+  import { isFalsity } from '@ilzf/utils';
+  import GhsImg2 from '@/components/image/ghs-img-plain.vue';
   import useImgViewer from '@/components/imgViewer/hooks/useImgViewer';
   import useImgShow from '@/components/imgViewer/hooks/useImgShow';
-  import GhsButton from '@/components/button/ghs-button.vue';
   import GhsImg from '@/components/image/ghs-img.vue';
   import useReadModel from '@/components/imgViewer/hooks/useReadModel';
+  import GhsComment from '@/components/comment/ghs-comment.vue';
+  import useComments from '@/components/imgViewer/hooks/useComments';
   const props = defineProps({
     force: Boolean,
     readerMode: Boolean,
-    solveImgComp: { type: Object, default: GhsImg2 },
     imgAttrs: Object,
-    imagesArr: Array as PropType<HWImgInfo[]>,
+    imagesArr: Array as PropType<Detail[]>,
     currentImg: String,
     totalImg: String,
   });
   const emits = defineEmits(['update:currentImg', 'update:totalImg']);
   const { idle } = useIdle(2 * 1000); // 2s
-
   const {
     bodyRef,
     imgContainerRef,
@@ -151,21 +190,27 @@
     handleBackClick,
     preloadUrl,
   } = useImgShow(translateX, translateY, scale);
+  const { comments, getDrawerContainer, drawerOpen } = useComments(visible);
   const currentImg_ = useVModel(props, 'currentImg', emits);
   const totalImg_ = useVModel(props, 'totalImg', emits);
   watchEffect(() => {
     currentImg_.value = `${current.value}`;
     totalImg_.value = `${images?.value?.length}`;
   });
+  const percentage = ref();
   const expose = {
-    show: (ims: HWImgInfo[]) => {
+    show: (ims: Detail[]) => {
       translateX.value = 0;
       translateY.value = 0;
       current.value = 0;
       scale.value = 100;
       choseUrl.value = 'minUrl';
-      images.value = ims;
+      images.value = ims.map((item) => ({ ...item, minUrl: item.url }));
       visible.value = true;
+      comments.value = ims
+        .map((item) => item.comments)
+        .reduce((acc, cur) => acc.concat(cur), [])
+        .filter((item) => !isFalsity(item));
     },
     close: () => {
       visible.value = false;

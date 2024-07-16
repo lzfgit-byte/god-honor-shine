@@ -1,91 +1,61 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import type { App } from 'vue';
+import type { BaseConfig } from '@ghs/types';
+import { ref } from 'vue';
+import { f_listAllWebConfigs } from '@/utils/business';
+import useGlobalState from '@/hooks/use-global-state';
+const { allWebKeys } = useGlobalState();
 export interface RouterType {
   path?: string;
+  key?: string;
   icon?: string;
   aliasZH?: string;
   force?: boolean;
   [T: string]: any;
 }
-export const routes: RouterType[] = [
+export const routes = ref<RouterType[]>([]);
+export const staticRoutes: RouterType[] = [
+  {
+    path: '/comic-reader',
+    name: 'comic-reader',
+    aliasZH: '18C',
+    showInMenu: true,
+    component: () => import('@/components/comic/comic-reader.vue'),
+  },
   {
     path: '/',
-    name: 'HWord',
-    aliasZH: 'HentaiWord',
+    name: 'hHome',
+    aliasZH: 'hHome',
     showInMenu: true,
-    component: () => import('@/feature/hentai-word/hw-home.vue'),
-  },
-  {
-    path: '/hentai-word',
-    name: 'hentai-word',
-    aliasZH: 'HW',
-    icon: 'https://thehentaiworld.com/favicon.ico',
-    showInMenu: true,
-    component: () => import('@/feature/hentai-word/hw-home.vue'),
-  },
-  {
-    path: '/rule34',
-    name: 'rule34',
-    aliasZH: 'R34',
-    icon: 'https://rule34video.com/favicon.ico',
-    showInMenu: true,
-    component: () => import('@/feature/rule34/rule-34.vue'),
-  },
-  {
-    path: '/18-comic',
-    name: '18Comic',
-    aliasZH: '18C',
-    icon: 'https://18comic.vip/favicon.ico',
-    force: true,
-    showInMenu: true,
-    component: () => import('@/feature/18comic/18-comic.vue'),
-  },
-  {
-    path: '/badnews',
-    name: 'badnews',
-    aliasZH: 'BAN',
-    icon: 'https://bad.news/favicon.ico',
-    showInMenu: true,
-    component: () => import('@/feature/badnews/bad-news.vue'),
-  },
-  {
-    path: '/lulu',
-    name: 'lulu',
-    aliasZH: 'lulu',
-    icon: 'https://www.pornlulu.com/favicon.ico',
-    showInMenu: true,
-    component: () => import('@/feature/lulu/lulu-home.vue'),
-  },
-  {
-    path: '/xvideos',
-    name: 'xvideos',
-    aliasZH: 'XV',
-    icon: 'https://www.xvideos.com/favicon.ico',
-    showInMenu: true,
-    component: () => import('@/feature/xvideos/xv-home.vue'),
-  },
-  {
-    path: '/pornhub',
-    name: 'pornhub',
-    aliasZH: 'PH',
-    icon: 'https://www.pornhub.com/favicon.ico',
-    showInMenu: true,
-    component: () => import('@/feature/pornhub/ph-home.vue'),
-  },
-  {
-    path: '/18-comic-reader',
-    name: '18-comic-reader',
-    aliasZH: '18C',
-    showInMenu: true,
-    component: () => import('@/feature/18comic/components/comic-reader.vue'),
+    component: () => import('@/view/start-app-view.vue'),
   },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: routes.map(({ path, name, component }) => ({ path, name, component })),
+  routes: staticRoutes.map(({ path, name, component }) => ({ path, name, component })),
 });
+
 export default router;
+const initRoute = async () => {
+  const webConfigs: BaseConfig[] = await f_listAllWebConfigs();
+  allWebKeys.value = webConfigs.map((item) => item.key);
+  webConfigs.forEach((item) => {
+    router.addRoute({
+      path: `/${item.key}`,
+      name: item.name,
+      component: () => import('@/view/main-page.vue'),
+    });
+    routes.value.push({
+      path: `/${item.key}`,
+      key: item.key,
+      name: item.name,
+      aliasZH: item.name,
+      icon: item.favicon,
+    });
+  });
+};
 export const registerRouter = (app: App) => {
   app.use(router);
+  initRoute().then();
 };
