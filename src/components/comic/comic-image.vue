@@ -48,7 +48,7 @@
       {
         type: 'image',
         url: imgSrc.value,
-        title: `${imagesBase64[hashString(props.url)]}/${keys(imagesBase64).length}`,
+        title: `${+imagesBase64[hashString(props.url)] + 1}/${keys(imagesBase64).length}`,
       },
     ]);
     imagesRef.value.scrollIntoView({ behavior: 'smooth' });

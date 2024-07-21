@@ -87,11 +87,11 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     if (event.type === 'keydown') {
       if (event.key === 'ArrowRight') {
         nextImg();
-        bus.emit(ImgEmitEnum.nextImg, hashString(imgUrl.value));
+        // bus.emit(ImgEmitEnum.nextImg, hashString(imgUrl.value));
       }
       if (event.key === 'ArrowLeft') {
         preImg();
-        bus.emit(ImgEmitEnum.preImg, hashString(imgUrl.value));
+        // bus.emit(ImgEmitEnum.preImg, hashString(imgUrl.value));
       }
     }
   };
