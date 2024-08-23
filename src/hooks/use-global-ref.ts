@@ -8,6 +8,7 @@ export interface ImgViewerExpose {
 export interface GhsPlayerExpose {
   show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => void;
   showWithTag: (urls: Detail[], title: string, type: VideoType) => void;
+  showSeries: (url: Detail, title: string) => void;
 }
 export interface WebConfigExpose {
   add: (key: string) => void;

@@ -16,6 +16,7 @@
         :type="typeComp"
       ></VideoHtml5>
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
+      <GhsPlayerSeries></GhsPlayerSeries>
     </div>
     <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
@@ -32,12 +33,13 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue-demi';
-  import type { Comment, Detail } from '@ghs/types';
+  import type { Analysis, Comment, Detail } from '@ghs/types';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
+  import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();
@@ -50,6 +52,7 @@
   };
   const drawerOpen = ref(false);
   const comments = ref<Comment[]>([]);
+  const analysis = ref<Analysis[]>();
 
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
@@ -72,6 +75,15 @@
       const c = urls.map((i) => parseInt(i.quality)).reduce((c, n) => (c > n ? c : n), 0);
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
+    },
+    showSeries: (url: Detail, title: string) => {
+      urlsRef.value = [];
+      srcComp.value = '';
+      titleComp.value = title;
+      typeComp.value = 'm3u8';
+      visible.value = true;
+      videoVisible.value = false;
+      analysis.value = url.analysis;
     },
   });
 </script>
