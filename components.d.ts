@@ -35,6 +35,7 @@ declare module 'vue' {
     GhsMenu: typeof import('./src/components/menu/ghs-menu.vue')['default']
     GhsPagination: typeof import('./src/components/pagination/ghs-pagination.vue')['default']
     GhsPlayer: typeof import('./src/components/player/ghs-player.vue')['default']
+    GhsPlayerComments: typeof import('./src/components/player/ghs-player-comments.vue')['default']
     GhsScroller: typeof import('./src/components/scroller/ghs-scroller.vue')['default']
     GhsTag: typeof import('./src/components/tag/ghs-tag.vue')['default']
     GhsText: typeof import('./src/components/text/ghs-text.vue')['default']

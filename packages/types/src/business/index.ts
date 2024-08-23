@@ -21,6 +21,7 @@ export enum ItemDetailType {
   image = 'image',
   win = 'win',
   comic = 'comic',
+  series = 'series', // 序列
 }
 // 将上边枚举转换为联合类型
 export type ItemDetailTypeUnion = keyof typeof ItemDetailType;
@@ -37,6 +38,7 @@ export interface Detail {
   quality?: string;
   title?: string;
   comments?: Comment[];
+  analysis?: Analysis[]; // 系列明细
 }
 export interface Item {
   coverImg: string;
@@ -63,6 +65,24 @@ export interface UrlReplace {
 export interface Comment {
   datetime: string;
   comment: string;
+}
+
+/**
+ *
+ */
+export interface Analysis {
+  url: string;
+  title: string;
+}
+export interface AnalysisDetail {
+  url: string;
+  title: string;
+}
+export interface AnalysisVideoDetail {
+  type?: 'mp3' | 'm3u8';
+  url?: string;
+  name?: string;
+  description?: string;
 }
 /**
  *点击Item,后获取详细信息

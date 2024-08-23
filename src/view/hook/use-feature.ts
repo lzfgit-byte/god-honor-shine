@@ -49,6 +49,8 @@ export default () => {
       );
     } else if (detail.detailType === 'comic') {
       await router.push({ path: '/comic-reader', query: { url: detail.details[0].url } });
+    } else if (detail.detailType === 'series') {
+      //
     }
   };
 

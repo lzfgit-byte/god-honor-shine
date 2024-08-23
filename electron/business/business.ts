@@ -14,6 +14,7 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { isFalsity, isFunction } from '@ilzf/utils';
 import { ComicHistory, SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
+import type { AnalysisDetail, AnalysisVideoDetail } from '@ghs/types/src';
 import { getHtml } from '../export';
 import { LogMsgUtil, MessageUtil } from '../utils/message';
 import { NormalFunc } from './common-func';
@@ -198,6 +199,14 @@ class BaseBusiness extends NormalFunc {
 
   public async clearCurrentUrl() {
     this.currentUrl = '';
+  }
+
+  public async getAnalysisDetail(url: string): Promise<AnalysisDetail[]> {
+    return this.webConfig?.getAnalysisDetail(url, cheerio);
+  }
+
+  public async getAnalysisVideoDetail(url: string): Promise<AnalysisVideoDetail[]> {
+    return this.webConfig?.getAnalysisVideoDetail(url, cheerio);
   }
 }
 

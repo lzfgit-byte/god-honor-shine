@@ -15,47 +15,7 @@
         :title="titleComp"
         :type="typeComp"
       ></VideoHtml5>
-      <a-float-button
-        v-if="comments?.length > 0"
-        tooltip="查看评论"
-        type="default"
-        :style="{
-          right: '15px',
-          top: '250px',
-          width: '30px',
-          height: '30px',
-          opacity: 0.2,
-        }"
-        @click="drawerOpen = true"
-      >
-        <template #icon>
-          <CommentOutlined :style="{ fontSize: '14px', color: '#323' }" />
-        </template>
-      </a-float-button>
-      <a-drawer
-        v-model:open="drawerOpen"
-        title=""
-        placement="right"
-        :closable="false"
-        :mask-closable="true"
-        z-index="20000"
-        root-class-name="ghs-video-drawer-container"
-        :content-wrapper-style="{ zIndex: 20000 }"
-        :body-style="{ zIndex: 20000, padding: '10px' }"
-        width="55%"
-        :get-container="getDrawerContainer"
-        :style="{ position: 'absolute' }"
-      >
-        <div h-full w-full overflow-auto>
-          <GhsComment
-            v-for="item in comments"
-            :key="item.comment"
-            :datetime="item.datetime"
-            :comment="item.comment"
-          >
-          </GhsComment>
-        </div>
-      </a-drawer>
+      <GhsPlayerComments :comments="comments"></GhsPlayerComments>
     </div>
     <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
@@ -73,12 +33,11 @@
 <script setup lang="ts">
   import { ref } from 'vue-demi';
   import type { Comment, Detail } from '@ghs/types';
-  import { CommentOutlined } from '@ant-design/icons-vue';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
-  import GhsComment from '@/components/comment/ghs-comment.vue';
+  import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();
@@ -91,7 +50,7 @@
   };
   const drawerOpen = ref(false);
   const comments = ref<Comment[]>([]);
-  const getDrawerContainer = () => document.getElementById('body');
+
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
       urlsRef.value = [];
