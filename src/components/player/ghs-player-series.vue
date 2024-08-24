@@ -3,6 +3,7 @@
     v-if="analysisRef?.length > 0"
     tooltip="查看剧集"
     type="default"
+    :badge="{ count: currentSeries, color: 'blue', offset: [-25, 0] }"
     :style="{
       right: '15px',
       top: '200px',
@@ -102,24 +103,38 @@
   });
 
   const getDrawerContainer = () => document.getElementById('body');
+  const play = async (item: AnalysisDetail) => {
+    const detail = await f_getAnalysisVideoDetail(item).catch(() => {
+      loading.value = false;
+    });
+    emits('change', detail);
+  };
   const handleClick = async (item) => {
     if (loading.value) {
       return;
     }
     loading.value = true;
     activeSeries.value = item;
-    const detail = await f_getAnalysisVideoDetail(item).catch(() => {
-      loading.value = false;
-    });
-    emits('change', detail);
+    await play(item);
     loading.value = false;
     await loadHistory();
+  };
+  const autoPlay = () => {
+    if (analysisDetail?.value?.length === 1) {
+      play(analysisDetail?.value[0]);
+    } else {
+      const index = analysisDetail.value.findIndex((t) => `${t.title}` === currentSeries.value);
+      if (index > -1) {
+        play(analysisDetail?.value[index]);
+      }
+    }
   };
   const loadHistory = async () => {
     history.value = await f_getSeriesCurrentContent();
   };
-  onMounted(() => {
-    loadHistory();
+  onMounted(async () => {
+    await loadHistory();
+    await autoPlay();
   });
 </script>
 
