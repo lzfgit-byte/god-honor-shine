@@ -1,6 +1,7 @@
 import type { CheerioAPI } from 'cheerio';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
+import type { Analysis } from '../../dist';
 import type {
   AnalysisDetail,
   AnalysisVideoDetail,
@@ -73,7 +74,7 @@ export interface WebConfig extends BaseConfig {
   // 漫画处理,获取图片
   getComicImages?: (url: string, cheerio: any) => Promise<CComic[]>;
   // 电视剧处理，多解析原处理
-  getAnalysisDetail?: (url: string, cheerio: any) => Promise<AnalysisDetail[]>;
+  getAnalysisDetail?: (item: Analysis, cheerio: any) => Promise<AnalysisDetail[]>;
   // 获取剧集的url
-  getAnalysisVideoDetail?: (url: string, cheerio: any) => Promise<AnalysisVideoDetail[]>;
+  getAnalysisVideoDetail?: (item: AnalysisDetail, cheerio: any) => Promise<AnalysisVideoDetail[]>;
 }

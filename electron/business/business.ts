@@ -1,4 +1,5 @@
 import type {
+  Analysis,
   CComic,
   CContent,
   DetailInfo,
@@ -201,12 +202,12 @@ class BaseBusiness extends NormalFunc {
     this.currentUrl = '';
   }
 
-  public async getAnalysisDetail(url: string): Promise<AnalysisDetail[]> {
-    return this.webConfig?.getAnalysisDetail(url, cheerio);
+  public async getAnalysisDetail(item: Analysis): Promise<AnalysisDetail[]> {
+    return this.webConfig?.getAnalysisDetail(item, cheerio);
   }
 
-  public async getAnalysisVideoDetail(url: string): Promise<AnalysisVideoDetail[]> {
-    return this.webConfig?.getAnalysisVideoDetail(url, cheerio);
+  public async getAnalysisVideoDetail(item: AnalysisDetail): Promise<AnalysisVideoDetail[]> {
+    return this.webConfig?.getAnalysisVideoDetail(item, cheerio);
   }
 }
 

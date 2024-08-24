@@ -1,4 +1,7 @@
 import type {
+  Analysis,
+  AnalysisDetail,
+  AnalysisVideoDetail,
   BaseConfig,
   CComic,
   CContent,
@@ -11,8 +14,6 @@ import type {
 import type { CollectEntity, ComicHistory, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
 
 import { debounce } from 'lodash';
-import { adapterLoadUrl, importFavorite } from '../../electron/export';
-import { setCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -257,4 +258,18 @@ export const f_updateCurrentComic = debounce((per: number) => {
  */
 export const f_clearCurrentUrl = async () => {
   return executeFunction('clearCurrentUrl');
+};
+/**
+ * 获取页面的解析数据
+ */
+export const f_getAnalysisDetail = async (item: Analysis): Promise<AnalysisDetail[]> => {
+  return executeFunction('getAnalysisDetail');
+};
+/**
+ * 获取 视频播放详细 AnalysisVideoDetail
+ */
+export const f_getAnalysisVideoDetail = async (
+  item: AnalysisDetail
+): Promise<AnalysisVideoDetail[]> => {
+  return executeFunction('getAnalysisVideoDetail');
 };

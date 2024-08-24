@@ -16,7 +16,7 @@
         :type="typeComp"
       ></VideoHtml5>
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
-      <GhsPlayerSeries></GhsPlayerSeries>
+      <GhsPlayerSeries :analysis="analysis"></GhsPlayerSeries>
     </div>
     <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
@@ -34,6 +34,7 @@
 <script setup lang="ts">
   import { ref } from 'vue-demi';
   import type { Analysis, Comment, Detail } from '@ghs/types';
+  import type { DetailInfo } from '@ghs/types/src';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
@@ -76,14 +77,14 @@
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
     },
-    showSeries: (url: Detail, title: string) => {
+    showSeries: (detailInfo: DetailInfo, title: string) => {
       urlsRef.value = [];
       srcComp.value = '';
       titleComp.value = title;
       typeComp.value = 'm3u8';
       visible.value = true;
       videoVisible.value = false;
-      analysis.value = url.analysis;
+      analysis.value = detailInfo.analysis;
     },
   });
 </script>
