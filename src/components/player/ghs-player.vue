@@ -73,6 +73,7 @@
     comments.value = [];
     srcComp.value = '';
     titleComp.value = '';
+    analysis.value = [];
   };
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
