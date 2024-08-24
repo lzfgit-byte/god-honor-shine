@@ -68,10 +68,15 @@
       urlsRef.value = item.map((t) => ({ url: t.url, quality: t.name }));
     }
   };
-
+  const reset = () => {
+    urlsRef.value = [];
+    comments.value = [];
+    srcComp.value = '';
+    titleComp.value = '';
+  };
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
-      urlsRef.value = [];
+      reset();
       srcComp.value = src;
       titleComp.value = title;
       typeComp.value = type;
@@ -80,6 +85,7 @@
       comments.value = comments_;
     },
     showWithTag: (urls: Detail[], title: string, type: VideoType) => {
+      reset();
       videoVisible.value = false;
       srcComp.value = null;
       urlsRef.value = urls;
@@ -92,7 +98,7 @@
       videoVisible.value = true;
     },
     showSeries: (detailInfo: DetailInfo, title: string) => {
-      urlsRef.value = [];
+      reset();
       srcComp.value = '';
       titleComp.value = title;
       typeComp.value = 'm3u8';
