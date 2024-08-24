@@ -263,7 +263,7 @@ export const f_clearCurrentUrl = async () => {
  * 获取页面的解析数据
  */
 export const f_getAnalysisDetail = async (item: Analysis): Promise<AnalysisDetail[]> => {
-  return executeFunction('getAnalysisDetail');
+  return executeFunction('getAnalysisDetail', item);
 };
 /**
  * 获取 视频播放详细 AnalysisVideoDetail
@@ -271,5 +271,5 @@ export const f_getAnalysisDetail = async (item: Analysis): Promise<AnalysisDetai
 export const f_getAnalysisVideoDetail = async (
   item: AnalysisDetail
 ): Promise<AnalysisVideoDetail[]> => {
-  return executeFunction('getAnalysisVideoDetail');
+  return executeFunction('getAnalysisVideoDetail', item);
 };

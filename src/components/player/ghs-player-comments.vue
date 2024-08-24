@@ -22,7 +22,7 @@
     placement="right"
     :closable="false"
     :mask-closable="true"
-    z-index="20000"
+    :z-index="20000"
     root-class-name="ghs-video-drawer-container"
     :content-wrapper-style="{ zIndex: 20000 }"
     :body-style="{ zIndex: 20000, padding: '10px' }"

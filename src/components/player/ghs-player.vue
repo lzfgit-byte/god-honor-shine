@@ -16,7 +16,7 @@
         :type="typeComp"
       ></VideoHtml5>
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
-      <GhsPlayerSeries :analysis="analysis"></GhsPlayerSeries>
+      <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
     </div>
     <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
@@ -33,8 +33,9 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue-demi';
-  import type { Analysis, Comment, Detail } from '@ghs/types';
+  import type { Analysis, AnalysisVideoDetail, Comment, Detail } from '@ghs/types';
   import type { DetailInfo } from '@ghs/types/src';
+  import { message } from 'ant-design-vue';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
@@ -54,6 +55,19 @@
   const drawerOpen = ref(false);
   const comments = ref<Comment[]>([]);
   const analysis = ref<Analysis[]>();
+  const handleSeriesChange = (item: AnalysisVideoDetail[]) => {
+    if (item.length === 1) {
+      if (!item[0].url) {
+        message.error('播放地址为空');
+        return;
+      }
+      videoVisible.value = true;
+      srcComp.value = item[0].url;
+    }
+    if (item.length > 1) {
+      urlsRef.value = item.map((t) => ({ url: t.url, quality: t.name }));
+    }
+  };
 
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
