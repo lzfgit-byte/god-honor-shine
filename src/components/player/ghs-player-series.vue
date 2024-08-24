@@ -34,8 +34,6 @@
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane v-for="item in analysis" :key="item.url" :tab="item.title" />
       </a-tabs>
-      {{ history }}
-      {{ currentSeries }}
       <div
         v-for="item in analysisDetail"
         :key="item.url"
