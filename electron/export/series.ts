@@ -1,5 +1,6 @@
 import type { AnalysisDetail, AnalysisVideoDetail } from '@ghs/types/src';
 import type { Analysis } from '@ghs/types';
+import type { ComicHistory } from '@ghs/constant';
 import { getCurrentBusiness } from '../business/business';
 import { getCurrentKey } from '../business/use-init-web-config';
 
@@ -16,4 +17,8 @@ export const getAnalysisVideoDetail = async (
   item: AnalysisDetail
 ): Promise<AnalysisVideoDetail[]> => {
   return getCurrentBusiness(getCurrentKey())?.getAnalysisVideoDetail(item);
+};
+
+export const getSeriesCurrentContent = async (): Promise<ComicHistory> => {
+  return getCurrentBusiness(getCurrentKey())?.getSeriesCurrentContent();
 };

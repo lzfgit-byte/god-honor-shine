@@ -14,6 +14,8 @@ import type {
 import type { CollectEntity, ComicHistory, ConfigEntity, ViewedHistoryEntity } from '@ghs/constant';
 
 import { debounce } from 'lodash';
+import { getCurrentBusiness } from '../../electron/business/business';
+import { getCurrentKey } from '../../electron/business/use-init-web-config';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -272,4 +274,7 @@ export const f_getAnalysisVideoDetail = async (
   item: AnalysisDetail
 ): Promise<AnalysisVideoDetail[]> => {
   return executeFunction('getAnalysisVideoDetail', item);
+};
+export const f_getSeriesCurrentContent = async (): Promise<ComicHistory> => {
+  return executeFunction('getSeriesCurrentContent');
 };

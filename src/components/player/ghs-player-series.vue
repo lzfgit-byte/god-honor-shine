@@ -34,6 +34,8 @@
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane v-for="item in analysis" :key="item.url" :tab="item.title" />
       </a-tabs>
+      {{ history }}
+      {{ currentSeries }}
       <div
         v-for="item in analysisDetail"
         :key="item.url"
@@ -42,7 +44,9 @@
         justify-center
         items-center
         class="pre-series-item"
-        :class="{ currentSeries: activeSeries?.url && activeSeries?.url === item?.url }"
+        :class="{
+          currentSeries: currentSeries === `${item.title}`,
+        }"
         @click="handleClick(item)"
       >
         <LoadingOutlined v-if="loading" />
@@ -59,8 +63,13 @@
   import { watchEffect } from 'vue-demi';
   import type { Analysis, AnalysisDetail } from '@ghs/types';
   import { useVModel } from '@vueuse/core';
-  import { ref } from 'vue';
-  import { f_getAnalysisDetail, f_getAnalysisVideoDetail } from '@/utils/business';
+  import { computed, onMounted, ref } from 'vue';
+  import type { ComicHistory } from '@ghs/constant';
+  import {
+    f_getAnalysisDetail,
+    f_getAnalysisVideoDetail,
+    f_getSeriesCurrentContent,
+  } from '@/utils/business';
 
   const props = defineProps({ analysis: Array as PropType<Analysis[]> });
   const emits = defineEmits(['update:analysis', 'change']);
@@ -70,6 +79,15 @@
   const analysisDetail = ref<AnalysisDetail[]>();
   const activeSeries = ref<AnalysisDetail>();
   const loading = ref(false);
+  const history = ref<ComicHistory>();
+  const currentSeries = computed(() => {
+    if (history.value && history.value.contentUrl) {
+      const contentUrl = history.value.contentUrl;
+      const split = contentUrl.split('/');
+      return split[split.length - 2];
+    }
+    return `${1}`;
+  });
   const getDetail = async (analysis: Analysis) => {
     analysisDetail.value = await f_getAnalysisDetail(analysis);
   };
@@ -79,9 +97,9 @@
     }
   });
   watchEffect(() => {
-    let index = analysisRef.value.findIndex((t) => t.url === activeKey.value);
+    let index = analysisRef.value?.findIndex((t) => t.url === activeKey.value);
     if (activeKey.value && index > -1) {
-      getDetail(analysisRef.value[index]);
+      getDetail(analysisRef?.value[index]);
     }
   });
 
@@ -97,7 +115,14 @@
     });
     emits('change', detail);
     loading.value = false;
+    await loadHistory();
   };
+  const loadHistory = async () => {
+    history.value = await f_getSeriesCurrentContent();
+  };
+  onMounted(() => {
+    loadHistory();
+  });
 </script>
 
 <style scoped lang="less">
