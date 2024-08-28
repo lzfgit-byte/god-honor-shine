@@ -1,3 +1,4 @@
+import { it } from 'node:test';
 import type { Item } from '@ghs/types';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
@@ -49,6 +50,8 @@ export default () => {
       );
     } else if (detail.detailType === 'comic') {
       await router.push({ path: '/comic-reader', query: { url: detail.details[0].url } });
+    } else if (detail.detailType === 'series') {
+      videoGlobalRef.value.showSeries(detail, item.title);
     }
   };
 

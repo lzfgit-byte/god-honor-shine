@@ -1,4 +1,5 @@
 import type {
+  Analysis,
   CComic,
   CContent,
   DetailInfo,
@@ -14,6 +15,7 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { isFalsity, isFunction } from '@ilzf/utils';
 import { ComicHistory, SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
+import type { AnalysisDetail, AnalysisVideoDetail } from '@ghs/types/src';
 import { getHtml } from '../export';
 import { LogMsgUtil, MessageUtil } from '../utils/message';
 import { NormalFunc } from './common-func';
@@ -23,6 +25,7 @@ class BaseBusiness extends NormalFunc {
   private key: string;
   private comicDetailUrl = '';
   private currentUrl = '';
+  private currentItem: Item = null;
   $: CheerioAPI;
   webConfig: WebConfig;
   public constructor(key: string, code: WebConfig) {
@@ -126,6 +129,7 @@ class BaseBusiness extends NormalFunc {
   public async getDetailPage(item: Item): Promise<DetailInfo> {
     this.saveViewHistory(item).then();
     LogMsgUtil.sendLogMsg(this.webConfig.key, 'jumpUrl', item.jumpUrl);
+    this.currentItem = item;
     return this.webConfig.getDetailInfo(item, cheerio);
   }
 
@@ -178,6 +182,9 @@ class BaseBusiness extends NormalFunc {
     return await this.webConfig?.getComicImages(url, cheerio);
   }
 
+  /**
+   * 获取历史记录里的最新漫画阅读记录
+   */
   public async getComicCurrentContent(): Promise<ComicHistory> {
     const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
     if (detailEnt) {
@@ -196,8 +203,50 @@ class BaseBusiness extends NormalFunc {
     await ComicHistory.update(detailEnt.id, detailEnt);
   }
 
+  /**
+   * 获取历史记录里的最新漫画阅读记录
+   */
+  public async getSeriesCurrentContent(): Promise<ComicHistory> {
+    const detailEnt = await ComicHistory.findOne({
+      where: { detailUrl: this.currentItem.jumpUrl },
+    });
+    if (detailEnt) {
+      return detailEnt;
+    }
+    return null;
+  }
+
+  public async saveOrUpdateSeriesWatchHistory(analysisDetail: AnalysisDetail) {
+    if (!this.currentItem) {
+      LogMsgUtil.sendLogMsg('未找到当前item');
+      return;
+    }
+    const detailEnt = await ComicHistory.findOne({
+      where: { detailUrl: this.currentItem.jumpUrl },
+    });
+    if (detailEnt) {
+      detailEnt.contentUrl = analysisDetail.url;
+      await ComicHistory.update(detailEnt.id, detailEnt);
+    } else {
+      const comicHistory = new ComicHistory();
+      comicHistory.detailUrl = this.currentItem.jumpUrl;
+      comicHistory.contentUrl = analysisDetail.url;
+      comicHistory.currentImage = 0;
+      await comicHistory.save();
+    }
+  }
+
   public async clearCurrentUrl() {
     this.currentUrl = '';
+  }
+
+  public async getAnalysisDetail(item: Analysis): Promise<AnalysisDetail[]> {
+    return this.webConfig?.getAnalysisDetail(item, cheerio);
+  }
+
+  public async getAnalysisVideoDetail(item: AnalysisDetail): Promise<AnalysisVideoDetail[]> {
+    await this.saveOrUpdateSeriesWatchHistory(item);
+    return this.webConfig?.getAnalysisVideoDetail(item, cheerio);
   }
 }
 

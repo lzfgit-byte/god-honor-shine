@@ -105,13 +105,13 @@ const getData = (): WebConfig => /* break */ ({
   favicon: 'https://demo.com/favicon.ico',
   homeUrl: '',
   searchUrl: '',
-  imgWidth: '220px',
-  imgHeight: '147px',
+  imgWidth: \`\${220 * 1}px\`,
+  imgHeight: \`\${290 * 1}px\`,
 
-  drawWidth: \`${3.5 * 220}px\`,
+  drawWidth: \`\${220 * 3.5 * 1}px\`,
   historyRemember: 100,
 
-  setTags: ['标签', '收藏', '历史', '系统配置', '日志'],
+  setTags: ['标签', '收藏', '历史', '系统配置'],
 
   currentUrlReplace: null,
 
@@ -122,6 +122,11 @@ const getData = (): WebConfig => /* break */ ({
     const res = [];
     $('#thumbContainer .thumb').each((i, el) => {
       const $el = $(el);
+      const jumpUrl = '';
+      const title = '';
+      const coverImg = '';
+      const isVideo = true;
+      const flatTags = [];
       res.push({
         jumpUrl,
         title,
@@ -139,6 +144,9 @@ const getData = (): WebConfig => /* break */ ({
     const res = [];
     $('#more-hentai li').each((i, el) => {
       const $el = $(el);
+      const title = '';
+      const isCurrent = false;
+      const url = '';
       res.push({ title, isCurrent, url });
     });
     return res;
@@ -147,6 +155,8 @@ const getData = (): WebConfig => /* break */ ({
     const res = [];
     $('#tags > li').each((i, el) => {
       const $el = $(el);
+      const title = '';
+      const url = '';
       res.push({ title, url });
     });
     return res;
@@ -167,6 +177,7 @@ const getData = (): WebConfig => /* break */ ({
     };
   },
   adapterLoadUrl(url) {
+    //结合urlReplaces实现过滤
     return url;
   },
   adapterSearchUrl(key) {

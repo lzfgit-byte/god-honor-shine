@@ -15,47 +15,8 @@
         :title="titleComp"
         :type="typeComp"
       ></VideoHtml5>
-      <a-float-button
-        v-if="comments?.length > 0"
-        tooltip="查看评论"
-        type="default"
-        :style="{
-          right: '15px',
-          top: '250px',
-          width: '30px',
-          height: '30px',
-          opacity: 0.2,
-        }"
-        @click="drawerOpen = true"
-      >
-        <template #icon>
-          <CommentOutlined :style="{ fontSize: '14px', color: '#323' }" />
-        </template>
-      </a-float-button>
-      <a-drawer
-        v-model:open="drawerOpen"
-        title=""
-        placement="right"
-        :closable="false"
-        :mask-closable="true"
-        z-index="20000"
-        root-class-name="ghs-video-drawer-container"
-        :content-wrapper-style="{ zIndex: 20000 }"
-        :body-style="{ zIndex: 20000, padding: '10px' }"
-        width="55%"
-        :get-container="getDrawerContainer"
-        :style="{ position: 'absolute' }"
-      >
-        <div h-full w-full overflow-auto>
-          <GhsComment
-            v-for="item in comments"
-            :key="item.comment"
-            :datetime="item.datetime"
-            :comment="item.comment"
-          >
-          </GhsComment>
-        </div>
-      </a-drawer>
+      <GhsPlayerComments :comments="comments"></GhsPlayerComments>
+      <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
     </div>
     <template v-if="urlsRef?.length > 0" #footer>
       <GhsTag
@@ -72,13 +33,15 @@
 </template>
 <script setup lang="ts">
   import { ref } from 'vue-demi';
-  import type { Comment, Detail } from '@ghs/types';
-  import { CommentOutlined } from '@ant-design/icons-vue';
+  import type { Analysis, AnalysisVideoDetail, Comment, Detail } from '@ghs/types';
+  import type { DetailInfo } from '@ghs/types/src';
+  import { message } from 'ant-design-vue';
   import VideoHtml5 from '@/components/player/video-html5.vue';
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
-  import GhsComment from '@/components/comment/ghs-comment.vue';
+  import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
+  import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();
@@ -91,10 +54,30 @@
   };
   const drawerOpen = ref(false);
   const comments = ref<Comment[]>([]);
-  const getDrawerContainer = () => document.getElementById('body');
+  const analysis = ref<Analysis[]>();
+  const handleSeriesChange = (item: AnalysisVideoDetail[]) => {
+    if (item.length === 1) {
+      if (!item[0].url) {
+        message.error('播放地址为空');
+        return;
+      }
+      videoVisible.value = true;
+      srcComp.value = item[0].url;
+    }
+    if (item.length > 1) {
+      urlsRef.value = item.map((t) => ({ url: t.url, quality: t.name }));
+    }
+  };
+  const reset = () => {
+    urlsRef.value = [];
+    comments.value = [];
+    srcComp.value = '';
+    titleComp.value = '';
+    analysis.value = [];
+  };
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
-      urlsRef.value = [];
+      reset();
       srcComp.value = src;
       titleComp.value = title;
       typeComp.value = type;
@@ -103,6 +86,7 @@
       comments.value = comments_;
     },
     showWithTag: (urls: Detail[], title: string, type: VideoType) => {
+      reset();
       videoVisible.value = false;
       srcComp.value = null;
       urlsRef.value = urls;
@@ -113,6 +97,15 @@
       const c = urls.map((i) => parseInt(i.quality)).reduce((c, n) => (c > n ? c : n), 0);
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
+    },
+    showSeries: (detailInfo: DetailInfo, title: string) => {
+      reset();
+      srcComp.value = '';
+      titleComp.value = title;
+      typeComp.value = 'm3u8';
+      visible.value = true;
+      videoVisible.value = false;
+      analysis.value = detailInfo.analysis;
     },
   });
 </script>

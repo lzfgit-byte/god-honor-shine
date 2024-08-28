@@ -85,7 +85,11 @@
       closeDialog();
     }
     // 启用点击遮罩层关闭
-    if (props.maskClosed && event?.target?.className.indexOf('dx-dialog') > -1) {
+    if (
+      props.maskClosed &&
+      event?.target?.className?.indexOf &&
+      event?.target?.className?.indexOf('dx-dialog') > -1
+    ) {
       closeDialog();
     }
   };

@@ -31,7 +31,7 @@ export * from './history';
 //
 export * from './web-config';
 export * from './system-comfig';
-
+export * from './series';
 /**
  *获取所有的配置项
  */
