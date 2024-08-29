@@ -27,6 +27,9 @@
           <div class="dx-header-title" flex justify-start items-center color-white>
             <slot name="title">{{ title }}</slot>
           </div>
+          <div class="dx-header-right" h-full flex items-center absolute right-15>
+            <slot name="headerRightTag"></slot>
+          </div>
           <div class="dx-header-icon" flex justify-end items-center>
             <slot name="headerRight">
               <div

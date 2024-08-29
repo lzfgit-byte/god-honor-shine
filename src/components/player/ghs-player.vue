@@ -18,16 +18,18 @@
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
       <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
     </div>
-    <template v-if="urlsRef?.length > 0" #footer>
-      <GhsTag
-        v-for="(item, index) in urlsRef"
-        :key="item.url + index"
-        :show-gap="true"
-        :type="srcComp === item.url ? 'info' : 'waring'"
-        @click="handleClick(item)"
-      >
-        {{ item.quality }}
-      </GhsTag>
+    <template v-if="urlsRef?.length > 0" #headerRightTag>
+      <div flex-inline mt-5px>
+        <GhsTag
+          v-for="(item, index) in urlsRef"
+          :key="item.url + index"
+          :show-gap="true"
+          :type="srcComp === item.url ? 'info' : 'waring'"
+          @click="handleClick(item)"
+        >
+          {{ item.quality }}
+        </GhsTag>
+      </div>
     </template>
   </GhsDialog>
 </template>
@@ -97,6 +99,9 @@
       const c = urls.map((i) => parseInt(i.quality)).reduce((c, n) => (c > n ? c : n), 0);
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
+      if (urls[0].comments?.length > 0) {
+        comments.value = urls[0].comments;
+      }
     },
     showSeries: (detailInfo: DetailInfo, title: string) => {
       reset();

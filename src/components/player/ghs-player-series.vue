@@ -81,7 +81,7 @@
   const history = ref<ComicHistory>();
   const currentSeries = computed(() => {
     if (history.value && history.value.contentUrl) {
-      const contentUrl = history.value.contentUrl;
+      const contentUrl = history.value?.contentUrl;
       const split = contentUrl.split('/');
       return split[split.length - 2];
     }
@@ -123,7 +123,7 @@
     if (analysisDetail?.value?.length === 1) {
       play(analysisDetail?.value[0]);
     } else {
-      const index = analysisDetail.value.findIndex((t) => `${t.title}` === currentSeries.value);
+      const index = analysisDetail.value?.findIndex((t) => `${t.title}` === currentSeries.value);
       if (index > -1) {
         play(analysisDetail?.value[index]);
       }
