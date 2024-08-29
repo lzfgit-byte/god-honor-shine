@@ -23,9 +23,9 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
   return new Promise((resolve, reject) => {
     try {
       const timer = setTimeout(() => {
-        sendMessage('五秒超时文档未准备好');
+        sendMessage('十秒超时文档未准备好');
         reject('超时');
-      }, 5000);
+      }, 10000);
       document.addEventListener('readystatechange', () => {
         if (condition.includes(document.readyState)) {
           resolve(true);
