@@ -44,6 +44,7 @@ export interface BaseConfig {
   winHeight?: number;
 
   currentUrlReplace: UrlReplace[];
+  currentUrl?: string;
 
   adapterImageCode?: string;
   comicImgMaxWidth?: string;

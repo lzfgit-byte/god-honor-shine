@@ -111,6 +111,7 @@ class BaseBusiness extends NormalFunc {
       url = this.webConfig.adapterLoadUrl(url, this.webConfig.currentUrlReplace);
       this.currentUrl = url;
     }
+    this.webConfig.currentUrl = this.currentUrl;
     LogMsgUtil.sendLogMsg('页面加载：', this.webConfig.key, 'url>', url, '\ncu>', this.currentUrl);
 
     const html = await getHtml(url);
