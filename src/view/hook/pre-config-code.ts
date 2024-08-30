@@ -46,6 +46,9 @@ export const helpElAttr = ($el: any, attr: string): string => {
 export const helpElText = ($el: any): string => {
   return $el?.text() || '';
 };
+export const net = {
+  request:{}
+}
 export const hashString = (str: string) => {
   return '';
 };export interface MessageInfo {
