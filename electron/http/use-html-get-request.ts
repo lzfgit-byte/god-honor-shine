@@ -35,9 +35,11 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
       });
       response.on('error', () => {
         LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
+        resolve('aaaaJust a moment...');
       });
     });
     request.on('error', () => {
+      resolve('ssssJust a moment...');
       LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
     });
     request.end();
