@@ -24,7 +24,7 @@
   "scripts": {
     "app:dev": "vite",
     "app:build": "npm version patch && vite build && electron-builder",
-    "app:prebuild": "vite build && electron-builder",
+    "app:prebuild": "vite build && node script/build.js && electron-builder",
     "app:elbuild": "electron-builder",
     "app:preview": "vite preview"
   },
