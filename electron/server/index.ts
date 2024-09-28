@@ -15,6 +15,9 @@ export const useServer = () => {
   app.get('/index', async (req, res) => {
     await useFileDispatch('/index', req, res);
   });
+  app.all('*', async (req, res) => {
+    await useFileDispatch('*', req, res);
+  });
 
   app.listen(4000, () => {
     LogMsgUtil.sendLogMsg('server started');
