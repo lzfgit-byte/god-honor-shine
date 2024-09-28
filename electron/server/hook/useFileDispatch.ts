@@ -4,12 +4,12 @@ import type { Request, Response } from 'express-serve-static-core';
 
 export default async (route: string, req: Request, res: Response) => {
   if (route === '/index') {
-    const indexHtml = join(process.env.DIST, 'index-h5.html');
+    const indexHtml = join(process.env.DIST, 'h5/index.html');
     const html = readFileSync(indexHtml, 'utf-8');
     return res.end(html);
   }
   if (route === '*') {
-    const filePath = join(process.env.DIST, req.url);
+    const filePath = join(`${process.env.DIST}h5/`, req.url);
     if (filePath.indexOf('.js') > -1) {
       res.setHeader('Content-Type', 'text/javascript');
     }
