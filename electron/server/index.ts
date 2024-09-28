@@ -9,6 +9,9 @@ export const useServer = () => {
   app.get('/videoProxy', async (req, res) => {
     await useVideoProxy('/videoProxy', req, res);
   });
+  app.get('/getImage', async (req, res) => {
+    await useDispatchController('/getImage', req, res);
+  });
   app.get('/getPage', async (req, res) => {
     await useDispatchController('/getPage', req, res);
   });

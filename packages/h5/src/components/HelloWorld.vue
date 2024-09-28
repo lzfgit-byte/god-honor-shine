@@ -1,11 +1,17 @@
 <template>
-  <van-button type="primary">主要按钮</van-button>
+  <div>
+    {{ webConfigs }}
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { Button as VanButton } from 'vant';
+  import type { WebConfig } from '@ghs/types';
+  import { listAllWebConfigs } from '@/api';
+  const webConfigs = ref<WebConfig[]>([]);
 
-  const msg = ref('HelloWorld');
-  const count = ref(0);
+  onMounted(async () => {
+    webConfigs.value = await listAllWebConfigs();
+  });
 </script>

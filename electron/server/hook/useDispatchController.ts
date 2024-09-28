@@ -28,4 +28,9 @@ export default async (route: string, req: Request, res: Response) => {
     const resData = await getDetailPage(queryData);
     res.end(JSON.stringify(resData));
   }
+  if (route === '/getImage') {
+    const queryData = getQueryData<{ url: string }>(req);
+    const resData = await getImage(queryData.url);
+    res.end(JSON.stringify(resData));
+  }
 };

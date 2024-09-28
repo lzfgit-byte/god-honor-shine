@@ -16,12 +16,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     if (response && response.data) {
-      // 假设服务器返回的数据结构是 { code: number, data: any, message: string }
-      const { code, data, message } = response.data;
-      if (code !== 200) {
-        return Promise.reject(new Error(message));
-      }
-      return data;
+      return response.data;
     }
     return response;
   },
@@ -31,9 +26,9 @@ instance.interceptors.response.use(
 );
 
 // 封装 get 请求
-export const get = (url: string, params = {}) => {
+export const get = (url: string, params = {}): Promise<any> => {
   return instance.get(url, {
-    params: params,
+    params,
   });
 };
 
