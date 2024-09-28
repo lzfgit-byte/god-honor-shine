@@ -15,6 +15,12 @@ export const useServer = () => {
   app.get('/loadPage', async (req, res) => {
     await useDispatchController('/loadPage', req, res);
   });
+  app.get('/listAllWebConfigs', async (req, res) => {
+    await useDispatchController('/listAllWebConfigs', req, res);
+  });
+  app.get('/getDetailPage', async (req, res) => {
+    await useDispatchController('/getDetailPage', req, res);
+  });
   app.get('/index', async (req, res) => {
     await useFileDispatch('/index', req, res);
   });
