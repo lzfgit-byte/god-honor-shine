@@ -2,10 +2,13 @@ import express from 'express';
 import { LogMsgUtil } from '../utils/message';
 import useDispatchController from './hook/useDispatchController';
 import useFileDispatch from './hook/useFileDispatch';
+import useVideoProxy from './hook/useVideoProxy';
 
 export const useServer = () => {
   let app = express();
-
+  app.get('/videoProxy', async (req, res) => {
+    await useVideoProxy('/videoProxy', req, res);
+  });
   app.get('/getPage', async (req, res) => {
     await useDispatchController('/getPage', req, res);
   });

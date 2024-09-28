@@ -41,7 +41,6 @@ async function createWindow() {
   useInitWebConfig();
   useServer();
   if (process.env.VITE_DEV_SERVER_URL) {
-    debugger;
     await win.loadURL(url);
     win.webContents.openDevTools();
   } else {
