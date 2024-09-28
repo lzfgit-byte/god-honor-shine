@@ -5,3 +5,4 @@ dist-electron
 config.json
 ghs-cache
 release
+pnpm-lock.yaml
