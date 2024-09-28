@@ -5,4 +5,8 @@
   </van-config-provider>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import useInitData from '@/hook/useInitData';
+
+  useInitData();
+</script>
