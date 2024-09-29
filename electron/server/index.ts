@@ -24,6 +24,12 @@ export const useServer = () => {
   app.get('/getDetailPage', async (req, res) => {
     await useDispatchController('/getDetailPage', req, res);
   });
+  app.get('/getCurrentWebConfig', async (req, res) => {
+    await useDispatchController('/getCurrentWebConfig', req, res);
+  });
+  app.get('/search', async (req, res) => {
+    await useDispatchController('/search', req, res);
+  });
   app.get('/index', async (req, res) => {
     await useFileDispatch('/index', req, res);
   });

@@ -17,14 +17,14 @@ export const staticRoutes: RouterType[] = [
     name: 'comic-reader',
     aliasZH: '18C',
     showInMenu: true,
-    component: () => import('@/components/HelloWorld.vue'),
+    component: () => import('@/views/item-pages.vue'),
   },
   {
     path: '/',
     name: 'hHome',
     aliasZH: 'hHome',
     showInMenu: true,
-    component: () => import('@/components/HelloWorld.vue'),
+    component: () => import('@/views/item-pages.vue'),
   },
 ];
 
@@ -41,7 +41,7 @@ const initRoute = async () => {
     router.addRoute({
       path: `/${item.key}`,
       name: item.name,
-      component: () => import('@/components/HelloWorld.vue'),
+      component: () => import('@/views/item-pages.vue'),
     });
     routes.value.push({
       path: `/${item.key}`,
