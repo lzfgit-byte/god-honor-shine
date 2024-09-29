@@ -48,6 +48,7 @@
   import GhsImg from '@/components/image/ghs-img.vue';
   import GhsText from '@/components/text/ghs-text.vue';
   import GhsTag from '@/components/tag/ghs-tag.vue';
+  import { cancelCollect, isCollect as f_isCollect, saveCollect } from '@/api';
 
   const props = defineProps({
     width: String,
@@ -67,7 +68,7 @@
   const handleImgClick = async () => {
     emits('imgClick');
     if (isCollect.value) {
-      await f_saveCollect(props.item);
+      await saveCollect(props.item);
       emits('upCollect');
     }
   };
@@ -75,16 +76,17 @@
     isCollect.value = await f_isCollect(props.item);
   };
   const toggleCollect = async () => {
+    debugger;
     if (isCollect.value) {
-      await f_cancelCollect(props.item);
+      await cancelCollect(props.item);
     } else {
-      await f_saveCollect(props.item);
+      await saveCollect(props.item);
     }
     await juCollect();
     emits('upCollect');
   };
   const handleCloseClick = async () => {
-    await f_cancelCollect(props.item);
+    await cancelCollect(props.item);
     emits('upCollectClose');
   };
   onMounted(async () => {

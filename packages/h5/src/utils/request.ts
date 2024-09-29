@@ -18,10 +18,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
-    return response;
+    return response.data;
   },
   (error) => {
     return Promise.reject(error);

@@ -64,6 +64,7 @@ export default async (route: string, req: Request, res: Response) => {
       break;
     }
     case '/saveCollect': {
+      debugger;
       const queryData = getQueryData<{ item: Item }>(req);
       const resData = await saveCollect(queryData.item);
       res.end(JSON.stringify(resData));
