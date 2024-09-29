@@ -1,11 +1,18 @@
 import { createApp } from 'vue';
+import { Button, ConfigProvider, FloatingBubble, Icon, Loading, Tabbar, TabbarItem } from 'vant';
 import App from '@/App.vue';
-import { Button, ConfigProvider, FloatingBubble } from 'vant';
 import 'vant/lib/index.css';
 import { registerRouter } from '@/router/router';
 const app = createApp(App);
 
-app.use(Button).use(ConfigProvider).use(FloatingBubble);
+app
+  .use(Button)
+  .use(ConfigProvider)
+  .use(FloatingBubble)
+  .use(Tabbar)
+  .use(TabbarItem)
+  .use(Icon)
+  .use(Loading);
 
 registerRouter(app);
 app.mount('#app');

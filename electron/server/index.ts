@@ -4,32 +4,30 @@ import useDispatchController from './hook/useDispatchController';
 import useFileDispatch from './hook/useFileDispatch';
 import useVideoProxy from './hook/useVideoProxy';
 
+const getRouter = [
+  'getImage',
+  'getPage',
+  'loadPage',
+  'listAllWebConfigs',
+  'getDetailPage',
+  'getCurrentWebConfig',
+  'search',
+  'isCollect',
+  'saveCollect',
+  'cancelCollect',
+];
+
 export const useServer = () => {
   let app = express();
   app.get('/videoProxy', async (req, res) => {
     await useVideoProxy('/videoProxy', req, res);
   });
-  app.get('/getImage', async (req, res) => {
-    await useDispatchController('/getImage', req, res);
+  getRouter.forEach((item) => {
+    app.get(`/${item}`, async (req, res) => {
+      await useDispatchController(`/${item}`, req, res);
+    });
   });
-  app.get('/getPage', async (req, res) => {
-    await useDispatchController('/getPage', req, res);
-  });
-  app.get('/loadPage', async (req, res) => {
-    await useDispatchController('/loadPage', req, res);
-  });
-  app.get('/listAllWebConfigs', async (req, res) => {
-    await useDispatchController('/listAllWebConfigs', req, res);
-  });
-  app.get('/getDetailPage', async (req, res) => {
-    await useDispatchController('/getDetailPage', req, res);
-  });
-  app.get('/getCurrentWebConfig', async (req, res) => {
-    await useDispatchController('/getCurrentWebConfig', req, res);
-  });
-  app.get('/search', async (req, res) => {
-    await useDispatchController('/search', req, res);
-  });
+
   app.get('/index', async (req, res) => {
     await useFileDispatch('/index', req, res);
   });
