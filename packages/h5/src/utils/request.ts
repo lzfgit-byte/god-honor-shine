@@ -1,7 +1,7 @@
 import * as process from 'node:process';
 import axios from 'axios';
 // vite vue3 判断是不是开发环境
-const isDev = process.env.NODE_ENV === 'development';
+export const isDev = process.env.NODE_ENV === 'development';
 const instance = axios.create({
   baseURL: isDev ? '/api' : '',
   timeout: 10000,

@@ -9,6 +9,7 @@ import {
   getPage,
   isCollect,
   listAllWebConfigs,
+  listCollect,
   loadPage,
   saveCollect,
   search,
@@ -40,8 +41,8 @@ export default async (route: string, req: Request, res: Response) => {
       break;
     }
     case '/getDetailPage': {
-      const queryData = getQueryData<Item>(req);
-      const resData = await getDetailPage(queryData);
+      const queryData = getQueryData<{ item: Item }>(req);
+      const resData = await getDetailPage(queryData.item);
       res.end(JSON.stringify(resData));
       break;
     }
@@ -64,7 +65,6 @@ export default async (route: string, req: Request, res: Response) => {
       break;
     }
     case '/saveCollect': {
-      debugger;
       const queryData = getQueryData<{ item: Item }>(req);
       const resData = await saveCollect(queryData.item);
       res.end(JSON.stringify(resData));
@@ -73,6 +73,12 @@ export default async (route: string, req: Request, res: Response) => {
     case '/cancelCollect': {
       const queryData = getQueryData<{ item: Item }>(req);
       const resData = await cancelCollect(queryData.item);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/listCollect': {
+      const queryData = getQueryData<{ webKey: string }>(req);
+      const resData = await listCollect(queryData.webKey);
       res.end(JSON.stringify(resData));
       break;
     }

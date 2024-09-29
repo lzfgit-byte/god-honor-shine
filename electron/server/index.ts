@@ -15,6 +15,7 @@ const getRouter = [
   'isCollect',
   'saveCollect',
   'cancelCollect',
+  'listCollect',
 ];
 
 export const useServer = () => {

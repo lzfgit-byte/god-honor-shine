@@ -22,6 +22,9 @@ const currentCode = ref();
 const init = async () => {
   webConfig.value = await getCurrentWebConfig(webKey.value);
 };
+const drawerOpen = ref(false);
+const segmentedValue = ref<SetTag>();
+const segmentedData = computed(() => webConfig?.value?.setTags);
 // 系统设置
 export default () => ({
   webConfig,
@@ -36,4 +39,7 @@ export default () => ({
   currentCode,
   allWebKeys,
   init,
+  drawerOpen,
+  segmentedValue,
+  segmentedData,
 });

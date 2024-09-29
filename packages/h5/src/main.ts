@@ -1,5 +1,14 @@
 import { createApp } from 'vue';
-import { Button, ConfigProvider, FloatingBubble, Icon, Loading, Tabbar, TabbarItem } from 'vant';
+import {
+  Button,
+  ConfigProvider,
+  FloatingBubble,
+  Icon,
+  Loading,
+  Notify,
+  Tabbar,
+  TabbarItem,
+} from 'vant';
 import App from '@/App.vue';
 import 'animate.css';
 import 'vant/lib/index.css';
@@ -14,6 +23,7 @@ app
   .use(Tabbar)
   .use(TabbarItem)
   .use(Icon)
+  .use(Notify)
   .use(Loading);
 
 registerRouter(app);

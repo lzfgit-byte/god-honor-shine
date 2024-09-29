@@ -1,6 +1,8 @@
 <template>
   <van-config-provider>
-    <router-view></router-view>
+    <div class="app-container" overflow-auto>
+      <router-view></router-view>
+    </div>
     <van-floating-bubble axis="xy" icon="chat" magnetic="x" />
     <GhsBottomMenus></GhsBottomMenus>
   </van-config-provider>
@@ -12,3 +14,9 @@
 
   useInitData();
 </script>
+<style lang="less" scoped>
+  .app-container {
+    padding-top: 10px;
+    height: calc(100vh - 60px);
+  }
+</style>

@@ -1,6 +1,13 @@
 import type { Item, WebConfig } from '@ghs/types';
-import { get } from '@/utils/request';
-
+import { get, isDev } from '@/utils/request';
+/**
+ * /videoProxy
+ */
+export const getVideoUrl = (url: string): string => {
+  return isDev
+    ? `api/videoProxy?url=${encodeURIComponent(url)}`
+    : `/videoProxy?url=${encodeURIComponent(url)}`;
+};
 /**
  * 获取所有配置
  * get listAllWebConfigs
@@ -52,4 +59,16 @@ export const saveCollect = async (item: Item): Promise<any> => {
  */
 export const cancelCollect = async (item: Item): Promise<any> => {
   return get('/cancelCollect', { item });
+};
+/**
+ * /listCollect
+ */
+export const listCollect = async (webKey: string): Promise<any> => {
+  return get('/listCollect', { webKey });
+};
+/**
+ * '/getDetailPage'
+ */
+export const getDetailPage = async (item: Item): Promise<any> => {
+  return get('/getDetailPage', { item });
 };
