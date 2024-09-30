@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="mui-player" style="width: 100%; height: 80vh"></div>
+    <div id="mui-player" style="max-height: 60vh"></div>
   </div>
 </template>
 

@@ -2,7 +2,7 @@ import { readFileSync, statSync } from 'node:fs';
 
 import { existsSync } from 'fs-extra';
 import { hashString } from '@ilzf/utils';
-import { CollectEntity } from '@ghs/constant';
+import { CollectEntity, SERVER_PORT } from '@ghs/constant';
 import type { Detail, Item } from '@ghs/types';
 import { FileType } from '@ghs/types';
 import {
@@ -16,7 +16,7 @@ import {
 } from '../http';
 import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { app_set_config_dir } from '../const/app-paths';
-import { eventEmitter } from '../utils/KitUtil';
+import { eventEmitter, getLocalIPs } from '../utils/KitUtil';
 import { cache_clean } from '../utils';
 
 /**
@@ -133,3 +133,11 @@ export const importFavorite = async (path: string) => {
  * 收藏导出
  */
 export const exportFavorite = async (path: string) => {};
+
+/**
+ * 获取服务地址
+ */
+export const getServers = async (): Promise<string[]> => {
+  const ips = getLocalIPs();
+  return ips.map((ip) => `http://${ip}:${SERVER_PORT}/index`);
+};

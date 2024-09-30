@@ -79,17 +79,21 @@
         </a-col>
       </a-row>
     </a-card>
+    <a-card>
+      <a-qrcode v-for="item in ips" :key="item" :value="item" />
+    </a-card>
   </div>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
   import { hashString, isFalsity } from '@ilzf/utils';
-  import { message } from 'ant-design-vue';
+  import { QRCode, message } from 'ant-design-vue';
   import { reactive, watchEffect } from 'vue-demi';
   import { forIn, keys } from 'lodash';
   import useGlobalState from '@/hooks/use-global-state';
   import {
     f_getImage,
+    f_getServers,
     f_importFavorite,
     f_restartAPP,
     f_updateSystemConfig,
@@ -155,6 +159,12 @@
     }
     message.warn('url不能为空');
   };
+  // ip
+  const ips = ref<string[]>();
+  const getIps = async () => {
+    ips.value = await f_getServers();
+  };
+  getIps();
 </script>
 
 <style scoped lang="less"></style>

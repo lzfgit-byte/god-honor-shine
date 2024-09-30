@@ -1,4 +1,5 @@
 import express from 'express';
+import { SERVER_PORT } from '@ghs/constant';
 import { LogMsgUtil } from '../utils/message';
 import useDispatchController from './hook/useDispatchController';
 import useFileDispatch from './hook/useFileDispatch';
@@ -36,7 +37,7 @@ export const useServer = () => {
     await useFileDispatch('*', req, res);
   });
 
-  app.listen(4000, () => {
+  app.listen(SERVER_PORT, () => {
     LogMsgUtil.sendLogMsg('server started');
   });
 };

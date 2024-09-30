@@ -1,5 +1,6 @@
 import { join } from 'node:path';
 import { EventEmitter } from 'node:events';
+import os from 'node:os';
 import dayjs from 'dayjs';
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
@@ -34,4 +35,20 @@ export const getCurrentItems = (...items: (() => Cheerio<Element>)[]): Cheerio<E
 export const restartApp = () => {
   app.relaunch();
   app.quit();
+};
+export const getLocalIPs = () => {
+  const networkInterfaces = os.networkInterfaces();
+  const ips = [];
+
+  // 遍历所有的网络接口
+  for (const name of Object.keys(networkInterfaces)) {
+    // 对于每个接口，遍历它的所有地址
+    for (const interfaceInfo of networkInterfaces[name]) {
+      // 我们只关心IPv4地址，并且是“非内部”地址（不是127.0.0.1这样的环回地址）
+      if (interfaceInfo.family === 'IPv4' && !interfaceInfo.internal) {
+        ips.push(interfaceInfo.address);
+      }
+    }
+  }
+  return ips;
 };

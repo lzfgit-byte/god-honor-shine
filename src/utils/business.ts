@@ -278,3 +278,6 @@ export const f_getAnalysisVideoDetail = async (
 export const f_getSeriesCurrentContent = async (): Promise<ComicHistory> => {
   return executeFunction('getSeriesCurrentContent');
 };
+export const f_getServers = async (): Promise<string[]> => {
+  return executeFunction('getServers');
+};

@@ -1,6 +1,6 @@
 <template>
-  <van-dialog v-model:show="visible" :title="titleComp" show-cancel-button>
-    <div id="ghs-video-container-id" min-h-80vh relative>
+  <van-dialog v-model:show="visible" show-cancel-button>
+    <div id="ghs-video-container-id" max-w-100vw relative>
       <VideoHtml5
         v-if="videoVisible && visible"
         :key="srcComp"
