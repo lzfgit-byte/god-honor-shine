@@ -4,7 +4,6 @@
       v-model="value"
       class="ghs-search"
       placeholder="请输入"
-      :style="{ width: webConfig?.inputWidth || '200px' }"
       allow-clear
       @keydown.enter="handleSearch(value)"
       @change="handleChange"
@@ -72,7 +71,7 @@
   .ghs-s-con {
   }
   .ghs-search {
-    padding: 0.4rem;
+    padding: 0;
     transition: border-color 0.3s;
     outline: none;
     &:focus {

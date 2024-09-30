@@ -3,7 +3,6 @@
     <div class="app-container" overflow-auto>
       <router-view></router-view>
     </div>
-    <GhsBottomMenus></GhsBottomMenus>
     <GhsPlayer ref="videoGlobalRef"></GhsPlayer>
   </van-config-provider>
 </template>

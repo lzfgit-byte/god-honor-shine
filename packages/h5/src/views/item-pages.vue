@@ -20,6 +20,7 @@
     </div>
     <van-floating-bubble axis="xy" icon="chat" magnetic="x" @click="clearCache('html')" />
   </div>
+  <GhsBottomMenus></GhsBottomMenus>
 </template>
 <script setup lang="ts">
   import { generateKey } from '@ilzf/utils';
@@ -30,6 +31,7 @@
   import useFeature from '@/hook/use-feature';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import Search from '@/components/search/search.vue';
+  import GhsBottomMenus from '@/components/bottom-menus/ghs-bottom-menus.vue';
 
   const widthAdapter = (width: string) => calcWidthAdapter(width);
 
