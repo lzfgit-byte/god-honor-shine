@@ -1,6 +1,6 @@
 <template>
   <div ref="bodyRef" style="height: 92vh; overflow-y: auto">
-    <div class="header" absolute top-0 left-0 style="height: 40px; background-color: white" z-6>
+    <div class="header" absolute top-0 left-0 style="height: 40px; background-color: white" z-1>
       <Search @search="handleSearch"></Search>
       <GhsPagination :pagination="pagination" @click="handlePageClick"></GhsPagination>
     </div>

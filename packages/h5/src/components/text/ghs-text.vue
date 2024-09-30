@@ -13,5 +13,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.9rem;
+    color: #000;
   }
 </style>

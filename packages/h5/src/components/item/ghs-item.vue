@@ -18,6 +18,7 @@
       absolute
       class="ghs-delete-icon"
       cursor-pointer
+      color-black
       @click="handleCloseClick"
     >
       <van-icon name="close" />
