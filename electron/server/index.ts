@@ -21,6 +21,7 @@ const getRouter = [
   'searchRecommend',
   'deleteSearch',
   'cacheSuffixClean',
+  'listHistory',
 ];
 
 export const useServer = () => {

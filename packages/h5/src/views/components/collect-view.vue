@@ -23,12 +23,11 @@
   import type { Item } from '@ghs/types';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useGlobalState from '@/hook/useGlobalState';
-  import { calcWidthAdapter } from '@/utils/kit-util';
+  import { calcWidthAdapter, widthAdapter } from '@/utils/kit-util';
   const props = defineProps({
     showDetail: Function,
     upCollect: Function,
   });
-  const widthAdapter = (width: string) => calcWidthAdapter(width);
   const showBottom = ref(false);
   const { webConfig, collects } = useGlobalState();
   const items: Item[] = computed(() => collects.value.map((item) => JSON.parse(item.value))) as any;

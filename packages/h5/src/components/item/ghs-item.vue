@@ -37,8 +37,18 @@
     </div>
     <div v-if="item.title" class="ghs-item-title" w-full flex justify-start items-center>
       <GhsText :value="item.title" />
-      <van-icon v-if="!isCollect && !$props?.onCloseClick" name="star-o" @click="toggleCollect" />
-      <van-icon v-if="isCollect && !$props?.onCloseClick" name="star" @click="toggleCollect" />
+      <van-icon
+        v-if="!isCollect && !$props?.onCloseClick"
+        color-black
+        name="star-o"
+        @click="toggleCollect"
+      />
+      <van-icon
+        v-if="isCollect && !$props?.onCloseClick"
+        color-black
+        name="star"
+        @click="toggleCollect"
+      />
     </div>
   </div>
 </template>

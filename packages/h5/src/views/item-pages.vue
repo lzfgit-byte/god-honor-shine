@@ -27,13 +27,11 @@
   import usePageState from '@/hook/use-page-state';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useCollect from '@/hook/use-collect';
-  import { calcWidthAdapter } from '@/utils/kit-util';
+  import { calcWidthAdapter, widthAdapter } from '@/utils/kit-util';
   import useFeature from '@/hook/use-feature';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import Search from '@/components/search/search.vue';
   import GhsBottomMenus from '@/components/bottom-menus/ghs-bottom-menus.vue';
-
-  const widthAdapter = (width: string) => calcWidthAdapter(width);
 
   const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef, clearCache, load } =
     usePageState();

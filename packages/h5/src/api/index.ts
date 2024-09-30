@@ -96,3 +96,9 @@ export const deleteSearch = async (searchValue: string): Promise<any> => {
 export const cacheSuffixClean = async (fileSuffix: string): Promise<any> => {
   return get('/cacheSuffixClean', { fileSuffix });
 };
+/**
+ * /listHistory
+ */
+export const listHistory = async (): Promise<any> => {
+  return get('/listHistory', {});
+};

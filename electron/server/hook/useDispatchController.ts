@@ -12,6 +12,7 @@ import {
   isCollect,
   listAllWebConfigs,
   listCollect,
+  listHistory,
   loadPage,
   saveCollect,
   search,
@@ -108,6 +109,12 @@ export default async (route: string, req: Request, res: Response) => {
       const queryData = getQueryData<{ fileSuffix?: string }>(req);
       cache_suffix_clean(queryData.fileSuffix);
       res.end(JSON.stringify(''));
+      break;
+    }
+    case '/listHistory': {
+      const resData = await listHistory();
+      res.end(JSON.stringify(resData));
+      break;
     }
   }
 };

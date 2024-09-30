@@ -4,7 +4,9 @@
     <van-tabbar-item icon="search">
       <CollectView :show-detail="showDetail" :up-collect="upCollect" />
     </van-tabbar-item>
-    <van-tabbar-item icon="friends-o">历史</van-tabbar-item>
+    <van-tabbar-item icon="friends-o">
+      <HistoryView :show-detail="showDetail" :up-collect="upCollect"></HistoryView>
+    </van-tabbar-item>
     <van-tabbar-item icon="setting-o">
       <TagsView :load="load" />
     </van-tabbar-item>
@@ -14,6 +16,7 @@
   import { ref } from 'vue';
   import TagsView from '@/views/components/tags-view.vue';
   import CollectView from '@/views/components/collect-view.vue';
+  import HistoryView from '@/views/components/history-view.vue';
   defineProps({ load: Function, showDetail: Function, upCollect: Function });
 
   const active = ref();

@@ -32,3 +32,4 @@ export class message {
     showNotify({ type: 'warning', message: msg });
   }
 }
+export const widthAdapter = (width: string) => calcWidthAdapter(width);
