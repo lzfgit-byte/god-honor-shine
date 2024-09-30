@@ -1,17 +1,23 @@
 <template>
   <div ref="bodyRef" style="height: 92vh; overflow-y: auto">
-    <transition-group name="custom-classes" enter-active-class="animate__animated animate__pulse">
-      <GhsItem
-        v-for="(item, index) in items"
-        :key="item.jumpUrl + index + generateKey()"
-        :item="item"
-        :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
-        :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
-        :collect-sequence="collects?.length"
-        @img-click="showDetail(item)"
-        @up-collect="updateCollects"
-      ></GhsItem>
-    </transition-group>
+    <div class="header" absolute top-0 left-0 style="height: 40px; background-color: white" z-6>
+      <Search @search="handleSearch"></Search>
+      <GhsPagination :pagination="pagination" @click="handlePageClick"></GhsPagination>
+    </div>
+    <div w-full style="height: calc(100% - 40px); margin-top: 40px">
+      <transition-group name="custom-classes" enter-active-class="animate__animated animate__pulse">
+        <GhsItem
+          v-for="(item, index) in items"
+          :key="item.jumpUrl + index + generateKey()"
+          :item="item"
+          :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
+          :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
+          :collect-sequence="collects?.length"
+          @img-click="showDetail(item)"
+          @up-collect="updateCollects"
+        ></GhsItem>
+      </transition-group>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -21,6 +27,8 @@
   import useCollect from '@/hook/use-collect';
   import { calcWidthAdapter } from '@/utils/kit-util';
   import useFeature from '@/hook/use-feature';
+  import GhsPagination from '@/components/pagination/ghs-pagination.vue';
+  import Search from '@/components/search/search.vue';
 
   const widthAdapter = (width: string) => calcWidthAdapter(width);
 
@@ -30,4 +38,12 @@
     useFeature();
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+  .header {
+    width: 95vw;
+    display: flex;
+    margin-left: 10px;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>

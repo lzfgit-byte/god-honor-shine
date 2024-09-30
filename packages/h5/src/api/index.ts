@@ -72,3 +72,21 @@ export const listCollect = async (webKey: string): Promise<any> => {
 export const getDetailPage = async (item: Item): Promise<any> => {
   return get('/getDetailPage', { item });
 };
+/**
+ * getHtml
+ */
+export const getHtml = async (url: string): Promise<any> => {
+  return get('/getHtml', { url });
+};
+/**
+ * searchRecommend
+ */
+export const searchRecommend = async (search: string): Promise<any> => {
+  return get('/searchRecommend', { search });
+};
+/**
+ * /deleteSearch
+ */
+export const deleteSearch = async (searchValue: string): Promise<any> => {
+  return get('/deleteSearch', { searchValue });
+};

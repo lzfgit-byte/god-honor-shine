@@ -17,6 +17,9 @@ const getRouter = [
   'saveCollect',
   'cancelCollect',
   'listCollect',
+  'getHtml',
+  'searchRecommend',
+  'deleteSearch',
 ];
 
 export const useServer = () => {

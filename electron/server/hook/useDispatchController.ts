@@ -3,8 +3,10 @@ import type { Item } from '@ghs/types';
 import { getQueryData, setDefaultHeader } from '../utils/ServerUtil';
 import {
   cancelCollect,
+  deleteSearch,
   getCurrentWebConfig,
   getDetailPage,
+  getHtml,
   getImage,
   getPage,
   isCollect,
@@ -13,6 +15,7 @@ import {
   loadPage,
   saveCollect,
   search,
+  searchRecommend,
 } from '../../export';
 export default async (route: string, req: Request, res: Response) => {
   setDefaultHeader(res);
@@ -79,6 +82,24 @@ export default async (route: string, req: Request, res: Response) => {
     case '/listCollect': {
       const queryData = getQueryData<{ webKey: string }>(req);
       const resData = await listCollect(queryData.webKey);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getHtml': {
+      const queryData = getQueryData<{ url: string }>(req);
+      const resData = await getHtml(queryData.url);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/searchRecommend': {
+      const queryData = getQueryData<{ search: string }>(req);
+      const resData = await searchRecommend(queryData.search);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/deleteSearch': {
+      const queryData = getQueryData<{ searchValue: string }>(req);
+      const resData = await deleteSearch(queryData.searchValue);
       res.end(JSON.stringify(resData));
       break;
     }

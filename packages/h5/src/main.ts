@@ -7,6 +7,8 @@ import {
   Icon,
   Loading,
   Notify,
+  Popup,
+  Search,
   Tabbar,
   TabbarItem,
 } from 'vant';
@@ -26,6 +28,8 @@ app
   .use(Icon)
   .use(Notify)
   .use(Dialog)
+  .use(Popup)
+  .use(Search)
   .use(Loading);
 
 registerRouter(app);
