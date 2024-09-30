@@ -10,8 +10,7 @@ export default async (route: string, req: Request, res: Response) => {
     return res.end(html);
   }
   if (route === '*') {
-    debugger;
-    if (req.url.indexOf('.ts') > -1) {
+    if (req.url.indexOf('.ts') > -1 || req.url.indexOf('.m3u8') > -1) {
       await useVideoProxy(route, req, res);
       return;
     }

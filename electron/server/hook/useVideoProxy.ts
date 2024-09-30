@@ -5,13 +5,16 @@ let baseM3u8Url = '';
 export default async (route: string, req: Request, res: Response) => {
   // 发送请求到源视频流
   const queryData = getQueryData<{ url: string }>(req);
-
   let loadUrl = queryData.url;
-  if (queryData?.url?.indexOf('m3u8') > -1) {
+  if (queryData?.url?.indexOf('m3u8')) {
     baseM3u8Url = queryData.url;
   }
 
-  if (req?.url?.indexOf('.ts') > -1 && baseM3u8Url) {
+  if (
+    (req?.url?.indexOf('.ts') > -1 || req?.url?.indexOf('.m3u8') > -1) &&
+    baseM3u8Url &&
+    !queryData?.url
+  ) {
     let url = baseM3u8Url.substring(0, baseM3u8Url.lastIndexOf('/'));
     loadUrl = `${url}/${req.url}`;
   }
@@ -28,7 +31,30 @@ export default async (route: string, req: Request, res: Response) => {
 
   request.on('response', (response) => {
     // 设置响应头
-    res.writeHead(response.statusCode, response.headers);
+    // res.writeHead(response.statusCode, response.headers);
+    [
+      'accept-ranges',
+      'access-control-allow-origin',
+      'cache-control',
+      'content-length',
+      'content-type',
+      'date',
+      'last-modified',
+      'server',
+      'x-77-cache',
+      'x-77-nzt',
+      'x-77-nzt-ray',
+      'x-accel-expires',
+      'x-cache',
+      'x-content-type-options',
+      'x-frame-options',
+      'x-xss-protection',
+    ].forEach((key) => {
+      if (response.headers[key]) {
+        res.setHeader(key, response.headers[key]);
+      }
+    });
+
     // 管道响应数据
     response.on('data', (chunk) => {
       res.write(chunk);
