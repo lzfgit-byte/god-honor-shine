@@ -5,7 +5,7 @@ import { get, isDev } from '@/utils/request';
  */
 export const getVideoUrl = (url: string): string => {
   return isDev
-    ? `api/videoProxy?url=${encodeURIComponent(url)}`
+    ? `http://192.168.31.58:4000/videoProxy?url=${encodeURIComponent(url)}`
     : `/videoProxy?url=${encodeURIComponent(url)}`;
 };
 /**

@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import {
   Button,
   ConfigProvider,
+  Dialog,
   FloatingBubble,
   Icon,
   Loading,
@@ -24,6 +25,7 @@ app
   .use(TabbarItem)
   .use(Icon)
   .use(Notify)
+  .use(Dialog)
   .use(Loading);
 
 registerRouter(app);
