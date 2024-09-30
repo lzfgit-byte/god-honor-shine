@@ -3,7 +3,6 @@
     <div class="app-container" overflow-auto>
       <router-view></router-view>
     </div>
-    <van-floating-bubble axis="xy" icon="chat" magnetic="x" />
     <GhsBottomMenus></GhsBottomMenus>
     <GhsPlayer ref="videoGlobalRef"></GhsPlayer>
   </van-config-provider>

@@ -18,6 +18,7 @@
         ></GhsItem>
       </transition-group>
     </div>
+    <van-floating-bubble axis="xy" icon="chat" magnetic="x" @click="clearCache('html')" />
   </div>
 </template>
 <script setup lang="ts">
@@ -32,7 +33,8 @@
 
   const widthAdapter = (width: string) => calcWidthAdapter(width);
 
-  const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef } = usePageState();
+  const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef, clearCache } =
+    usePageState();
   const { updateCollects, collects } = useCollect();
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
     useFeature();

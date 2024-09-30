@@ -4,7 +4,7 @@ import { isFalsity } from '@ilzf/utils';
 import { message } from 'ant-design-vue';
 import { nprogress } from '@/utils/nprogress';
 import useGlobalState from '@/hook/useGlobalState';
-import { getPage, loadPage, search } from '@/api';
+import { cacheSuffixClean, getPage, loadPage, search } from '@/api';
 
 export default () => {
   const { webConfig, loading, pagination, items, tags, urlReplace, currentUrl, webKey, init } =
@@ -54,6 +54,10 @@ export default () => {
   const refresh = async () => {
     await load(currentUrl.value);
   };
+  const clearCache = async (suffix: string = null) => {
+    await cacheSuffixClean(suffix);
+    await refresh();
+  };
 
   onMounted(async () => {
     await init();
@@ -71,5 +75,6 @@ export default () => {
     load,
     init,
     bodyRef,
+    clearCache,
   };
 };

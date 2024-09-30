@@ -17,6 +17,7 @@ import {
   search,
   searchRecommend,
 } from '../../export';
+import { cache_suffix_clean } from '../../utils';
 export default async (route: string, req: Request, res: Response) => {
   setDefaultHeader(res);
   switch (route) {
@@ -102,6 +103,11 @@ export default async (route: string, req: Request, res: Response) => {
       const resData = await deleteSearch(queryData.searchValue);
       res.end(JSON.stringify(resData));
       break;
+    }
+    case '/cacheSuffixClean': {
+      const queryData = getQueryData<{ fileSuffix?: string }>(req);
+      cache_suffix_clean(queryData.fileSuffix);
+      res.end(JSON.stringify(''));
     }
   }
 };

@@ -20,6 +20,7 @@ const getRouter = [
   'getHtml',
   'searchRecommend',
   'deleteSearch',
+  'cacheSuffixClean',
 ];
 
 export const useServer = () => {

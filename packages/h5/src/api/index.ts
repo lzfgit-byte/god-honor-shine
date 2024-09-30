@@ -90,3 +90,9 @@ export const searchRecommend = async (search: string): Promise<any> => {
 export const deleteSearch = async (searchValue: string): Promise<any> => {
   return get('/deleteSearch', { searchValue });
 };
+/**
+ * /cacheSuffixClean
+ */
+export const cacheSuffixClean = async (fileSuffix: string): Promise<any> => {
+  return get('/cacheSuffixClean', { fileSuffix });
+};
