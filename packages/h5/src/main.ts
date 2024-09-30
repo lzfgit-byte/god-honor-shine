@@ -3,6 +3,7 @@ import {
   Button,
   ConfigProvider,
   Dialog,
+  Empty,
   FloatingBubble,
   Icon,
   Loading,
@@ -30,6 +31,7 @@ app
   .use(Dialog)
   .use(Popup)
   .use(Search)
+  .use(Empty)
   .use(Loading);
 
 registerRouter(app);

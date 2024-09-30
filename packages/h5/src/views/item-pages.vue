@@ -18,9 +18,9 @@
         ></GhsItem>
       </transition-group>
     </div>
-    <van-floating-bubble axis="xy" icon="chat" magnetic="x" @click="clearCache('html')" />
+    <van-floating-bubble axis="xy" icon="replay" magnetic="x" @click="clearCache('html')" />
   </div>
-  <GhsBottomMenus></GhsBottomMenus>
+  <GhsBottomMenus :load="load"></GhsBottomMenus>
 </template>
 <script setup lang="ts">
   import { generateKey } from '@ilzf/utils';
@@ -35,7 +35,7 @@
 
   const widthAdapter = (width: string) => calcWidthAdapter(width);
 
-  const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef, clearCache } =
+  const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef, clearCache, load } =
     usePageState();
   const { updateCollects, collects } = useCollect();
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
