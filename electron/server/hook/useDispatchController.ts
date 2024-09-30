@@ -3,6 +3,7 @@ import type { Item } from '@ghs/types';
 import { getQueryData, setDefaultHeader } from '../utils/ServerUtil';
 import {
   cancelCollect,
+  clearCurrentUrl,
   deleteSearch,
   getCurrentWebConfig,
   getDetailPage,
@@ -17,6 +18,7 @@ import {
   saveCollect,
   search,
   searchRecommend,
+  setCurrentKeyExp,
 } from '../../export';
 import { cache_suffix_clean } from '../../utils';
 export default async (route: string, req: Request, res: Response) => {
@@ -113,6 +115,17 @@ export default async (route: string, req: Request, res: Response) => {
     }
     case '/listHistory': {
       const resData = await listHistory();
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/clearCurrentUrl': {
+      const resData = await clearCurrentUrl();
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/setCurrentKeyExp': {
+      const queryData = getQueryData<{ key?: string }>(req);
+      const resData = await setCurrentKeyExp(queryData.key);
       res.end(JSON.stringify(resData));
       break;
     }

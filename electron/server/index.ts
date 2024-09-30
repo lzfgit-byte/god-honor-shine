@@ -22,6 +22,8 @@ const getRouter = [
   'deleteSearch',
   'cacheSuffixClean',
   'listHistory',
+  'clearCurrentUrl',
+  'setCurrentKeyExp',
 ];
 
 export const useServer = () => {

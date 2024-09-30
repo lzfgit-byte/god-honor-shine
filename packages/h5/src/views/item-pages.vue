@@ -2,7 +2,10 @@
   <div ref="bodyRef" style="height: 92vh; overflow-y: auto">
     <div class="header" absolute top-0 left-0 style="height: 40px; background-color: white" z-1>
       <Search @search="handleSearch"></Search>
-      <GhsPagination :pagination="pagination" @click="handlePageClick"></GhsPagination>
+      <div>
+        <GhsMenu />
+        <GhsPagination :pagination="pagination" @click="handlePageClick"></GhsPagination>
+      </div>
     </div>
     <div w-full style="height: calc(100% - 40px); margin-top: 40px">
       <transition-group name="custom-classes" enter-active-class="animate__animated animate__pulse">
@@ -24,15 +27,20 @@
 </template>
 <script setup lang="ts">
   import { generateKey } from '@ilzf/utils';
+  import { useRoute } from 'vue-router';
   import usePageState from '@/hook/use-page-state';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useCollect from '@/hook/use-collect';
-  import { calcWidthAdapter, widthAdapter } from '@/utils/kit-util';
+  import { widthAdapter } from '@/utils/kit-util';
   import useFeature from '@/hook/use-feature';
   import GhsPagination from '@/components/pagination/ghs-pagination.vue';
   import Search from '@/components/search/search.vue';
   import GhsBottomMenus from '@/components/bottom-menus/ghs-bottom-menus.vue';
-
+  import useGlobalState from '@/hook/useGlobalState';
+  import GhsMenu from '@/components/menu/ghs-menu.vue';
+  const { webKey } = useGlobalState();
+  const route = useRoute();
+  webKey.value = (route?.query?.key as string) || webKey.value;
   const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef, clearCache, load } =
     usePageState();
   const { updateCollects, collects } = useCollect();

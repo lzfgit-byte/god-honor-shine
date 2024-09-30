@@ -102,3 +102,15 @@ export const cacheSuffixClean = async (fileSuffix: string): Promise<any> => {
 export const listHistory = async (): Promise<any> => {
   return get('/listHistory', {});
 };
+/**
+ * /clearCurrentUrl
+ */
+export const clearCurrentUrl = async (): Promise<any> => {
+  return get('/clearCurrentUrl', {});
+};
+/**
+ * /setCurrentKeyExp
+ */
+export const setCurrentKeyExp = async (key: string): Promise<any> => {
+  return get('/setCurrentKeyExp', { key });
+};
