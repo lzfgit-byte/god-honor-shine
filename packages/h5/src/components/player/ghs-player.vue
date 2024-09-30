@@ -1,5 +1,5 @@
 <template>
-  <GhsDialog v-model:show="visible" show-cancel-button>
+  <GhsDialog v-model:show="visible">
     <div id="ghs-video-container-id" max-w-100vw relative>
       <VideoHtml5
         v-if="videoVisible && visible"

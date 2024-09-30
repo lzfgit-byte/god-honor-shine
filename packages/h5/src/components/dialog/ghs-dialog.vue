@@ -1,10 +1,16 @@
 <template>
-  <teleport to="#app">
-    <div v-if="showRef" class="dialog-container">
-      <div class="dialog-body">
-        <slot></slot>
+  <teleport to="body">
+    <transition
+      enter-active-class="animate__animated animate__slideInDown"
+      leave-active-class="animate__animated animate__slideOutDown"
+    >
+      <div v-if="showRef" class="dialog-container" v-bind="$attrs" @click="handleClick">
+        <div w-full h-full absolute top-0 left-0 z-1 bg-black opacity-70></div>
+        <div class="dialog-body" @click.prevent.stop="() => 1">
+          <slot></slot>
+        </div>
       </div>
-    </div>
+    </transition>
   </teleport>
 </template>
 <script setup lang="ts">
@@ -14,6 +20,10 @@
   const emit = defineEmits(['update:show']);
 
   const showRef = ref(false);
+  const handleClick = () => {
+    showRef.value = false;
+    emit('update:show', false);
+  };
 
   watch(
     () => props.show,
@@ -28,8 +38,14 @@
     width: 100vw;
     height: 100vh;
     display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    .dialog-body {
+      z-index: 1001;
+    }
   }
 </style>

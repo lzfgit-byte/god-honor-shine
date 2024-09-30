@@ -8,6 +8,7 @@ const allWebKeys = ref([]);
 const webKey = ref('hentaiWord');
 
 const webConfig = ref<BaseConfig>();
+const webConfigs = ref<BaseConfig[]>();
 const pagination = ref<Pagination[]>();
 const items = ref<Item[]>();
 const tags = ref<Tag[]>();
@@ -42,4 +43,5 @@ export default () => ({
   drawerOpen,
   segmentedValue,
   segmentedData,
+  webConfigs,
 });
