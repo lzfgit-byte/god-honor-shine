@@ -20,7 +20,7 @@
     </div>
     <van-floating-bubble axis="xy" icon="replay" magnetic="x" @click="clearCache('html')" />
   </div>
-  <GhsBottomMenus :load="load"></GhsBottomMenus>
+  <GhsBottomMenus :load="load" :show-detail="showDetail" :up-collect="useCollect"></GhsBottomMenus>
 </template>
 <script setup lang="ts">
   import { generateKey } from '@ilzf/utils';

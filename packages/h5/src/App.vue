@@ -1,23 +1,26 @@
 <template>
   <van-config-provider>
     <div class="app-container" overflow-auto>
-      <div
-        v-if="loading"
-        w-full
-        h-full
-        flex
-        absolute=""
-        justify-center
-        items-center
-        z-8
-        style="background: rgba(0, 0, 0, 0.74)"
-      >
-        <van-loading size="24" />
-      </div>
-
       <router-view></router-view>
     </div>
     <GhsPlayer ref="videoGlobalRef"></GhsPlayer>
+    <div
+      v-if="loading"
+      flex
+      absolute
+      justify-center
+      items-center
+      style="
+        background: rgba(0, 0, 0, 0.74);
+        height: 100vh;
+        width: 100vw;
+        z-index: 100;
+        top: 0;
+        left: 0;
+      "
+    >
+      <van-loading size="24" />
+    </div>
   </van-config-provider>
 </template>
 
