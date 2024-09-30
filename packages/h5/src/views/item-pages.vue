@@ -1,16 +1,18 @@
 <template>
-  <transition-group name="custom-classes" enter-active-class="animate__animated animate__pulse">
-    <GhsItem
-      v-for="(item, index) in items"
-      :key="item.jumpUrl + index + generateKey()"
-      :item="item"
-      :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
-      :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
-      :collect-sequence="collects?.length"
-      @img-click="showDetail(item)"
-      @up-collect="updateCollects"
-    ></GhsItem>
-  </transition-group>
+  <div ref="bodyRef" style="height: 92vh; overflow-y: auto">
+    <transition-group name="custom-classes" enter-active-class="animate__animated animate__pulse">
+      <GhsItem
+        v-for="(item, index) in items"
+        :key="item.jumpUrl + index + generateKey()"
+        :item="item"
+        :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
+        :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
+        :collect-sequence="collects?.length"
+        @img-click="showDetail(item)"
+        @up-collect="updateCollects"
+      ></GhsItem>
+    </transition-group>
+  </div>
 </template>
 <script setup lang="ts">
   import { generateKey } from '@ilzf/utils';
@@ -22,7 +24,7 @@
 
   const widthAdapter = (width: string) => calcWidthAdapter(width);
 
-  const { items, pagination, handlePageClick, handleSearch, webConfig } = usePageState();
+  const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef } = usePageState();
   const { updateCollects, collects } = useCollect();
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
     useFeature();

@@ -80,7 +80,12 @@
       </a-row>
     </a-card>
     <a-card>
-      <a-qrcode v-for="item in ips" :key="item" :value="item" />
+      <div flex>
+        <div v-for="item in ips" :key="item">
+          <a-qrcode :value="item" />
+          {{ item }}
+        </div>
+      </div>
     </a-card>
   </div>
 </template>

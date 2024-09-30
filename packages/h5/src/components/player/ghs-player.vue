@@ -1,5 +1,5 @@
 <template>
-  <van-dialog v-model:show="visible" show-cancel-button>
+  <GhsDialog v-model:show="visible" show-cancel-button>
     <div id="ghs-video-container-id" max-w-100vw relative>
       <VideoHtml5
         v-if="videoVisible && visible"
@@ -24,7 +24,7 @@
         </GhsTag>
       </div>
     </template>
-  </van-dialog>
+  </GhsDialog>
 </template>
 <script setup lang="ts">
   import type { Analysis, AnalysisVideoDetail, Comment, Detail, DetailInfo } from '@ghs/types';
@@ -33,6 +33,7 @@
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import { message } from '@/utils/kit-util';
+  import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   // import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
   // import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
   const visible = ref(false);

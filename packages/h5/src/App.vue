@@ -21,6 +21,5 @@
 <style lang="less" scoped>
   .app-container {
     padding-top: 10px;
-    height: calc(100vh - 60px);
   }
 </style>

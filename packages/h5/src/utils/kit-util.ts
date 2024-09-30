@@ -6,8 +6,9 @@ export const calcWidthAdapter = (source: string, target = `${screenWidth}`) => {
   const targetWidth = parseInt(target);
   if (isMobile) {
     return (targetWidth * 43) / 100 / sourceWidth;
+  } else {
+    return (targetWidth * 30) / 100 / sourceWidth;
   }
-  return 1;
 };
 export const calcH5Width = (width: string) => {
   if (isMobile) {
