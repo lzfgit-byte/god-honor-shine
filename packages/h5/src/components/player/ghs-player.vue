@@ -9,9 +9,11 @@
         :type="typeComp"
       ></VideoHtml5>
     </div>
-    <template v-if="urlsRef?.length > 0" #headerRightTag>
+    <template #series>
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
       <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
+    </template>
+    <template v-if="urlsRef?.length > 0" #headerRightTag>
       <div flex-inline mt-5px>
         <GhsTag
           v-for="(item, index) in urlsRef"

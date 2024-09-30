@@ -6,11 +6,15 @@
     @click="drawerOpenModel = true"
     >查看剧集</van-button
   >
-  <van-popup v-model:show="drawerOpenModel" position="bottom" :style="{ height: '80%' }">
-    <div h-full w-full overflow-auto p-10px>
-      <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane v-for="item in analysis" :key="item.url" :tab="item.title" />
-      </a-tabs>
+  <van-popup
+    v-model:show="drawerOpenModel"
+    position="bottom"
+    :style="{ height: '80%', zIndex: 10000 }"
+  >
+    <div h-full w-full overflow-auto>
+      <van-tabs v-model:activeKey="activeKey">
+        <van-tab v-for="item in analysis" :key="item.url" :title="item.title" />
+      </van-tabs>
       <div
         v-for="item in analysisDetail"
         :key="item.url"

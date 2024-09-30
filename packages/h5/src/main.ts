@@ -10,8 +10,10 @@ import {
   Notify,
   Popup,
   Search,
+  Tab,
   Tabbar,
   TabbarItem,
+  Tabs,
 } from 'vant';
 import App from '@/App.vue';
 import 'animate.css';
@@ -31,6 +33,8 @@ app
   .use(Dialog)
   .use(Popup)
   .use(Search)
+  .use(Tab)
+  .use(Tabs)
   .use(Empty)
   .use(Loading);
 
