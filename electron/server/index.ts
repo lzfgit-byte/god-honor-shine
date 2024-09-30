@@ -24,6 +24,9 @@ const getRouter = [
   'listHistory',
   'clearCurrentUrl',
   'setCurrentKeyExp',
+  'getAnalysisDetail',
+  'getAnalysisVideoDetail',
+  'getSeriesCurrentContent',
 ];
 
 export const useServer = () => {

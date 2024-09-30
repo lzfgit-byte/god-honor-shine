@@ -1,15 +1,18 @@
 import type { Request, Response } from 'express-serve-static-core';
-import type { Item } from '@ghs/types';
+import type { Analysis, Item } from '@ghs/types';
 import { getQueryData, setDefaultHeader } from '../utils/ServerUtil';
 import {
   cancelCollect,
   clearCurrentUrl,
   deleteSearch,
+  getAnalysisDetail,
+  getAnalysisVideoDetail,
   getCurrentWebConfig,
   getDetailPage,
   getHtml,
   getImage,
   getPage,
+  getSeriesCurrentContent,
   isCollect,
   listAllWebConfigs,
   listCollect,
@@ -126,6 +129,23 @@ export default async (route: string, req: Request, res: Response) => {
     case '/setCurrentKeyExp': {
       const queryData = getQueryData<{ key?: string }>(req);
       const resData = await setCurrentKeyExp(queryData.key);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getAnalysisDetail': {
+      const queryData = getQueryData<{ item: Analysis }>(req);
+      const resData = await getAnalysisDetail(queryData.item);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getAnalysisVideoDetail': {
+      const queryData = getQueryData<{ item: Analysis }>(req);
+      const resData = await getAnalysisVideoDetail(queryData.item);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getSeriesCurrentContent': {
+      const resData = await getSeriesCurrentContent();
       res.end(JSON.stringify(resData));
       break;
     }

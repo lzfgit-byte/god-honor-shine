@@ -1,37 +1,13 @@
 <template>
-  <a-float-button
+  <van-button
     v-if="analysisRef?.length > 0"
-    tooltip="查看剧集"
     type="default"
-    :badge="{ count: currentSeries, color: 'blue', offset: [-25, 0] }"
-    :style="{
-      right: '15px',
-      top: '200px',
-      width: '30px',
-      height: '30px',
-      opacity: 0.2,
-    }"
+    size="small"
     @click="drawerOpenModel = true"
+    >查看剧集</van-button
   >
-    <template #icon>
-      <UnorderedListOutlined :style="{ fontSize: '14px', color: '#323' }" />
-    </template>
-  </a-float-button>
-  <a-drawer
-    v-model:open="drawerOpenModel"
-    title=""
-    placement="right"
-    :closable="false"
-    :mask-closable="true"
-    :z-index="20000"
-    root-class-name="ghs-video-drawer-container"
-    :content-wrapper-style="{ zIndex: 20000 }"
-    :body-style="{ zIndex: 20000, padding: '10px' }"
-    width="55%"
-    :get-container="getDrawerContainer"
-    :style="{ position: 'absolute' }"
-  >
-    <div h-full w-full overflow-auto>
+  <van-popup v-model:show="drawerOpenModel" position="bottom" :style="{ height: '80%' }">
+    <div h-full w-full overflow-auto p-10px>
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane v-for="item in analysis" :key="item.url" :tab="item.title" />
       </a-tabs>
@@ -48,37 +24,30 @@
         }"
         @click="handleClick(item)"
       >
-        <LoadingOutlined v-if="loading" />
+        <van-loading v-if="loading" type="spinner" />
         <span v-else>
           {{ item.title }}
         </span>
       </div>
     </div>
-  </a-drawer>
+  </van-popup>
 </template>
 <script setup lang="ts">
-  import { LoadingOutlined, UnorderedListOutlined } from '@ant-design/icons-vue';
-  import type { PropType } from 'vue-demi';
-  import { watchEffect } from 'vue-demi';
-  import type { Analysis, AnalysisDetail } from '@ghs/types';
-  import { useVModel } from '@vueuse/core';
-  import { computed, onMounted, ref } from 'vue';
-  import type { ComicHistory } from '@ghs/constant';
-  import {
-    f_getAnalysisDetail,
-    f_getAnalysisVideoDetail,
-    f_getSeriesCurrentContent,
-  } from '@/utils/business';
+  import type { PropType } from 'vue';
+  import { computed, onMounted, ref, watchEffect } from 'vue';
 
-  const props = defineProps({ analysis: Array as PropType<Analysis[]> });
+  import { useVModel } from '@vueuse/core';
+  import { getAnalysisDetail, getAnalysisVideoDetail, getSeriesCurrentContent } from '@/api';
+
+  const props = defineProps({ analysis: Array as PropType<any[]> });
   const emits = defineEmits(['update:analysis', 'change']);
   const drawerOpenModel = ref(false);
   const analysisRef = useVModel(props, 'analysis', emits);
   const activeKey = ref();
-  const analysisDetail = ref<AnalysisDetail[]>();
-  const activeSeries = ref<AnalysisDetail>();
+  const analysisDetail = ref<any[]>();
+  const activeSeries = ref<any>();
   const loading = ref(false);
-  const history = ref<ComicHistory>();
+  const history = ref<any>();
   const currentSeries = computed(() => {
     if (history.value && history.value.contentUrl) {
       const contentUrl = history.value?.contentUrl;
@@ -87,8 +56,8 @@
     }
     return `${1}`;
   });
-  const getDetail = async (analysis: Analysis) => {
-    analysisDetail.value = await f_getAnalysisDetail(analysis);
+  const getDetail = async (analysis: any) => {
+    analysisDetail.value = await getAnalysisDetail(analysis);
   };
   watchEffect(() => {
     if (analysisRef.value?.length > 0) {
@@ -103,8 +72,8 @@
   });
 
   const getDrawerContainer = () => document.getElementById('body');
-  const play = async (item: AnalysisDetail) => {
-    const detail = await f_getAnalysisVideoDetail(item).catch(() => {
+  const play = async (item: any) => {
+    const detail = await getAnalysisVideoDetail(item).catch(() => {
       loading.value = false;
     });
     emits('change', detail);
@@ -130,11 +99,11 @@
     }
   };
   const loadHistory = async () => {
-    history.value = await f_getSeriesCurrentContent();
+    history.value = await getSeriesCurrentContent();
   };
   onMounted(async () => {
     await loadHistory();
-    await autoPlay();
+    autoPlay();
   });
 </script>
 

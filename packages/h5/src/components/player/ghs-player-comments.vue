@@ -1,60 +1,30 @@
 <template>
-  <a-float-button
-    v-if="commentsRef?.length > 0"
-    tooltip="查看评论"
+  <van-button
+    v-if="comments?.length > 0"
     type="default"
-    :style="{
-      right: '15px',
-      top: '250px',
-      width: '30px',
-      height: '30px',
-      opacity: 0.2,
-    }"
+    size="small"
     @click="drawerOpenModel = true"
+    >查看评论</van-button
   >
-    <template #icon>
-      <CommentOutlined :style="{ fontSize: '14px', color: '#323' }" />
-    </template>
-  </a-float-button>
-  <a-drawer
-    v-model:open="drawerOpenModel"
-    title=""
-    placement="right"
-    :closable="false"
-    :mask-closable="true"
-    :z-index="20000"
-    root-class-name="ghs-video-drawer-container"
-    :content-wrapper-style="{ zIndex: 20000 }"
-    :body-style="{ zIndex: 20000, padding: '10px' }"
-    width="55%"
-    :get-container="getDrawerContainer"
-    :style="{ position: 'absolute' }"
-  >
+  <van-popup v-model:show="drawerOpenModel" position="bottom" :style="{ height: '80%' }">
     <div h-full w-full overflow-auto>
       <GhsComment
-        v-for="item in commentsRef"
+        v-for="item in comments"
         :key="item.comment"
         :datetime="item.datetime"
         :comment="item.comment"
       >
       </GhsComment>
     </div>
-  </a-drawer>
+  </van-popup>
 </template>
 <script setup lang="ts">
-  import { CommentOutlined } from '@ant-design/icons-vue';
-  import type { PropType } from 'vue-demi';
-  import type { Comment } from '@ghs/types';
-  import { useVModel } from '@vueuse/core';
+  import type { PropType } from 'vue';
   import { ref } from 'vue';
   import GhsComment from '@/components/comment/ghs-comment.vue';
 
-  const props = defineProps({ comments: Array as PropType<Comment[]> });
-  const emits = defineEmits(['update:comments']);
+  const props = defineProps({ comments: Array as PropType<any[]> });
   const drawerOpenModel = ref(false);
-  const commentsRef = useVModel(props, 'comments', emits);
-
-  const getDrawerContainer = () => document.getElementById('body');
 </script>
 
 <style scoped lang="less"></style>

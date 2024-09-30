@@ -8,10 +8,10 @@
         :title="titleComp"
         :type="typeComp"
       ></VideoHtml5>
-      <!--      <GhsPlayerComments :comments="comments"></GhsPlayerComments> -->
-      <!--      <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries> -->
     </div>
     <template v-if="urlsRef?.length > 0" #headerRightTag>
+      <GhsPlayerComments :comments="comments"></GhsPlayerComments>
+      <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
       <div flex-inline mt-5px>
         <GhsTag
           v-for="(item, index) in urlsRef"
@@ -34,6 +34,8 @@
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import { message } from '@/utils/kit-util';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
+  import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
+  import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
   // import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
   // import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
   const visible = ref(false);

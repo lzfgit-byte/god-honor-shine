@@ -2,6 +2,9 @@
   <teleport to="body">
     <div v-if="showRef" class="dialog-container" v-bind="$attrs" @click="handleClick">
       <div w-full h-full absolute top-0 left-0 z-1 bg-black opacity-70></div>
+      <div absolute top-0 w-full style="z-index: 1001" @click.prevent.stop="() => 1">
+        <slot name="headerRightTag"></slot>
+      </div>
       <transition
         enter-active-class="animate__animated animate__slideInDown"
         leave-active-class="animate__animated animate__slideOutDown"

@@ -114,3 +114,21 @@ export const clearCurrentUrl = async (): Promise<any> => {
 export const setCurrentKeyExp = async (key: string): Promise<any> => {
   return get('/setCurrentKeyExp', { key });
 };
+/**
+ * '/getAnalysisDetail'
+ */
+export const getAnalysisDetail = async (item: any): Promise<any> => {
+  return get('/getAnalysisDetail', { item });
+};
+/**
+ * getAnalysisVideoDetail
+ */
+export const getAnalysisVideoDetail = async (item: any): Promise<any> => {
+  return get('/getAnalysisVideoDetail', { item });
+};
+/**
+ *  '/getSeriesCurrentContent'
+ */
+export const getSeriesCurrentContent = async (): Promise<any> => {
+  return get('/getSeriesCurrentContent', {});
+};
