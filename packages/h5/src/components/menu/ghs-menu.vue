@@ -42,7 +42,7 @@
     webKey.value = item.key;
     await setCurrentKeyExp(webKey.value);
     loading.value = true;
-    await router.push(item.path);
+    // await router.push(item.path);
     showBottom.value = false;
   };
   watch(culRoutes, () => {

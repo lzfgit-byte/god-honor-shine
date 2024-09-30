@@ -1,14 +1,25 @@
 import type { Request, Response } from 'express-serve-static-core';
 import { net } from 'electron';
 import { getQueryData } from '../utils/ServerUtil';
+let baseM3u8Url = '';
 export default async (route: string, req: Request, res: Response) => {
   // 发送请求到源视频流
   const queryData = getQueryData<{ url: string }>(req);
-  if (!queryData.url) {
+
+  let loadUrl = queryData.url;
+  if (queryData?.url?.indexOf('m3u8') > -1) {
+    baseM3u8Url = queryData.url;
+  }
+
+  if (req?.url?.indexOf('.ts') > -1 && baseM3u8Url) {
+    let url = baseM3u8Url.substring(0, baseM3u8Url.lastIndexOf('/'));
+    loadUrl = `${url}/${req.url}`;
+  }
+  if (!loadUrl) {
     res.end('地址未传入');
     return;
   }
-  const request = net.request(queryData.url);
+  const request = net.request(loadUrl);
 
   const range = req.headers.range;
   if (range) {

@@ -28,6 +28,7 @@
 <script setup lang="ts">
   import { generateKey } from '@ilzf/utils';
   import { useRoute } from 'vue-router';
+  import { watchEffect } from 'vue';
   import usePageState from '@/hook/use-page-state';
   import GhsItem from '@/components/item/ghs-item.vue';
   import useCollect from '@/hook/use-collect';
@@ -41,11 +42,27 @@
   const { webKey } = useGlobalState();
   const route = useRoute();
   webKey.value = (route?.query?.key as string) || webKey.value;
-  const { items, pagination, handlePageClick, handleSearch, webConfig, bodyRef, clearCache, load } =
-    usePageState();
+  const {
+    items,
+    pagination,
+    handlePageClick,
+    handleSearch,
+    webConfig,
+    bodyRef,
+    clearCache,
+    load,
+    init,
+  } = usePageState();
   const { updateCollects, collects } = useCollect();
   const { showDetail, drawerOpen, handleDrawOpen, handleAddCode, handleEditCode, clearLogs } =
     useFeature();
+  watchEffect(async () => {
+    if (webKey.value) {
+      await init();
+      await load();
+      await updateCollects();
+    }
+  });
 </script>
 
 <style scoped lang="less">

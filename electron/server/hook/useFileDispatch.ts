@@ -1,6 +1,7 @@
 import { join } from 'node:path';
 import fs, { readFileSync } from 'node:fs';
 import type { Request, Response } from 'express-serve-static-core';
+import useVideoProxy from './useVideoProxy';
 
 export default async (route: string, req: Request, res: Response) => {
   if (route === '/index') {
@@ -9,6 +10,12 @@ export default async (route: string, req: Request, res: Response) => {
     return res.end(html);
   }
   if (route === '*') {
+    debugger;
+    if (req.url.indexOf('.ts') > -1) {
+      await useVideoProxy(route, req, res);
+      return;
+    }
+
     const filePath = join(`${process.env.DIST}`, 'h5', req.url);
     if (filePath.indexOf('.js') > -1) {
       res.setHeader('Content-Type', 'text/javascript');
