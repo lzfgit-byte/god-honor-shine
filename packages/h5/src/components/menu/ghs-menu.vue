@@ -34,7 +34,6 @@
   let router = useRouter();
   const { webKey, loading } = useGlobalState();
   const culRoutes: Ref<RouterType[]> = computed(() => routes.value.filter((i) => i.icon)) as any;
-  const fullSize = ref(false);
   const handleClick = async (item) => {
     if (webKey.value === item.key) {
       return;
@@ -44,6 +43,7 @@
     await setCurrentKeyExp(webKey.value);
     loading.value = true;
     await router.push(item.path);
+    showBottom.value = false;
   };
   watch(culRoutes, () => {
     if (culRoutes.value.length > 0) {
@@ -52,4 +52,12 @@
   });
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+  .ghs-menu-item {
+    width: 100%;
+    padding: 10px;
+  }
+  .ghs-menu-chose {
+    background-color: #ccc;
+  }
+</style>

@@ -18,6 +18,7 @@
         top: 0;
         left: 0;
       "
+      @click="loading = false"
     >
       <van-loading size="24" />
     </div>
