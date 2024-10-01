@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express-serve-static-core';
 import { net } from 'electron';
-import { getQueryData } from '../utils/ServerUtil';
+import { allowedHeaders, getQueryData } from '../utils/ServerUtil';
 let baseM3u8Url = '';
 export default async (route: string, req: Request, res: Response) => {
   // 发送请求到源视频流
   const queryData = getQueryData<{ url: string }>(req);
   let loadUrl = queryData.url;
-  if (queryData?.url?.indexOf('m3u8')) {
+  if (queryData?.url?.indexOf('m3u8') > -1) {
     baseM3u8Url = queryData.url;
   }
 
@@ -32,24 +32,8 @@ export default async (route: string, req: Request, res: Response) => {
   request.on('response', (response) => {
     // 设置响应头
     // res.writeHead(response.statusCode, response.headers);
-    [
-      'accept-ranges',
-      'access-control-allow-origin',
-      'cache-control',
-      'content-length',
-      'content-type',
-      'date',
-      'last-modified',
-      'server',
-      'x-77-cache',
-      'x-77-nzt',
-      'x-77-nzt-ray',
-      'x-accel-expires',
-      'x-cache',
-      'x-content-type-options',
-      'x-frame-options',
-      'x-xss-protection',
-    ].forEach((key) => {
+    res.status(response.statusCode);
+    allowedHeaders.forEach((key) => {
       if (response.headers[key]) {
         res.setHeader(key, response.headers[key]);
       }

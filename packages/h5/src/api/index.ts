@@ -6,7 +6,7 @@ import { get, isDev } from '@/utils/request';
 export const getVideoUrl = (url: string): string => {
   return isDev
     ? `http://192.168.31.58:4000/videoProxy?url=${encodeURIComponent(url)}`
-    : `/videoProxy?url=${encodeURIComponent(url)}`;
+    : `${new URL(window.location.href).origin}/videoProxy?url=${encodeURIComponent(url)}`;
 };
 /**
  * 获取所有配置

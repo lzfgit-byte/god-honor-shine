@@ -22,3 +22,31 @@ export class ResultUtil {
     };
   }
 }
+export const allowedHeaders = [
+  'accept-ranges',
+  'access-control-allow-origin',
+  'cache-control',
+  'content-length',
+  'content-type',
+  'date',
+  'last-modified',
+  'server',
+  'x-77-cache',
+  'x-77-nzt',
+  'x-77-nzt-ray',
+  'x-accel-expires',
+  'x-cache',
+  'x-content-type-options',
+  'x-frame-options',
+  'x-xss-protection',
+  'age',
+  'cf-cache-status',
+  'cf-ray',
+  'content-range',
+  'etag',
+  'nel',
+  'pragma',
+  'report-to',
+  'vary',
+  'x-powered-by',
+];
