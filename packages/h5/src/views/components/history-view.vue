@@ -29,7 +29,7 @@
     showDetail: Function,
     upCollect: Function,
   });
-  const showBottom = ref(false);
+  const showBottom = ref(true);
   const { webConfig } = useGlobalState();
 
   const history = ref([]);

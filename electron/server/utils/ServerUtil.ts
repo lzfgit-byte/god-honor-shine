@@ -50,3 +50,15 @@ export const allowedHeaders = [
   'vary',
   'x-powered-by',
 ];
+
+export const allowedRequestHeaders = [
+  'connection',
+  'pragma',
+  'cache-control',
+  'user-agent',
+  'accept-encoding',
+  'accept',
+  'accept-language',
+  'cookie',
+  'range',
+];

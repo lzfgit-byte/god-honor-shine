@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express-serve-static-core';
 import { net } from 'electron';
-import { allowedHeaders, getQueryData } from '../utils/ServerUtil';
+import { allowedHeaders, allowedRequestHeaders, getQueryData } from '../utils/ServerUtil';
 let baseM3u8Url = '';
 export default async (route: string, req: Request, res: Response) => {
   // 发送请求到源视频流
@@ -24,10 +24,11 @@ export default async (route: string, req: Request, res: Response) => {
   }
   const request = net.request(loadUrl);
 
-  const range = req.headers.range;
-  if (range) {
-    request.setHeader('Range', range);
-  }
+  allowedRequestHeaders.forEach((key) => {
+    if (req.headers[key]) {
+      request.setHeader(key, req.headers[key] as string);
+    }
+  });
 
   request.on('response', (response) => {
     // 设置响应头

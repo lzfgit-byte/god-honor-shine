@@ -4,6 +4,7 @@
       <router-view></router-view>
     </div>
     <GhsPlayer ref="videoGlobalRef"></GhsPlayer>
+    <ImgViewer ref="imgViewerRef"></ImgViewer>
     <div
       v-if="loading"
       flex
@@ -27,10 +28,10 @@
 
 <script setup lang="ts">
   import useInitData from '@/hook/useInitData';
-  import GhsBottomMenus from '@/components/bottom-menus/ghs-bottom-menus.vue';
   import useGlobalRef from '@/hook/use-global-ref';
   import GhsPlayer from '@/components/player/ghs-player.vue';
   import useGlobalState from '@/hook/useGlobalState';
+  import ImgViewer from '@/components/imgViewer/img-viewer.vue';
   const { imgViewerRef, videoGlobalRef } = useGlobalRef();
   const { loading } = useGlobalState();
 

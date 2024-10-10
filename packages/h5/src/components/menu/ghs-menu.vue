@@ -32,7 +32,7 @@
   import { clearCurrentUrl, setCurrentKeyExp } from '@/api';
   const showBottom = ref(false);
   let router = useRouter();
-  const { webKey, loading } = useGlobalState();
+  const { webKey, loading, active } = useGlobalState();
   const culRoutes: Ref<RouterType[]> = computed(() => routes.value.filter((i) => i.icon)) as any;
   const handleClick = async (item) => {
     if (webKey.value === item.key) {
@@ -44,6 +44,7 @@
     loading.value = true;
     // await router.push(item.path);
     showBottom.value = false;
+    active.value = 'home';
   };
   watch(culRoutes, () => {
     if (culRoutes.value.length > 0) {

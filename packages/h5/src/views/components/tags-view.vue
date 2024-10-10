@@ -20,7 +20,7 @@
   import useGlobalState from '@/hook/useGlobalState';
   const props = defineProps({ load: Function });
 
-  const showBottom = ref(false);
+  const showBottom = ref(true);
 
   const { tags } = useGlobalState();
   const handlerClick = (item: any) => {

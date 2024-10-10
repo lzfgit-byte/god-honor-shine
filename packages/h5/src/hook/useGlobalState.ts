@@ -26,6 +26,7 @@ const init = async () => {
 const drawerOpen = ref(false);
 const segmentedValue = ref<SetTag>();
 const segmentedData = computed(() => webConfig?.value?.setTags);
+const active = ref('home');
 // 系统设置
 export default () => ({
   webConfig,
@@ -44,4 +45,5 @@ export default () => ({
   segmentedValue,
   segmentedData,
   webConfigs,
+  active,
 });

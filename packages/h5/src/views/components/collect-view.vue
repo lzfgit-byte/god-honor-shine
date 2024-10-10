@@ -28,7 +28,7 @@
     showDetail: Function,
     upCollect: Function,
   });
-  const showBottom = ref(false);
+  const showBottom = ref(true);
   const { webConfig, collects } = useGlobalState();
   const items: Item[] = computed(() => collects.value.map((item) => JSON.parse(item.value))) as any;
 
