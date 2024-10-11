@@ -1,5 +1,5 @@
 <template>
-  <div ref="bodyRef" style="height: 92vh; overflow-y: auto">
+  <div ref="bodyRef" style="height: 80vh; overflow: hidden">
     <div class="header" absolute top-0 left-0 style="height: 40px; background-color: white" z-1>
       <Search @search="handleSearch"></Search>
       <div>
@@ -7,19 +7,17 @@
         <GhsPagination :pagination="pagination" @click="handlePageClick"></GhsPagination>
       </div>
     </div>
-    <div w-full style="height: calc(100% - 40px); margin-top: 40px">
-      <transition-group name="custom-classes" enter-active-class="animate__animated animate__pulse">
-        <GhsItem
-          v-for="(item, index) in items"
-          :key="item.jumpUrl + index + generateKey()"
-          :item="item"
-          :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
-          :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
-          :collect-sequence="collects?.length"
-          @img-click="showDetail(item)"
-          @up-collect="updateCollects"
-        ></GhsItem>
-      </transition-group>
+    <div w-full style="height: 70vh; overflow-y: auto; overflow-x: hidden; margin-top: 40px">
+      <GhsItem
+        v-for="(item, index) in items"
+        :key="item.jumpUrl + index + generateKey()"
+        :item="item"
+        :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
+        :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
+        :collect-sequence="collects?.length"
+        @img-click="showDetail(item)"
+        @up-collect="updateCollects"
+      ></GhsItem>
     </div>
     <van-floating-bubble axis="xy" icon="replay" magnetic="x" @click="clearCache('html')" />
   </div>
