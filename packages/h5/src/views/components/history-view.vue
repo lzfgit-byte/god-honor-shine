@@ -1,18 +1,20 @@
 <template>
   <div @click="showBottom = true">历史</div>
-  <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '80%' }">
-    <div h-full w-full p-10px>
-      <TransitionGroup name="list">
-        <GhsItem
-          v-for="(item, index) in items"
-          :key="`${generateKey(`${index}`)}`"
-          :item="item"
-          :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
-          :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
-          @img-click="showDetailProxy(item)"
-          @up-collect="upCollect"
-        ></GhsItem>
-      </TransitionGroup>
+  <van-popup
+    v-model:show="showBottom"
+    position="bottom"
+    :style="{ height: '80%', overflow: 'hidden' }"
+  >
+    <div h-full w-full p-10px style="overflow-y: auto; overflow-x: hidden">
+      <GhsItem
+        v-for="(item, index) in items"
+        :key="`${generateKey(`${index}`)}`"
+        :item="item"
+        :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
+        :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
+        @img-click="showDetailProxy(item)"
+        @up-collect="upCollect"
+      ></GhsItem>
       <van-empty v-if="items.length === 0" />
     </div>
   </van-popup>

@@ -77,10 +77,7 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     }
   };
   const handleBackClick = (evt: PointerEvent) => {
-    const el = evt.target as HTMLDivElement;
-    if (el.classList.contains('ghsiv-body')) {
-      visible.value = false;
-    }
+    visible.value = false;
   };
   const func = (event: KeyboardEvent) => {
     if (event.type === 'keydown') {

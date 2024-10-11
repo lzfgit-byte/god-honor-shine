@@ -1,7 +1,11 @@
 <template>
   <div @click="showBottom = true">Tag</div>
-  <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '80%' }">
-    <div h-full w-full p-10px>
+  <van-popup
+    v-model:show="showBottom"
+    position="bottom"
+    :style="{ height: '80%', overflow: 'hidden' }"
+  >
+    <div h-full w-full p-10px style="overflow-y: auto; overflow-x: hidden">
       <GhsTag
         v-for="(item, index) in tags"
         :key="index"

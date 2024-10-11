@@ -7,6 +7,7 @@ import useVideoProxy from './hook/useVideoProxy';
 
 const getRouter = [
   'getImage',
+  'getImageByte',
   'getPage',
   'loadPage',
   'listAllWebConfigs',

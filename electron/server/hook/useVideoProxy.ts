@@ -23,6 +23,9 @@ export default async (route: string, req: Request, res: Response) => {
     return;
   }
   const request = net.request(loadUrl);
+  req.on('close', () => {
+    request.abort();
+  });
 
   allowedRequestHeaders.forEach((key) => {
     if (req.headers[key]) {

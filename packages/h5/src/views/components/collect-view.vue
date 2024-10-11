@@ -1,19 +1,21 @@
 <template>
   <div @click="showBottom = true">收藏</div>
-  <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '80%' }">
-    <div h-full w-full p-10px>
-      <TransitionGroup name="list" tag="div">
-        <GhsItem
-          v-for="item in items"
-          :key="item.jumpUrl"
-          :item="item"
-          :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
-          :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
-          :on-close-click="() => 1"
-          @img-click="showDetailAndUp(item)"
-          @up-collect-close="upCollect"
-        ></GhsItem>
-      </TransitionGroup>
+  <van-popup
+    v-model:show="showBottom"
+    position="bottom"
+    :style="{ height: '80%', overflow: 'hidden' }"
+  >
+    <div h-full w-full p-10px style="overflow-y: auto; overflow-x: hidden">
+      <GhsItem
+        v-for="item in items"
+        :key="item.jumpUrl"
+        :item="item"
+        :width="`${parseInt(webConfig?.imgWidth) * widthAdapter(webConfig?.imgWidth)}px`"
+        :height="`${parseInt(webConfig?.imgHeight) * widthAdapter(webConfig?.imgWidth)}px`"
+        :on-close-click="() => 1"
+        @img-click="showDetailAndUp(item)"
+        @up-collect-close="upCollect"
+      ></GhsItem>
       <van-empty v-if="items.length === 0" />
     </div>
   </van-popup>

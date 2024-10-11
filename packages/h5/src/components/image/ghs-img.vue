@@ -1,21 +1,21 @@
 <template>
   <div h-full w-full relative flex justify-center items-center class="img-container">
     <img :src="imgSrc || src" :alt="imgSrc" @error="handleError" />
-    <transition :duration="300">
-      <div
-        v-if="percentageRef > 0 && percentageRef < 100"
-        absolute
-        bottom-1
-        w-full
-        color="white"
-        class="progress-img"
-      >
-        <van-button v-if="isError" @click="init">重新加载</van-button>
-        <div relative w-full box-border p-l-2 p-r-2 class="progress">
-          {{ progressInfo }}
-        </div>
-      </div>
-    </transition>
+    <!--    <transition :duration="300"> -->
+    <!--      <div -->
+    <!--        v-if="percentageRef > 0 && percentageRef < 100" -->
+    <!--        absolute -->
+    <!--        bottom-1 -->
+    <!--        w-full -->
+    <!--        color="white" -->
+    <!--        class="progress-img" -->
+    <!--      > -->
+    <!--        <van-button v-if="isError" @click="init">重新加载</van-button> -->
+    <!--        <div relative w-full box-border p-l-2 p-r-2 class="progress"> -->
+    <!--          {{ progressInfo }} -->
+    <!--        </div> -->
+    <!--      </div> -->
+    <!--    </transition> -->
   </div>
 </template>
 <script setup lang="ts">

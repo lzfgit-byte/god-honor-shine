@@ -1,12 +1,12 @@
 <template>
-  <teleport to="#app" :disabled="readerMode">
+  <teleport to="#app">
     <transition
       :duration="300"
       enter-active-class="animate__animated animate__fadeInDown"
       leave-active-class="animate__animated animate__fadeOutDown"
     >
       <div
-        v-show="(visible || readerMode) && images.length > 0"
+        v-show="visible && images.length > 0"
         class="ghsiv-con"
         h-full
         w-full
@@ -14,31 +14,24 @@
         z-1002
         left-0
         top-0
-        @click="handleBackClick"
       >
         <transition
           enter-active-class="animate__animated animate__slideInDown"
           leave-active-class="animate__animated animate__slideOutUp"
         >
           <div
-            v-show="!drawerOpen && !idle"
+            v-show="!drawerOpen"
             class="ghsiv-header"
             absolute
             flex
             items-center
             w-full
             left-0
-            top-0
+            bottom-0
             z-1003
           >
             <div class="ghsiv-left" flex justify-start items-center p-l-4 h-full>
               <span>{{ showCurrent }} / {{ images.length }}</span>
-            </div>
-            <div class="ghsiv-title" flex justify-center items-center p-l-4 h-full>
-              <span :title="imgUrl">
-                {{ images.length > 0 && (images[current]?.title || imgUrl) }}
-              </span>
-              <span m-l-4> {{ percentage }} </span>
             </div>
             <div class="ghsiv-extra" flex items-center justify-end p-r-4 h-full gap-10px>
               <van-button
@@ -46,7 +39,7 @@
                 size="small"
                 @click="choseUrl = 'minUrl'"
               >
-                缩略
+                缩
               </van-button>
               <van-button
                 v-if="images?.length > 0 && images[current].fullUrl"
@@ -54,12 +47,19 @@
                 size="small"
                 @click="choseUrl = 'fullUrl'"
               >
-                全图
+                全
               </van-button>
-              <van-button />
-              <van-button v-if="comments?.length > 0" @click="drawerOpen = !drawerOpen">
-                查看评论
+              <van-button
+                v-if="comments?.length > 0"
+                type="primary"
+                size="small"
+                @click="drawerOpen = !drawerOpen"
+              >
+                评
               </van-button>
+              <van-button type="primary" size="small" @click="handleBackClick"> 关 </van-button>
+              <van-button type="primary" size="small" @click="preImg"> 上 </van-button>
+              <van-button type="primary" size="small" @click="nextImg"> 下 </van-button>
             </div>
           </div>
         </transition>
@@ -79,7 +79,7 @@
           z-1001
         >
           <div ref="imgContainerRef" class="img-container" w-full h-full>
-            <transition enter-active-class="animate__animated animate__zoomIn">
+            <transition enter-active-class="animate__animated animate__slideInDown">
               <GhsImg
                 :key="imgUrl"
                 class="img-img"
@@ -87,7 +87,7 @@
                 :force="force"
                 v-bind="imgAttrs"
                 :global="true"
-                @contextmenu.stop="nextImg"
+                @click="nextImg"
               ></GhsImg>
             </transition>
           </div>
@@ -190,8 +190,8 @@
 </script>
 
 <style scoped lang="less">
-  @titleWidth: 60%;
-  @extraWidth: 20%;
+  @titleWidth: 0%;
+  @extraWidth: 80%;
   .ghsiv-con {
     background: rgba(0, 0, 0, 0.54);
     .ghsiv-header {
