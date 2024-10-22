@@ -114,7 +114,9 @@ class BaseBusiness extends NormalFunc {
     this.webConfig.currentUrl = this.currentUrl;
     LogMsgUtil.sendLogMsg('页面加载：', this.webConfig.key, 'url>', url, '\ncu>', this.currentUrl);
 
-    const html = await getHtml(url);
+    const html = isFunction(this.webConfig?.adapterGetHtml)
+      ? await this.webConfig?.adapterGetHtml(url)
+      : await getHtml(url);
     this.$ = cheerio.load(html);
     return {
       items: this.getItems(),

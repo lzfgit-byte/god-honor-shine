@@ -33,6 +33,26 @@
         </a-col>
       </a-row>
     </a-card>
+    <a-card title="执行js">
+      <template #extra>
+        <a-button @click="executeJS">执行js</a-button>
+      </template>
+      <a-row>
+        <a-col :span="24">
+          <a-input v-model:value="executeUrl" auto-size placeholder="url"></a-input>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24">
+          <a-textarea v-model:value="executeCode" auto-size placeholder="code"></a-textarea>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24">
+          <a-textarea v-model:value="executeRes" auto-size></a-textarea>
+        </a-col>
+      </a-row>
+    </a-card>
     <a-card style="height: 300px">
       <template #title>加载图片</template>
       <template #extra>
@@ -97,6 +117,7 @@
   import { forIn, keys } from 'lodash';
   import useGlobalState from '@/hooks/use-global-state';
   import {
+    f_executeJs,
     f_getImage,
     f_getServers,
     f_importFavorite,
@@ -170,6 +191,13 @@
     ips.value = await f_getServers();
   };
   getIps();
+  // 执行js
+  const executeUrl = ref('');
+  const executeCode = ref('');
+  const executeRes = ref('');
+  const executeJS = async () => {
+    executeRes.value = await f_executeJs(executeUrl.value, executeCode.value);
+  };
 </script>
 
 <style scoped lang="less"></style>

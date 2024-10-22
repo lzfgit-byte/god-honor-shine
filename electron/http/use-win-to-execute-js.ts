@@ -7,14 +7,14 @@ import { getMainWin } from '../main';
  * @param code
  * @param url
  */
-export const win_get_data = (code: string, url: string) => {
+export const win_get_data = (code: string, url: string): Promise<any> => {
   if (!code || !url) {
     return;
   }
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    show: false,
+    show: true,
     title: 'picWindow',
     webPreferences: {
       nodeIntegration: true,

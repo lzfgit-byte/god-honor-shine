@@ -6,7 +6,7 @@ import { base64ToStr, hashString, isFunction } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes, WebConfigEntity, breakStr } from '@ghs/constant';
 import { net } from 'electron';
-import { getHtml, getHtmlWithProcess, listWebConfig } from '../export';
+import { executeJs, getHtml, getHtmlWithProcess, listWebConfig } from '../export';
 import { ConsoleLogUtil, LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
@@ -74,7 +74,8 @@ export const parseWebConfig = (code: string) => {
     MessageUtil,
     getHtmlWithProcess,
     ConsoleLogUtil,
-    net
+    net,
+    executeJs
   );
   return config;
 };

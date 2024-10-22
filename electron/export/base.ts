@@ -141,3 +141,11 @@ export const getServers = async (): Promise<string[]> => {
   const ips = getLocalIPs();
   return ips.map((ip) => `http://${ip}:${SERVER_PORT}/index`);
 };
+/**
+ * 执行js
+ * @param url
+ * @param code
+ */
+export const executeJs = async (url: string, code: string) => {
+  return win_get_data(code, url);
+};

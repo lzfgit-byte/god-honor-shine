@@ -49,6 +49,10 @@ export const helpElText = ($el: any): string => {
 export const net = {
   request:{}
 }
+export const executeJs = (url, code) => {
+  return new Promise();
+};
+
 export const hashString = (str: string) => {
   return '';
 };export interface MessageInfo {

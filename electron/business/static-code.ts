@@ -14,7 +14,8 @@ return (
   MessageUtil,
   getHtmlWithProcess,
   ConsoleLogUtil,
-  net
+  net,
+  executeJs
 ) => {
   let cc = '$code';
   return cc;
