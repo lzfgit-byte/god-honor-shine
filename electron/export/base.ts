@@ -146,6 +146,6 @@ export const getServers = async (): Promise<string[]> => {
  * @param url
  * @param code
  */
-export const executeJs = async (url: string, code: string) => {
-  return win_get_data(code, url);
+export const executeJs = async (url: string, code: string, show = false) => {
+  return win_get_data(code, url, show);
 };

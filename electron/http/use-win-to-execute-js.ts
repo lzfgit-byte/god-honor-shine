@@ -1,20 +1,24 @@
 import { BrowserWindow } from 'electron';
+import { hashString } from '@ilzf/utils';
 import useProxySetting from '../setting/use-proxy-setting';
 import { getMainWin } from '../main';
+import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 
 /**
  * 使用新窗口获取数据，执行外部传入code，执行完毕后关闭
  * @param code
  * @param url
  */
-export const win_get_data = (code: string, url: string): Promise<any> => {
+export const win_get_data = (code: string, url: string, show = false): Promise<any> => {
   if (!code || !url) {
     return;
   }
+  const key = hashString(url);
+  NotifyMsgUtil.sendNotifyMsg('executeJs', '开始', key);
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    show: true,
+    show,
     title: 'picWindow',
     webPreferences: {
       nodeIntegration: true,
@@ -22,21 +26,31 @@ export const win_get_data = (code: string, url: string): Promise<any> => {
     },
   });
   useProxySetting(win);
+
   const webContents = win.webContents;
+  webContents.openDevTools();
   return new Promise((resolve) => {
+    NotifyMsgUtil.sendNotifyMsg('executeJs', '进入promise', key);
     const listener = () => {
       webContents
         .executeJavaScript(code)
         .then((res: string) => {
-          resolve(res);
+          if (res) {
+            NotifyMsgUtil.sendNotifyMsg('executeJs', '获取到数据', key);
+            resolve(res);
+            win?.destroy();
+          }
         })
-        .catch((reason) => {})
+        .catch((reason) => {
+          NotifyMsgUtil.sendNotifyMsg('executeJs', reason.toString(), key);
+        })
         .finally(() => {
-          webContents.off('did-finish-load', listener);
-          win?.destroy();
+          // webContents.off('did-finish-load', listener);
+          // win?.destroy();
+          NotifyMsgUtil.close(key);
         });
     };
-    webContents.on('did-finish-load', listener);
+    webContents.on('dom-ready', listener);
     win.loadURL(url);
   });
 };

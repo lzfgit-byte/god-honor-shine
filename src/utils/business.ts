@@ -282,6 +282,6 @@ export const f_getSeriesCurrentContent = async (): Promise<ComicHistory> => {
 export const f_getServers = async (): Promise<string[]> => {
   return executeFunction('getServers');
 };
-export const f_executeJs = async (url: string, code: string): Promise<any> => {
-  return executeFunction('executeJs', url, code);
+export const f_executeJs = async (url: string, code: string, show = false): Promise<any> => {
+  return executeFunction('executeJs', url, code, show);
 };
