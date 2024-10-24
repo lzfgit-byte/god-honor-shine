@@ -31,7 +31,10 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
   useProxySetting(win);
 
   const webContents = win.webContents;
-  webContents.openDevTools();
+  if (show) {
+    webContents.openDevTools();
+  }
+
   return new Promise((resolve) => {
     const keyEvt = 'executeJsInElectron';
     NotifyMsgUtil.sendNotifyMsg(keyEvt, '进入promise', key);
