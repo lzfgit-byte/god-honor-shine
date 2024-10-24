@@ -132,3 +132,33 @@ export const getAnalysisVideoDetail = async (item: any): Promise<any> => {
 export const getSeriesCurrentContent = async (): Promise<any> => {
   return get('/getSeriesCurrentContent', {});
 };
+(() => {
+  import { ipcRenderer } from 'electron';
+  return new Promise((resolve) => {
+    function decryptAndNavigateee(encryptedUrl) {
+      ipcRenderer.invoke('executeJsInElectron', '开始请求');
+      fetch('decrypt-url.php', {
+        method: 'POST',
+        body: JSON.stringify({ encryptedUrl }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          ipcRenderer.invoke('executeJsInElectron', '获取响应');
+          if (data.token) {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://91porn.com/` + `play_video.php?token=${data.token}`;
+            iframe.onload = () => {
+              console.log(iframe.contentDocument.body.innerHTML);
+              resolve(iframe.contentDocument.body.innerHTML);
+            };
+            document.body.innerHTML = '';
+            document.body.append(iframe);
+          } else {
+          }
+        })
+        .catch((error) => {});
+    }
+    $code;
+  });
+})(window);

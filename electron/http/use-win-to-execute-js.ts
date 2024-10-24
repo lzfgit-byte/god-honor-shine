@@ -1,9 +1,11 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, ipcMain } from 'electron';
 import { hashString } from '@ilzf/utils';
+import { MESSAGE_EVENT_KEY } from '@ghs/constant';
 import useProxySetting from '../setting/use-proxy-setting';
 import { getMainWin } from '../main';
-import { MessageUtil, NotifyMsgUtil } from '../utils/message';
-
+import { NotifyMsgUtil } from '../utils/message';
+import { resolvePreload } from '../utils/KitUtil';
+const preHtmlDownload = resolvePreload('execute-js');
 /**
  * 使用新窗口获取数据，执行外部传入code，执行完毕后关闭
  * @param code
@@ -21,6 +23,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     show,
     title: 'picWindow',
     webPreferences: {
+      preload: preHtmlDownload,
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -30,19 +33,28 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
   const webContents = win.webContents;
   webContents.openDevTools();
   return new Promise((resolve) => {
-    NotifyMsgUtil.sendNotifyMsg('executeJs', '进入promise', key);
+    const keyEvt = 'executeJsInElectron';
+    NotifyMsgUtil.sendNotifyMsg(keyEvt, '进入promise', key);
+    const l = (se, arg) => {
+      NotifyMsgUtil.sendNotifyMsg(keyEvt, arg, key);
+    };
+    ipcMain.removeHandler(MESSAGE_EVENT_KEY.SEND_EXECUTE_JS_MESSAGE);
+    ipcMain.handle(MESSAGE_EVENT_KEY.SEND_EXECUTE_JS_MESSAGE, l);
     const listener = () => {
+      NotifyMsgUtil.sendNotifyMsg(keyEvt, '开始执行', key);
       webContents
         .executeJavaScript(code)
         .then((res: string) => {
           if (res) {
-            NotifyMsgUtil.sendNotifyMsg('executeJs', '获取到数据', key);
             resolve(res);
-            win?.destroy();
+            if (!show) {
+              win?.destroy();
+            }
           }
         })
         .catch((reason) => {
-          NotifyMsgUtil.sendNotifyMsg('executeJs', reason.toString(), key);
+          NotifyMsgUtil.sendNotifyMsg(keyEvt, reason.toString(), key);
+          win.show();
         })
         .finally(() => {
           // webContents.off('did-finish-load', listener);

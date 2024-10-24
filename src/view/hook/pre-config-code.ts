@@ -49,7 +49,7 @@ export const helpElText = ($el: any): string => {
 export const net = {
   request:{}
 }
-export const executeJs = (url, code) => {
+export const executeJs = (url, code,flag=false) => {
   return new Promise();
 };
 
