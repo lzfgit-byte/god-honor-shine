@@ -42,9 +42,13 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
 function checkBoot() {
   // 检测人机校验
   const title = document.title.trim();
-  if (title.indexOf('Just a moment...') > -1 || title.indexOf('Checking your Browser') > -1) {
-    showWindow();
-    return false;
+  sendMessage(`【${title}】`);
+  let t = ['Just a moment...', 'Rule34.xxx CAPTCHA', 'Checking your Browser', 'CAPTCHA'];
+  for (let i = 0; i < t.length; i++) {
+    if (title.indexOf(t[i]) > -1) {
+      showWindow();
+      return false;
+    }
   }
   return true;
 }
