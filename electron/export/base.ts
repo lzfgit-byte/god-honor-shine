@@ -2,7 +2,7 @@ import { readFileSync, statSync } from 'node:fs';
 
 import { existsSync } from 'fs-extra';
 import { hashString } from '@ilzf/utils';
-import { CollectEntity, SERVER_PORT } from '@ghs/constant';
+import { CollectEntity, IS_CAN_CONTINUE, SERVER_PORT } from '@ghs/constant';
 import type { Detail, Item } from '@ghs/types';
 import { FileType } from '@ghs/types';
 import {
@@ -25,7 +25,7 @@ import { cache_clean } from '../utils';
  */
 export const getHtml = async (url: string) => {
   let html = (await requestHtml(url)) as any;
-  if (html?.indexOf('Just a moment...') > 0) {
+  if (!IS_CAN_CONTINUE(html)) {
     MessageUtil.info('request 失败，使用win');
     cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
@@ -46,8 +46,9 @@ export const getHtmlWithProcess = async (url: string) => {
   NotifyMsgUtil.close(key);
   eventEmitter.off(key, handle);
 
-  if (html?.indexOf('Just a moment...') > 0) {
+  if (!IS_CAN_CONTINUE(html)) {
     MessageUtil.info('request 失败，使用win');
+    cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
   }
   return html;

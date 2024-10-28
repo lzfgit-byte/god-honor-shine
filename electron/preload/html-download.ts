@@ -2,7 +2,7 @@
  * 通过窗口获取页面html的preload
  */
 import { ipcRenderer } from 'electron';
-import { USE_CHILD_WIN_EVENT } from '@ghs/constant';
+import { IS_CAN_CONTINUE, NEED_SHOW_WINDOW_TIPS, USE_CHILD_WIN_EVENT } from '@ghs/constant';
 
 const sendMessage = (msg: string) => {
   ipcRenderer
@@ -43,14 +43,11 @@ function checkBoot() {
   // 检测人机校验
   const title = document.title.trim();
   sendMessage(`【${title}】`);
-  let t = ['Just a moment...', 'Rule34.xxx CAPTCHA', 'Checking your Browser', 'CAPTCHA'];
-  for (let i = 0; i < t.length; i++) {
-    if (title.indexOf(t[i]) > -1) {
-      showWindow();
-      return false;
-    }
+  if (IS_CAN_CONTINUE(title)) {
+    return true;
   }
-  return true;
+  showWindow();
+  return false;
 }
 function blobToString(blob) {
   return new Promise((resolve, reject) => {
