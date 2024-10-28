@@ -41,7 +41,8 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
 
 function checkBoot() {
   // 检测人机校验
-  if (document.title.trim() === 'Just a moment...') {
+  const title = document.title.trim();
+  if (title.indexOf('Just a moment...') > -1 || title.indexOf('Checking your Browser') > -1) {
     showWindow();
     return false;
   }
