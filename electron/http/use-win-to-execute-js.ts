@@ -17,10 +17,12 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
   }
   const key = hashString(url);
   NotifyMsgUtil.sendNotifyMsg('executeJs', '开始', key);
+  const pw = getMainWin();
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     show,
+    parent: pw,
     title: 'picWindow',
     webPreferences: {
       preload: preHtmlDownload,
