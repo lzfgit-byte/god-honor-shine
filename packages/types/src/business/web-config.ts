@@ -71,7 +71,7 @@ export interface WebConfig extends BaseConfig {
   // 处理搜索问题时调用
   adapterSearchUrl: (url: string, item: Item) => string;
   // adapter
-  adapterRemoteSearch?: (searchKey: string) => Promise<string[]>;
+  adapterRemoteSearch?: (searchKey: string, cheerio: any) => Promise<string[]>;
   // 漫画处理,获取目录
   getContents?: (url: string, cheerio: any) => Promise<CContent[]>;
   // 漫画处理,获取图片
