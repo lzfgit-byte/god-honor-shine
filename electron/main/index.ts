@@ -28,8 +28,8 @@ async function createWindow() {
     icon: resolvePublic('favicon.ico'),
     webPreferences: {
       preload: resolvePreload('index'),
-      nodeIntegration: true,
-      contextIsolation: false,
+      // nodeIntegration: true,
+      // contextIsolation: false,
     },
   });
   useProxySetting(win);
@@ -41,7 +41,7 @@ async function createWindow() {
   useInitWebConfig();
   useServer();
   if (process.env.VITE_DEV_SERVER_URL) {
-    await win.loadURL(url);
+    await win.loadURL('https://www.99csw.com/');
     win.webContents.openDevTools();
   } else {
     await win.loadFile(indexHtml);
