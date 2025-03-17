@@ -41,7 +41,7 @@ async function createWindow() {
   useInitWebConfig();
   useServer();
   if (process.env.VITE_DEV_SERVER_URL) {
-    await win.loadURL('https://www.99csw.com/');
+    await win.loadURL(url);
     win.webContents.openDevTools();
   } else {
     await win.loadFile(indexHtml);
