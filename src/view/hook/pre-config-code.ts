@@ -169,6 +169,14 @@ const getData = (): WebConfig => /* break */ ({
     return res;
   },
   async getDetailInfo(item, cheerio) {
+      //return {
+       // detailType: 'mp4',
+        //renderType: 'normal',
+       // details: [
+       //   { type: 'mp4', url: videoUrl, title: helpElText($span) ,comments},
+       // ],
+       // relations: [],
+      //};
      return {
       detailType: 'win',
       renderType: 'normal',
