@@ -28,8 +28,8 @@ async function createWindow() {
     icon: resolvePublic('favicon.ico'),
     webPreferences: {
       preload: resolvePreload('index'),
-      // nodeIntegration: true,
-      // contextIsolation: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
   useProxySetting(win);

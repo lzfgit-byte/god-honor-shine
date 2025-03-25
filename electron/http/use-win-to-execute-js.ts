@@ -1,10 +1,11 @@
-import { BrowserWindow, ipcMain } from 'electron';
+import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import { hashString } from '@ilzf/utils';
-import { MESSAGE_EVENT_KEY } from '@ghs/constant';
+import { MESSAGE_EVENT_KEY, SHORTCUTS } from '@ghs/constant';
 import useProxySetting from '../setting/use-proxy-setting';
 import { getMainWin } from '../main';
-import { NotifyMsgUtil } from '../utils/message';
+import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { resolvePreload } from '../utils/KitUtil';
+
 const preHtmlDownload = resolvePreload('execute-js');
 /**
  * 使用新窗口获取数据，执行外部传入code，执行完毕后关闭
@@ -13,6 +14,7 @@ const preHtmlDownload = resolvePreload('execute-js');
  */
 export const win_get_data = (code: string, url: string, show = false): Promise<any> => {
   if (!code || !url) {
+    MessageUtil.info('没有执行代码');
     return;
   }
   const key = hashString(url);
@@ -26,8 +28,8 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     title: 'picWindow',
     webPreferences: {
       preload: preHtmlDownload,
-      nodeIntegration: true,
-      contextIsolation: false,
+      // nodeIntegration: true,
+      // contextIsolation: false,
     },
   });
   useProxySetting(win);
@@ -36,6 +38,10 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
   if (show) {
     webContents.openDevTools();
   }
+  globalShortcut.unregister(SHORTCUTS.OPEN_JS_WIN);
+  globalShortcut.register(SHORTCUTS.OPEN_JS_WIN, () => {
+    win?.show();
+  });
 
   return new Promise((resolve) => {
     const keyEvt = 'executeJsInElectron';
@@ -54,6 +60,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
             resolve(res);
             if (!show) {
               win?.destroy();
+              globalShortcut.unregister(SHORTCUTS.OPEN_JS_WIN);
             }
           }
         })

@@ -16,7 +16,7 @@ export const NEED_SHOW_WINDOW_TIPS = [
 
 export const IS_CAN_CONTINUE = (title: string) => {
   for (let i = 0; i < NEED_SHOW_WINDOW_TIPS.length; i++) {
-    if (title.indexOf(NEED_SHOW_WINDOW_TIPS[i]) > -1) {
+    if (title?.indexOf(NEED_SHOW_WINDOW_TIPS[i]) > -1) {
       return false;
     }
   }
