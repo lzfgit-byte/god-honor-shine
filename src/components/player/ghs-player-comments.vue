@@ -36,6 +36,7 @@
         :key="item.comment"
         :datetime="item.datetime"
         :comment="item.comment"
+        :image="item.image"
       >
       </GhsComment>
     </div>
