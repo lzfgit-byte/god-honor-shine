@@ -40,6 +40,7 @@ declare module 'vue' {
     GhsPlayer: typeof import('./src/components/player/ghs-player.vue')['default']
     GhsPlayerComments: typeof import('./src/components/player/ghs-player-comments.vue')['default']
     GhsPlayerSeries: typeof import('./src/components/player/ghs-player-series.vue')['default']
+    GhsScrollEasy: typeof import('./src/components/scrollEasy/ghs-scroll-easy.vue')['default']
     GhsScroller: typeof import('./src/components/scroller/ghs-scroller.vue')['default']
     GhsTag: typeof import('./src/components/tag/ghs-tag.vue')['default']
     GhsText: typeof import('./src/components/text/ghs-text.vue')['default']

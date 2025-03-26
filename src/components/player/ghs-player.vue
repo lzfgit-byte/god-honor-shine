@@ -18,8 +18,8 @@
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
       <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
     </div>
-    <template v-if="urlsRef?.length > 0" #headerRightTag>
-      <div flex-inline mt-5px>
+    <template #headerRightTag>
+      <GhsScrollEasy>
         <GhsTag
           v-for="(item, index) in urlsRef"
           :key="item.url + index"
@@ -29,7 +29,7 @@
         >
           {{ item.quality }}
         </GhsTag>
-      </div>
+      </GhsScrollEasy>
     </template>
   </GhsDialog>
 </template>
@@ -44,6 +44,7 @@
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
   import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
+  import GhsScrollEasy from '@/components/scrollEasy/ghs-scroll-easy.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();
