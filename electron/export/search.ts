@@ -19,14 +19,12 @@ export const searchRecommend = async (search: string): Promise<string[]> => {
     order: { createTime: 'DESC' },
   });
 
+  const business = getCurrentBusiness(getCurrentKey());
   const wc = getWebConfigByKey(getCurrentKey());
   if (ents.length > wc.historyRemember) {
     await SearchHistoryEntity.delete(ents.slice(wc.historyRemember).map((item) => item.id));
   }
-  if (wc.adapterRemoteSearch) {
-    return [...(await wc.adapterRemoteSearch(search)), ...ents.map((item) => item.value)];
-  }
-  return [...ents.map((item) => item.value)];
+  return [...(await business.adapterRemoteSearch(search)), ...ents.map((item) => item.value)];
 };
 /**
  * 删除搜索记录

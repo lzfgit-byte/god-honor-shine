@@ -26,6 +26,8 @@ class BaseBusiness extends NormalFunc {
   private comicDetailUrl = '';
   private currentUrl = '';
   private currentItem: Item = null;
+  private searchLock = false;
+  private searchCache = {};
   $: CheerioAPI;
   webConfig: WebConfig;
   public constructor(key: string, code: WebConfig) {
@@ -111,10 +113,14 @@ class BaseBusiness extends NormalFunc {
       url = this.webConfig.adapterLoadUrl(url, this.webConfig.currentUrlReplace);
       this.currentUrl = url;
     }
+    this.webConfig.currentUrl = this.currentUrl;
     LogMsgUtil.sendLogMsg('页面加载：', this.webConfig.key, 'url>', url, '\ncu>', this.currentUrl);
 
-    const html = await getHtml(url);
+    const html = isFunction(this.webConfig?.adapterGetHtml)
+      ? await this.webConfig?.adapterGetHtml(url)
+      : await getHtml(url);
     this.$ = cheerio.load(html);
+    this.searchLock = false;
     return {
       items: this.getItems(),
       pagination: this.getPagination(),
@@ -146,6 +152,25 @@ class BaseBusiness extends NormalFunc {
       return;
     }
     return this.webConfig.adapterSearchUrl(keyword, item);
+  }
+
+  public async adapterRemoteSearch(searchKey: string): Promise<string[]> {
+    if (!this.webConfig.adapterRemoteSearch) {
+      return [];
+    }
+    if (this.searchCache[searchKey]) {
+      LogMsgUtil.sendLogMsg('缓存命中');
+      return this.searchCache[searchKey];
+    }
+    if (this.searchLock) {
+      LogMsgUtil.sendLogMsg('锁定');
+      return this.searchCache[searchKey] || [];
+    }
+    this.searchLock = true;
+    const res = await this.webConfig.adapterRemoteSearch(searchKey, cheerio);
+    this.searchCache[searchKey] = res;
+    this.searchLock = false;
+    return res;
   }
 
   /**

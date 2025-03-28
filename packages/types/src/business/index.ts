@@ -65,6 +65,7 @@ export interface UrlReplace {
 export interface Comment {
   datetime: string;
   comment: string;
+  image?: string;
 }
 
 /**

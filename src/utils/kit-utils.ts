@@ -4,6 +4,6 @@ export const notify = (key: any, msg: string, title: string, close = false) => {
     key,
     message: title,
     description: msg,
-    duration: close ? 1 : 4,
+    duration: close ? 1 : 20,
   });
 };

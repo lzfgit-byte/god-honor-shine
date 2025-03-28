@@ -46,6 +46,13 @@ export const helpElAttr = ($el: any, attr: string): string => {
 export const helpElText = ($el: any): string => {
   return $el?.text() || '';
 };
+export const net = {
+  request:{}
+}
+export const executeJs = (url, code,flag=false) => {
+  return new Promise();
+};
+
 export const hashString = (str: string) => {
   return '';
 };export interface MessageInfo {
@@ -162,6 +169,14 @@ const getData = (): WebConfig => /* break */ ({
     return res;
   },
   async getDetailInfo(item, cheerio) {
+      //return {
+       // detailType: 'mp4',
+        //renderType: 'normal',
+       // details: [
+       //   { type: 'mp4', url: videoUrl, title: helpElText($span) ,comments},
+       // ],
+       // relations: [],
+      //};
      return {
       detailType: 'win',
       renderType: 'normal',

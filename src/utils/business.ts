@@ -16,6 +16,7 @@ import type { CollectEntity, ComicHistory, ConfigEntity, ViewedHistoryEntity } f
 import { debounce } from 'lodash';
 import { getCurrentBusiness } from '../../electron/business/business';
 import { getCurrentKey } from '../../electron/business/use-init-web-config';
+import { executeJs } from '../../electron/export';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -277,4 +278,10 @@ export const f_getAnalysisVideoDetail = async (
 };
 export const f_getSeriesCurrentContent = async (): Promise<ComicHistory> => {
   return executeFunction('getSeriesCurrentContent');
+};
+export const f_getServers = async (): Promise<string[]> => {
+  return executeFunction('getServers');
+};
+export const f_executeJs = async (url: string, code: string, show = false): Promise<any> => {
+  return executeFunction('executeJs', url, code, show);
 };

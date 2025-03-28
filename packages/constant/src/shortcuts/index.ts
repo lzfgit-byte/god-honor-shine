@@ -14,4 +14,8 @@ export const SHORTCUTS = {
    *打开当前窗口的 devtools
    */
   OPEN_DEV_TOOLS: 'ctrl+alt+e',
+  /**
+   * 打开执行js窗口
+   */
+  OPEN_JS_WIN: 'ctrl+alt+j',
 };

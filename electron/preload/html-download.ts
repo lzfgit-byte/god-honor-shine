@@ -2,7 +2,7 @@
  * 通过窗口获取页面html的preload
  */
 import { ipcRenderer } from 'electron';
-import { USE_CHILD_WIN_EVENT } from '@ghs/constant';
+import { IS_CAN_CONTINUE, NEED_SHOW_WINDOW_TIPS, USE_CHILD_WIN_EVENT } from '@ghs/constant';
 
 const sendMessage = (msg: string) => {
   ipcRenderer
@@ -23,9 +23,9 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
   return new Promise((resolve, reject) => {
     try {
       const timer = setTimeout(() => {
-        sendMessage('五秒超时文档未准备好');
+        sendMessage('十秒超时文档未准备好');
         reject('超时');
-      }, 5000);
+      }, 10000);
       document.addEventListener('readystatechange', () => {
         if (condition.includes(document.readyState)) {
           resolve(true);
@@ -41,11 +41,13 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
 
 function checkBoot() {
   // 检测人机校验
-  if (document.title.trim() === 'Just a moment...') {
-    showWindow();
-    return false;
+  const title = document.title.trim();
+  sendMessage(`【${title}】`);
+  if (IS_CAN_CONTINUE(title)) {
+    return true;
   }
-  return true;
+  showWindow();
+  return false;
 }
 function blobToString(blob) {
   return new Promise((resolve, reject) => {

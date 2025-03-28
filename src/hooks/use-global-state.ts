@@ -3,7 +3,6 @@ import type { BaseConfig, Item, Pagination, SetTag, Tag, UrlReplace } from '@ghs
 import type { CollectEntity, ConfigEntity } from '@ghs/constant';
 import { computed } from 'vue';
 import { message } from 'ant-design-vue';
-import { useTextSelection } from '@vueuse/core';
 
 import { f_getCurrentWebConfig, f_listSystemConfig } from '@/utils/business';
 
@@ -21,6 +20,7 @@ const currentUrl = ref();
 const cacheSize = ref();
 const loading = ref(false);
 const logs = ref([]);
+const showCloseIcon = ref(false);
 
 const drawerOpen = ref(false);
 const segmentedValue = ref<SetTag>();
@@ -39,12 +39,12 @@ let timer = null;
 watch(loading, () => {
   if (loading.value) {
     timer = setTimeout(() => {
-      message.warn('loading timeout：10000').then(() => 1);
-      loading.value = false;
+      showCloseIcon.value = true;
     }, 10000);
   } else {
     timer && clearTimeout(timer);
     timer = null;
+    showCloseIcon.value = false;
   }
 });
 
@@ -77,4 +77,5 @@ export default () => ({
   init,
   systemConfigs,
   loadSysConfig,
+  showCloseIcon,
 });

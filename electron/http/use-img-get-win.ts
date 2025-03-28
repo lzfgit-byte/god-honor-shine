@@ -63,11 +63,15 @@ const getAFreeWin = async (): Promise<BrowserWindow> => {
   }
   return createNewWin();
 };
-
+let alwaysSend = 0;
 const timer = setInterval(async () => {
   const { imgWinMin } = await useSystemSetting();
   if (childWinds.length > 0) {
-    LogMsgUtil.sendLogMsg('现在运行的子窗口的数量是:', `${childWinds.length}`);
+    if (alwaysSend !== childWinds.length) {
+      LogMsgUtil.sendLogMsg('现在运行的子窗口的数量是:', `${childWinds.length}`);
+      alwaysSend = childWinds.length;
+    }
+
     for (let i = childWinds.length - 1; i > imgWinMin; i--) {
       if (childWinds[i].free) {
         childWinds[i].win.close();

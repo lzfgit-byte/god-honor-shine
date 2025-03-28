@@ -2,7 +2,7 @@ import { readFileSync, statSync } from 'node:fs';
 
 import { existsSync } from 'fs-extra';
 import { hashString } from '@ilzf/utils';
-import { CollectEntity } from '@ghs/constant';
+import { CollectEntity, IS_CAN_CONTINUE, SERVER_PORT } from '@ghs/constant';
 import type { Detail, Item } from '@ghs/types';
 import { FileType } from '@ghs/types';
 import {
@@ -16,7 +16,7 @@ import {
 } from '../http';
 import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { app_set_config_dir } from '../const/app-paths';
-import { eventEmitter } from '../utils/KitUtil';
+import { eventEmitter, getLocalIPs } from '../utils/KitUtil';
 import { cache_clean } from '../utils';
 
 /**
@@ -25,7 +25,7 @@ import { cache_clean } from '../utils';
  */
 export const getHtml = async (url: string) => {
   let html = (await requestHtml(url)) as any;
-  if (html?.indexOf('Just a moment...') > 0) {
+  if (!IS_CAN_CONTINUE(html)) {
     MessageUtil.info('request 失败，使用win');
     cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
@@ -46,8 +46,9 @@ export const getHtmlWithProcess = async (url: string) => {
   NotifyMsgUtil.close(key);
   eventEmitter.off(key, handle);
 
-  if (html?.indexOf('Just a moment...') > 0) {
+  if (!IS_CAN_CONTINUE(html)) {
     MessageUtil.info('request 失败，使用win');
+    cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
   }
   return html;
@@ -133,3 +134,19 @@ export const importFavorite = async (path: string) => {
  * 收藏导出
  */
 export const exportFavorite = async (path: string) => {};
+
+/**
+ * 获取服务地址
+ */
+export const getServers = async (): Promise<string[]> => {
+  const ips = getLocalIPs();
+  return ips.map((ip) => `http://${ip}:${SERVER_PORT}/index`);
+};
+/**
+ * 执行js
+ * @param url
+ * @param code
+ */
+export const executeJs = async (url: string, code: string, show = false) => {
+  return win_get_data(code, url, show);
+};

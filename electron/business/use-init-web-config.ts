@@ -5,7 +5,8 @@ import { keys } from 'lodash';
 import { base64ToStr, hashString, isFunction } from '@ilzf/utils';
 
 import { ElementAttr, ElementTypes, WebConfigEntity, breakStr } from '@ghs/constant';
-import { getHtml, getHtmlWithProcess, listWebConfig } from '../export';
+import { net } from 'electron';
+import { executeJs, getHtml, getHtmlWithProcess, listWebConfig } from '../export';
 import { ConsoleLogUtil, LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
@@ -72,7 +73,9 @@ export const parseWebConfig = (code: string) => {
     getCurrentItems,
     MessageUtil,
     getHtmlWithProcess,
-    ConsoleLogUtil
+    ConsoleLogUtil,
+    net,
+    executeJs
   );
   return config;
 };

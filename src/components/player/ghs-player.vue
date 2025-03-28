@@ -18,16 +18,18 @@
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
       <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
     </div>
-    <template v-if="urlsRef?.length > 0" #footer>
-      <GhsTag
-        v-for="(item, index) in urlsRef"
-        :key="item.url + index"
-        :show-gap="true"
-        :type="srcComp === item.url ? 'info' : 'waring'"
-        @click="handleClick(item)"
-      >
-        {{ item.quality }}
-      </GhsTag>
+    <template #headerRightTag>
+      <GhsScrollEasy>
+        <GhsTag
+          v-for="(item, index) in urlsRef"
+          :key="item.url + index"
+          :show-gap="true"
+          :type="srcComp === item.url ? 'info' : 'waring'"
+          @click="handleClick(item)"
+        >
+          {{ item.quality }}
+        </GhsTag>
+      </GhsScrollEasy>
     </template>
   </GhsDialog>
 </template>
@@ -42,6 +44,7 @@
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
   import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
   import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
+  import GhsScrollEasy from '@/components/scrollEasy/ghs-scroll-easy.vue';
   const visible = ref(false);
   const srcComp = ref<String>();
   const titleComp = ref<String>();
@@ -97,6 +100,9 @@
       const c = urls.map((i) => parseInt(i.quality)).reduce((c, n) => (c > n ? c : n), 0);
       srcComp.value = urls.find((i) => parseInt(i.quality) === c)?.url;
       videoVisible.value = true;
+      if (urls[0].comments?.length > 0) {
+        comments.value = urls[0].comments;
+      }
     },
     showSeries: (detailInfo: DetailInfo, title: string) => {
       reset();

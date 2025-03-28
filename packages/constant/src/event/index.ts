@@ -7,3 +7,18 @@ export const USE_CHILD_WIN_EVENT = {
   SHOW_WIN: 'show_win', // 展示弹出窗口
   STEP_MESSAGE: 'step_message', // 步进信息
 };
+export const NEED_SHOW_WINDOW_TIPS = [
+  'Just a moment...',
+  'Rule34.xxx CAPTCHA',
+  'Checking your Browser',
+  'CAPTCHA',
+];
+
+export const IS_CAN_CONTINUE = (title: string) => {
+  for (let i = 0; i < NEED_SHOW_WINDOW_TIPS.length; i++) {
+    if (title && title?.indexOf(NEED_SHOW_WINDOW_TIPS[i]) > -1) {
+      return false;
+    }
+  }
+  return true;
+};

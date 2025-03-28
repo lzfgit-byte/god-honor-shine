@@ -44,6 +44,7 @@ export interface BaseConfig {
   winHeight?: number;
 
   currentUrlReplace: UrlReplace[];
+  currentUrl?: string;
 
   adapterImageCode?: string;
   comicImgMaxWidth?: string;
@@ -53,6 +54,8 @@ export interface BaseConfig {
 export interface WebConfig extends BaseConfig {
   // 获取首页条件更改时的 replace 列表
   getUrlReplace: ($: CheerioAPI) => UrlReplace[];
+  // 自定义html获取
+  adapterGetHtml?: (url: string) => Promise<any>;
 
   // 获取页面元素
   getItems: ($: CheerioAPI) => Item[];
@@ -68,7 +71,7 @@ export interface WebConfig extends BaseConfig {
   // 处理搜索问题时调用
   adapterSearchUrl: (url: string, item: Item) => string;
   // adapter
-  adapterRemoteSearch?: (searchKey: string) => Promise<string[]>;
+  adapterRemoteSearch?: (searchKey: string, cheerio: any) => Promise<string[]>;
   // 漫画处理,获取目录
   getContents?: (url: string, cheerio: any) => Promise<CContent[]>;
   // 漫画处理,获取图片

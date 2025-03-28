@@ -4,8 +4,22 @@
     <span class="binary"></span>
     <span class="getting-there">LOADING STUFF...</span>
   </div>
+  <a-float-button
+    v-if="showCloseIcon"
+    type="default"
+    :style="{ right: '30px', bottom: '30px' }"
+    @click="loading = false"
+  >
+    <template #icon>
+      <CloseOutlined />
+    </template>
+  </a-float-button>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { CloseOutlined } from '@ant-design/icons-vue';
+  import useGlobalState from '@/hooks/use-global-state';
+  const { showCloseIcon, loading } = useGlobalState();
+</script>
 
 <style scoped lang="less">
   html,
