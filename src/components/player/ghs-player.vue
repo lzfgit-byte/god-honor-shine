@@ -14,10 +14,11 @@
         :src="srcComp"
         :title="titleComp"
         :type="typeComp"
+        :on-error="playOnError"
       ></VideoHtml5>
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
       <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
-      <GhsOpenInWin :url="srcComp"></GhsOpenInWin>
+      <GhsOpenInWin ref="openInWind" :url="srcComp"></GhsOpenInWin>
     </div>
     <template #headerRightTag>
       <GhsScrollEasy>
@@ -60,6 +61,7 @@
   const drawerOpen = ref(false);
   const comments = ref<Comment[]>([]);
   const analysis = ref<Analysis[]>();
+  const openInWind = ref();
   const handleSeriesChange = (item: AnalysisVideoDetail[]) => {
     if (item.length === 1) {
       if (!item[0].url) {
@@ -79,6 +81,9 @@
     srcComp.value = '';
     titleComp.value = '';
     analysis.value = [];
+  };
+  const playOnError = () => {
+    openInWind?.value?.openWithWin();
   };
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {

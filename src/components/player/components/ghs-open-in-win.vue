@@ -19,21 +19,21 @@
 </template>
 <script setup lang="ts">
   import { YoutubeOutlined } from '@ant-design/icons-vue';
-  import { ref } from 'vue';
   import { f_winOpenAny } from '@/utils/business';
   import useGlobalState from '@/hooks/use-global-state';
   const props = defineProps({ url: String });
 
   const { webConfig } = useGlobalState();
-  const defaultWind = ref(false);
   const openWithWin = async () => {
+    const divHtml: HTMLDivElement = document.querySelector('#mui-player');
     await f_winOpenAny(
       props?.url,
       webConfig.value?.ifWinExecCode,
-      webConfig.value?.winWidth,
-      webConfig.value?.winHeight
+      divHtml?.clientWidth || webConfig.value?.winWidth,
+      (divHtml?.clientHeight || webConfig.value?.winHeight) + 50
     );
   };
+  defineExpose({ openWithWin });
 </script>
 
 <style scoped lang="less"></style>

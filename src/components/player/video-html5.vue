@@ -14,6 +14,7 @@
   import MuiPlayerDesktopPlugin from 'mui-player-desktop-plugin';
   import type { PropType } from 'vue-demi';
   import { debounce } from 'lodash';
+  import { executeFunc } from '@ilzf/utils';
   import type { VideoType } from '@/components/player/types';
   import { notify } from '@/utils/kit-utils';
 
@@ -21,6 +22,7 @@
     src: String,
     title: String,
     type: String as PropType<VideoType>,
+    onError: Function,
   });
   let mp;
   let parse = {};
@@ -50,6 +52,7 @@
     });
     const errFunc = debounce(() => {
       notify(1, props.src, '视频播放错误');
+      executeFunc(props?.onError);
     }, 10);
     mp.on('error', errFunc);
   });

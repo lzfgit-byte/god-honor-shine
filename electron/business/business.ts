@@ -11,6 +11,7 @@ import type {
 } from '@ghs/types';
 import * as cheerio from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
+// @ts-ignore
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { isFalsity, isFunction } from '@ilzf/utils';
