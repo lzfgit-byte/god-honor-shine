@@ -17,6 +17,7 @@
       ></VideoHtml5>
       <GhsPlayerComments :comments="comments"></GhsPlayerComments>
       <GhsPlayerSeries :analysis="analysis" @change="handleSeriesChange"></GhsPlayerSeries>
+      <GhsOpenInWin :url="srcComp"></GhsOpenInWin>
     </div>
     <template #headerRightTag>
       <GhsScrollEasy>
@@ -42,12 +43,13 @@
   import type { VideoType } from '@/components/player/types';
   import GhsTag from '@/components/tag/ghs-tag.vue';
   import GhsDialog from '@/components/dialog/ghs-dialog.vue';
-  import GhsPlayerComments from '@/components/player/ghs-player-comments.vue';
-  import GhsPlayerSeries from '@/components/player/ghs-player-series.vue';
+  import GhsPlayerComments from '@/components/player/components/ghs-player-comments.vue';
+  import GhsPlayerSeries from '@/components/player/components/ghs-player-series.vue';
   import GhsScrollEasy from '@/components/scrollEasy/ghs-scroll-easy.vue';
+  import GhsOpenInWin from '@/components/player/components/ghs-open-in-win.vue';
   const visible = ref(false);
-  const srcComp = ref<String>();
-  const titleComp = ref<String>();
+  const srcComp = ref<string>();
+  const titleComp = ref<string>();
   const typeComp = ref<'m3u8' | 'mp4'>();
   const urlsRef = ref();
   const videoVisible = ref(false);

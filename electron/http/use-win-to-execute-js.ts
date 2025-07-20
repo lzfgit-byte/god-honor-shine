@@ -83,7 +83,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
  * 打开新窗口，并执行相应的代码。不会关闭
  */
 
-export const win_open = (url: string, code = '', width = 800, height = 800) => {
+export const win_open = (url: string, code = '', width = 1200, height = 800) => {
   if (!url) {
     return;
   }
