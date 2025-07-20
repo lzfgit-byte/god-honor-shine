@@ -15,6 +15,7 @@
   import type { PropType } from 'vue-demi';
   import { debounce } from 'lodash';
   import { executeFunc } from '@ilzf/utils';
+  import { LogMsgUtil } from '../../../electron/utils/message';
   import type { VideoType } from '@/components/player/types';
   import { notify } from '@/utils/kit-utils';
 
@@ -51,7 +52,7 @@
       parse,
     });
     const errFunc = debounce(() => {
-      notify(1, props.src, '视频播放错误');
+      LogMsgUtil.sendLogMsg(`${props.src}  --视频播放错误`);
       executeFunc(props?.onError);
     }, 10);
     mp.on('error', errFunc);
