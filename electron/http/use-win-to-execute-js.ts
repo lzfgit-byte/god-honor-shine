@@ -94,7 +94,7 @@ export const win_open = (url: string, code = '', width = 1200, height = 800) => 
     parent: winW,
     show: true,
     modal: true,
-    title: '',
+    title: url,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

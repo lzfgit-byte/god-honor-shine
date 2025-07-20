@@ -48,6 +48,7 @@
   import GhsPlayerSeries from '@/components/player/components/ghs-player-series.vue';
   import GhsScrollEasy from '@/components/scrollEasy/ghs-scroll-easy.vue';
   import GhsOpenInWin from '@/components/player/components/ghs-open-in-win.vue';
+  import { notify } from '@/utils/kit-utils';
   const visible = ref(false);
   const srcComp = ref<string>();
   const titleComp = ref<string>();
@@ -83,7 +84,11 @@
     analysis.value = [];
   };
   const playOnError = () => {
-    openInWind?.value?.openWithWin();
+    if (typeComp.value === 'mp4') {
+      openInWind?.value?.openWithWin();
+      return;
+    }
+    notify(1, srcComp.value, '视频播放错误');
   };
   defineExpose({
     show: (src: string, title: string, type: VideoType, comments_?: Comment[]) => {
