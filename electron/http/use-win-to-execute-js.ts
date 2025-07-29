@@ -6,7 +6,7 @@ import useProxySetting from '../setting/use-proxy-setting';
 import { getMainWin } from '../main';
 import { MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { resolvePreload } from '../utils/KitUtil';
-import { cache_save } from '../utils';
+import { cache_get, cache_save } from '../utils';
 
 const preHtmlDownload = resolvePreload('execute-js');
 /**
@@ -19,6 +19,10 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     MessageUtil.info('没有执行代码');
     return;
   }
+  const html = cache_get(url, FileType.HTML);
+  if (html) {
+    return Promise.resolve(html);
+  }
   const key = hashString(url);
   NotifyMsgUtil.sendNotifyMsg('executeJs', '开始', key);
   const pw = getMainWin();
@@ -27,7 +31,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     height: 788,
     show,
     parent: pw,
-    title: 'picWindow',
+    title: url,
     webPreferences: {
       preload: preHtmlDownload,
       nodeIntegration: true,
@@ -54,9 +58,11 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     ipcMain.removeHandler(MESSAGE_EVENT_KEY.SEND_EXECUTE_JS_MESSAGE);
     ipcMain.handle(MESSAGE_EVENT_KEY.SEND_EXECUTE_JS_MESSAGE, l);
 
+    ipcMain.removeHandler(USE_CHILD_WIN_EVENT.JS_SHOW_WIN);
     ipcMain.handle(USE_CHILD_WIN_EVENT.JS_SHOW_WIN, () => {
       win?.show();
     });
+    ipcMain.removeHandler(USE_CHILD_WIN_EVENT.JS_HIDE_WIN);
     ipcMain.handle(USE_CHILD_WIN_EVENT.JS_HIDE_WIN, () => {
       win?.hide();
     });
