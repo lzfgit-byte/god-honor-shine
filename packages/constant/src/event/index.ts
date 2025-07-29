@@ -6,6 +6,9 @@ export const USE_CHILD_WIN_EVENT = {
   HIDE_WIN: 'hide_win', // 隐藏弹出窗口
   SHOW_WIN: 'show_win', // 展示弹出窗口
   STEP_MESSAGE: 'step_message', // 步进信息
+  JS_SEND_HTML: 'js_send_html', // 发送html的事件
+  JS_HIDE_WIN: 'js_hide_win', // 隐藏弹出窗口
+  JS_SHOW_WIN: 'js_show_win', // 展示弹出窗口
 };
 export const NEED_SHOW_WINDOW_TIPS = [
   'Just a moment...',
