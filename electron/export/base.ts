@@ -14,7 +14,7 @@ import {
   win_get_data,
   win_open,
 } from '../http';
-import { MessageUtil, NotifyMsgUtil } from '../utils/message';
+import { LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { app_set_config_dir } from '../const/app-paths';
 import { eventEmitter, getLocalIPs } from '../utils/KitUtil';
 import { cache_clean } from '../utils';
@@ -26,7 +26,7 @@ import { cache_clean } from '../utils';
 export const getHtml = async (url: string) => {
   let html = (await requestHtml(url)) as any;
   if (!IS_CAN_CONTINUE(html)) {
-    MessageUtil.info('request 失败，使用win');
+    LogMsgUtil.sendLogMsg('request 失败，使用win');
     cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
   }
@@ -47,7 +47,7 @@ export const getHtmlWithProcess = async (url: string) => {
   eventEmitter.off(key, handle);
 
   if (!IS_CAN_CONTINUE(html)) {
-    MessageUtil.info('request 失败，使用win');
+    LogMsgUtil.sendLogMsg('request 失败，使用win');
     cache_clean(url, FileType.HTML);
     html = await requestHtmlByWin(url);
   }
