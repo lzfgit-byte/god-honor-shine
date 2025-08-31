@@ -3,7 +3,38 @@ import { ipcRenderer } from 'electron';
 /**
  * 通过窗口获取页面html的preload
  */
-import { IS_CAN_CONTINUE, MESSAGE_EVENT_KEY, USE_CHILD_WIN_EVENT } from '@ghs/constant';
+const USE_CHILD_WIN_EVENT = {
+  SEND_HTML: 'send_html', // 发送html的事件
+  HIDE_WIN: 'hide_win', // 隐藏弹出窗口
+  SHOW_WIN: 'show_win', // 展示弹出窗口
+  STEP_MESSAGE: 'step_message', // 步进信息
+  JS_SEND_HTML: 'js_send_html', // 发送html的事件
+  JS_HIDE_WIN: 'js_hide_win', // 隐藏弹出窗口
+  JS_SHOW_WIN: 'js_show_win', // 展示弹出窗口
+};
+const NEED_SHOW_WINDOW_TIPS = [
+  'Just a moment...',
+  'Rule34.xxx CAPTCHA',
+  'Checking your Browser',
+  'CAPTCHA',
+];
+const MESSAGE_EVENT_KEY = {
+  SEND_MESSAGE: 'send_message', // 发送提示信息
+  SEND_NOTIFY_MESSAGE: 'send_notify_message', // 发送侧边信息
+  SEND_LOG_MESSAGE: 'send_log_message', // 发送日志信息
+  SEND_PROCESS_MESSAGE: 'send_process_message', // 发送进度条信息
+  SEND_STEP_MESSAGE: 'send_step_message',
+  SEND_CONSOLE_LOG: 'send_console_log',
+  SEND_EXECUTE_JS_MESSAGE: 'send_execute_js_message',
+};
+const IS_CAN_CONTINUE = (title: string) => {
+  for (let i = 0; i < NEED_SHOW_WINDOW_TIPS.length; i++) {
+    if (title && title?.indexOf(NEED_SHOW_WINDOW_TIPS[i]) > -1) {
+      return false;
+    }
+  }
+  return true;
+};
 // @ts-ignore
 const sendMessage = (msg: string) => {
   ipcRenderer.invoke(MESSAGE_EVENT_KEY.SEND_EXECUTE_JS_MESSAGE, msg);

@@ -34,7 +34,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     title: url,
     webPreferences: {
       preload: preHtmlDownload,
-      nodeIntegration: true,
+      nodeIntegration: false,
       contextIsolation: false,
     },
   });

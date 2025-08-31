@@ -9,7 +9,7 @@
   >
     <div id="ghs-video-container-id" min-h-80vh relative>
       <VideoHtml5
-        v-if="videoVisible && visible"
+        v-if="videoVisible && visible && srcComp"
         :key="srcComp"
         :src="srcComp"
         :title="titleComp"
