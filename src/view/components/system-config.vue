@@ -33,6 +33,29 @@
         </a-col>
       </a-row>
     </a-card>
+    <a-card title="移动文件">
+      <template #extra>
+        <a-button @click="handleMoveFile">移动文件</a-button>
+      </template>
+      <a-row>
+        <a-col :span="4"> 源地址 </a-col>
+        <a-col :span="18">
+          <a-input v-model:value="sourceDir" auto-size placeholder="url"></a-input>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="4"> 目标地址 </a-col>
+        <a-col :span="18">
+          <a-input v-model:value="targetDir" auto-size placeholder="url"></a-input>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="4"> 关键字 </a-col>
+        <a-col :span="18">
+          <a-input v-model:value="keyword" auto-size placeholder="url"></a-input>
+        </a-col>
+      </a-row>
+    </a-card>
     <a-card title="执行js">
       <template #extra>
         <a-button @click="executeJS">执行js</a-button>
@@ -110,7 +133,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { hashString, isFalsity } from '@ilzf/utils';
   import { QRCode, message } from 'ant-design-vue';
   import { reactive, watchEffect } from 'vue-demi';
@@ -121,6 +144,8 @@
     f_getImage,
     f_getServers,
     f_importFavorite,
+    f_pluginGetMove,
+    f_pluginMoveFiles,
     f_restartAPP,
     f_updateSystemConfig,
   } from '@/utils/business';
@@ -198,6 +223,21 @@
   const executeJS = async () => {
     executeRes.value = await f_executeJs(executeUrl.value, executeCode.value);
   };
+  /**
+   * 测试
+   */
+  const sourceDir = ref();
+  const targetDir = ref();
+  const keyword = ref();
+  const handleMoveFile = () => {
+    f_pluginMoveFiles(keyword.value, sourceDir.value, targetDir.value);
+  };
+  onMounted(() => {
+    f_pluginGetMove().then((res) => {
+      sourceDir.value = res.defaultSourceDir;
+      targetDir.value = res.defaultTargetDir;
+    });
+  });
 </script>
 
 <style scoped lang="less"></style>

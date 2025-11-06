@@ -16,7 +16,7 @@ import type { CollectEntity, ComicHistory, ConfigEntity, ViewedHistoryEntity } f
 import { debounce } from 'lodash';
 import { getCurrentBusiness } from '../../electron/business/business';
 import { getCurrentKey } from '../../electron/business/use-init-web-config';
-import { executeJs } from '../../electron/export';
+import { executeJs, pluginGetMove, pluginMoveFiles } from '../../electron/export';
 import { executeFunction } from '@/utils/ipc';
 
 /**
@@ -284,4 +284,13 @@ export const f_getServers = async (): Promise<string[]> => {
 };
 export const f_executeJs = async (url: string, code: string, show = false): Promise<any> => {
   return executeFunction('executeJs', url, code, show);
+};
+/**
+ *
+ */
+export const f_pluginMoveFiles = async (keyword: string, sourceDir: string, targetDir: string) => {
+  return executeFunction('pluginMoveFiles', keyword, sourceDir, targetDir);
+};
+export const f_pluginGetMove = async () => {
+  return executeFunction('pluginGetMove');
 };
