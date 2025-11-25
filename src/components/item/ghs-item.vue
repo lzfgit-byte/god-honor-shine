@@ -52,7 +52,7 @@
   import GhsText from '@/components/text/ghs-text.vue';
   import { f_cancelCollect, f_isCollect, f_saveCollect } from '@/utils/business';
   import GhsTag from '@/components/tag/ghs-tag.vue';
-
+  import useGlobalState from '@/hooks/use-global-state';
   const props = defineProps({
     width: String,
     height: String,
@@ -65,8 +65,13 @@
     loading: Boolean,
   });
   const emits = defineEmits(['imgClick', 'closeClick', 'upCollect', 'upCollectClose']);
-  const c_width = computed(() => props.width || '250px');
-  const imgHeight = computed(() => props.height || '200px');
+  const { calcSmall } = useGlobalState();
+  const c_width = computed(() => {
+    return calcSmall(props.width || '250px');
+  });
+  const imgHeight = computed(() => {
+    return calcSmall(props.height || '200px');
+  });
   const isCollect = ref(false);
   const handleImgClick = async () => {
     emits('imgClick');

@@ -21,6 +21,8 @@ const cacheSize = ref();
 const loading = ref(false);
 const logs = ref([]);
 const showCloseIcon = ref(false);
+const smallScreenMode = ref(false);
+const smallScreenModeScalar = ref(2);
 
 const drawerOpen = ref(false);
 const segmentedValue = ref<SetTag>();
@@ -56,6 +58,9 @@ const systemConfigs = ref<ConfigEntity[]>([]);
 const loadSysConfig = async () => {
   systemConfigs.value = await f_listSystemConfig();
 };
+const calcSmall = (val: any) => {
+  return smallScreenMode.value ? `${parseInt(val) * smallScreenModeScalar.value}px` : val;
+};
 export default () => ({
   webConfig,
   pagination,
@@ -78,4 +83,7 @@ export default () => ({
   systemConfigs,
   loadSysConfig,
   showCloseIcon,
+  smallScreenMode,
+  smallScreenModeScalar,
+  calcSmall,
 });

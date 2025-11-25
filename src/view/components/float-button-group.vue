@@ -51,16 +51,28 @@
       <FormOutlined />
     </template>
   </a-float-button>
+  <a-float-button
+    tooltip="小屏mode"
+    type="default"
+    :style="{ right: '15px', top: '360px' }"
+    @click="smallScreenMode = !smallScreenMode"
+  >
+    <template #icon>
+      <NotificationOutlined />
+    </template>
+  </a-float-button>
 </template>
 <script setup lang="ts">
   import {
     CarOutlined,
     ClearOutlined,
     FormOutlined,
+    NotificationOutlined,
     PlusOutlined,
     RedoOutlined,
   } from '@ant-design/icons-vue';
   import { FileType } from '@ghs/types';
+  import useGlobalState from '@/hooks/use-global-state';
   defineProps({
     handleDrawOpen: Function,
     clearCache: Function,
@@ -69,6 +81,7 @@
     addCode: Function,
     editCode: Function,
   });
+  const { smallScreenMode } = useGlobalState();
 </script>
 
 <style scoped lang="less"></style>

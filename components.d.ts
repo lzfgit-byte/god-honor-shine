@@ -16,6 +16,7 @@ declare module 'vue' {
     AFloatButton: typeof import('ant-design-vue/es')['FloatButton']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
+    AInputNumber: typeof import('ant-design-vue/es')['InputNumber']
     AQrcode: typeof import('ant-design-vue/es')['QRCode']
     ARow: typeof import('ant-design-vue/es')['Row']
     ASegmented: typeof import('ant-design-vue/es')['Segmented']

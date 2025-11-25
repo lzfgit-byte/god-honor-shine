@@ -15,6 +15,7 @@
         <a-space>
           <a-button @click="handleImport">收藏导入</a-button>
           <a-button @click="handleExport">收藏导出</a-button>
+          小屏放大倍数<a-input-number v-model:value="smallScreenModeScalar"></a-input-number>
         </a-space>
       </a-col>
     </a-row>
@@ -152,7 +153,7 @@
   import useGlobalRef from '@/hooks/use-global-ref';
 
   defineProps({ choseDbPath: Function });
-  const { dbPath, systemConfigs } = useGlobalState();
+  const { dbPath, systemConfigs, smallScreenModeScalar } = useGlobalState();
   const { videoGlobalRef } = useGlobalRef();
   const handleImport = () => {
     const fileInput: HTMLInputElement = document.createElement('input');
