@@ -42,8 +42,8 @@
     img {
       max-width: v-bind(imgMaxWidth);
       max-height: v-bind(imgMaxHeight);
-      height: 100%;
-      width: 100%;
+      height: auto;
+      width: auto;
       border-radius: @radius;
       position: absolute;
     }
