@@ -95,7 +95,8 @@ domReady()
     downloadURL();
   })
   .catch((e) => {
-    if (document) {
+    console.log(`execute-js占位错误：${e}`);
+    if (document?.body?.innerHTML) {
       document.body.innerHTML = `<div>${e?.message || e}</div>
                                   <div onclick="window.location.reload()">重新加载</div>`;
     }

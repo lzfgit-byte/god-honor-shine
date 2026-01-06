@@ -50,9 +50,9 @@ function domReady(condition: DocumentReadyState[] = ['complete', 'interactive'])
   return new Promise((resolve, reject) => {
     try {
       const timer = setTimeout(() => {
-        sendMessage('十秒超时文档未准备好');
+        sendMessage('二十秒超时文档未准备好');
         reject('超时');
-      }, 10000);
+      }, 20000);
       document.addEventListener('readystatechange', () => {
         if (condition.includes(document.readyState)) {
           resolve(true);
@@ -91,7 +91,8 @@ domReady()
     downloadURL();
   })
   .catch((e) => {
-    if (document) {
+    console.log(`execute-js占位错误：${e}`);
+    if (document?.body?.innerHTML) {
       document.body.innerHTML = `<div>${e?.message || e}</div>
                                   <div onclick="window.location.reload()">重新加载</div>`;
     }
