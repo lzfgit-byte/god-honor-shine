@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 export class NormalFunc {
