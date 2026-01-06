@@ -1,6 +1,5 @@
-import type { Element } from 'domhandler';
-// @ts-ignore
 import type { Cheerio } from 'cheerio/lib/cheerio';
+import type { Element } from 'domhandler';
 export class NormalFunc {
   helpElAttr($el: Cheerio<Element>, attr: string): string {
     return $el?.attr(attr) || '';
