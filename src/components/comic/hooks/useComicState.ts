@@ -25,7 +25,6 @@ export default (url: string) => {
   const comicImages = ref<CComic[]>([]);
   const drawValue = ref(true);
   const currentContent = ref<ComicHistory>();
-  const { logs } = useGlobalState();
   const { y } = useScroll(containerRef, {
     behavior: 'smooth',
   });

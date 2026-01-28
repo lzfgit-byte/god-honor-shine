@@ -53,7 +53,7 @@
         uniqueKey: props?.url,
       },
     ]);
-    imagesRef.value.scrollIntoView({ behavior: 'smooth' });
+    imagesRef?.value?.scrollIntoView({ behavior: 'smooth' });
   };
   const registerEvent = () => {
     bus.on(ImgEmitEnum.nextImg, (hashStr: string) => {
