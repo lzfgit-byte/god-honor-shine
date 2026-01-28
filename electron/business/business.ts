@@ -1,5 +1,7 @@
 import type {
   Analysis,
+  AnalysisDetail,
+  AnalysisVideoDetail,
   CComic,
   CContent,
   DetailInfo,
@@ -16,7 +18,7 @@ import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { isFalsity, isFunction } from '@ilzf/utils';
 import { ComicHistory, SearchHistoryEntity, ViewedHistoryEntity } from '@ghs/constant';
-import type { AnalysisDetail, AnalysisVideoDetail } from '@ghs/types/src';
+
 import { getHtml } from '../export';
 import { LogMsgUtil, MessageUtil } from '../utils/message';
 import { NormalFunc } from './common-func';

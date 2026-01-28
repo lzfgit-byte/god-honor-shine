@@ -1,4 +1,5 @@
 import type { BaseConfig, WebConfig } from '@ghs/types';
+// @ts-ignore
 import type { Cheerio } from 'cheerio/lib/cheerio';
 import type { Element } from 'domhandler';
 import { keys } from 'lodash';
