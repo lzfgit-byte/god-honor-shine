@@ -23,7 +23,7 @@ import { cache_clean } from '../utils';
  * 获取html
  * @param url
  */
-export const getHtml = async (url: string) => {
+export const getHtml = async (url: string, forceWin = false) => {
   let html = (await requestHtml(url)) as any;
   if (!IS_CAN_CONTINUE(html)) {
     LogMsgUtil.sendLogMsg('request 失败，使用win');

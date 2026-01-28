@@ -100,7 +100,7 @@ export const eventEmitter = {
   on: (event: string, callback: (...args: any[]) => void) => {},
   off: (event: string, callback: (...args: any[]) => void) => {},
   emit: (event: string, ...args: any[]) => {},
-};function getHtml(str: string) {return str;}
+};function getHtml(str: string,forceWin = false) {return str;}
 async function getHtmlWithProcess(url: string) {return '';}
 `;
 
