@@ -13,6 +13,7 @@ import {
 } from '@/utils/business';
 import bus from '@/utils/bus';
 import { ImgEmitEnum } from '@/components/imgViewer/hooks/useImgShow';
+import useGlobalState from '@/hooks/use-global-state';
 export let imagesBase64: Record<string, number> = {};
 export const ComicEmitEnum = {
   comicNext: 'comicNext',
@@ -24,6 +25,7 @@ export default (url: string) => {
   const comicImages = ref<CComic[]>([]);
   const drawValue = ref(true);
   const currentContent = ref<ComicHistory>();
+  const { logs } = useGlobalState();
   const { y } = useScroll(containerRef, {
     behavior: 'smooth',
   });
@@ -48,6 +50,9 @@ export default (url: string) => {
     comicImages.value.forEach((item, index) => {
       imagesBase64[hashString(item.url)] = index;
     });
+    if (Object.keys(imagesBase64).length !== comicImages.value?.length) {
+      message.warn('图片解析数量错误');
+    }
     currentContent.value = await f_getCurrentContentUrl();
     containerRef.value.scrollTo({ top: 0, behavior: 'smooth' });
   };

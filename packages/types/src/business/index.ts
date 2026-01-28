@@ -39,6 +39,7 @@ export interface Detail {
   quality?: string;
   title?: string;
   comments?: Comment[];
+  uniqueKey?: string;
 }
 export interface Item {
   coverImg: string;

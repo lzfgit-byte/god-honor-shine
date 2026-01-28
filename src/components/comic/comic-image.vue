@@ -21,6 +21,7 @@
   const props = defineProps({
     url: String,
     extra: Object as PropType<Record<string, any>>,
+    index: Number,
   });
   const imgSrc = ref(src);
   const canvas = ref<HTMLCanvasElement>();
@@ -48,14 +49,15 @@
       {
         type: 'image',
         url: imgSrc.value,
-        title: `${+imagesBase64[hashString(props.url)] + 1}/${keys(imagesBase64).length}`,
+        title: `${(props?.index || 0) + 1}/${keys(imagesBase64).length}`,
+        uniqueKey: props?.url,
       },
     ]);
     imagesRef.value.scrollIntoView({ behavior: 'smooth' });
   };
   const registerEvent = () => {
     bus.on(ImgEmitEnum.nextImg, (hashStr: string) => {
-      if (hashString(imgSrc.value) === hashStr) {
+      if (hashString(props.url) === hashStr) {
         const index = imagesBase64[hashString(props.url)];
         if (index === keys(imagesBase64).length - 1) {
           message.warn('已经是最后一页');
@@ -65,7 +67,7 @@
       }
     });
     bus.on(ImgEmitEnum.preImg, (hashStr: string) => {
-      if (hashString(imgSrc.value) === hashStr) {
+      if (hashString(props.url) === hashStr) {
         const index = imagesBase64[hashString(props.url)];
         if (index === 0) {
           message.warn('已经是第一页');
@@ -76,14 +78,12 @@
       }
     });
     bus.on(ComicEmitEnum.comicNext, (index_) => {
-      const index = imagesBase64[hashString(props.url)];
-      if (index === index_) {
+      if (props?.index === index_) {
         openImageView();
       }
     });
     bus.on(ComicEmitEnum.comicPre, (index_) => {
-      const index = imagesBase64[hashString(props.url)];
-      if (index === index_) {
+      if (props?.index === index_) {
         openImageView();
       }
     });

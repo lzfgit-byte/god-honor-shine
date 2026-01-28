@@ -17,6 +17,9 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
   const imgUrl = computed(() =>
     images.value.length > 0 ? images.value[current.value][choseUrl.value] : ''
   );
+  const uniqueKey = computed(() =>
+    images.value.length > 0 ? images.value[current.value].uniqueKey : -1
+  );
   const alreadyCache = [];
   const preloadUrl = computed(() => {
     const allImgLength = images.value.length;
@@ -54,7 +57,7 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     scale.value = 100;
   };
   const preImg = () => {
-    bus.emit(ImgEmitEnum.preImg, hashString(imgUrl.value));
+    bus.emit(ImgEmitEnum.preImg, hashString(`${uniqueKey.value}`));
     if (images.value.length === 1) {
       return;
     }
@@ -66,7 +69,7 @@ export default (transX: Ref<number>, transY: Ref<number>, scale: Ref<number>) =>
     }
   };
   const nextImg = () => {
-    bus.emit(ImgEmitEnum.nextImg, hashString(imgUrl.value));
+    bus.emit(ImgEmitEnum.nextImg, hashString(`${uniqueKey.value}`));
     if (images.value.length === 1) {
       return;
     }

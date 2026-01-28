@@ -1,9 +1,10 @@
 <template>
   <div ref="containerRef" h-full w-full overflow-auto>
     <ComicImage
-      v-for="item in comicImages"
+      v-for="(item, index) in comicImages"
       :key="item.url"
       :url="item.url"
+      :index="index"
       :extra="item.extra"
     ></ComicImage>
     <a-drawer v-model:open="drawValue" title="目录" width="40vw">
