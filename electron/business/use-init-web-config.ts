@@ -8,7 +8,13 @@ import { base64ToStr, hashString, isFunction } from '@ilzf/utils';
 import { ElementAttr, ElementTypes, WebConfigEntity, breakStr } from '@ghs/constant';
 import { net } from 'electron';
 import { executeJs, getHtml, getHtmlWithProcess, listWebConfig } from '../export';
-import { ConsoleLogUtil, LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
+import {
+  ConsoleLogUtil,
+  LogMsgUtil,
+  MessageUtil,
+  NotifyMsgUtil,
+  ProgressMsgUtil,
+} from '../utils/message';
 import { eventEmitter, getCurrentItems, helpElAttr, helpElText } from '../utils/KitUtil';
 import { request_string_get } from '../http';
 // @ts-ignore
@@ -76,7 +82,8 @@ export const parseWebConfig = (code: string) => {
     getHtmlWithProcess,
     ConsoleLogUtil,
     net,
-    executeJs
+    executeJs,
+    ProgressMsgUtil
   );
   return config;
 };

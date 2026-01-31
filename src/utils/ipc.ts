@@ -7,6 +7,7 @@ import { isObject } from '@ilzf/utils';
 import bus from '@/utils/bus';
 import { notify } from '@/utils/kit-utils';
 import useGlobalState from '@/hooks/use-global-state';
+import { nprogress } from '@/utils/nprogress';
 // 执行后台的方法
 export const executeFunction = async (funcName: string, ...args: any[]) => {
   args = args.map((item) => {
@@ -44,7 +45,27 @@ ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, (_event, args: MessageInfo
   notify(key, msg, title, close);
 });
 ipcRenderer.on(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, (_event, args: MessageInfo) => {
-  const { key } = args;
+  const { key, percentage, close, title } = args;
+  if (key === 'all') {
+    if (close) {
+      nprogress.done(true);
+    }
+    nprogress.set(percentage);
+    if (title) {
+      message.loading({
+        content: title,
+        key,
+        style: {
+          left: '2px',
+          top: 0,
+          margin: 0,
+          padding: 0,
+          position: 'absolute',
+        },
+      });
+    }
+    return;
+  }
   bus.emit(key, args);
 });
 

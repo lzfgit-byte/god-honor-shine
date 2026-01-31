@@ -15,7 +15,8 @@ return (
   getHtmlWithProcess,
   ConsoleLogUtil,
   net,
-  executeJs
+  executeJs,
+  ProgressMsgUtil
 ) => {
   let cc = '$code';
   return cc;

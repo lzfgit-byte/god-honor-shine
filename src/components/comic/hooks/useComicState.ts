@@ -1,4 +1,4 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 import type { CComic, CContent } from '@ghs/types';
 import { message } from 'ant-design-vue';
 import { hashString, isString, waitTime } from '@ilzf/utils';
@@ -25,14 +25,30 @@ export default (url: string) => {
   const comicImages = ref<CComic[]>([]);
   const drawValue = ref(true);
   const currentContent = ref<ComicHistory>();
+  const autoLoadNext = ref(false);
+  const commentDraw = ref(false);
   const { y } = useScroll(containerRef, {
     behavior: 'smooth',
   });
   const percent = computed(() =>
     containerRef.value?.scrollHeight ? y.value / containerRef.value?.scrollHeight : 0
   );
+  const currentIndex = computed(
+    () => contents.value?.findIndex((item) => item.url === currentContent.value?.contentUrl) || -1
+  );
   const loadContent = async () => {
     contents.value = await f_getContent(url);
+  };
+  const loadNext = async () => {
+    await nextTick(() => {
+      if (
+        autoLoadNext.value &&
+        currentIndex.value !== -1 &&
+        currentIndex.value + 1 < contents.value?.length
+      ) {
+        f_getComicIImages(contents.value[currentIndex.value + 1].url);
+      }
+    });
   };
   const getImages = async (url: string) => {
     if (!url) {
@@ -54,6 +70,7 @@ export default (url: string) => {
     }
     currentContent.value = await f_getCurrentContentUrl();
     containerRef.value.scrollTo({ top: 0, behavior: 'smooth' });
+    loadNext();
   };
 
   watchEffect(() => {
@@ -85,5 +102,15 @@ export default (url: string) => {
   onUnmounted(() => {
     offComicEmit();
   });
-  return { containerRef, contents, comicImages, getImages, drawValue, currentContent, percent };
+  return {
+    containerRef,
+    contents,
+    comicImages,
+    getImages,
+    drawValue,
+    currentContent,
+    percent,
+    autoLoadNext,
+    commentDraw,
+  };
 };
