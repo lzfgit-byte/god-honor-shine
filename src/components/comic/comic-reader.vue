@@ -27,7 +27,6 @@
           {{ `${index + 1}/${contents.length}` }}
         </span>
         <a-button
-          v-else
           :type="currentContent?.contentUrl === item.url ? 'link' : 'text'"
           size="small"
           w-full
