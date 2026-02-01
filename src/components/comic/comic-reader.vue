@@ -11,7 +11,7 @@
       <template #title>
         <div flex justify-start items-center>
           <span p-r-2>目录</span>
-          <a-switch v-model="autoLoadNext"></a-switch>
+          <a-switch v-model:checked="autoLoadNext"></a-switch>
         </div>
       </template>
       <div
