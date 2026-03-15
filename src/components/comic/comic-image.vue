@@ -1,6 +1,6 @@
 <template>
   <div h-auto w-full relative flex justify-center>
-    <img ref="imagesRef" :src="imgSrc" alt="" @click="handleImgView" />
+    <img ref="imagesRef" :src="imgSrc" alt="" @click="handleImgView" @wheel="handleWheel" />
     <canvas v-show="false" ref="canvas"></canvas>
   </div>
 </template>
@@ -17,7 +17,7 @@
   import useGlobalRef from '@/hooks/use-global-ref';
   import bus from '@/utils/bus';
   import { ImgEmitEnum } from '@/components/imgViewer/hooks/useImgShow';
-  import { ComicEmitEnum, imagesBase64 } from '@/components/comic/hooks/useComicState';
+  import { ComicEmitEnum, comicStata, imagesBase64 } from '@/components/comic/hooks/useComicState';
   const props = defineProps({
     url: String,
     extra: Object as PropType<Record<string, any>>,
@@ -28,7 +28,7 @@
   const imagesRef = ref<HTMLImageElement>();
   const { webConfig } = useGlobalState();
   const { imgViewerRef } = useGlobalRef();
-  const maxWidth = computed(() => webConfig.value?.comicImgMaxWidth || '80vw');
+  const { maxWidth, handleWheel } = comicStata;
   const init = async () => {
     if (!props.url) {
       return;

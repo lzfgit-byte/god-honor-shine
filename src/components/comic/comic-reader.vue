@@ -49,7 +49,7 @@
   </div>
   <a-float-button
     :style="{ right: '15px', bottom: '190px' }"
-    :tooltip="comicImages.length > 0 ? comicImages[0]?.extra?.length : '无评论'"
+    :tooltip="comicImages.length > 0 ? `评论数【${comicImages[0]?.extra?.length}】` : '无评论'"
     @click="commentDraw = true"
   >
     <template #icon>
