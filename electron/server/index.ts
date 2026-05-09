@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { SERVER_PORT } from '@ghs/constant';
 import { LogMsgUtil } from '../utils/message';
 import useDispatchController from './hook/useDispatchController';
@@ -32,6 +33,7 @@ const getRouter = [
 
 export const useServer = () => {
   let app = express();
+  app.use(cors());
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
