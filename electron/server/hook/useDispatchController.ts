@@ -7,6 +7,9 @@ import {
   deleteSearch,
   getAnalysisDetail,
   getAnalysisVideoDetail,
+  getComicIImages,
+  getContent,
+  getCurrentContentUrl,
   getCurrentWebConfig,
   getDetailPage,
   getHtml,
@@ -22,6 +25,7 @@ import {
   search,
   searchRecommend,
   setCurrentKeyExp,
+  updateCurrentComic,
 } from '../../export';
 import { cache_suffix_clean } from '../../utils';
 export default async (route: string, req: Request, res: Response) => {
@@ -146,6 +150,29 @@ export default async (route: string, req: Request, res: Response) => {
     }
     case '/getSeriesCurrentContent': {
       const resData = await getSeriesCurrentContent();
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getContent': {
+      const queryData = getQueryData<{ url: string }>(req);
+      const resData = await getContent(queryData.url);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getComicIImages': {
+      const queryData = getQueryData<{ url: string }>(req);
+      const resData = await getComicIImages(queryData.url);
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/getCurrentContentUrl': {
+      const resData = await getCurrentContentUrl();
+      res.end(JSON.stringify(resData));
+      break;
+    }
+    case '/updateCurrentComic': {
+      const queryData = getQueryData<{ per: string }>(req);
+      const resData = await updateCurrentComic(Number(queryData.per));
       res.end(JSON.stringify(resData));
       break;
     }

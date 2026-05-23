@@ -29,6 +29,10 @@ const getRouter = [
   'getAnalysisDetail',
   'getAnalysisVideoDetail',
   'getSeriesCurrentContent',
+  'getContent',
+  'getComicIImages',
+  'getCurrentContentUrl',
+  'updateCurrentComic',
 ];
 
 export const useServer = () => {
