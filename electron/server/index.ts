@@ -5,6 +5,7 @@ import { LogMsgUtil } from '../utils/message';
 import useDispatchController from './hook/useDispatchController';
 import useFileDispatch from './hook/useFileDispatch';
 import useVideoProxy from './hook/useVideoProxy';
+import { useWebsocketServer } from './websocket';
 
 const getRouter = [
   'getImage',
@@ -36,6 +37,8 @@ const getRouter = [
 ];
 
 export const useServer = () => {
+  useWebsocketServer();
+
   let app = express();
   app.use(cors());
   app.use((req, res, next) => {

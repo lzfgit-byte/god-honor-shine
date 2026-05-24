@@ -26,6 +26,7 @@
     "app:dev": "vite",
     "app:build": "npm version patch && vite build && electron-builder",
     "app:prebuild": "vite build && node script/build.js && electron-builder",
+    "app:runH5": "node script/build.js",
     "app:elbuild": "electron-builder",
     "app:preview": "vite preview"
   },
@@ -63,7 +64,8 @@
     "vue": "^3.3.4",
     "vue-codemirror": "^6.1.1",
     "vue-demi": "^0.14.6",
-    "vue-router": "4.1.5"
+    "vue-router": "4.1.5",
+    "ws": "^8.21.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.36.0",
@@ -72,6 +74,7 @@
     "@types/lodash": "^4.14.202",
     "@types/node": "^18.19.8",
     "@types/nprogress": "^0.2.0",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-vue": "^4.1.0",
     "buffer": "^6.0.3",
     "electron": "^28.0.0",

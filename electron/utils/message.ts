@@ -1,7 +1,13 @@
 import { webContents } from 'electron';
 import { MESSAGE_EVENT_KEY } from '@ghs/constant';
 import type { MessageInfo } from '@ghs/types';
+import { type WebsocketMessageCategory, sendWebsocketMessage } from '../server/websocket';
 import { eventEmitter, getCurrentDate } from './KitUtil';
+
+const sendMessage = (eventKey: string, msg: MessageInfo, category: WebsocketMessageCategory) => {
+  webContents?.getFocusedWebContents()?.send(eventKey, msg);
+  sendWebsocketMessage(category, msg);
+};
 
 /**
  * 发送及时的消息
@@ -24,7 +30,7 @@ export class MessageUtil {
   }
 
   private static sendMsg(msg: MessageInfo) {
-    webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_MESSAGE, msg);
+    sendMessage(MESSAGE_EVENT_KEY.SEND_MESSAGE, msg, 'message');
   }
 }
 
@@ -34,9 +40,8 @@ export class MessageUtil {
 export class StepMessageUtil {
   static key: 'step_msg_key';
   private static sendMsg(msg: MessageInfo) {
-    webContents
-      ?.getFocusedWebContents()
-      ?.send(MESSAGE_EVENT_KEY.SEND_STEP_MESSAGE, { ...msg, key: StepMessageUtil.key });
+    const data = { ...msg, key: StepMessageUtil.key };
+    sendMessage(MESSAGE_EVENT_KEY.SEND_STEP_MESSAGE, data, 'step');
   }
 
   static sendStepMsg(title: string, msg: string, key: string) {
@@ -53,7 +58,7 @@ export class StepMessageUtil {
  */
 export class NotifyMsgUtil {
   private static sendMsg(msg: MessageInfo) {
-    webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, msg);
+    sendMessage(MESSAGE_EVENT_KEY.SEND_NOTIFY_MESSAGE, msg, 'notify');
   }
 
   static sendNotifyMsg(title: string, msg: string, key: string) {
@@ -70,7 +75,7 @@ export class NotifyMsgUtil {
  */
 export class LogMsgUtil {
   private static sendMsg(msg: MessageInfo) {
-    webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, msg);
+    sendMessage(MESSAGE_EVENT_KEY.SEND_LOG_MESSAGE, msg, 'log');
   }
 
   static sendLogMsg(...msg: string[]) {
@@ -87,7 +92,7 @@ export class LogMsgUtil {
  */
 export class ProgressMsgUtil {
   private static sendMsg(msg: MessageInfo) {
-    webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, msg);
+    sendMessage(MESSAGE_EVENT_KEY.SEND_PROCESS_MESSAGE, msg, 'progress');
   }
 
   static sendProgressMsg(msg: MessageInfo) {
@@ -108,7 +113,7 @@ export class ProgressMsgUtil {
  */
 export class ConsoleLogUtil {
   private static sendMsg(msg: MessageInfo) {
-    webContents?.getFocusedWebContents()?.send(MESSAGE_EVENT_KEY.SEND_CONSOLE_LOG, msg);
+    sendMessage(MESSAGE_EVENT_KEY.SEND_CONSOLE_LOG, msg, 'console');
   }
 
   static sendLogMsg(...msg: string[]) {

@@ -55,3 +55,4 @@ export const ReloadCodeEvent = 'reload-code';
 export const breakStr = '/* break */';
 export const preBreak = '/* preBreak */';
 export const SERVER_PORT = 4000;
+export const WEBSOCKET_PORT = 4001;
