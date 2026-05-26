@@ -25,6 +25,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
   }
   const key = hashString(url);
   NotifyMsgUtil.sendNotifyMsg('executeJs', '开始', key);
+  MessageUtil.info('executeJs 开始');
   const pw = getMainWin();
   const win = new BrowserWindow({
     width: 1450,
@@ -52,6 +53,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
   return new Promise((resolve) => {
     const keyEvt = 'executeJsInElectron';
     NotifyMsgUtil.sendNotifyMsg(keyEvt, '进入promise', key);
+    MessageUtil.info('开始执行代码');
     const l = (se, arg) => {
       NotifyMsgUtil.sendNotifyMsg(keyEvt, arg, key);
     };
@@ -94,6 +96,7 @@ export const win_get_data = (code: string, url: string, show = false): Promise<a
     ipcMain.removeHandler(USE_CHILD_WIN_EVENT.JS_SEND_HTML);
     ipcMain.handle(USE_CHILD_WIN_EVENT.JS_SEND_HTML, func);
     NotifyMsgUtil.sendNotifyMsg(keyEvt, '加载url', key);
+    MessageUtil.info('开始加载url');
     win.loadURL(url);
     // const listener = () => {
     //   NotifyMsgUtil.sendNotifyMsg(keyEvt, '开始执行', key);
