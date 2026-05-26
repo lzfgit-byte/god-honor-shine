@@ -23,6 +23,7 @@ import { getHtml } from '../export';
 import { LogMsgUtil, MessageUtil } from '../utils/message';
 import { NormalFunc } from './common-func';
 import { getWebConfigByKey } from './use-init-web-config';
+import { appendAdapterImageExtra } from './adapter-image-url';
 
 class BaseBusiness extends NormalFunc {
   private key: string;
@@ -207,7 +208,19 @@ class BaseBusiness extends NormalFunc {
       comicHistory.currentImage = 0;
       await comicHistory.save();
     }
-    return await this.webConfig?.getComicImages(url, cheerio);
+    const res = await this.webConfig?.getComicImages(url, cheerio);
+    const comics = Array.isArray(res) ? res : [];
+    if (this.webConfig.adapterImageCode && comics.length) {
+      for (const item of comics) {
+        if (!item?.url) {
+          continue;
+        }
+        const extra = (item as any).info;
+        item.url = appendAdapterImageExtra(item.url, extra);
+        item.extra = [];
+      }
+    }
+    return comics;
   }
 
   /**

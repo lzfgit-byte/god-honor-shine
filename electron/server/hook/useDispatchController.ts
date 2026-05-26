@@ -28,6 +28,9 @@ import {
   updateCurrentComic,
 } from '../../export';
 import { cache_suffix_clean } from '../../utils';
+import { adapterImageBase64ByWin } from '../../http';
+import { getCurrentKey, getWebConfigByKey } from '../../business/use-init-web-config';
+import { parseAdapterImageUrl } from '../../business/adapter-image-url';
 export default async (route: string, req: Request, res: Response) => {
   setDefaultHeader(res);
   switch (route) {
@@ -45,7 +48,23 @@ export default async (route: string, req: Request, res: Response) => {
     }
     case '/getImage': {
       const queryData = getQueryData<{ url: string }>(req);
-      const resData = await getImage(queryData.url);
+      if (!queryData.url) {
+        res.end(JSON.stringify(''));
+        break;
+      }
+      const adapterImage: any = parseAdapterImageUrl(queryData.url);
+      const webConfig = getWebConfigByKey(getCurrentKey());
+      let resData = '';
+      if (adapterImage.extra && webConfig?.adapterImageCode) {
+        resData = await adapterImageBase64ByWin(
+          adapterImage.url,
+          webConfig.adapterImageCode,
+          adapterImage.extra
+        );
+      }
+      if (!resData) {
+        resData = await getImage(adapterImage.url);
+      }
       res.end(JSON.stringify(resData));
       break;
     }

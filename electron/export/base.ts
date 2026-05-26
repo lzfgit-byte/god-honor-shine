@@ -1,11 +1,12 @@
 import { readFileSync, statSync } from 'node:fs';
 
 import { existsSync } from 'fs-extra';
-import { hashString } from '@ilzf/utils';
+import { hashString, isFalsity } from '@ilzf/utils';
 import { CollectEntity, IS_CAN_CONTINUE, SERVER_PORT } from '@ghs/constant';
 import type { Detail, Item } from '@ghs/types';
 import { FileType } from '@ghs/types';
 import {
+  adapterImageBase64ByWin,
   getImgBase64ByWin,
   requestHtml,
   requestHtmlByWin,
@@ -18,6 +19,8 @@ import { LogMsgUtil, MessageUtil, NotifyMsgUtil } from '../utils/message';
 import { app_set_config_dir } from '../const/app-paths';
 import { eventEmitter, getLocalIPs } from '../utils/KitUtil';
 import { cache_clean } from '../utils';
+import { getCurrentKey, getWebConfigByKey } from '../business/use-init-web-config';
+import { parseAdapterImageUrl } from '../business/adapter-image-url';
 
 /**
  * 获取html
@@ -62,8 +65,24 @@ export const getHtmlWithProcess = async (url: string) => {
  * @param url
  */
 export const getImage = async (url: string) => {
+  if (isFalsity(url)) {
+    return '';
+  }
   if (url.startsWith('data:')) {
     return url;
+  }
+  const adapterImage = parseAdapterImageUrl(url);
+  const webConfig = getWebConfigByKey(getCurrentKey());
+  if (adapterImage.extra && webConfig?.adapterImageCode) {
+    const imgSrc = await adapterImageBase64ByWin(
+      adapterImage.url,
+      webConfig.adapterImageCode,
+      adapterImage.extra
+    );
+    if (imgSrc) {
+      return imgSrc;
+    }
+    url = adapterImage.url;
   }
   let str = (await requestImage(url)) as any;
   if (str.indexOf('Just a moment...') > 0 || str === '') {
