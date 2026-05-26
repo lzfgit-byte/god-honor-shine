@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express-serve-static-core';
-import type { Analysis, Item } from '@ghs/types';
+import { hashString } from '@ilzf/utils';
+import { type Analysis, FileType, type Item } from '@ghs/types';
 import { getQueryData, setDefaultHeader } from '../utils/ServerUtil';
 import {
   cancelCollect,
@@ -27,10 +28,61 @@ import {
   setCurrentKeyExp,
   updateCurrentComic,
 } from '../../export';
-import { cache_suffix_clean } from '../../utils';
+import { cache_exist, cache_get, cache_save, cache_suffix_clean } from '../../utils';
 import { adapterImageBase64ByWin } from '../../http';
 import { getCurrentKey, getWebConfigByKey } from '../../business/use-init-web-config';
 import { parseAdapterImageUrl } from '../../business/adapter-image-url';
+
+const imageRequestMap = new Map<string, Promise<string>>();
+
+const getImageByUrl = async (url: string) => {
+  if (!url) {
+    return '';
+  }
+  if (url.startsWith('data:')) {
+    return url;
+  }
+
+  const currentKey = getCurrentKey();
+  const adapterImage: any = parseAdapterImageUrl(url);
+  const webConfig = adapterImage.extra ? getWebConfigByKey(currentKey) : null;
+  const imageCacheKey =
+    adapterImage.extra && webConfig?.adapterImageCode
+      ? `${currentKey}:${hashString(webConfig.adapterImageCode)}:${url}`
+      : adapterImage.url;
+  const runningTask = imageRequestMap.get(imageCacheKey);
+  if (runningTask) {
+    return runningTask;
+  }
+
+  const task = (async () => {
+    if (cache_exist(imageCacheKey, FileType.IMAGE)) {
+      return cache_get(imageCacheKey, FileType.IMAGE) || '';
+    }
+
+    let resData = '';
+    if (adapterImage.extra && webConfig?.adapterImageCode) {
+      resData = await adapterImageBase64ByWin(
+        adapterImage.url,
+        webConfig.adapterImageCode,
+        adapterImage.extra
+      );
+      if (resData) {
+        return cache_save(imageCacheKey, resData, FileType.IMAGE);
+      }
+    }
+    return await getImage(adapterImage.url);
+  })();
+
+  imageRequestMap.set(imageCacheKey, task);
+  task
+    .finally(() => {
+      imageRequestMap.delete(imageCacheKey);
+    })
+    .catch(() => undefined);
+  return task;
+};
+
 export default async (route: string, req: Request, res: Response) => {
   setDefaultHeader(res);
   switch (route) {
@@ -48,23 +100,7 @@ export default async (route: string, req: Request, res: Response) => {
     }
     case '/getImage': {
       const queryData = getQueryData<{ url: string }>(req);
-      if (!queryData.url) {
-        res.end(JSON.stringify(''));
-        break;
-      }
-      const adapterImage: any = parseAdapterImageUrl(queryData.url);
-      const webConfig = getWebConfigByKey(getCurrentKey());
-      let resData = '';
-      if (adapterImage.extra && webConfig?.adapterImageCode) {
-        resData = await adapterImageBase64ByWin(
-          adapterImage.url,
-          webConfig.adapterImageCode,
-          adapterImage.extra
-        );
-      }
-      if (!resData) {
-        resData = await getImage(adapterImage.url);
-      }
+      const resData = await getImageByUrl(queryData.url);
       res.end(JSON.stringify(resData));
       break;
     }

@@ -15,23 +15,27 @@ const requestFunc = (url: string, suffix: string, apply: (data: any) => any) => 
 
     const request = net.request(url);
 
-    let blob: any = Buffer.alloc(0);
+    let chunks: Buffer[] = [];
+    let blobSize = 0;
     ProgressMsgUtil.sendProgress(0, progressKey);
     eventEmitter.emit(progressKey, 0);
     request.on('response', (response) => {
       const header = response.headers;
       let fileSize = +header['content-length'];
       response.on('data', (chunk) => {
-        blob = Buffer.concat([blob, chunk], blob.length + chunk.length);
-        const format = `${formatSize(blob.length)}/${fileSize ? formatSize(fileSize) : '未知'}`;
+        chunks.push(chunk);
+        blobSize += chunk.length;
+        const format = `${formatSize(blobSize)}/${fileSize ? formatSize(fileSize) : '未知'}`;
 
-        ProgressMsgUtil.sendProgress(calcProcess(blob.length, fileSize), progressKey, format);
+        ProgressMsgUtil.sendProgress(calcProcess(blobSize, fileSize), progressKey, format);
         eventEmitter.emit(progressKey, format);
       });
       response.on('end', () => {
+        const blob = Buffer.concat(chunks, blobSize);
         resolve(cache_save(url, apply(blob), suffix));
         ProgressMsgUtil.close(progressKey);
-        blob = null;
+        chunks = [];
+        blobSize = 0;
       });
       response.on('error', () => {
         LogMsgUtil.sendLogMsg(`请求失败远程${url}`);
