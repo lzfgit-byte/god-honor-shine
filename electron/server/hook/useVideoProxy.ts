@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express-serve-static-core';
 import { net } from 'electron';
 import { allowedHeaders, allowedRequestHeaders, getQueryData } from '../utils/ServerUtil';
+import { LogMsgUtil } from '../../utils/message';
 
 const proxyPath = '/videoProxy';
 
@@ -94,6 +95,7 @@ export default async (_route: string, req: Request, res: Response) => {
 
   request.on('error', (error) => {
     console.error('video proxy error:', error);
+    LogMsgUtil.sendLogMsg(`video proxy error:${error.message}`);
     if (!res.headersSent) {
       res.status(500);
     }
