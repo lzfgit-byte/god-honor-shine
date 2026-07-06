@@ -48,6 +48,89 @@ class BaseBusiness extends NormalFunc {
     this.comicDetailUrl = url;
   }
 
+  private decodeUrlPath(url: string): string {
+    try {
+      return decodeURIComponent(url);
+    } catch {
+      return url;
+    }
+  }
+
+  private getUrlPathname(url: string): string {
+    try {
+      return this.decodeUrlPath(new URL(url).pathname);
+    } catch {
+      if (url.startsWith('/')) {
+        return this.decodeUrlPath(new URL(url, 'http://localhost').pathname);
+      }
+      return this.decodeUrlPath(url);
+    }
+  }
+
+  private getComicHistoryDetailUrl(url: string): string {
+    if (isFalsity(url)) {
+      return url;
+    }
+
+    return this.getUrlPathname(url);
+  }
+
+  private getComicHistoryContentUrl(url: string): string {
+    if (isFalsity(url)) {
+      return url;
+    }
+
+    return this.getUrlPathname(url);
+  }
+
+  private getComicHistoryFullUrl(url: string): string {
+    if (isFalsity(url)) {
+      return url;
+    }
+
+    try {
+      return new URL(this.getUrlPathname(url), this.webConfig.homeUrl).toString();
+    } catch {
+      return url;
+    }
+  }
+
+  private toClientComicHistory(history: ComicHistory): ComicHistory {
+    if (!history) {
+      return history;
+    }
+
+    history.contentUrl = this.getComicHistoryFullUrl(history.contentUrl);
+    return history;
+  }
+
+  private async findComicHistory(detailUrl: string): Promise<ComicHistory> {
+    const historyDetailUrl = this.getComicHistoryDetailUrl(detailUrl);
+    let detailEnt = await ComicHistory.findOne({ where: { detailUrl: historyDetailUrl } });
+
+    if (!detailEnt && historyDetailUrl !== detailUrl) {
+      detailEnt = await ComicHistory.findOne({ where: { detailUrl } });
+    }
+
+    if (!detailEnt) {
+      const histories = await ComicHistory.find();
+      detailEnt = histories.find(
+        (item) => this.getComicHistoryDetailUrl(item.detailUrl) === historyDetailUrl
+      );
+    }
+
+    if (detailEnt) {
+      const contentUrl = this.getComicHistoryContentUrl(detailEnt.contentUrl);
+      if (detailEnt.detailUrl !== historyDetailUrl || detailEnt.contentUrl !== contentUrl) {
+        detailEnt.detailUrl = historyDetailUrl;
+        detailEnt.contentUrl = contentUrl;
+        await ComicHistory.update(detailEnt.id, detailEnt);
+      }
+    }
+
+    return detailEnt;
+  }
+
   // 获取页面的元素数据
   private getItems(): Item[] {
     return this.webConfig.getItems(this.$);
@@ -194,17 +277,19 @@ class BaseBusiness extends NormalFunc {
       MessageUtil.error('未定义漫画图片获取方法');
       return [];
     }
-    const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    const detailUrl = this.getComicHistoryDetailUrl(this.getComicUrl());
+    const contentUrl = this.getComicHistoryContentUrl(url);
+    const detailEnt = await this.findComicHistory(detailUrl);
     if (detailEnt) {
-      if (detailEnt.contentUrl !== url) {
-        detailEnt.contentUrl = url;
+      if (detailEnt.contentUrl !== contentUrl) {
+        detailEnt.contentUrl = contentUrl;
         detailEnt.currentImage = 0;
       }
       await ComicHistory.update(detailEnt.id, detailEnt);
     } else {
       const comicHistory = new ComicHistory();
-      comicHistory.detailUrl = this.getComicUrl();
-      comicHistory.contentUrl = url;
+      comicHistory.detailUrl = detailUrl;
+      comicHistory.contentUrl = contentUrl;
       comicHistory.currentImage = 0;
       await comicHistory.save();
     }
@@ -227,17 +312,21 @@ class BaseBusiness extends NormalFunc {
    * 获取历史记录里的最新漫画阅读记录
    */
   public async getComicCurrentContent(): Promise<ComicHistory> {
-    const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    const detailEnt = await this.findComicHistory(this.getComicUrl());
     if (detailEnt) {
-      return detailEnt;
+      return this.toClientComicHistory(detailEnt);
     }
     return null;
   }
 
   public async updateCurrentComic(per: number) {
-    const detailEnt = await ComicHistory.findOne({ where: { detailUrl: this.getComicUrl() } });
+    const detailEnt = await this.findComicHistory(this.getComicUrl());
     if (isFalsity(per)) {
       LogMsgUtil.sendLogMsg(`更新当前漫画进度失败per为:${per}`);
+      return;
+    }
+    if (!detailEnt) {
+      LogMsgUtil.sendLogMsg(`ComicHistory not found: ${this.getComicUrl()}`);
       return;
     }
     detailEnt.currentImage = per;
@@ -252,7 +341,7 @@ class BaseBusiness extends NormalFunc {
       where: { detailUrl: this.currentItem.jumpUrl },
     });
     if (detailEnt) {
-      return detailEnt;
+      return this.toClientComicHistory(detailEnt);
     }
     return null;
   }
@@ -265,13 +354,14 @@ class BaseBusiness extends NormalFunc {
     const detailEnt = await ComicHistory.findOne({
       where: { detailUrl: this.currentItem.jumpUrl },
     });
+    const contentUrl = this.getComicHistoryContentUrl(analysisDetail.url);
     if (detailEnt) {
-      detailEnt.contentUrl = analysisDetail.url;
+      detailEnt.contentUrl = contentUrl;
       await ComicHistory.update(detailEnt.id, detailEnt);
     } else {
       const comicHistory = new ComicHistory();
       comicHistory.detailUrl = this.currentItem.jumpUrl;
-      comicHistory.contentUrl = analysisDetail.url;
+      comicHistory.contentUrl = contentUrl;
       comicHistory.currentImage = 0;
       await comicHistory.save();
     }
