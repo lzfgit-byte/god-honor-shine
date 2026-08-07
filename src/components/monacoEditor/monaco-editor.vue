@@ -60,6 +60,10 @@
     updateMonacoVal();
   });
 
+  defineExpose({
+    focus: () => getEditor()?.focus?.(),
+  });
+
   watch(
     () => props.modelValue,
     (val: string) => {

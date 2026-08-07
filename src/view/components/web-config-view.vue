@@ -12,7 +12,7 @@
       </a-col>
     </a-row>
     <div h-full w-full>
-      <MonacoEditor v-model="currentCode"></MonacoEditor>
+      <MonacoEditor ref="editorRef" v-model="currentCode"></MonacoEditor>
     </div>
     <template #footer>
       <div h-full w-full flex justify-end items-center>
@@ -25,7 +25,7 @@
   </a-drawer>
 </template>
 <script setup lang="ts">
-  import { onActivated, onMounted, onUnmounted, ref } from 'vue';
+  import { onActivated, onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
   import { base64ToStr, isFalsity, strToBase64 } from '@ilzf/utils';
   import { message } from 'ant-design-vue';
   import { preBreak } from '@ghs/constant';
@@ -37,6 +37,7 @@
   const { currentCode, allWebKeys, init } = useGlobalState();
   const drawerOpen = ref(false);
   const isEdit = ref(false);
+  const editorRef = ref<any>(null);
   const loadCode = async (key: string) => {
     const code = await f_getWebConfigCode(key);
     if (code) {
@@ -78,6 +79,14 @@
         handleSaveCode();
       }
     });
+  });
+
+  watch(drawerOpen, (open) => {
+    if (open) {
+      nextTick(() => {
+        editorRef.value?.focus?.();
+      });
+    }
   });
 
   defineExpose({
